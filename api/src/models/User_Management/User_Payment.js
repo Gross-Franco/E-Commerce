@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   
-    sequelize.define('user_payment', {
+    sequelize.define('userPayment', {  
     
     paymentType: {
       type: DataTypes.STRING,

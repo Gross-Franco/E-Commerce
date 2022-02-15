@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   
-    sequelize.define('product_category', {
+    sequelize.define('productCategory', {
     
     name: {
         type: DataTypes.STRING,
