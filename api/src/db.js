@@ -15,11 +15,17 @@ const basename = path.basename(__filename);
 const modelDefiners = [];
 
 // Leemos todos los archivos de la carpeta Models, los requerimos y agregamos al arreglo modelDefiners
-fs.readdirSync(path.join(__dirname, '/models'))
+fs.readdirSync(path.join(__dirname, '/models/Product_Mangement'))
   .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
   .forEach((file) => {
-    modelDefiners.push(require(path.join(__dirname, '/models', file)));
+    modelDefiners.push(require(path.join(__dirname, '/models/Product_Mangement', file)));
   });
+
+fs.readdirSync(path.join(__dirname, '/models/User_Management'))
+.filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+.forEach((file) => {
+  modelDefiners.push(require(path.join(__dirname, '/models/User_Management', file)));
+});
 
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
@@ -30,10 +36,19 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Pokemon } = sequelize.models;
+const { Discount, Product_Category, Product_Inventory, Product, User_Address, User_Payment, User } = sequelize.models;
 
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
+
+//User relations
+User.hasMany(User_Address)
+User.hasMany(User_Payment)
+
+//Product relations
+Product.hasMany(Product_Category)
+Product.hasOne(Product_Inventory)
+Product.hasMany(Discount)
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
