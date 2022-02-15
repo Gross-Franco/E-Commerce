@@ -7,6 +7,8 @@ import Home from './containers/Home';
 import Productos from './containers/Productos';
 import Blog from './containers/Blog';
 import Contactar from './containers/Contactar';
+import Registro from './containers/Registro';
+import Login from './containers/Login';
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
         <Route exact path="/productos" element={<Productos/>} />
         <Route exact path="/blog" element={<Blog/>} />
         <Route exact path="/contactar" element={<Contactar/>} />
+        <Route exact path="/registro" element={<Registro/>} />
+        <Route exact path="/login" element={<Login/>} />
       </Routes>
     </div>
   );
