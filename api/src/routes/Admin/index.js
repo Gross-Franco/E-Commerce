@@ -1,8 +1,13 @@
 const { Router } = require("express");
+const { getProducts, createProduct, editProduct } = require("./controller");
 // Importar todos los routers;
 
-const router = Router();
+const adminRouter = Router();
 
 // Configurar los routers
 
-module.exports = router;
+adminRouter.get('/products', getProducts);
+adminRouter.get('/createProducts', createProduct);
+adminRouter.get('/editProducts', editProduct);
+
+module.exports = adminRouter;
