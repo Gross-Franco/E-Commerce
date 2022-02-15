@@ -4,29 +4,42 @@ module.exports = (sequelize) => {
   
     sequelize.define('user', {
     
-    name: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
 
     password: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
+        validate: {
+            is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm         
+            // Minnumum 8 characters, 1 uppercase, 1 lowercase, 1 number. Can contain special characters 
+        }
     },
 
     first_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
 
     last_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
     
     email: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            isEmail: true
+        }
+    },
+
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 
 });

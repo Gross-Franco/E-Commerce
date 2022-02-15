@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   
-    sequelize.define('user', {
+    sequelize.define('user_address', {
     
     addressLine1: {
       type: DataTypes.STRING,
@@ -30,13 +30,13 @@ module.exports = (sequelize) => {
     },
 
     telephone: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.INTEGER,
     },
 
     mobile: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true
     }
 
 });
