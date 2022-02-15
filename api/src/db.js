@@ -15,23 +15,23 @@ const basename = path.basename(__filename);
 const modelDefiners = [];
 
 // Leemos todos los archivos de la carpeta Models, los requerimos y agregamos al arreglo modelDefiners
-fs.readdirSync(path.join(__dirname, '/models/Product_Mangement'))
-  .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-  .forEach((file) => {
-    modelDefiners.push(require(path.join(__dirname, '/models/Product_Mangement', file)));
-  });
+fs.readdirSync(path.join(__dirname, "/models/Product_Mangement"))
+	.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
+	.forEach(file => {
+		modelDefiners.push(require(path.join(__dirname, "/models/Product_Mangement", file)));
+	});
 
-fs.readdirSync(path.join(__dirname, '/models/User_Management'))
-.filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-.forEach((file) => {
-  modelDefiners.push(require(path.join(__dirname, '/models/User_Management', file)));
-});
+fs.readdirSync(path.join(__dirname, "/models/User_Management"))
+	.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
+	.forEach(file => {
+		modelDefiners.push(require(path.join(__dirname, "/models/User_Management", file)));
+	});
 
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
 // Capitalizamos los nombres de los modelos ie: product => Product
 let entries = Object.entries(sequelize.models);
-let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
+let capsEntries = entries.map(entry => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
@@ -42,15 +42,15 @@ const { Discount, Product_Category, Product_Inventory, Product, User_Address, Us
 // Product.hasMany(Reviews);
 
 //User relations
-User.hasMany(User_Address)
-User.hasMany(User_Payment)
+User.hasMany(User_Address);
+User.hasMany(User_Payment);
 
 //Product relations
-Product.hasMany(Product_Category)
-Product.hasOne(Product_Inventory)
-Product.hasMany(Discount)
+Product.hasMany(Product_Category);
+Product.hasOne(Product_Inventory);
+Product.hasMany(Discount);
 
 module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-  conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
+	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
+	conn: sequelize, // para importart la conexión { conn } = require('./db.js');
 };
