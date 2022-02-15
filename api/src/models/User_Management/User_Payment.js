@@ -15,12 +15,12 @@ module.exports = (sequelize) => {
     },
 
     accountNo: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
 
     expiry: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false,
     }
 
