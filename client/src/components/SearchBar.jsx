@@ -1,5 +1,4 @@
 import React from "react";
-import './estilos/searchBar.css'
 export default function SearchBar(){
     const [busqueda, setBusqueda] = React.useState('');
 
