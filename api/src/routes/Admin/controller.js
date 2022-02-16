@@ -97,7 +97,7 @@ const editProduct = async (req, res) => {
         {name: name,
         description: description,
         price: price},
-        {where: { id: id}}
+        {where: { id: id }}
     )
     return res.send('Product updated')
 }
