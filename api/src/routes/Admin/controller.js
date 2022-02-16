@@ -12,7 +12,8 @@ const createProduct = async (req, res) => {
         name,
         description,
         SKU,
-        price
+        price,
+        category
     } = req.body
 
     let createdProduct = await Product.create({
@@ -44,7 +45,7 @@ const editProduct = async (req, res) => {
         {name: name,
         description: description,
         price: price},
-        {where: { id: id}}
+        {where: { id: id }}
     )
     return res.send('Product updated')
 }

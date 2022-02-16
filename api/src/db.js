@@ -29,6 +29,12 @@ fs.readdirSync(path.join(__dirname, "/models/User_Management"))
 		modelDefiners.push(require(path.join(__dirname, "/models/User_Management", file)));
 	});
 
+fs.readdirSync(path.join(__dirname, "/models/Shopping_Session"))
+.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
+.forEach(file => {
+	modelDefiners.push(require(path.join(__dirname, "/models/Shopping_Session", file)));
+});
+
 // console.log(modelDefiners)
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
@@ -39,16 +45,27 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Discount, ProductCategory, ProductInventory, Product, UserAddress, UserPayment, User } = sequelize.models;
+const { 
+	Discount, 
+	ProductCategory, 
+	ProductInventory, 
+	Product, 
+	UserAddress, 
+	UserPayment, 
+	User,
+	CartItem,
+	OrderDetails,
+	OrderItems,
+	PaymentDetails,
+	ShoppingSession
+ } = sequelize.models;
 // console.log(sequelize.models)
 
 // console.log(UserPayment)
-
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
 //User relations
-
 User.hasMany(UserAddress)
 User.hasMany(UserPayment)
 
@@ -58,6 +75,9 @@ ProductCategory.belongsToMany(Product, {through: 'Product_Categories'})
 ProductInventory.hasOne(Product)
 Product.belongsTo(Discount)
 
+//Shopping relations
+
+//Mixed relations
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
