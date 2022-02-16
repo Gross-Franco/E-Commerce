@@ -70,14 +70,21 @@ User.hasMany(UserAddress)
 User.hasMany(UserPayment)
 
 //Product relations
-Product.belongsToMany(ProductCategory, {through: 'Product_Categories'})
-ProductCategory.belongsToMany(Product, {through: 'Product_Categories'})
 ProductInventory.hasOne(Product)
-Product.belongsTo(Discount)
+ProductCategory.hasMany(Product)
+Discount.hasMany(Product)
 
 //Shopping relations
+OrderDetails.belongsTo(PaymentDetails)
+OrderDetails.hasMany(OrderItems)
+ShoppingSession.hasMany(CartItem)
 
 //Mixed relations
+OrderItems.belongsTo(Product)
+CartItem.belongsTo(Product)
+OrderDetails.belongsTo(User)
+ShoppingSession.belongsTo(User)
+
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
