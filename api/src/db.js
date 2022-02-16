@@ -54,31 +54,23 @@ const {
 	UserAddress, 
 	UserPayment, 
 	User,
+	UserReviews,
 
 	CartItems,
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
-	ShoppingSession,
-	Reviews
+	ShoppingSession
 
  } = sequelize.models;
-// console.log(sequelize.models)
 
-// console.log(UserPayment)
-// Aca vendrian las relaciones
-// Product.hasMany(Reviews);
 
 //User relations
 User.hasMany(UserAddress)
 User.hasMany(UserPayment)
-
-Reviews.belongsTo(User)
-User.hasMany(Reviews)
+User.hasMany(UserReviews)
 
 //Product relations
-Product.hasMany(Reviews)
-Reviews.belongsTo(Product)
 ProductInventory.hasOne(Product)
 ProductCategory.belongsToMany(Product, {through: 'product_Categories'})
 Product.belongsToMany(ProductCategory, {through: 'product_Categories'})
@@ -94,6 +86,7 @@ OrderItems.belongsTo(Product)
 CartItems.belongsTo(Product)
 OrderDetails.belongsTo(User)
 ShoppingSession.belongsTo(User)
+Product.hasMany(UserReviews)
 
 
 module.exports = {

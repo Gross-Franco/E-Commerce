@@ -6,7 +6,7 @@ const userRouter = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-userRouter.post('/user/post/product/:idProduct',postReviewProduct)
+userRouter.post('/post/product/:idProduct',postReviewProduct)
 
 
 module.exports = userRouter;
