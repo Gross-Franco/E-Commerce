@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, Productos, Header, Login, Registro, Contactar,Blog } from "../containers";
+import Footer from "../containers/Footer";
 
 const Rutas = () => {
   return (
@@ -13,6 +14,7 @@ const Rutas = () => {
         <Route path="/contactar" element={<Contactar />} />
         <Route path="/registro" element={<Registro />} />
       </Routes>
+      <Footer />
     </Router>
   );
 };
