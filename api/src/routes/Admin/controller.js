@@ -93,7 +93,7 @@ const editProduct = async (req, res) => {
         price,
     } = req.body
 
-    console.log(id)
+    // console.log(id)
 
     Product.update(
         {name,
