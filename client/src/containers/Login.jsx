@@ -10,44 +10,43 @@ export default function Login() {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Login
+      <Button variant="btn btn-light" onClick={handleShow}>
+        login
       </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Login</Modal.Title>
+          <Modal.Title>Iniciar secion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={e=>{
+            e.preventDefault()
+          }}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="Ingresa email" />
               <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                No compartiremos su correo electrónico con nadie más.
               </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control type="password" placeholder="Contraseña" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
+              <Form.Check type="checkbox" label="remenber me" />
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-            <Button variant="secondary" onClick={handleClose}>
-              cerrar
-            </Button>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                cerrar
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Iniciar
+              </Button>
+            </Modal.Footer>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Iniciar
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   )
