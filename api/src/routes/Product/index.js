@@ -12,7 +12,7 @@ router.get('/products', async (req, res) => {
     const allProducts = await getProducts();
     if(name){
         let productName = await allProducts.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
-        productName.length ? res.status(200).send(productName) : res.status(404).send('raza no encontrada')
+        productName.length ? res.status(200).send(productName) : res.status(404).send('producto no encontrado')
     } else {
         res.status(200).send(allProducts)
     }
