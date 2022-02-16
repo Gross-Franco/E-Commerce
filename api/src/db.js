@@ -29,7 +29,12 @@ fs.readdirSync(path.join(__dirname, "/models/User_Management"))
 		modelDefiners.push(require(path.join(__dirname, "/models/User_Management", file)));
 	});
 
-// console.log(modelDefiners)
+fs.readdirSync(path.join(__dirname, "/models/Shopping_Session"))
+	.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
+	.forEach(file => {
+		modelDefiners.push(require(path.join(__dirname, "/models/Shopping_Session", file)));
+	});
+
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
 // Capitalizamos los nombres de los modelos ie: product => Product
@@ -39,24 +44,50 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { Discount, ProductCategory, ProductInventory, Product, UserAddress, UserPayment, User } = sequelize.models;
+const { 
+
+	Discount, 
+	ProductCategory, 
+	ProductInventory, 
+	Product, 
+
+	UserAddress, 
+	UserPayment, 
+	User,
+
+	CartItems,
+	OrderDetails,
+	OrderItems,
+	PaymentDetails,
+	ShoppingSession
+
+ } = sequelize.models;
 // console.log(sequelize.models)
 
 // console.log(UserPayment)
-
 // Aca vendrian las relaciones
 // Product.hasMany(Reviews);
 
 //User relations
-
 User.hasMany(UserAddress)
 User.hasMany(UserPayment)
 
 //Product relations
-Product.belongsToMany(ProductCategory, {through: 'Product_Categories'})
-ProductCategory.belongsToMany(Product, {through: 'Product_Categories'})
 ProductInventory.hasOne(Product)
-Product.belongsTo(Discount)
+ProductCategory.belongsToMany(Product, {through: 'product_Categories'})
+Product.belongsToMany(ProductCategory, {through: 'product_Categories'})
+Discount.hasMany(Product)
+
+//Shopping relations
+OrderDetails.belongsTo(PaymentDetails)
+OrderDetails.hasMany(OrderItems)
+ShoppingSession.hasMany(CartItems)
+
+//Mixed relations
+OrderItems.belongsTo(Product)
+CartItems.belongsTo(Product)
+OrderDetails.belongsTo(User)
+ShoppingSession.belongsTo(User)
 
 
 module.exports = {
