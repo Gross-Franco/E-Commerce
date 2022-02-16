@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { getOrders, getOrderId, getOrderStatus } = require('./controller')
-const { getProducts, createProduct, editProduct, getCategory, createCategory } = require("./controller");
+const { getAllProducts, createProduct, editProduct, getCategory, createCategory } = require("./controller");
 // Importar todos los routers;
 
 const adminRouter = Router();
@@ -11,7 +11,7 @@ adminRouter.get('/orders', getOrders)
 adminRouter.get('/orders/:id', getOrderId)
 adminRouter.get('/orders/status', getOrderStatus)
 
-adminRouter.get('/products', getProducts);
+adminRouter.get('/products', getAllProducts);
 adminRouter.post('/createProducts', createProduct);
 adminRouter.post('/editProducts', editProduct);
 adminRouter.get('/categories', getCategory)
