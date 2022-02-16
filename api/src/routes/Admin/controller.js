@@ -41,7 +41,7 @@ const createCategory = async (req, res) =>{
 
 const getProducts = async (req, res) =>{
     let search = await getInfoProducts()
-    console.log(search)
+    // console.log(search)
 
     let allProducts = []
     for(product of search){
@@ -86,20 +86,28 @@ const createProduct = async (req, res) => {
 }
 
 const editProduct = async (req, res) => {
+    const id = req.query.id
     let {
         name,
         description,
         price,
-        id
     } = req.body
 
+    console.log(id)
+
     Product.update(
-        {name: name,
-        description: description,
-        price: price},
+        {name,
+        description,
+        price},
         {where: { id: id }}
-    )
-    return res.send('Product updated')
+    );
+
+    let productUpdated = await Product.findOne({
+        where: {
+            id: id
+        }
+    });
+    return res.json({productUpdated, msg: "product updated"})
 }
 
 
