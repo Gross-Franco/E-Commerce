@@ -59,7 +59,8 @@ const {
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
-	ShoppingSession
+	ShoppingSession,
+	Reviews
 
  } = sequelize.models;
 // console.log(sequelize.models)
@@ -72,7 +73,12 @@ const {
 User.hasMany(UserAddress)
 User.hasMany(UserPayment)
 
+Reviews.belongsTo(User)
+User.hasMany(Reviews)
+
 //Product relations
+Product.hasMany(Reviews)
+Reviews.belongsTo(Product)
 ProductInventory.hasOne(Product)
 ProductCategory.belongsToMany(Product, {through: 'product_Categories'})
 Product.belongsToMany(ProductCategory, {through: 'product_Categories'})
