@@ -32,7 +32,7 @@ const router = Router();
 //       }
     
 // })
- router.get('/orders', async (req, res) => {
+ router.get('/admin/orders', async (req, res) => {
     try{    
     let orders = await Order_Items.findAll()
   res.status(200).send(orders)
@@ -43,7 +43,7 @@ const router = Router();
     }
  })
 
- router.get('/orders/:id', async (req, res) => {
+ router.get('/admin/orders/:id', async (req, res) => {
     try{
     const {id} = req.params;
      if(id){
@@ -56,6 +56,17 @@ const router = Router();
         console.log(err)
         res.status(404).send(err)
     }
+ })
+
+ router.get('/admin/orders/status', async (req, res)=> {
+     try {
+         const status = await Order_Details.status.findAll()
+         res.status(200).send(status)
+     } catch (err) {
+         console.log(err)
+         res.status(404).send(err)
+         
+     }
  })
 
 module.exports = router;
