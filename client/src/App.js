@@ -10,6 +10,8 @@ import Contactar from './containers/Contactar';
 import Registro from './containers/Registro';
 import Login from './containers/Login';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
 
   return (
