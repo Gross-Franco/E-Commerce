@@ -17,7 +17,6 @@ export default function NavBar() {
                 <Link to="/registro" style={{ textDecoration: 'none', color: 'white' }}>
                     <span>| registro</span>
                 </Link>
-
             </div>
         </div>
     )
