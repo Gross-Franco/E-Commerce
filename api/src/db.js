@@ -30,12 +30,11 @@ fs.readdirSync(path.join(__dirname, "/models/User_Management"))
 	});
 
 fs.readdirSync(path.join(__dirname, "/models/Shopping_Session"))
-.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
-.forEach(file => {
-	modelDefiners.push(require(path.join(__dirname, "/models/Shopping_Session", file)));
-});
+	.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
+	.forEach(file => {
+		modelDefiners.push(require(path.join(__dirname, "/models/Shopping_Session", file)));
+	});
 
-// console.log(modelDefiners)
 // Injectamos la conexion (sequelize) a todos los modelos
 modelDefiners.forEach(model => model(sequelize));
 // Capitalizamos los nombres de los modelos ie: product => Product
@@ -56,7 +55,7 @@ const {
 	UserPayment, 
 	User,
 
-	CartItem,
+	CartItems,
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
@@ -75,20 +74,18 @@ User.hasMany(UserPayment)
 
 //Product relations
 ProductInventory.hasOne(Product)
-
 ProductCategory.belongsToMany(Product, {through: 'Product_Categories', foreignKey: 'categoryId'})
 Product.belongsToMany(ProductCategory, {through: 'Product_Categories'})
-
 Discount.hasMany(Product)
 
 //Shopping relations
 OrderDetails.belongsTo(PaymentDetails)
 OrderDetails.hasMany(OrderItems)
-ShoppingSession.hasMany(CartItem)
+ShoppingSession.hasMany(CartItems)
 
 //Mixed relations
 OrderItems.belongsTo(Product)
-CartItem.belongsTo(Product)
+CartItems.belongsTo(Product)
 OrderDetails.belongsTo(User)
 ShoppingSession.belongsTo(User)
 
