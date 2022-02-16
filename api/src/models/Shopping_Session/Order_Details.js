@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
         allowNull: false
     },
 
-    staus: {
+    status: {
         type: DataTypes.ENUM('Created', 'Processing', 'Cancelled', 'Completed'),
         allowNull: false
     }
