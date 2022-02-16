@@ -7,10 +7,9 @@ const adminRouter = Router();
 
 // Configurar los routers
 
-
-adminRouter.get('/admin/orders', getOrders)
-adminRouter.get('/admin/orders/:id', getOrderId)
-adminRouter.get('/admin/orders/status', getOrderStatus)
+adminRouter.get('/orders', getOrders)
+adminRouter.get('/orders/:id', getOrderId)
+adminRouter.get('/orders/status', getOrderStatus)
 
 adminRouter.get('/products', getProducts);
 adminRouter.post('/createProducts', createProduct);
