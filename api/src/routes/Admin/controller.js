@@ -1,10 +1,61 @@
 require('dotenv').config()
 const axios = require('axios');
-const {Discount, Product_Category, Product_Inventory, Product} = require ('../../db.js')
+const {Discount, ProductCategory, ProductInventory, Product} = require ('../../db.js')
+
+
+const getInfoProducts = async () =>{
+    let search = await Product.findAll({
+        include:
+        {
+            model: ProductCategory,
+            attributes: ['name'],
+            through: {
+                attributes: [],
+            },
+        }
+    })
+    return search
+}
+
+const getInfoCategory = async () =>{
+    let search = await ProductCategory.findAll()
+    // console.log(search.map(x => x.name))
+    return search
+}
+
+const getCategory = async (req, res) =>{
+    let search = await getInfoCategory()
+    let categories = search.map(x => x.name)
+
+    res.status(200).send(categories)
+}
+
+const createCategory = async (req, res) =>{
+    let {name} = req.body
+
+    let createdCategory = await ProductCategory.create({
+        name
+    })
+    res.send(createdCategory)
+}
 
 const getProducts = async (req, res) =>{
-    let search = await Product.findAll()
-    return res.send(search)
+    let search = await getInfoProducts()
+    console.log(search)
+
+    let allProducts = []
+    for(product of search){
+        allProducts.push({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            SKU: product.SKU,
+            price: product.price,
+            category: product.productCategories.map(x => x.name)
+        })
+    }
+
+    res.status(200).send(allProducts)
 }
 
 const createProduct = async (req, res) => {
@@ -20,14 +71,15 @@ const createProduct = async (req, res) => {
         name,
         description,
         SKU,
-        price
+        price,
+        category
     })
 
-    let categoryDb = await Product_Category.findAll({
+    let categoryDb = await ProductCategory.findAll({
         where: {name: category}
     })
     
-    createdProduct.addCategory(categoryDb)
+    createdProduct.addProductCategory(categoryDb)
 
     res.send('Product created')
     
@@ -51,4 +103,4 @@ const editProduct = async (req, res) => {
 }
 
 
-module.exports = {getProducts, createProduct, editProduct};
+module.exports = {getProducts, createProduct, editProduct, getCategory, createCategory};
