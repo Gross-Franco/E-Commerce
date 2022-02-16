@@ -2,10 +2,10 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   
-    sequelize.define('productInventory', {
+    sequelize.define('shoppingSession', {
     
-    quantity: {
-        type: DataTypes.INTEGER,
+    total: {
+        type: DataTypes.DECIMAL,
         allowNull: false
     }
     

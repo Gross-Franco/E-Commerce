@@ -7,9 +7,8 @@ const productRouter = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
+
 productRouter.get('/product/:id', getProducts)
 productRouter.get('/product/:name', searchProductName)
-
-
 
 module.exports = productRouter;
