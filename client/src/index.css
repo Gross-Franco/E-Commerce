@@ -11,3 +11,68 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* HEADER */
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;;
+  padding: 1.5rem 3rem;
+}
+.header-cart--container {
+  display: flex;
+  flex-direction: row;
+}
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.header-nav--link {
+  color: black;
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: none;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 5.7%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: black;
+  font-weight: bold;
+  font-size: 2rem;
+  text-decoration: none;
+  text-transform: none;
+}
+.header-logo:hover {
+  color: black;
+}
+.header-cart--login {
+  align-self: center;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: none;
+}
+
+/* CART */
+.cart-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.cart-icon {
+  font-size: 2rem;
+  align-self: center;
+}
+
+.cart-count {
+  font-size: 12px;
+  font-weight: bold;
+}

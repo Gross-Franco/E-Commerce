@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import './estilos/LandingPage.css'
 
 export default function LandingPage() {
 
