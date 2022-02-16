@@ -11,9 +11,10 @@ adminRouter.get('/orders', getOrders)
 adminRouter.get('/orders/:id', getOrderId)
 adminRouter.get('/orders/status', getOrderStatus)
 
-adminRouter.get('/products', getAllProducts)
-adminRouter.post('/createProducts', createProduct)
-adminRouter.post('/editProducts', editProduct)
+adminRouter.get('/products', getAllProducts);
+adminRouter.post('/createProducts', createProduct);
+adminRouter.post('/editProducts', editProduct);
+adminRouter.get('/categories', getCategory)
 adminRouter.post('/createCategory', createCategory)
 
 
