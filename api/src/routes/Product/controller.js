@@ -1,19 +1,80 @@
+const axios = require('axios');
+const { Op } = require("sequelize");
+const {Discount, ProductCategory, ProductInventory, Product} = require ('../../db.js')
 
 
-const getProducts = async (req,res)=> {
-    const id = req.params.id;
-    if(id){
-    const allProducts = await getProducts();
-    const FilteredProducts = allProducts.filter(e => e.id == id);
-    FilteredProducts.length ? res.status(200).send(FilteredProducts) : res.status(404).send('El ID ingresado no existe')
-   }
+const getProducts = async (req, res) => {  
+    let products = await Product.findAll({
+        include: {
+            model: ProductInventory,
+            where: {
+                quantity: {
+                  [Op.gt]: 0
+                }
+            }
+        }
+    })
+    res.json(products)
+}
+
+const filterByCategory = async (req, res) => {
+    const {category} = req.params;
+    if(typeof category != 'string' || !category) {
+        res.status(404).send('Invalid category')
+    }
+    try {
+        const filtered = await Product.findAll({
+            include: {
+                model: ProductCategory,
+                where: {
+                    name: category
+                }
+            }
+        })
+        res.json(filtered)
+    } catch(err) {
+        console.log(err)
+        res.status(404).send(err)
+    }
+}
+
+const getProductId = async (req,res)=> {
+    const {id} = req.params;
+    if(!id || typeof id !== 'number'){
+        res.status(404).send('Invalid ID')
+    }
+    try {
+        const productDetail = await Product.findByPk(id);
+       res.json(productDetail)
+    } catch(err) {
+        console.log(err)
+        res.status(404).send(err)
+    }
 }
 
 const searchProductName = async (req, res) => {
-
+    const {name} = req.params; 
+    if(!name || typeof name !== 'string'){
+        res.status(404).send('Invalid name')
+    }
+    try {
+        let productsByName = await Product.findAll({
+            where: {
+                name: {
+                    [Op.iLike]: '%' + name + '%'
+                }
+            }
+        });
+        res.json(productsByName)
+    } catch(err) {
+        console.log(err)
+        res.status(404).send(err)
+    }
 }
 
 module.exports = {
     getProducts,
-    searchProductName
+    getProductId,
+    searchProductName,
+    filterByCategory
 }

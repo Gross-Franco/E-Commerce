@@ -75,7 +75,7 @@ const createCategory = async (req, res) =>{
     res.send(createdCategory)
 }
 
-const getProducts = async (req, res) =>{
+const getAllProducts = async (req, res) =>{
     let search = await getInfoProducts()
     console.log(search)
 
@@ -140,7 +140,7 @@ const editProduct = async (req, res) => {
 
 
 module.exports = {
-    getProducts,
+    getAllProducts,
     createProduct, 
     editProduct, 
     getCategory, 
