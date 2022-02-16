@@ -74,8 +74,8 @@ User.hasMany(UserPayment)
 
 //Product relations
 ProductInventory.hasOne(Product)
-ProductCategory.belongsToMany(Product, {through: 'Product_Categories', foreignKey: 'categoryId'})
-Product.belongsToMany(ProductCategory, {through: 'Product_Categories'})
+ProductCategory.belongsToMany(Product, {through: 'product_Categories'})
+Product.belongsToMany(ProductCategory, {through: 'product_Categories'})
 Discount.hasMany(Product)
 
 //Shopping relations
