@@ -13,6 +13,8 @@ router.get('/product/:id', async (req,res)=> {
     const FilteredProducts = allProducts.filter(e => e.id == id);
     FilteredProducts.length ? res.status(200).send(FilteredProducts) : res.status(404).send('El ID ingresado no existe')
    }
-})
+}) 
+
+
 
 module.exports = router;
