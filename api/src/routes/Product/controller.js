@@ -1,6 +1,6 @@
 
 
-export const getProducts = async (req,res)=> {
+const getProducts = async (req,res)=> {
     const id = req.params.id;
     if(id){
     const allProducts = await getProducts();
@@ -9,6 +9,11 @@ export const getProducts = async (req,res)=> {
    }
 }
 
-export const searchProductName = async (req, res) => {
+const searchProductName = async (req, res) => {
 
+}
+
+module.exports = {
+    getProducts,
+    searchProductName
 }
