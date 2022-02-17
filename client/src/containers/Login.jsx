@@ -2,6 +2,9 @@ import React from "react";
 import { Form, Button, Modal, ModalBody, ModalFooter, ModalTitle, FormGroup } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css'
 import './estilos/login.css'
+import { Link } from "react-router-dom";
+
+
 export default function Login() {
   const [show, setShow] = React.useState(false);
 
@@ -48,6 +51,13 @@ export default function Login() {
             Iniciar
           </Button>
         </Modal.Footer>
+        <Link to="/registro"  onClick={handleClose} style={{ 
+          textDecoration: 'none',
+                   color: 'blue',
+                position:"relative",
+                     top:"-25px",
+                    left:"25px" 
+                     }}>Registro</Link>
       </Modal>
     </>
   )

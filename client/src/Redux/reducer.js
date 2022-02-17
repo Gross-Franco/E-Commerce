@@ -2,7 +2,8 @@ import { GET_ALL_PRODUCTS, GET_BACKUP, GET_CATEGORIES, SEARCH_PRODUCT_ID, SEARCH
 
 const initialState = {
     products: [],
-    productDetail: {}
+    productDetail: {},
+    UserTest:[]
 };
 
 
