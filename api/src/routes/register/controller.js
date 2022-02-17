@@ -13,7 +13,7 @@ const createUser = async (req, res) => {
         if (!username || !password || !first_name || !last_name || !email) {
             res.status(400).json({ success: false, error: 'fields are missing in the form' })
         } else {
-            let [user, created] = await User.findOrCreate({ where: { email: email }, defaults: { password, first_name, last_name, email, isAdmin } })
+            let [user, created] = await User.findOrCreate({ where: { email: email }, defaults: {username,password, first_name, last_name, email, isAdmin } })
             if (created) {
                 res.status(201).json({ success: true, inf: 'User created' })
             } else {
