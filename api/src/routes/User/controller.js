@@ -17,6 +17,34 @@ const getUsers = async (req, res) => {
     res.status(200).send(search)
 }
 
+
+const createUser = async (req, res) => {
+    let {
+        username,
+        password,
+        first_name,
+        last_name,
+        email,
+        isAdmin
+    } = req.body
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    let createdUser = await User.create({
+        username,
+        password: passwordHash,
+        first_name,
+        last_name,
+        email,
+        isAdmin,
+        
+    },
+    )
+
+    res.json({createdUser, msg: 'User created'})
+    
+}
+
 const addAdress = async(req, res) =>{
     let {
         addressLine1,
@@ -84,4 +112,4 @@ const postReviewProduct = async (req,res)=>{
     }
 
 
-module.exports = {getUsers, addAdress, postReviewProduct}
+module.exports = {createUser, getUsers, addAdress, postReviewProduct}
