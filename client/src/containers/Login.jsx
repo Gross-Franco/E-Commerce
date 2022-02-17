@@ -45,8 +45,8 @@ export default function Login() {
   }
   return (
     <>
-      <Button variant="btn btn-light" onClick={handleShow}>
-        login
+      <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
+        Login
       </Button>
 
       <Modal show={show} onHide={handleClose}>

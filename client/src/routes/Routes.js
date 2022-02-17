@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, Productos, Header, Login, Registro, Contactar,Blog } from "../containers";
-import Footer from "../containers/Footer";
+import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer } from "../containers";
 
 const Rutas = () => {
   return (
@@ -9,7 +8,7 @@ const Rutas = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/productos" element={<Productos />} />
+        <Route path="/catalogo" element={<Catalog />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contactar" element={<Contactar />} />
         <Route path="/registro" element={<Registro />} />

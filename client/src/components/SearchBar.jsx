@@ -1,18 +1,31 @@
 import React from "react";
-export default function SearchBar(){
-    const [busqueda, setBusqueda] = React.useState('');
+import { BiSearch } from "react-icons/bi";
 
-    return(
-        <div className="busqueda">
-            <form onSubmit={e=>{
-                e.preventDefault()
-                alert(busqueda);
-            }}>
-                <input type='text' placeholder="buscar ..."
-                    onChange={e=>setBusqueda(e.target.value)}
-                />
-                <input type='submit' value='buscar'/>
-            </form>
-        </div>
-    )
+export default function SearchBar() {
+  const [busqueda, setBusqueda] = React.useState("");
+
+  const handleChange = (e) => {
+    setBusqueda(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(busqueda);
+  };
+
+  return (
+    <div className="catalog-search-input--container">
+      <form onSubmit={handleSubmit} className="catalog-search-input--container">
+        <input
+          className="catalog-search--input"
+          type="text"
+          placeholder="Buscar producto"
+          onChange={handleChange}
+        />
+        <button className="catalog-search--submit-button">
+          <BiSearch className="catalog-search--submit-button-icon" />
+        </button>
+      </form>
+    </div>
+  );
 }
