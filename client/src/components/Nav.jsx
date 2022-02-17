@@ -7,8 +7,8 @@ export default function Nav() {
       <NavLink className="header-nav--link" to="/">
         Home
       </NavLink>
-      <NavLink className="header-nav--link" to="/productos">
-        Catalog
+      <NavLink className="header-nav--link" to="/catalogo">
+        Catalogo
       </NavLink>
     </div>
   );
