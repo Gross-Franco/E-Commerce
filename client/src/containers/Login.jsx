@@ -3,6 +3,7 @@ import { Form, Button, Modal } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css'
 import './estilos/login.css'
 import { Link } from "react-router-dom";
+import { getCookie } from "./Utilitis/getCookie";
 
 
 export default function Login() {
@@ -46,6 +47,31 @@ export default function Login() {
       }
     )
   }
+  
+  //Testeo de inicio sesion 
+function ValidateRequest(e)
+  { 
+
+//verificamos 
+if(getCookie("Email") === null){
+  
+  //añadimos data a las cokkies
+  document.cookie = "Email="+ inputs.email;
+  
+  document.cookie = "Password="+ inputs.email;
+  
+
+  alert(document.cookie);
+}
+else
+{
+  alert("Session "+ getCookie("Email") +"  esta activa" );
+}
+
+e.preventDefault();
+ 
+}
+  
   return (
     <>
       <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
@@ -75,17 +101,13 @@ export default function Login() {
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" onClick={ValidateRequest}>
                 Iniciar
               </Button>
             </Modal.Footer>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Iniciar
-          </Button>
-        </Modal.Footer>
+      
         <Link to="/registro"  onClick={handleClose} style={{ 
           textDecoration: 'none',
                    color: 'blue',
