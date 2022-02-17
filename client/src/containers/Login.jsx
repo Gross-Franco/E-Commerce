@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Modal, ModalBody, ModalFooter, ModalTitle, FormGroup } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css'
 import './estilos/login.css'
 export default function Login() {
@@ -8,6 +8,41 @@ export default function Login() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [inputs, setInputs] = React.useState(
+    {
+      email: null,
+      contraseña: null
+    }
+  )
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (inputs.email && inputs.contraseña) {
+      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`)
+      handleClose()
+      setInputs(
+        {
+          email: '',
+          contraseña: ''
+        }
+      )
+    }else{
+      setInputs(
+        {
+          email: '',
+          contraseña: ''
+        }
+      )
+      alert('se tiene q rellenar los espacios en blanco')
+    }
+  }
+  const handleInputs = (e) => {
+    setInputs(
+      {
+        ...inputs,
+        [e.target.name]: e.target.value,
+      }
+    )
+  }
   return (
     <>
       <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
@@ -19,12 +54,10 @@ export default function Login() {
           <Modal.Title>Iniciar secion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={e=>{
-            e.preventDefault()
-          }}>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Ingresa email" />
+              <Form.Control type="email" placeholder="Ingresa email" name="email" onChange={handleInputs} value={inputs.email}/>
               <Form.Text className="text-muted">
                 No compartiremos su correo electrónico con nadie más.
               </Form.Text>
@@ -32,16 +65,14 @@ export default function Login() {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" placeholder="Contraseña" />
+              <Form.Control type="password" placeholder="Contraseña" name="contraseña" onChange={handleInputs} value={inputs.contraseña}/>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="remenber me" />
-            </Form.Group>
+            
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" type="submit">
                 Iniciar
               </Button>
             </Modal.Footer>

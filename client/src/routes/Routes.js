@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, Catalog, Header, Login, Registro, Contactar,Blog } from "../containers";
+import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer } from "../containers";
 
 const Rutas = () => {
   return (
@@ -13,6 +13,7 @@ const Rutas = () => {
         <Route path="/contactar" element={<Contactar />} />
         <Route path="/registro" element={<Registro />} />
       </Routes>
+      <Footer />
     </Router>
   );
 };

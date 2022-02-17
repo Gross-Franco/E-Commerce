@@ -54,6 +54,7 @@ const {
 	UserAddress, 
 	UserPayment, 
 	User,
+	UserReviews,
 
 	CartItems,
 	OrderDetails,
@@ -62,15 +63,12 @@ const {
 	ShoppingSession
 
  } = sequelize.models;
-// console.log(sequelize.models)
 
-// console.log(UserPayment)
-// Aca vendrian las relaciones
-// Product.hasMany(Reviews);
 
 //User relations
 User.hasMany(UserAddress)
 User.hasMany(UserPayment)
+User.hasMany(UserReviews)
 
 //Product relations
 ProductInventory.hasOne(Product)
@@ -88,6 +86,7 @@ OrderItems.belongsTo(Product)
 CartItems.belongsTo(Product)
 OrderDetails.belongsTo(User)
 ShoppingSession.belongsTo(User)
+Product.hasMany(UserReviews)
 
 
 module.exports = {
