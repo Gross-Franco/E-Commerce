@@ -1,10 +1,12 @@
 require('dotenv').config()
 const axios = require('axios');
-const {Discount, ProductCategory, ProductInventory, Product} = require ('../../db.js')
+const {Discount, ProductCategory, ProductInventory, Product, OrderDetails} = require ('../../db.js')
 
 const getOrderStatus = async (req, res)=> {
     try {
-        const status = await Order_Details.status.findAll()
+        const status = await OrderDetails.findAll({
+            attributes : ['status']
+        })
         res.status(200).send(status)
     } catch (err) {
         console.log(err)
@@ -42,7 +44,7 @@ const getOrderId = async (req, res) => {
     try{
     const {id} = req.params;
      if(id){
-         const orders = await Order_Details.findAll()
+         const orders = await OrderDetails.findAll()
          const orderFiltered = orders.filter(e => e.id == id)
          res.status(200).send(orderFiltered)
      }
@@ -146,6 +148,12 @@ const editProduct = async (req, res) => {
     return res.json({productUpdated, msg: "product updated"})
 }
 
+const allStatus = async (req, res) => {
+    const status = await OrderDetails.findAll({
+        attributes: ['status']
+    })
+    res.send(status)
+}
 
 module.exports = {
     getAllProducts,
