@@ -11,3 +11,5 @@ export { default as FiltersContainer } from './FiltersContainer';
 export { default as ProductsContainer } from './ProductsContainer';
 export { default as Footer } from './Footer';
 export { default as PerfilUser } from './PerfilUser';
+export { default as Products } from './Products';
+export { default as NavBar } from './NavBar';

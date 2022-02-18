@@ -1,23 +1,26 @@
-import React from 'react';
-import p from '../helpers/mockProducts';
+import React, { useState, useEffect } from "react";
+import { Products } from "../containers";
+import { commerce } from "../lib/commerce";
 
 const ProductsContainer = () => {
-    const { products } = p;
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = async () => {
+    const { data } = await commerce.products.list();
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  console.log(products);
+  
   return (
     <div className="products--container">
-        <span>categoria:</span>
-        <h2>Consolas</h2>
-        <div className="products--list">
-            {products.map(product => (
-                <div className="product--item" key={product.SKU}>
-                    <h4>{product.name}</h4>
-                    <pre>{product.price}</pre>
-                    <span>{product.description}</span>
-                </div>
-            ))}
-        </div>
+      <Products products={products} />
     </div>
-  )
+  );
 };
 
 export default ProductsContainer;

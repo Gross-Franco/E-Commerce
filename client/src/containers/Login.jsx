@@ -75,7 +75,7 @@ e.preventDefault();
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Iniciar secion</Modal.Title>
+          <Modal.Title>Iniciar Sesion</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>

@@ -12,6 +12,12 @@ const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
+sequelize.authenticate()
+.then(success=>{
+	console.log('Connection ok')
+},(error)=>{
+	console.log('Failed conncection, reason :'+error)
+})
 const basename = path.basename(__filename);
 
 const modelDefiners = [];

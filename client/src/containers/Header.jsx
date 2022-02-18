@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Nav, SearchBar, Cart, } from "../components";
+import { Nav, SearchBar, Cart } from "../components";
 import { Login } from ".";
 import { getCookie } from "./Utilitis/getCookie";
 import { useState, useEffect} from "react";
@@ -10,6 +10,7 @@ import Dropdowns from "./Dropdowns";
 
 
 export default function NavBar() {
+
 
 
 
