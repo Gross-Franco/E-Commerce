@@ -13,3 +13,4 @@ export { default as Footer } from './Footer';
 export { default as PerfilUser } from './PerfilUser';
 export { default as Products } from './Products';
 export { default as NavBar } from './NavBar';
+export { default as Dropdowns } from './Dropdowns';
