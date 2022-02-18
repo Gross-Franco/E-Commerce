@@ -61,6 +61,48 @@ const addAdress = async (req, res, next) => {
 	}
 };
 
+
+const addAdress = async (req, res, next) => {
+	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, userId } = req.body;
+
+	try {
+		let createdAddress = await UserAddress.create({
+			addressLine1,
+			addressLine2,
+			city,
+			postalCode,
+			country,
+			telephone,
+			mobile,
+			userId,
+		});
+		return res.status(201).json({ createdAddress, msg: "added address" });
+	} catch (error) {
+		next(error);
+	}
+};
+
+const addPayment = async(req, res) =>{
+    let {
+        paymentType,
+        provider,
+        accountNo,
+        expiry,
+        userId
+    } = req.body
+
+    let createdPayment = await UserPayment.create({
+        paymentType,
+        provider,
+        accountNo,
+        expiry,
+        userId
+    })
+
+    res.json({createdPayment, msg: "added payment option"})
+}
+
+
 const postReviewProduct = async (req, res) => {
 	// si se envia el token
 	//let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
@@ -99,4 +141,6 @@ const postReviewProduct = async (req, res) => {
 	}
 };
 
-module.exports = { createUser, getUsers, addAdress, postReviewProduct };
+
+module.exports = {createUser, getUsers, addAdress, postReviewProduct, addPayment}
+
