@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route , Navigate} from "react-router-dom";
-import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer, PerfilUser, } from "../containers";
+import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer, PerfilUser, NavBar } from "../containers";
 import { getCookie } from "../containers/Utilitis/getCookie";
 
 
