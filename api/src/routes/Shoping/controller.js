@@ -26,7 +26,7 @@ const TotalPrice = (req, res) => {
   }
 }
 
-const deleteProduct = async (req, res) => {
+const deleteProductFromCart = async (req, res) => {
     try{
         const {id} = req.params;
          if(id){
@@ -43,4 +43,4 @@ const deleteProduct = async (req, res) => {
 
 }
 
-module.exports = {Cart, TotalPrice, deleteProduct}
+module.exports = {Cart, TotalPrice, deleteProductFromCart}
