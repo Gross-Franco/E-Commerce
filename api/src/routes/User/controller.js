@@ -1,10 +1,9 @@
-require("dotenv").config();
-// const axios = require('axios');
-const { User, UserAddress, UserPayment, Product, Review } = require("../../db.js");
+require('dotenv').config()
+const axios = require('axios');
+const {User, UserAddress, UserPayment, Product, Review} = require ('../../db.js')
 // const bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken");
-// const { NOEXPAND } = require("sequelize/types/table-hints");
-// const { FIRM } = process.env;
+const jwt = require('jsonwebtoken')
+const {FIRM} =process.env 
 
 const getUserInfo = async () => {
 	let search = User.findAll({

@@ -1,23 +1,37 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
-import Rutas from "../components/Rutas";
-import './estilos/navBar.css'
-import { Login } from ".";
+import React, { useState, useEffect }from "react";
+import { AppBar, Toolbar, MenuItem, Menu, Typography } from "@mui/material";
+import { Cart, Nav } from "../components";
+import { Login, Dropdowns } from "./";
+import useStyles from "../helpers/stylesNavBar";
+import { getCookie } from "./Utilitis/getCookie";
 
-export default function NavBar() {
-    const [aux, setaux] = React.useState(false)
-    return (
-        <div className="navbar">
-            <h1>aqui va el tittulo</h1>
-            <Rutas />
-            <SearchBar />
-            <div>
-                <Login/>
-                <Link to="/registro" style={{ textDecoration: 'none', color: 'white' }}>
-                    <span>| registro</span>
-                </Link>
-            </div>
-        </div>
-    )
-}
+const NavBar = () => {
+  const [load, LoadSet] = useState(getCookie("email") !== "");
+
+  useEffect(() => {
+    //  let validator= getCookie("email") !==  null;
+    LoadSet(getCookie("Email") === "");
+    // alert(getCookie("Email"));
+  });
+  const classes = useStyles();
+  return (
+    <>
+      <AppBar
+        className={classes.appBar}
+        color="inherit"
+        style={{ zIndex: 1000 }}
+      >
+        <Toolbar>
+          <Nav />
+          <div className={classes.grow} />
+          <div className={classes.button}>
+            {load ? <Login /> : <Dropdowns />}
+            <Cart />
+          </div>
+        </Toolbar>
+      </AppBar>
+    </>
+  );
+};
+
+export default NavBar;

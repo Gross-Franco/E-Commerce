@@ -1,114 +1,100 @@
-require("dotenv").config();
-const axios = require("axios");
-const { Discount, ProductCategory, ProductInventory, Product } = require("../../db.js");
+require('dotenv').config()
+const axios = require('axios');
+const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js')
 
-const getOrderStatus = async (req, res) => {
-	try {
-		const status = await Order_Details.status.findAll();
-		res.status(200).send(status);
-	} catch (err) {
-		console.log(err);
-		res.status(404).send(err);
-	}
-};
+const getOrderStatus = async (req, res)=> {
+    try {
+        const status = await OrderDetails.findAll({
+            attributes : ['status']
+        })
+        res.status(200).send(status)
+    } catch (err) {
+        console.log(err)
+        res.status(404).send(err)
+        
+    }
+}
 
-const getInfoProducts = async () => {
-	try {
-		let search = await Product.findAll({
-			include: {
-				model: ProductCategory,
-				attributes: ["name"],
-				through: {
-					attributes: [],
-				},
-			},
-		});
-		return search;
-	} catch (error) {
-		console.log(error);
-	}
-};
+const getInfoProducts = async () =>{
+    let search = await Product.findAll({
+        include:
+        {
+            model: ProductCategory,
+            attributes: ['name'],
+            through: {
+                attributes: [],
+            },
+        }
+    })
+    return search
+}
 
 const getOrders = async (req, res) => {
-	try {
-		let orders = await Order_Items.findAll();
-		return res.status(200).send(orders);
-	} catch (err) {
-		console.log(err);
-		res.status(404).send(err);
-	}
-};
+    try{    
+    let orders = await OrderItems.findAll()
+  res.status(200).send(orders)
+    } 
+    catch(err) {
+        console.log(err)
+        res.status(404).send(err)
+    }
+ }
 
 const getOrderId = async (req, res) => {
-	try {
-		const { id } = req.params;
-		if (id) {
-			const orders = await Order_Details.findAll();
-			const orderFiltered = orders.filter(e => e.id == id);
-			res.status(200).send(orderFiltered);
-		}
-	} catch (err) {
-		console.log(err);
-		res.status(404).send(err);
-	}
-};
+    try{
+    const {id} = req.params;
+     if(id){
+         const orders = await OrderDetails.findAll()
+         const orderFiltered = orders.filter(e => e.id == id)
+         res.status(200).send(orderFiltered)
+     }
+    } 
+    catch(err){
+        console.log(err)
+        res.status(404).send(err)
+    }
+ }
 
-const getInfoCategory = async () => {
-	try {
-		let search = await ProductCategory.findAll();
-		// console.log(search.map(x => x.name))
-		return search;
-	} catch (error) {
-		console.log(error);
-	}
-};
+const getInfoCategory = async () =>{
+    let search = await ProductCategory.findAll()
+    // console.log(search.map(x => x.name))
+    return search
+}
 
-const getCategory = async (req, res, next) => {
-	try {
-		let search = await getInfoCategory();
-		let categories = search.map(x => x.name);
+const getCategory = async (req, res) =>{
+    let search = await getInfoCategory()
+    let categories = search.map(x => x.name)
 
-		return res.status(200).send(categories);
-	} catch (error) {
-		next(error);
-	}
-};
+    res.status(200).send(categories)
+}
 
-const createCategory = async (req, res, next) => {
-	let { name } = req.body;
+const createCategory = async (req, res) =>{
+    let {name} = req.body
 
-	try {
-		let createdCategory = await ProductCategory.create({
-			name,
-		});
-		return res.status(201).send(createdCategory);
-	} catch (error) {
-		next(error);
-	}
-};
+    let createdCategory = await ProductCategory.create({
+        name
+    })
+    res.send(createdCategory)
+}
 
-const getAllProducts = async (req, res, next) => {
-	try {
-		let search = await getInfoProducts();
-		// console.log(search)
+const getAllProducts = async (req, res) =>{
+    let search = await getInfoProducts()
+    // console.log(search)
 
-		let allProducts = [];
-		for (let product of search) {
-			allProducts.push({
-				id: product.id,
-				name: product.name,
-				description: product.description,
-				SKU: product.SKU,
-				price: product.price,
-				category: product.productCategories.map(x => x.name),
-			});
-		}
+    let allProducts = []
+    for(product of search){
+        allProducts.push({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            SKU: product.SKU,
+            price: product.price,
+            category: product.productCategories.map(x => x.name)
+        })
+    }
 
-		return res.status(200).send(allProducts);
-	} catch (error) {
-		next(error);
-	}
-};
+    res.status(200).send(allProducts)
+}
 
 const createProduct = async (req, res) => {
 	let { name, description, SKU, price, category } = req.body;
@@ -151,14 +137,21 @@ const editProduct = async (req, res, next) => {
 		next(error);
 	}
 };
+const allStatus = async (req, res) => {
+    const status = await OrderDetails.findAll({
+        attributes: ['status']
+    })
+    res.send(status)
+}
 
 module.exports = {
-	getAllProducts,
-	createProduct,
-	editProduct,
-	getCategory,
-	createCategory,
-	getOrderId,
-	getOrderStatus,
-	getOrders,
+    getAllProducts,
+    createProduct, 
+    editProduct, 
+    getCategory, 
+    createCategory, 
+    getOrderId, 
+    getOrderStatus, 
+    getOrders,
+    allStatus
 };
