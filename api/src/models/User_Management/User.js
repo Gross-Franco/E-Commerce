@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-// const bcrypt = require('bcrypt');
-
+const bcrypt = require('bcrypt');
+var validator = require('validator');
 
 module.exports = (sequelize) => {
   
@@ -13,18 +13,22 @@ module.exports = (sequelize) => {
     },
 
     password: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm         
-            // Minnumum 8 characters, 1 uppercase, 1 lowercase, 1 number. Can contain special characters 
-        }, 
-        // comente esto por el momento ya que al crear el usuario me estaba arrojando que no recibia el password por el body
-        // set(value) {
-        //     bcrypt.hash(value, 10, function(err, hash) {
-        //         this.setDataValues('password', hash)
-        //     });
-        // }
+        // Este validate no funciona por alguna razon nidea
+        // validate: {
+        //     is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
+        //     notEmpty: true
+        //     // Minnumum 8 characters, 1 uppercase, 1 lowercase, 1 number. Can contain special characters 
+        // }, 
+        set(value) {
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(value, salt);
+            this.setDataValue('password', hash)
+            // To check password load hash from your password DB.
+            // bcrypt.compareSync(correctpassword, hash); // true
+            // bcrypt.compareSync(wrongPassword, hash); // false
+        }
     },
 
     first_name: {

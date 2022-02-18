@@ -1,5 +1,6 @@
 require('dotenv').config()
 const axios = require('axios');
+const { filter } = require('bluebird');
 const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js')
 
 const getOrderStatus = async (req, res)=> {
@@ -12,6 +13,32 @@ const getOrderStatus = async (req, res)=> {
         console.log(err)
         res.status(404).send(err)
         
+    }
+}
+
+const filterOrderByStatus = async (req, res) => {
+    try {
+        const {status} = req.params;
+        const filteredOrders = await OrderDetails.findAll({
+            where: { status: status }
+        });
+        res.json(filteredOrders)
+    } catch(err) {
+        console.log(err);
+        res.status(404).send(err)
+    }
+}
+
+const changeOrderStatus = async (req, res) => {
+    try {
+        const {orderId, status} = req.body;
+        const order = await  OrderDetails.findByPk(orderId);
+        order.status = status;
+        await order.save();
+        res.send('Order updated')
+    } catch(err) {
+        console.log(err);
+        res.status(404).send(err)
     }
 }
 
@@ -164,6 +191,8 @@ module.exports = {
     getOrderId, 
     getOrderStatus, 
     getOrders,
-    allStatus
+    allStatus,
+    filterOrderByStatus,
+    changeOrderStatus,
 };
 

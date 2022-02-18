@@ -70,7 +70,6 @@ const {
 
  } = sequelize.models;
 
-
 //User relations
 User.hasMany(UserAddress)
 User.hasMany(UserPayment)
