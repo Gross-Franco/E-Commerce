@@ -120,13 +120,24 @@ const getAllProducts = async (req, res) =>{
 
     let allProducts = []
     for(product of search){
+
+        let inventory = await ProductInventory.findOne(
+            {
+                where: {id: product.productInventoryId}
+            }
+        )
+
+        // console.log(inventory.quantity)
+
         allProducts.push({
             id: product.id,
             name: product.name,
             description: product.description,
             SKU: product.SKU,
             price: product.price,
-            category: product.productCategories.map(x => x.name)
+            category: product.productCategories.map(x => x.name),
+            inventoryId: product.productInventoryId,
+            quantity: inventory.quantity
             
         })
     }
@@ -140,21 +151,21 @@ const createProduct = async (req, res) => {
         description,
         SKU,
         price,
-        quantity,
-        category
+        category,
+        quantity
     } = req.body
 
     let createdInventory = await ProductInventory.create({
         quantity
     })
-    
+
     let createdProduct = await Product.create({
         name,
         description,
         SKU,
         price,
         category,
-        inventoryId
+        productInventoryId: createdInventory.id
     })
 
     let categoryDb = await ProductCategory.findAll({
@@ -167,21 +178,53 @@ const createProduct = async (req, res) => {
     
 }
 
-const editProduct = async (req, res) => {
-    const id = req.query.id
+const addToInvetory = async(req, res) => {
     let {
-        name,
-        description,
-        price,
+        quantity,
+        id
     } = req.body
 
-    // console.log(id)
+    let product = await ProductInventory.findOne({
+        where: {id: id}
+    })
 
+    // console.log(product)
+
+    await product.increment('quantity', {by: quantity})    
+
+    res.json({msg: "increased inventory", product})
+}
+
+const removeFromInvetory = async(req, res) => {
+    let {
+        quantity,
+        id
+    } = req.body
+
+    let product = await ProductInventory.findOne({
+        where: {id: id}
+    })
+
+    await product.decrement('quantity', {by: quantity})    
+
+    res.json({msg: "decreased inventory", product})
+}
+
+
+async function editProduct(req, res) {
+    const id = req.query.id;
+    let {
+        name, description, price,
+    } = req.body;
+
+    // console.log(id)
     Product.update(
-        {name,
-        description,
-        price},
-        {where: { id: id }}
+        {
+            name,
+            description,
+            price
+        },
+        { where: { id: id } }
     );
 
     let productUpdated = await Product.findOne({
@@ -189,7 +232,7 @@ const editProduct = async (req, res) => {
             id: id
         }
     });
-    return res.json({productUpdated, msg: "product updated"})
+    return res.json({ productUpdated, msg: "product updated" });
 }
 
 const createAdmin = async (req, res) =>{
@@ -223,6 +266,8 @@ module.exports = {
     getOrderId, 
     getOrderStatus, 
     getOrders,
-    createAdmin
+    createAdmin,
+    addToInvetory,
+    removeFromInvetory
 };
 
