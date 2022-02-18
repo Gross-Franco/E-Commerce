@@ -1,23 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
-import Rutas from "../components/Rutas";
-import './estilos/navBar.css'
-import { Login } from ".";
+import React from 'react';
+import { AppBar, Toolbar, MenuItem, Menu, Typography } from '@mui/material';
+import { Cart, Nav } from '../components';
+import { Login } from './';
+import useStyles from '../helpers/stylesNavBar';
 
-export default function NavBar() {
-    const [aux, setaux] = React.useState(false)
+const NavBar = () => {
+    const classes = useStyles();
     return (
-        <div className="navbar">
-            <h1>aqui va el tittulo</h1>
-            <Rutas />
-            <SearchBar />
-            <div>
-                <Login/>
-                <Link to="/registro" style={{ textDecoration: 'none', color: 'white' }}>
-                    <span>| registro</span>
-                </Link>
-            </div>
-        </div>
+        <>
+            <AppBar className={classes.appBar} color="inherit" style={ { zIndex: 1000 } }>
+                <Toolbar>
+                    <Nav />
+                    <div className={classes.grow} />
+                    <div className={classes.button}> 
+                        <Login />
+                        <Cart />
+                    </div>
+                </Toolbar>
+            </AppBar>
+        </>
     )
-}
+};
+
+export default NavBar;
