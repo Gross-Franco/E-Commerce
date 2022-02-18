@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function Productos(){
+export default function PerfilUser(){
 
     return(
         <div>
-            aqui van los productos 
+            PerfilUser
         </div>
     )
 }

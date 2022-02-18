@@ -1,17 +1,22 @@
-require('dotenv').config();
-const { Sequelize } = require('sequelize');
-const fs = require('fs');
-const path = require('path');
-const { PassThrough } = require('stream');
-const {
-  DB_USER, DB_PASSWORD, DB_HOST,
-} = process.env;
+require("dotenv").config();
+const { Sequelize } = require("sequelize");
+const fs = require("fs");
+const path = require("path");
+const { PassThrough } = require("stream");
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/ecommerce`, {
-
-  logging: false, // set to console.log to see the raw SQL queries
-  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+	logging: false, // set to console.log to see the raw SQL queries
+	native: false, // lets Sequelize know we can use pg-native for ~30% more speed
 });
+sequelize.authenticate().then(
+	success => {
+		console.log("Connection ok");
+	},
+	error => {
+		console.log("Failed conncection, reason :" + error);
+	}
+);
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
@@ -44,15 +49,14 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 // En sequelize.models están todos los modelos importados como propiedades
 // Para relacionarlos hacemos un destructuring
-const { 
+const {
+	Discount,
+	ProductCategory,
+	ProductInventory,
+	Product,
 
-	Discount, 
-	ProductCategory, 
-	ProductInventory, 
-	Product, 
-
-	UserAddress, 
-	UserPayment, 
+	UserAddress,
+	UserPayment,
 	User,
 	UserReviews,
 
@@ -60,34 +64,31 @@ const {
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
-	ShoppingSession
-
- } = sequelize.models;
-
+	ShoppingSession,
+} = sequelize.models;
 
 //User relations
-User.hasMany(UserAddress)
-User.hasMany(UserPayment)
-User.hasMany(UserReviews)
+User.hasMany(UserAddress, { foreignKey: "user_id" });
+User.hasMany(UserPayment, { foreignKey: "user_id" });
+User.hasMany(UserReviews, { foreignKey: "user_id" });
 
 //Product relations
-ProductInventory.hasOne(Product)
-ProductCategory.belongsToMany(Product, {through: 'product_Categories'})
-Product.belongsToMany(ProductCategory, {through: 'product_Categories'})
-Discount.hasMany(Product)
+ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
+ProductCategory.belongsToMany(Product, { through: "product_Categories", foreignKey: "category_id" });
+Product.belongsToMany(ProductCategory, { through: "product_Categories", foreignKey: "product_id" });
+Discount.hasMany(Product, { foreignKey: "discount_id" });
 
 //Shopping relations
-OrderDetails.belongsTo(PaymentDetails)
-OrderDetails.hasMany(OrderItems)
-ShoppingSession.hasMany(CartItems)
+OrderDetails.belongsTo(PaymentDetails, { foreignKey: "payment_id" });
+OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
+ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 
 //Mixed relations
-OrderItems.belongsTo(Product)
-CartItems.belongsTo(Product)
-OrderDetails.belongsTo(User)
-ShoppingSession.belongsTo(User)
-Product.hasMany(UserReviews)
-
+OrderItems.belongsTo(Product, { foreignKey: "product_id" });
+CartItems.belongsTo(Product, { foreignKey: "product_id" });
+OrderDetails.belongsTo(User, { foreignKey: "user_id" });
+ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
+Product.hasMany(UserReviews, { foreignKey: "review_id" });
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

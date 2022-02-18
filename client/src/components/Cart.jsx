@@ -1,16 +1,15 @@
-import React from 'react';
-import { FiShoppingCart } from 'react-icons/fi';
+import React from "react";
+import { IconButton, Badge } from "@mui/material";
+import { FiShoppingCart } from "react-icons/fi";
 
 const Cart = () => {
-
   return (
-    <div className='cart-container'>
-        <FiShoppingCart className='cart-icon'/>
-        <div className='cart-count'>
-            O
-        </div>
-    </div>
-  )
-}
+    <IconButton aria-label="Show cart items" color="inherit">
+      <Badge badgeContent={4} color="primary">
+        <FiShoppingCart />
+      </Badge>
+    </IconButton>
+  );
+};
 
 export default Cart;

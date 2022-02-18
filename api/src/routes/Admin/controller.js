@@ -1,10 +1,14 @@
 require('dotenv').config()
 const axios = require('axios');
-const {Discount, ProductCategory, ProductInventory, Product, User} = require ('../../db.js')
+
+const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js')
+
 
 const getOrderStatus = async (req, res)=> {
     try {
-        const status = await Order_Details.status.findAll()
+        const status = await OrderDetails.findAll({
+            attributes : ['status']
+        })
         res.status(200).send(status)
     } catch (err) {
         console.log(err)
@@ -29,7 +33,7 @@ const getInfoProducts = async () =>{
 
 const getOrders = async (req, res) => {
     try{    
-    let orders = await Order_Items.findAll()
+    let orders = await OrderItems.findAll()
   res.status(200).send(orders)
     } 
     catch(err) {
@@ -42,7 +46,7 @@ const getOrderId = async (req, res) => {
     try{
     const {id} = req.params;
      if(id){
-         const orders = await Order_Details.findAll()
+         const orders = await OrderDetails.findAll()
          const orderFiltered = orders.filter(e => e.id == id)
          res.status(200).send(orderFiltered)
      }
@@ -146,6 +150,7 @@ const getAllProducts = async (req, res) =>{
 }
 
 const createProduct = async (req, res) => {
+
     let {
         name,
         description,
@@ -168,14 +173,42 @@ const createProduct = async (req, res) => {
         productInventoryId: createdInventory.id
     })
 
-    let categoryDb = await ProductCategory.findAll({
-        where: {name: category}
+		let categoryDb = await ProductCategory.findAll({
+			where: { name: category },
+		});
+
+		createdProduct.addProductCategory(categoryDb);
+
+		return res.status(201).send("Product created");
+	} catch (error) {
+		next(error);
+	}
+};
+
+
+const editProduct = async (req, res, next) => {
+	const id = req.query.id;
+	let { name, description, price } = req.body;
+
+	// console.log(id)
+	try {
+		await Product.update({ name, description, price }, { where: { id: id } });
+
+		let productUpdated = await Product.findOne({
+			where: {
+				id: id,
+			},
+		});
+		return res.json({ productUpdated, msg: "product updated" });
+	} catch (error) {
+		next(error);
+	}
+};
+const allStatus = async (req, res) => {
+    const status = await OrderDetails.findAll({
+        attributes: ['status']
     })
-
-    createdProduct.addProductCategory(categoryDb)
-
-    res.json({createdProduct, msg: 'Product created'})
-    
+        res.send(status)
 }
 
 const addToInvetory = async(req, res) => {
@@ -255,6 +288,8 @@ const createAdmin = async (req, res) =>{
 }
 
 
+
+
 module.exports = {
     getAllProducts,
     createProduct, 
@@ -268,6 +303,7 @@ module.exports = {
     getOrders,
     createAdmin,
     addToInvetory,
-    removeFromInvetory
-};
+    removeFromInvetory,
+      allStatus
 
+};
