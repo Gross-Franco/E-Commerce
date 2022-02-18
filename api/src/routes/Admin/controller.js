@@ -97,57 +97,46 @@ const getAllProducts = async (req, res) =>{
 }
 
 const createProduct = async (req, res) => {
-    let {
-        name,
-        description,
-        SKU,
-        price,
-        category
-    } = req.body
+	let { name, description, SKU, price, category } = req.body;
+	try {
+		let createdProduct = await Product.create({
+			name,
+			description,
+			SKU,
+			price,
+			category,
+		});
 
-    let createdProduct = await Product.create({
-        name,
-        description,
-        SKU,
-        price,
-        category
-    })
+		let categoryDb = await ProductCategory.findAll({
+			where: { name: category },
+		});
 
-    let categoryDb = await ProductCategory.findAll({
-        where: {name: category}
-    })
-    
-    createdProduct.addProductCategory(categoryDb)
+		createdProduct.addProductCategory(categoryDb);
 
-    res.send('Product created')
-    
-}
+		return res.status(201).send("Product created");
+	} catch (error) {
+		next(error);
+	}
+};
 
-const editProduct = async (req, res) => {
-    const id = req.query.id
-    let {
-        name,
-        description,
-        price,
-    } = req.body
+const editProduct = async (req, res, next) => {
+	const id = req.query.id;
+	let { name, description, price } = req.body;
 
-    // console.log(id)
+	// console.log(id)
+	try {
+		await Product.update({ name, description, price }, { where: { id: id } });
 
-    Product.update(
-        {name,
-        description,
-        price},
-        {where: { id: id }}
-    );
-
-    let productUpdated = await Product.findOne({
-        where: {
-            id: id
-        }
-    });
-    return res.json({productUpdated, msg: "product updated"})
-}
-
+		let productUpdated = await Product.findOne({
+			where: {
+				id: id,
+			},
+		});
+		return res.json({ productUpdated, msg: "product updated" });
+	} catch (error) {
+		next(error);
+	}
+};
 const allStatus = async (req, res) => {
     const status = await OrderDetails.findAll({
         attributes: ['status']
@@ -166,4 +155,3 @@ module.exports = {
     getOrders,
     allStatus
 };
-
