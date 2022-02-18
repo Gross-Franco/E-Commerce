@@ -3,11 +3,15 @@ import { Form, Button, Modal } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css'
 import './estilos/login.css'
 import { Link } from "react-router-dom";
+import { verificarUsuario } from "../controller";
+import { useSelector, useDispatch } from "react-redux";
+import { iniciarSesion } from "../Redux/Actions/actions";
 
 
 export default function Login() {
   const [show, setShow] = React.useState(false);
-
+  const dispatch = useDispatch();
+  const usuarios =  useSelector(state => state.usuarios);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -20,14 +24,18 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (inputs.email && inputs.contraseña) {
-      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`)
-      handleClose()
-      setInputs(
-        {
-          email: '',
-          contraseña: ''
-        }
-      )
+      if(verificarUsuario(usuarios,inputs)){
+        dispatch(iniciarSesion(inputs));
+        handleClose()
+      }else{
+        alert('email o contraseña incorrectos')
+        setInputs(
+          {
+            email: '',
+            contraseña: ''
+          }
+        )
+      }
     }else{
       setInputs(
         {

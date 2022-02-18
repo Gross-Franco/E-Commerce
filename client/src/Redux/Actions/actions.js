@@ -8,8 +8,9 @@ import {
     DELETE_PRODUCT, 
     CREATE_PRODUCT, 
     FILTER_PRODUCTS, 
-    ORDER_PRODCTS
-} from './Actions/actionTypes'
+    ORDER_PRODCTS,
+    AGREGAR_USUARIO
+} from './actionTypes'
 
 const URL = "http://localhost:3001";
 
@@ -43,7 +44,7 @@ export const searchProductName = (name) => {
 
 export const createProduct = (newProduct) => {
     return async (dispatch) => {
-        const post = await axios.post(`${URL}/createProduct`, product); // chequear con la ruta del server
+        const post = await axios.post(`${URL}/createProduct`, newProduct); // chequear con la ruta del server
         dispatch({ type: CREATE_PRODUCT, payload: post.data});
     }
 }
@@ -62,4 +63,29 @@ export const filterProducts = function() {
 
 export const orderProducts = function() {
     return { type: ORDER_PRODCTS }
+}
+export const postUsuario = function(usuario) {
+    return { 
+        type: 'AGREGAR_USUARIO',
+        payload:usuario 
+    }
+}
+export const cerrarSesion = function() {
+    return { 
+        type: 'CERRAR_SESION',
+        payload:{
+            login:false,
+            usuario:null
+        } 
+    }
+}
+export const iniciarSesion = function(usuario) {
+
+    return { 
+        type: 'INICIAR_SESION',
+        payload:{
+            usuario,
+            login:true
+        } 
+    }
 }

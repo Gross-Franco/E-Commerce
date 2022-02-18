@@ -10,3 +10,4 @@ export { default as SortContainer } from './SortContainer';
 export { default as FiltersContainer } from './FiltersContainer';
 export { default as ProductsContainer } from './ProductsContainer';
 export { default as Footer } from './Footer';
+export { default as Prueva } from './Prueva';
