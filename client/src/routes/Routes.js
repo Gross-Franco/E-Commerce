@@ -30,7 +30,7 @@ const Rutas = () => {
    
         <Route path="/registro" element={
 
-        AutenCookin?  <Navigate to="/" replace /> :   <Registro />        
+        AutenCookin?  <Registro />   :      <Navigate to="/" replace />
         
                                         }
        />
