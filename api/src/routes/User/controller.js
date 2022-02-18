@@ -1,7 +1,7 @@
 require('dotenv').config()
 const axios = require('axios');
 const {User, UserAddress, UserPayment, Product, Review} = require ('../../db.js')
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const {FIRM} =process.env 
 
