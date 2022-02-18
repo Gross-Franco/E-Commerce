@@ -64,8 +64,8 @@ const {
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
-	ShoppingSession,
-} = sequelize.models;
+	ShoppingSession
+ } = sequelize.models;
 
 //User relations
 User.hasMany(UserAddress, { foreignKey: "user_id" });
