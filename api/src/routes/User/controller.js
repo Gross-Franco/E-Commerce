@@ -45,6 +45,7 @@ const createUser = async (req, res) => {
     
 }
 
+
 const addAdress = async(req, res) =>{
     let {
         addressLine1,
@@ -71,6 +72,25 @@ const addAdress = async(req, res) =>{
     res.json({createdAddress, msg: "added address"})
 }
 
+const addPayment = async(req, res) =>{
+    let {
+        paymentType,
+        provider,
+        accountNo,
+        expiry,
+        userId
+    } = req.body
+
+    let createdPayment = await UserPayment.create({
+        paymentType,
+        provider,
+        accountNo,
+        expiry,
+        userId
+    })
+
+    res.json({createdPayment, msg: "added payment option"})
+}
 
 
 const postReviewProduct = async (req,res)=>{
@@ -112,4 +132,4 @@ const postReviewProduct = async (req,res)=>{
     }
 
 
-module.exports = {createUser, getUsers, addAdress, postReviewProduct}
+module.exports = {createUser, getUsers, addAdress, postReviewProduct, addPayment}

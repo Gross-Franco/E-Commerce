@@ -1,6 +1,6 @@
 require('dotenv').config()
 const axios = require('axios');
-const {Discount, ProductCategory, ProductInventory, Product} = require ('../../db.js')
+const {Discount, ProductCategory, ProductInventory, Product, User} = require ('../../db.js')
 
 const getOrderStatus = async (req, res)=> {
     try {
@@ -75,6 +75,45 @@ const createCategory = async (req, res) =>{
     res.send(createdCategory)
 }
 
+const addCategoryToProduct = async (req, res) =>{
+    let {
+        id,
+        category
+    } = req.body
+
+    let categoryDb = await ProductCategory.findAll({
+        where: {name: category}
+    })
+
+    let product = await Product.findOne({
+        where: {id: id}
+    })
+
+    product.addProductCategory(categoryDb)
+
+    res.json({product, msg: "added category to product"})
+}
+
+const removeCategoryFromProduct = async (req, res) =>{
+    let {
+        id,
+        category
+    } = req.body
+
+    let categoryDb = await ProductCategory.findAll({
+        where: {name: category}
+    })
+
+    let product = await Product.findOne({
+        where: {id: id}
+    })
+
+    product.removeProductCategory(categoryDb)
+
+    res.json({product, msg: "removed category to product"})
+}
+
+
 const getAllProducts = async (req, res) =>{
     let search = await getInfoProducts()
     // console.log(search)
@@ -88,6 +127,7 @@ const getAllProducts = async (req, res) =>{
             SKU: product.SKU,
             price: product.price,
             category: product.productCategories.map(x => x.name)
+            
         })
     }
 
@@ -100,24 +140,30 @@ const createProduct = async (req, res) => {
         description,
         SKU,
         price,
+        quantity,
         category
     } = req.body
 
+    let createdInventory = await ProductInventory.create({
+        quantity
+    })
+    
     let createdProduct = await Product.create({
         name,
         description,
         SKU,
         price,
-        category
+        category,
+        inventoryId
     })
 
     let categoryDb = await ProductCategory.findAll({
         where: {name: category}
     })
-    
+
     createdProduct.addProductCategory(categoryDb)
 
-    res.send('Product created')
+    res.json({createdProduct, msg: 'Product created'})
     
 }
 
@@ -146,15 +192,37 @@ const editProduct = async (req, res) => {
     return res.json({productUpdated, msg: "product updated"})
 }
 
+const createAdmin = async (req, res) =>{
+    let {
+        id
+    } = req.body
+
+    User.update(
+        {
+            isAdmin: true
+        },
+        {where: { id: id}}
+    )
+
+    let updatedUser = await User.findOne({
+        where: {id: id}
+    })
+
+    res.json({updatedUser, msg: "User changed to admin"})
+}
+
 
 module.exports = {
     getAllProducts,
     createProduct, 
     editProduct, 
     getCategory, 
-    createCategory, 
+    createCategory,
+    addCategoryToProduct,
+    removeCategoryFromProduct, 
     getOrderId, 
     getOrderStatus, 
-    getOrders
+    getOrders,
+    createAdmin
 };
 

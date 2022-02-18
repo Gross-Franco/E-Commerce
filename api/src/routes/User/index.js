@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { createUser, getUsers, addAdress } = require("./controller");
+const { createUser, getUsers, addAdress, addPayment } = require("./controller");
 
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
@@ -14,5 +14,6 @@ userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.post('/createUser', createUser);
 userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)
+userRouter.post('/addPayment', addPayment)
 
 module.exports = userRouter;
