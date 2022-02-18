@@ -48,26 +48,21 @@ export default function Login() {
     )
   }
   
-  //Testeo de inicio sesion 
+  //Testeo de inicio sesion ---- provicional 
 function ValidateRequest(e)
   { 
 
 //verificamos 
-if(getCookie("Email") === null){
+if(getCookie("Email") === ""){
   
   //añadimos data a las cokkies
   document.cookie = "Email="+ inputs.email;
   
-  document.cookie = "Password="+ inputs.email;
+  document.cookie = "Password="+ inputs.contraseña;
   
-
-  alert(document.cookie);
+//refrest windoms
+  window.location.reload(false);
 }
-else
-{
-  alert("Session "+ getCookie("Email") +"  esta activa" );
-}
-
 e.preventDefault();
  
 }
