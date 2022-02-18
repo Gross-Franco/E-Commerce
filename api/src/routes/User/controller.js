@@ -5,42 +5,101 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const {FIRM} =process.env 
 
-const getUserInfo = async() =>{
-    let search = User.findAll({
-        include:[UserAddress]
-    })
-    return search
-}
-const getUsers = async (req, res) => {
-    let search = await getUserInfo()
+const getUserInfo = async () => {
+	let search = User.findAll({
+		include: [UserAddress],
+	});
+	return search;
+};
+const getUsers = async (req, res, next) => {
+	try {
+		let search = await getUserInfo();
 
-    res.status(200).send(search)
-}
+		return res.status(200).send(search);
+	} catch (error) {
+		next(error);
+	}
+};
 
-const addAdress = async(req, res) =>{
+const createUser = async (req, res, next) => {
+	let { username, password, first_name, last_name, email, isAdmin } = req.body;
+
+	// const passwordHash = await bcrypt.hash(password, 10);
+	try {
+		let createdUser = await User.create({
+			username,
+			password,
+			first_name,
+			last_name,
+			email,
+			isAdmin,
+		});
+
+		return res.status(201).json({ createdUser, msg: "User created" });
+	} catch (error) {
+		next(error);
+	}
+};
+
+const addAdress = async (req, res, next) => {
+	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, userId } = req.body;
+
+	try {
+		let createdAddress = await UserAddress.create({
+			addressLine1,
+			addressLine2,
+			city,
+			postalCode,
+			country,
+			telephone,
+			mobile,
+			userId,
+		});
+		return res.status(201).json({ createdAddress, msg: "added address" });
+	} catch (error) {
+		next(error);
+	}
+};
+
+
+const addAdress = async (req, res, next) => {
+	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, userId } = req.body;
+
+	try {
+		let createdAddress = await UserAddress.create({
+			addressLine1,
+			addressLine2,
+			city,
+			postalCode,
+			country,
+			telephone,
+			mobile,
+			userId,
+		});
+		return res.status(201).json({ createdAddress, msg: "added address" });
+	} catch (error) {
+		next(error);
+	}
+};
+
+const addPayment = async(req, res) =>{
     let {
-        addressLine1,
-        addressLine2,
-        city,
-        postalCode,
-        country,
-        telephone,
-        mobile,
+        paymentType,
+        provider,
+        accountNo,
+        expiry,
         userId
     } = req.body
 
-    let createdAddress = await UserAddress.create({
-        addressLine1,
-        addressLine2,
-        city,
-        postalCode,
-        country,
-        telephone,
-        mobile,
+    let createdPayment = await UserPayment.create({
+        paymentType,
+        provider,
+        accountNo,
+        expiry,
         userId
     })
 
-    res.json({createdAddress, msg: "added address"})
+    res.json({createdPayment, msg: "added payment option"})
 }
 
 const createUser = async (req, res) => {

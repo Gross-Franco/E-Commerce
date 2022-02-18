@@ -23,12 +23,14 @@ const {mockproducts} = require('./src/mockData/mockproducts')
 const {mockusers} = require('./src/mockData/mockusers')
 const { conn, OrderDetails, User, Product } = require('./src/db.js');
 const {PORT}= process.env
+
 // Syncing all the models at once.
+
 conn.sync({ force: true }).then(() => {
-  server.listen(PORT||3001, () => {
+	server.listen(PORT || 3001, () => {
     OrderDetails.bulkCreate(mockorders);
     User.bulkCreate(mockusers);
     Product.bulkCreate(mockproducts);
-    console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
-  });
+		console.log(`%s listening at ${PORT || 3001}`); // eslint-disable-line no-console
+	});
 });

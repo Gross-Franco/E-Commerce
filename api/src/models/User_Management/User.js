@@ -29,8 +29,8 @@ module.exports = (sequelize) => {
             // bcrypt.compareSync(correctpassword, hash); // true
             // bcrypt.compareSync(wrongPassword, hash); // false
         }
-    },
 
+    },
     first_name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -48,12 +48,24 @@ module.exports = (sequelize) => {
             isEmail: true
         }
     },
-
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
 
-});
+},{
+    timestamps:false,
+    hooks:{
+        beforeCreate:(user)=>{
+            if(user.password){
+                user.password= bcrypt.hashSync(user.password,10)
+            }
+        },
+        beforeUpdate:(user)=>{
+            if(user.password){
+                user.password= bcrypt.hashSync(user.password,10)
+            }
+        }
+    }});
 };
 
