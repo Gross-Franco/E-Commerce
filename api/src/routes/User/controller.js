@@ -1,5 +1,5 @@
 require('dotenv').config()
-const axios = require('axios');
+
 const {User, UserAddress, UserPayment, Product, Review} = require ('../../db.js')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -20,47 +20,6 @@ const getUsers = async (req, res, next) => {
 		next(error);
 	}
 };
-
-const createUser = async (req, res, next) => {
-	let { username, password, first_name, last_name, email, isAdmin } = req.body;
-
-	// const passwordHash = await bcrypt.hash(password, 10);
-	try {
-		let createdUser = await User.create({
-			username,
-			password,
-			first_name,
-			last_name,
-			email,
-			isAdmin,
-		});
-
-		return res.status(201).json({ createdUser, msg: "User created" });
-	} catch (error) {
-		next(error);
-	}
-};
-
-const addAdress = async (req, res, next) => {
-	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, userId } = req.body;
-
-	try {
-		let createdAddress = await UserAddress.create({
-			addressLine1,
-			addressLine2,
-			city,
-			postalCode,
-			country,
-			telephone,
-			mobile,
-			userId,
-		});
-		return res.status(201).json({ createdAddress, msg: "added address" });
-	} catch (error) {
-		next(error);
-	}
-};
-
 
 const addAdress = async (req, res, next) => {
 	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, userId } = req.body;
@@ -207,5 +166,6 @@ module.exports = {
     addAdress, 
     postReviewProduct,
     createUser,
-    postLogin
+    postLogin,
+    addPayment
 }

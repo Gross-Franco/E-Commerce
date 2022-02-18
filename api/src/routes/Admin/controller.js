@@ -274,29 +274,7 @@ const removeFromInvetory = async(req, res) => {
 }
 
 
-async function editProduct(req, res) {
-    const id = req.query.id;
-    let {
-        name, description, price,
-    } = req.body;
 
-    // console.log(id)
-    Product.update(
-        {
-            name,
-            description,
-            price
-        },
-        { where: { id: id } }
-    );
-
-    let productUpdated = await Product.findOne({
-        where: {
-            id: id
-        }
-    });
-    return res.json({ productUpdated, msg: "product updated" });
-}
 
 const createAdmin = async (req, res) =>{
     let {
