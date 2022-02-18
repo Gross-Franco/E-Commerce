@@ -13,12 +13,8 @@ module.exports = (sequelize) => {
     },
 
     password: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        validate: {
-            is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm         
-            // Minnumum 8 characters, 1 uppercase, 1 lowercase, 1 number. Can contain special characters 
-        }, 
+        type: DataTypes.STRING,
+        allowNull: false
         // comente esto por el momento ya que al crear el usuario me estaba arrojando que no recibia el password por el body
         // set(value) {
         //     bcrypt.hash(value, 10, function(err, hash) {
@@ -26,7 +22,6 @@ module.exports = (sequelize) => {
         //     });
         // }
     },
-
     first_name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -44,12 +39,24 @@ module.exports = (sequelize) => {
             isEmail: true
         }
     },
-
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
 
-});
+},{
+    timestamps:false,
+    hooks:{
+        beforeCreate:(user)=>{
+            if(user.password){
+                user.password= bcrypt.hashSync(user.password,10)
+            }
+        },
+        beforeUpdate:(user)=>{
+            if(user.password){
+                user.password= bcrypt.hashSync(user.password,10)
+            }
+        }
+    }});
 };
 
