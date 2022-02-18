@@ -170,9 +170,6 @@ const deleteCartItem = async (req,res,next) => {
 };
 
 module.exports = {
-	// Cart, 
-	// TotalPrice,
-	// deleteProductFromCart,
 	addCartItem,
 	shoppingSessionInit,
 	shoppingTotalEdit,
