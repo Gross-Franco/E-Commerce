@@ -79,14 +79,14 @@ Product.belongsToMany(ProductCategory, { through: "product_Categories", foreignK
 Discount.hasMany(Product, { foreignKey: "discount_id" });
 
 //Shopping relations
-OrderDetails.belongsTo(PaymentDetails, { foreignKey: "payment_id" });
-OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
+PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
+OrderDetails.hasMany(OrderItems, { as: "Products",foreignKey: "order_id" });
 ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 
 //Mixed relations
-OrderItems.belongsTo(Product, { foreignKey: "product_id" });
+Product.hasOne(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
 CartItems.belongsTo(Product, { foreignKey: "product_id" });
-OrderDetails.belongsTo(User, { foreignKey: "user_id" });
+User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
 ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
 Product.hasMany(UserReviews, { foreignKey: "review_id" });
 

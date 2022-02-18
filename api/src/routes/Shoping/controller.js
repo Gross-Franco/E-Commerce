@@ -1,4 +1,4 @@
-const { Product } = require('../../db.js')
+const { Product, OrderDetails, OrderItems, PaymentDetails, User } = require('../../db.js');
 
 const  Cart = async (req, res) => {
     let cart = [];
@@ -127,12 +127,46 @@ const shoppingTotalEdit = async (req, res, next) => {
 					},
 				}
 			);
+			return res.sendStatus(200);
 		} catch (error) {
 			next(error);
 		}
 	};
 
-const processOrder = () => {};
+const createOrder = async (req, res, next) => {
+	const { session_id, provider } = req.body;
+	try{
+		const cart = await shoppingSession.findByPk(session_id, {
+			atributes: ["total"],
+			include: {
+				model: cartItems,
+				atributes: ["quantity", "product_id"],
+			}
+		});
+
+		const createdOrder = await OrderDetails.create({
+			total: cart.total,
+			status: "created",
+		});
+
+		const purchaseItems = await OrderItems.bulkCreate(cart.cartItems.map(items => items.quantity));
+
+		const payment = await PaymentDetails.create({
+			amount: Math.round(cart.total),
+			provider,
+			status: "in-progress",
+		});
+
+		await createdOrder.setProducts(purchaseItems.map(item => item.id));
+		await PaymentDetails.setOrderPayment(payment.id)
+		for(let item of purchaseItems){
+			await Product.setToOrder(item.id);
+		}
+		await User.setPurchaseOrder(createdOrder.id)
+	}catch(error){
+		next(error);
+	}
+};
 
 const processPayment = () => {};
 
@@ -148,4 +182,5 @@ module.exports = {
 	shoppingSessionInit,
 	shoppingTotalEdit,
 	editItemQuantity,
+	createOrder
 }
