@@ -159,14 +159,16 @@ const createProduct = async (req, res) => {
         category,
         quantity
     } = req.body
+    try{
 
-    let createdInventory = await ProductInventory.create({
-        quantity
-    })
-
-    let createdProduct = await Product.create({
-        name,
-        description,
+        
+        let createdInventory = await ProductInventory.create({
+            quantity
+        })
+        
+        let createdProduct = await Product.create({
+            name,
+            description,
         SKU,
         price,
         category,
@@ -174,12 +176,13 @@ const createProduct = async (req, res) => {
     })
 
 		let categoryDb = await ProductCategory.findAll({
-			where: { name: category },
+            where: { name: category },
 		});
-
+        
 		createdProduct.addProductCategory(categoryDb);
-
+        
 		return res.status(201).send("Product created");
+        
 	} catch (error) {
 		next(error);
 	}
