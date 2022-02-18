@@ -1,60 +1,17 @@
-const { Product, OrderDetails, OrderItems, PaymentDetails, User } = require('../../db.js');
-
-const  Cart = async (req, res) => {
-    let cart = [];
-    const {name} = req.body;
-    try {
-    const product = await Product.findAll({
-        attributes: [name]
-    })
-    if(product.includes(name)){
-        cart.push(name)
-    }
-    }
- catch (error) {
-    console.log(error)
-    res.send(error)
-}
-}
-
-const TotalPrice = (req, res) => {
-  const {price} = req.body;
-  let total = 0
-  if(price){
-      total += price
-      res.send(total)
-  }
-}
-
-const deleteProductFromCart = async (req, res) => {
-    try{
-        const {id} = req.params;
-         if(id){
-             const product = await Product.findAll()
-             const Deleted = product.filter(e => e.id == id)
-             res.status(200).send(Deleted)
-         }
-        }
-         catch(error) {
-           console.log(error)
-           res.status(404).send(error)
-         }
-   
-
-}
+const { Product, OrderDetails, OrderItems, PaymentDetails, User, ShoppingSession, CartItems } = require('../../db.js');
 
 const addCartItem = async (req, res, next) => {
 		const { sessionId, productId, quantity } = req.body;
 		try {
-			const isSession = await shoppingSession.findByPk(sessionId);
+			const isSession = await ShoppingSession.findByPk(sessionId);
 			const isProduct = await Product.findByPk(productId);
 			if (isSession && isProduct) {
-				cartItems.create({
+				CartItems.create({
 					quantity,
 				});
-				await cartItems.setshoppingSession(sessionId);
-				await cartItems.setProduct(productId);
-				let newCartItem = cartItems.findOne({
+				await CartItems.setCart(sessionId);
+				await CartItems.setProduct(productId);
+				let newCartItem = CartItems.findOne({
 					where: {
 						product_id: productId,
 						session_id: sessionId,
@@ -72,7 +29,7 @@ const addCartItem = async (req, res, next) => {
 const editItemQuantity = async (req, res, next) => {
 		const { quantity, productId, sessionId } = req.body;
 		try {
-			await cartItems.update(
+			await CartItems.update(
 				{ quantity },
 				{
 					where: {
@@ -88,10 +45,10 @@ const editItemQuantity = async (req, res, next) => {
 	};
 
 const shoppingSessionInit = async (req, res, next) => {
-		const { userId } = req.query;
+		const { user_id } = req.query;
 		try {
-			await shoppingSession.create();
-			await shoppingSession.setUser(userId);
+			await ShoppingSession.create({});
+			await ShoppingSession.setUser(user_id);
 			return res.sendStatus(201);
 		} catch (error) {
 			next(error);
@@ -101,25 +58,29 @@ const shoppingSessionInit = async (req, res, next) => {
 const shoppingTotalEdit = async (req, res, next) => {
 		const { user_id, product_id } = req.query;
 		try {
-			const session = await shoppingSession.findOne({
+			const session = await ShoppingSession.findOne({
 				atributes: ["total", "id"],
 				where: {
 					user_id,
 				},
 			});
+
 			let totalPrice = session.total;
+
 			const productPrice = await Product.findByPk(product_id, {
 				atributes: ["price"],
 			});
-			const quantity = await cartItems.findOne({
+
+			const quantity = await CartItems.findOne({
 				atributes: ["quantity"],
 				where: {
 					[Op.and]: [{ session_id: session.id }, { product_id }],
 				},
 			});
+
 			totalPrice += productPrice.price * quantity.quantity;
 
-			await shoppingSession.update(
+			await ShoppingSession.update(
 				{ total: totalPrice },
 				{
 					where: {
@@ -136,15 +97,15 @@ const shoppingTotalEdit = async (req, res, next) => {
 const createOrder = async (req, res, next) => {
 	const { session_id, provider } = req.body;
 	try{
-		const cart = await shoppingSession.findByPk(session_id, {
+		const cart = await ShoppingSession.findByPk(session_id, {
 			atributes: ["total"],
 			include: {
-				model: cartItems,
+				model: CartItems,
 				atributes: ["quantity", "product_id"],
 			}
 		});
 
-		const createdOrder = await OrderDetails.create({
+		const orderCreated = await OrderDetails.create({
 			total: cart.total,
 			status: "created",
 		});
@@ -157,12 +118,13 @@ const createOrder = async (req, res, next) => {
 			status: "in-progress",
 		});
 
-		await createdOrder.setProducts(purchaseItems.map(item => item.id));
+		await orderCreated.setItems(purchaseItems.map(item => item.id));
 		await PaymentDetails.setOrderPayment(payment.id)
 		for(let item of purchaseItems){
 			await Product.setToOrder(item.id);
 		}
-		await User.setPurchaseOrder(createdOrder.id)
+		await User.setPurchaseOrder(orderCreated.id)
+		return res.status(201).json(orderCreated)
 	}catch(error){
 		next(error);
 	}
@@ -170,17 +132,52 @@ const createOrder = async (req, res, next) => {
 
 const processPayment = () => {};
 
-const deleteShoppingSession =  () => {};
+const deleteShoppingSession =  async (req, res, next) => {
+	const { session_id } = req.query;
+	let destroyed = {};
+	try{
+		destroyed.cart = await ShoppingSession.destroy({
+			where: {
+				id: session_id,
+			}
+		});
+		destroyed.items = await CartItems.destroy({
+			where:{
+				session_id,
+			}
+		})
+		return res.status(200).json(destroyed);
+	}catch(error){
+		next(error);
+	}
+};
 
-const deleteShoppingCart = () => {};
+const deleteCartItem = async (req,res,next) => {
+	const { session_id, product_id } = req.query;
+	try{
+		
+		let destroyed = await CartItems.destroy({
+			where:{
+				[Op.and]: [{session_id},{product_id}],
+			}
+		})
+
+		destroyed ? res.status(200).json(destroyed) : next({status: 404, message:"Not Found"});
+
+	}catch(error){
+		next(error);
+	}
+};
 
 module.exports = {
-	Cart, 
-	TotalPrice,
-	deleteProductFromCart,
+	// Cart, 
+	// TotalPrice,
+	// deleteProductFromCart,
 	addCartItem,
 	shoppingSessionInit,
 	shoppingTotalEdit,
 	editItemQuantity,
-	createOrder
+	createOrder,
+	deleteShoppingSession,
+	deleteCartItem,
 }

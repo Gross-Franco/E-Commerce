@@ -5,7 +5,7 @@ module.exports = sequelize => {
 		total: {
 			type: DataTypes.DECIMAL,
 			allowNull: false,
-			DefaultValue: 0.0,
+			DefaultValue: 0.00,
 		},
 	});
 };

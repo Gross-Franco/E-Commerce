@@ -80,14 +80,14 @@ Discount.hasMany(Product, { foreignKey: "discount_id" });
 
 //Shopping relations
 PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
-OrderDetails.hasMany(OrderItems, { as: "Products",foreignKey: "order_id" });
-ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
+OrderDetails.hasMany(OrderItems, { as: "Items",foreignKey: "order_id" });
+ShoppingSession.hasMany(CartItems, { as: "Cart", foreignKey: "session_id" });
 
 //Mixed relations
-Product.hasOne(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
+Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
 CartItems.belongsTo(Product, { foreignKey: "product_id" });
 User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
-ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
+User.hasOne(ShoppingSession, { foreignKey: "user_id" });
 Product.hasMany(UserReviews, { foreignKey: "review_id" });
 
 module.exports = {
