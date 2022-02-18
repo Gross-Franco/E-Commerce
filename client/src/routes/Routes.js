@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer } from "../containers";
+import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer, NavBar } from "../containers";
 
 const Rutas = () => {
   return (
     <Router>
-      <Header />
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/catalogo" element={<Catalog />} />
