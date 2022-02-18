@@ -1,6 +1,6 @@
 require('dotenv').config()
 const axios = require('axios');
-const {Discount, ProductCategory, ProductInventory, Product, OrderDetails} = require ('../../db.js')
+const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js')
 
 const getOrderStatus = async (req, res)=> {
     try {
@@ -31,7 +31,7 @@ const getInfoProducts = async () =>{
 
 const getOrders = async (req, res) => {
     try{    
-    let orders = await Order_Items.findAll()
+    let orders = await OrderItems.findAll()
   res.status(200).send(orders)
     } 
     catch(err) {
@@ -163,6 +163,7 @@ module.exports = {
     createCategory, 
     getOrderId, 
     getOrderStatus, 
-    getOrders
+    getOrders,
+    allStatus
 };
 
