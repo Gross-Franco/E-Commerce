@@ -30,12 +30,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         products: [...state.products, action.payload],
       };
-    case GET_USER: 
+    case GET_USER:
       return {
         ...state,
         isAdmin: action.payload,
       };
-    case GET_CATEGORIES: 
+    case GET_CATEGORIES:
       return {
         ...state,
         categories: action.payload,

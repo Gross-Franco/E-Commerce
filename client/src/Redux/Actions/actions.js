@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { 
-    GET_PRODUCTS, 
+    GET_PRODUCTS,
+    GET_ALL_PRODUCTS, 
     GET_BACKUP, 
     GET_CATEGORIES, 
     SEARCH_PRODUCT_ID, 
@@ -38,7 +39,7 @@ export const searchProductId = (id) => {
 
 export const searchProductName = (name) => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/products?name=${name}`); // chequear con la ruta del server
+        const response = await axios.get(`${URL}/product?name=${name}`); // chequear con la ruta del server
         dispatch({ type: SEARCH_PRODUCT_NAME, payload: response.data});
     }
 }
