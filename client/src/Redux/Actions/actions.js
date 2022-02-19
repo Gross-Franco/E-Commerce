@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { 
+    GET_PRODUCTS,
     GET_ALL_PRODUCTS, 
     GET_BACKUP, 
     GET_CATEGORIES, 
@@ -9,14 +10,14 @@ import {
     CREATE_PRODUCT, 
     FILTER_PRODUCTS, 
     ORDER_PRODCTS
-} from './Actions/actionTypes'
+} from './actionTypes'
 
 const URL = "http://localhost:3001";
 
-export const getAllProducts = () => {
+export const getProducts = () => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/products`);
-        dispatch({ type: GET_ALL_PRODUCTS, payload: response.data});
+        const response = await axios.get(`${URL}/product/products`);
+        dispatch({ type: GET_PRODUCTS, payload: response.data});
     }
 }
 
@@ -36,14 +37,14 @@ export const searchProductId = (id) => {
 
 export const searchProductName = (name) => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/products?name=${name}`); // chequear con la ruta del server
+        const response = await axios.get(`${URL}/product?name=${name}`); // chequear con la ruta del server
         dispatch({ type: SEARCH_PRODUCT_NAME, payload: response.data});
     }
 }
 
 export const createProduct = (newProduct) => {
     return async (dispatch) => {
-        const post = await axios.post(`${URL}/createProduct`, product); // chequear con la ruta del server
+        const post = await axios.post(`${URL}/createProduct`, newProduct); // chequear con la ruta del server
         dispatch({ type: CREATE_PRODUCT, payload: post.data});
     }
 }
