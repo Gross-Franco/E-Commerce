@@ -9,9 +9,9 @@ const NavBar = () => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
 
   useEffect(() => {
-    //  let validator= getCookie("email") !==  null;
+    
     LoadSet(getCookie("Email") === "");
-    // alert(getCookie("Email"));
+   
   });
   const classes = useStyles();
   return (
