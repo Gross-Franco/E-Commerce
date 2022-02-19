@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route , Navigate} from "react-router-dom";
 import { Home, Catalog, Header, Login, Registro, Contactar, Blog, Footer, PerfilUser, NavBar } from "../containers";
+import ProductDetail from "../containers/ProductDetail";
+
 import { getCookie } from "../containers/Utilitis/getCookie";
 
 
@@ -21,7 +23,8 @@ const Rutas = () => {
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contactar" element={<Contactar />} />
-   
+
+        <Route path="/productDetail" element={<ProductDetail />} />
         <Route path="/perfilUser" element={
         
          AutenCookin?  <Navigate to="/" replace /> :  <PerfilUser />                             
