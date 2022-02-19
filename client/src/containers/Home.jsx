@@ -10,12 +10,13 @@ import Holder from "react-holder";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import { Footer, NavBar } from ".";
 
 export default function Home() {
   return (
     <div>
       {/* <h1>HOME</h1> */}
-
+      <NavBar />
       <Conntainer>
         <Carousel>
           <Carousel.Item>
@@ -204,6 +205,7 @@ export default function Home() {
           <Button className="position-absolute top-100 start-100">Right</Button> */}
         </ButtonGroup>
       </Container>
+      <Footer />
     </div>
   );
 }
