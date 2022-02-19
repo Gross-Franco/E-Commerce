@@ -3,7 +3,7 @@ const { Router } = require("express");
 const userRouter = require("./User/index.js");
 const adminRouter = require("./Admin/index.js");
 const productRouter = require("./Product/index.js");
-const shopingRouter = require("./Shoping/index.js");
+const shoppingRouter = require("./Shoping/index.js");
 
 const router = Router();
 
@@ -11,6 +11,6 @@ const router = Router();
 router.use("/user", userRouter);
 router.use("/admin", adminRouter);
 router.use("/product", productRouter);
-router.use("/shoping", shopingRouter);
+router.use("/shopping", shoppingRouter);
 
 module.exports = router;

@@ -80,15 +80,15 @@ Discount.hasMany(Product, { foreignKey: "discount_id" });
 
 //Shopping relations
 PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
-OrderDetails.hasMany(OrderItems, { as: "Items",foreignKey: "order_id" });
-ShoppingSession.hasMany(CartItems, { as: "Cart", foreignKey: "session_id" });
+OrderDetails.hasMany(OrderItems, { as: "CartItems", foreignKey: "order_id" });
+ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 
 //Mixed relations
 Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
-CartItems.belongsTo(Product, { foreignKey: "product_id" });
 User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
-User.hasOne(ShoppingSession, { foreignKey: "user_id" });
+User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id" });
 Product.hasMany(UserReviews, { foreignKey: "review_id" });
+Product.hasMany(CartItems, { foreignKey: "product_id" })
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
