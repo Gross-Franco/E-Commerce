@@ -10,6 +10,6 @@ const productRouter = Router();
 
 productRouter.get('/product/:id', getProductId)
 productRouter.get('/product', searchProductName)
-productRouter.get('/products', getProducts)
+productRouter.get('/', getProducts)
 
 module.exports = productRouter;
