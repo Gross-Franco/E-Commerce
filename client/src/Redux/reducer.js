@@ -1,5 +1,6 @@
 import {
   GET_PRODUCTS,
+  GET_PRODUCTS_PUBLIC,
   GET_BACKUP,
   GET_CATEGORIES,
   SEARCH_PRODUCT_ID,
@@ -16,6 +17,7 @@ const initialState = {
   productDetail: {},
   UserTest: [],
   categories: [],
+
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -24,6 +26,15 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         products: action.payload,
+      };
+      case GET_PRODUCTS_PUBLIC:
+       const ProductsRandoms =  action.payload; 
+      
+      
+
+      return {
+        ...state,
+        products: ProductsRandoms,
       };
     case CREATE_PRODUCT:
       return {
