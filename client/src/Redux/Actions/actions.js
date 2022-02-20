@@ -12,6 +12,7 @@ import {
     ORDER_PRODCTS,
     GET_USER,
     CREATE_CATEGORY,
+    GET_PRODUCTS_PUBLIC
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -32,7 +33,7 @@ export const getCategories = () => {
 export const getProductsPublic = () => {
     return async (dispatch) => {
         const response = await axios.get(`${URL}/product`);
-        dispatch({ type: GET_PRODUCTS, payload: response.data});
+        dispatch({ type: GET_ALL_PRODUCTS, payload: response.data});
     }
 }
 
