@@ -23,7 +23,7 @@ const ProductTable = () => {
           <tr key={product.id + product.name}>
             <td className="panel-table--td">{product.name}</td>
             <td className="panel-table--td">${product.price}</td>
-            <td className="panel-table--td">{product.quantity.quantity}</td>
+            <td className="panel-table--td">{product.quantity}</td>
             <td className="panel-table--td"> . . . </td>
           </tr>
         ))}

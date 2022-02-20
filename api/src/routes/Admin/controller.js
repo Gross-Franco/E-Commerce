@@ -1,6 +1,7 @@
 require('dotenv').config()
 const axios = require('axios');
 const { filter } = require('bluebird');
+const { Op } = require("sequelize");
 
 const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js')
 
@@ -86,7 +87,6 @@ const getOrderId = async (req, res) => {
 
 const getInfoCategory = async () =>{
     let search = await ProductCategory.findAll()
-    // console.log(search.map(x => x.name))
     return search
 }
 
@@ -152,7 +152,6 @@ const removeCategoryFromProduct = async (req, res) =>{
 
 const getAllProducts = async (req, res) =>{
     let search = await getInfoProducts()
-    // console.log(search)
 
     let allProducts = []
     for(let product of search){
@@ -162,9 +161,6 @@ const getAllProducts = async (req, res) =>{
                 where: {id: product.inventory_id}
             }
         )
-
-        // console.log(inventory.quantity)
-        console.log(inventory);
         allProducts.push({
             id: product.id,
             name: product.name,
@@ -172,7 +168,7 @@ const getAllProducts = async (req, res) =>{
             SKU: product.SKU,
             price: product.price,
             category: product.productCategories.map(x => x.name),
-            quantity: inventory
+            quantity: inventory.quantity
         })
     }
 
@@ -222,7 +218,6 @@ const editProduct = async (req, res, next) => {
 	const id = req.query.id;
 	let { name, description, price } = req.body;
 
-	// console.log(id)
 	try {
 		await Product.update({ name, description, price }, { where: { id: id } });
 
@@ -253,7 +248,6 @@ const addToInvetory = async(req, res) => {
         where: {id: id}
     })
 
-    // console.log(product)
 
     await product.increment('quantity', {by: quantity})    
 
@@ -297,10 +291,79 @@ const createAdmin = async (req, res) =>{
     res.json({updatedUser, msg: "User changed to admin"})
 }
 
+const searchProductName = async (req, res) => {
+	const { name } = req.query;
+	if (!name) {
+		return res.status(404).send("Invalid name");
+	}
+	try {
+        let productsByName = await Product.findAll({
+            where: {
+				name: {
+					[Op.iLike]: "%" + name + "%",
+				},
+			},
+            include:
+            {
+                model: ProductCategory,
+                attributes: ['name'],
+                through: {
+                    attributes: [],
+                },
+            }
+        })
+        let finalres = [];
+        for(let product of productsByName){
+            let inventory = await ProductInventory.findOne(
+                {
+                    where: {id: product.inventory_id}
+                }
+            )
+            finalres.push({
+                id: product.id,
+                name: product.name,
+                description: product.description,
+                SKU: product.SKU,
+                price: product.price,
+                category: product.productCategories.map(x => x.name),
+                quantity: inventory.quantity
+            })
+        }
+		res.json(finalres);
+	} catch (err) {
+		console.log(err);
+		res.status(404).send(err);
+	}
+};
 
-
+const searchCategoryName = async function (req, res) {
+    const { name } = req.query;
+	if (!name) {
+		return res.status(404).send("Invalid name");
+	}
+	try {
+        let categoriesByName = await ProductCategory.findAll({
+            where: {
+				name: {
+					[Op.iLike]: "%" + name + "%",
+				},
+			},
+        })
+        let finalres = categoriesByName.map(x => ({
+            name: x.name,
+            description: x.description,
+            id: x.id
+        }))
+        res.json(finalres);
+	} catch (err) {
+		console.log(err);
+		res.status(404).send(err);
+	}
+}
 
 module.exports = {
+    searchCategoryName,
+    searchProductName,
     getAllProducts,
     createProduct, 
     editProduct, 

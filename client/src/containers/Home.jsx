@@ -131,13 +131,13 @@ for(let i= 0; i < 10 ; i++)
       <Card.Footer>
       <h4 className="text-muted" style={{
       
-      }} >{producs[idx].valor +" " }  <h6 style={{
+      }} >{producs[idx].valor +" " }  <p style={{
         color: "green",
         
-      }}> %{getRandomInt(0,70) } OFF</h6></h4>
+      }}> %{getRandomInt(0,70) } OFF</p></h4>
       </Card.Footer>
 
-      <a href="/productDetail" class="stretched-link"></a>
+      <a href="/productDetail" className="stretched-link"></a>
         </Card.Body>
       </Card>
     </Col>
