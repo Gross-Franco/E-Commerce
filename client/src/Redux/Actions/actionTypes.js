@@ -8,3 +8,5 @@ export const GET_CATEGORIES = 'GET_DIETS';
 export const CREATE_PRODUCT = 'CREATE_RECIPE';
 export const FILTER_PRODUCTS = "FILTER_RECIPES";
 export const ORDER_PRODCTS = "ORDER_RECIPES";
+export const GET_USER = "GET_USER";
+export const CREATE_CATEGORY = "CREATE_CATEGORY";

@@ -12,6 +12,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import { Footer, NavBar } from ".";
 
 import ProducsTest from "./Utilitis/producsTest.json";
 
@@ -37,7 +38,7 @@ for(let i= 0; i < 10 ; i++)
   return (
     <div>
       {/* <h1>HOME</h1> */}
-
+      <NavBar />
       <Conntainer>
         <Carousel style={{
          transform: "scale(1.21, 0.8)",
@@ -158,6 +159,7 @@ for(let i= 0; i < 10 ; i++)
 <br/>
 
       </Container>
+      <Footer />
     </div>
   );
 }

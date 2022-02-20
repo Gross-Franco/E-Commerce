@@ -1,10 +1,9 @@
 import React from "react";
 import { Form, Button, Modal } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.css'
-import './estilos/login.css'
+import "bootstrap/dist/css/bootstrap.css";
+import "./estilos/login.css";
 import { Link } from "react-router-dom";
 import { getCookie } from "./Utilitis/getCookie";
-
 
 export default function Login() {
   const [show, setShow] = React.useState(false);
@@ -12,61 +11,49 @@ export default function Login() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [inputs, setInputs] = React.useState(
-    {
-      email: null,
-      contraseña: null
-    }
-  )
+  const [inputs, setInputs] = React.useState({
+    email: null,
+    contraseña: null,
+  });
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (inputs.email && inputs.contraseña) {
-      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`)
-      handleClose()
-      setInputs(
-        {
-          email: '',
-          contraseña: ''
-        }
-      )
-    }else{
-      setInputs(
-        {
-          email: '',
-          contraseña: ''
-        }
-      )
-      alert('se tiene q rellenar los espacios en blanco')
+      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`);
+      handleClose();
+      setInputs({
+        email: "",
+        contraseña: "",
+      });
+    } else {
+      setInputs({
+        email: "",
+        contraseña: "",
+      });
+      alert("se tiene q rellenar los espacios en blanco");
     }
-  }
+  };
   const handleInputs = (e) => {
-    setInputs(
-      {
-        ...inputs,
-        [e.target.name]: e.target.value,
-      }
-    )
-  }
-  
-  //Testeo de inicio sesion ---- provicional 
-function ValidateRequest(e)
-  { 
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-//verificamos 
-if(getCookie("Email") === ""){
-  
-  //añadimos data a las cokkies
-  document.cookie = "Email="+ inputs.email;
-  
-  document.cookie = "Password="+ inputs.contraseña;
-  
-//refrest windoms
-  window.location.reload(false);
-}
-e.preventDefault();
- 
-}
-  
+  //Testeo de inicio sesion ---- provicional
+  function ValidateRequest(e) {
+    //verificamos
+    if (getCookie("Email") === "") {
+      //añadimos data a las cokkies
+      document.cookie = "Email=" + inputs.email;
+
+      document.cookie = "Password=" + inputs.contraseña;
+
+      //refrest windoms
+      window.location.reload(false);
+    }
+    e.preventDefault();
+  }
+
   return (
     <>
       <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
@@ -81,7 +68,13 @@ e.preventDefault();
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Ingresa email" name="email" onChange={handleInputs} value={inputs.email}/>
+              <Form.Control
+                type="text"
+                placeholder="Ingresa email"
+                name="email"
+                onChange={handleInputs}
+                value={inputs.email}
+              />
               <Form.Text className="text-muted">
                 No compartiremos su correo electrónico con nadie más.
               </Form.Text>
@@ -89,9 +82,15 @@ e.preventDefault();
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Contraseña</Form.Label>
-              <Form.Control type="password" placeholder="Contraseña" name="contraseña" onChange={handleInputs} value={inputs.contraseña}/>
+              <Form.Control
+                type="password"
+                placeholder="Contraseña"
+                name="contraseña"
+                onChange={handleInputs}
+                value={inputs.contraseña}
+              />
             </Form.Group>
-            
+
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
@@ -102,15 +101,21 @@ e.preventDefault();
             </Modal.Footer>
           </Form>
         </Modal.Body>
-      
-        <Link to="/registro"  onClick={handleClose} style={{ 
-          textDecoration: 'none',
-                   color: 'blue',
-                position:"relative",
-                     top:"-25px",
-                    left:"25px" 
-                     }}>Registro</Link>
+
+        <Link
+          to="/registro"
+          onClick={handleClose}
+          style={{
+            textDecoration: "none",
+            color: "blue",
+            position: "relative",
+            top: "-25px",
+            left: "25px",
+          }}
+        >
+          Registro
+        </Link>
       </Modal>
     </>
-  )
+  );
 }
