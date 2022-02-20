@@ -16,7 +16,7 @@ const initialState = {
   products: [],
   productDetail: {},
   UserTest: [],
-  categories: [],
+  categories: []
 
 };
 
