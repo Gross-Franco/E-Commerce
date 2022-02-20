@@ -9,8 +9,12 @@ const productRouter = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-productRouter.get('/product/:id', getProductId)
+productRouter.get('/productId/:id', getProductId)
 productRouter.get('/', getProducts)
-productRouter.get('/product/:name', searchProductName)
+productRouter.get('/name', searchProductName) // recibe nombre por query
+
+// /product/name?name=busqueda
+// /product/productId/1234123
+
 
 module.exports = productRouter;

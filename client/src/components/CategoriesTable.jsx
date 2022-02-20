@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories } from "../redux/actions/actions";
+import { getCategories } from "../Redux/Actions/actions";
 
 const CategoriesTable = () => {
   const { categories } = useSelector((state) => state);

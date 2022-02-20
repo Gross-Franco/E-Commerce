@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { searchProductName, getProducts, searchCategoryName, getCategories } from "../redux/actions/actions";
+import { searchProductName, getProducts, searchCategoryName, getCategories } from "../Redux/Actions/actions";
 
 const PanelSearch = ({option}) => {
 

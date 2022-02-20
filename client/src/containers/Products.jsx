@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
 import p from "../helpers/mockProducts";
 import { Product } from "../components";
-import { getProducts } from "../redux/actions/actions";
+import { getProducts } from "../Redux/Actions/actions";
 
 const Products = () => {
   // const { products } = p;

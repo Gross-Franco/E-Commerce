@@ -1,7 +1,7 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { searchProductName } from "../redux/actions/actions";
+import { searchProductName } from "../Redux/Actions/actions";
 
 export default function SearchBar() {
   const [busqueda, setBusqueda] = React.useState("");

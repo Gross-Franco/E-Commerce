@@ -11,7 +11,7 @@ import {
   ORDER_PRODCTS,
   GET_USER,
   SEARCH_CATEGORY_NAME
-} from "./actions/actionTypes";
+} from "./Actions/actionTypes";
 
 const initialState = {
   products: [],
