@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { createCategory } from "../Redux/Actions/actions";
+import { createCategory } from "../redux/actions/actions";
 
 const CreateCategory = ({ option, setIsOpen }) => {
   const [form, setForm] = useState({
     name: "",
+    description: "",
   });
   const dispatch = useDispatch();
 
@@ -23,6 +24,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
     console.log(form);
     setForm({
       name: "",
+      description: "",
     });
     setIsOpen(false);
   };
@@ -57,7 +59,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
               </div>
               <div className="add-form--input-wrapper_column">
                 <label>Descripción</label>
-                <textarea className="add-form--input" />
+                <textarea name="description" className="add-form--input" onChange={handleChange} />
               </div>
             </div>
             <div className="add-form--input-wrapper">

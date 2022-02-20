@@ -12,6 +12,7 @@ import {
     ORDER_PRODCTS,
     GET_USER,
     CREATE_CATEGORY,
+    SEARCH_CATEGORY_NAME,
     GET_PRODUCTS_PUBLIC
 } from './actionTypes';
 
@@ -46,11 +47,17 @@ export const searchProductId = (id) => {
 
 export const searchProductName = (name) => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/product?name=${name}`); // chequear con la ruta del server
+        const response = await axios.get(`${URL}/admin/productname?name=${name}`);
         dispatch({ type: SEARCH_PRODUCT_NAME, payload: response.data});
     }
 }
 
+export const searchCategoryName = (name) => {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/admin/categoryname?name=${name}`);
+        dispatch({ type: SEARCH_CATEGORY_NAME, payload: response.data});
+    }
+}
 export const createProduct = (newProduct) => {
     return async (dispatch) => {
         const post = await axios.post(`${URL}/admin/createProducts`, newProduct); // chequear con la ruta del server

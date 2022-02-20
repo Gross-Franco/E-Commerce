@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories } from "../Redux/Actions/actions";
+import { getCategories } from "../redux/actions/actions";
 
 const CategoriesTable = () => {
   const { categories } = useSelector((state) => state);
@@ -20,10 +20,10 @@ const CategoriesTable = () => {
         </tr>
       </thead>
       <tbody>
-        {categories?.map((category, i) => (
-          <tr key={category + i}>
-            <td className="panel-table--td">{category}</td>
-            <td className="panel-table--td">{category}</td>
+        {categories?.map((category) => (
+          <tr key={category.id}>
+            <td className="panel-table--td">{category.name}</td>
+            <td className="panel-table--td">{category.description}</td>
             <td className="panel-table--td"> . . . </td>
           </tr>
         ))}

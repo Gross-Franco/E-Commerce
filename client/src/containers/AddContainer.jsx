@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
-import { createProduct, getCategories } from "../Redux/Actions/actions";
+import { createProduct, getCategories } from "../redux/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const initialState = {
@@ -11,6 +11,7 @@ const initialState = {
   price: "",
   category: "",
   SKU: "",
+  quantity: "",
 };
 
 const AddContainer = ({ option, setIsOpen }) => {
@@ -27,9 +28,7 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     dispatch(createProduct(form));
-    console.log(form);
     setForm(initialState);
     setIsOpen(false);
   };
@@ -72,7 +71,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 />
               </div>
               <div className="add-form--input-wrapper_row">
-                <div>
+                <div className="add-form--input-wrapper_column">
                   <label>SKU</label>
                   <input
                     type="text"
@@ -81,10 +80,11 @@ const AddContainer = ({ option, setIsOpen }) => {
                     onChange={handleChange}
                   />
                 </div>
-                <div>
+                <div className="add-form--input-wrapper_column">
                   <label>Cantidad</label>
                   <input
                     type="number"
+                    name="quantity"
                     className="add-form--input"
                     onChange={handleChange}
                   />
@@ -157,13 +157,13 @@ const AddContainer = ({ option, setIsOpen }) => {
             </div>
             {openDropdown  && (
                 <div className="add-form--input-wrapper">
-                {categories.map((category, i) => (
-                    <div key={category + i}>
-                      <label>{category}</label>
+                {categories.map((category) => (
+                    <div key={category.id}>
+                      <label>{category.name}</label>
                       <input
                         type="checkbox"
                         name="category"
-                        value={category}
+                        value={category.name}
                         onChange={handleChange}
                         /> 
                     </div>
