@@ -29,6 +29,12 @@ export const getCategories = () => {
         dispatch({ type: GET_CATEGORIES, payload: response.data});
     }
 }
+export const getProductsPublic = () => {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/product`);
+        dispatch({ type: GET_PRODUCTS, payload: response.data});
+    }
+}
 
 export const searchProductId = (id) => {
     return async (dispatch) => {
