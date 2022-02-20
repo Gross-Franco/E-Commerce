@@ -11,6 +11,18 @@ const mockinventory = [
   {
     quantity: "99",
   },
+  {
+    quantity: "432",
+  },
+  {
+    quantity: "2",
+  },
+  {
+    quantity: "33",
+  },
+  {
+    quantity: "1",
+  },
 ];
 
 module.exports = {

@@ -56,7 +56,7 @@ const getProductId = async (req, res) => {
 };
 
 const searchProductName = async (req, res) => {
-	const { name } = req.params;
+	const { name } = req.query;
 	if (!name || typeof name !== "string") {
 		return res.status(404).send("Invalid name");
 	}
