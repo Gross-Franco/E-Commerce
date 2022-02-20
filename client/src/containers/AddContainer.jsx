@@ -11,6 +11,7 @@ const initialState = {
   price: "",
   category: "",
   SKU: "",
+  quantity: "",
 };
 
 const AddContainer = ({ option, setIsOpen }) => {
@@ -85,6 +86,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <label>Cantidad</label>
                   <input
                     type="number"
+                    name="quantity"
                     className="add-form--input"
                     onChange={handleChange}
                   />

@@ -92,18 +92,23 @@ const getInfoCategory = async () =>{
 
 const getCategory = async (req, res) =>{
     let search = await getInfoCategory()
-    let categories = search.map(x => x.name)
+    let categories = search.map(x => ({
+        name: x.name,
+        description: x.description,
+        id: x.id
+    }))
 
     res.status(200).send(categories)
 }
 
 const createCategory = async (req, res) =>{
-    let {name} = req.body
+    let {name, description} = req.body
 
     let createdCategory = await ProductCategory.create({
-        name
+        name,
+        description
     })
-    res.send(createdCategory)
+    res.json(createdCategory)
 }
 
 const addCategoryToProduct = async (req, res) =>{
@@ -150,16 +155,16 @@ const getAllProducts = async (req, res) =>{
     // console.log(search)
 
     let allProducts = []
-    for(product of search){
+    for(let product of search){
 
         let inventory = await ProductInventory.findOne(
             {
-                where: {id: product.productInventoryId}
+                where: {id: product.inventory_id}
             }
         )
 
         // console.log(inventory.quantity)
-
+        console.log(inventory);
         allProducts.push({
             id: product.id,
             name: product.name,
@@ -167,9 +172,7 @@ const getAllProducts = async (req, res) =>{
             SKU: product.SKU,
             price: product.price,
             category: product.productCategories.map(x => x.name),
-            inventoryId: product.productInventoryId,
-            quantity: inventory.quantity
-            
+            quantity: inventory
         })
     }
 
@@ -199,19 +202,18 @@ const createProduct = async (req, res) => {
         SKU,
         price,
         category,
-        productInventoryId: createdInventory.id
+        inventory_id: createdInventory.id
     })
 
 		let categoryDb = await ProductCategory.findAll({
             where: { name: category },
 		});
-        
-		createdProduct.addProductCategory(categoryDb);
+		createdProduct.addProductCategory(categoryDb[0].dataValues.id);
         
 		return res.status(201).send("Product created");
         
 	} catch (error) {
-		next(error);
+		console.log(error);
 	}
 };
 

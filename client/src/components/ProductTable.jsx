@@ -22,10 +22,10 @@ const ProductTable = () => {
       </thead>
       <tbody>
         {products?.map((product) => (
-          <tr key={product.id}>
+          <tr key={product.id + product.name}>
             <td className="panel-table--td">{product.name}</td>
             <td className="panel-table--td">${product.price}</td>
-            <td className="panel-table--td">1</td>
+            <td className="panel-table--td">{product.quantity}</td>
             <td className="panel-table--td"> . . . </td>
           </tr>
         ))}
