@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../Redux/Actions/actions";
 
 const ProductTable = () => {
-  const { products, load } = useSelector((state) => state);
+  const { products, loadProducts } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  if(load) dispatch(getProducts());
+  if(loadProducts) dispatch(getProducts());
   
   return (
     <table>

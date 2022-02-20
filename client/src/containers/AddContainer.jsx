@@ -9,7 +9,7 @@ const initialState = {
   name: "",
   description: "",
   price: "",
-  category: "",
+  category: [],
   SKU: "",
   quantity: "",
 };
@@ -21,10 +21,24 @@ const AddContainer = ({ option, setIsOpen }) => {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "category") {
+      if (e.target.checked) {
+        setForm({
+          ...form,
+          category: [...form.category, e.target.value],
+        });
+      } else {
+        setForm({
+          ...form,
+          category: form.category.filter((item) => item !== e.target.value),
+        });
+      }
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -32,8 +46,6 @@ const AddContainer = ({ option, setIsOpen }) => {
     setForm(initialState);
     setIsOpen(false);
   };
-
-  
 
   useEffect(() => {
     dispatch(getCategories());
@@ -155,20 +167,20 @@ const AddContainer = ({ option, setIsOpen }) => {
                 </div>
               </div>
             </div>
-            {openDropdown  && (
-                <div className="add-form--input-wrapper">
+            {openDropdown && (
+              <div className="add-form--input-wrapper">
                 {categories.map((category) => (
-                    <div key={category.id}>
-                      <label>{category.name}</label>
-                      <input
-                        type="checkbox"
-                        name="category"
-                        value={category.name}
-                        onChange={handleChange}
-                        /> 
-                    </div>
+                  <div key={category.id}>
+                    <label>{category.name}</label>
+                    <input
+                      type="checkbox"
+                      name="category"
+                      value={category.name}
+                      onChange={handleChange}
+                    />
+                  </div>
                 ))}
-                </div>
+              </div>
             )}
           </div>
         </div>
