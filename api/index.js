@@ -37,11 +37,11 @@ const { PORT } = process.env;
 
 conn.sync({ force: true }).then(() => {
   server.listen(PORT || 3001, () => {
-    ProductCategory.bulkCreate(mockcategories);
+    ProductInventory.bulkCreate(mockinventory).then(() => {
+      Product.bulkCreate(mockproducts)});
     OrderDetails.bulkCreate(mockorders);
+    ProductCategory.bulkCreate(mockcategories);
     User.bulkCreate(mockusers);
-    Product.bulkCreate(mockproducts);
-    ProductInventory.bulkCreate(mockinventory);
     console.log(`%s listening at ${PORT || 3001}`); // eslint-disable-line no-console
   });
 });

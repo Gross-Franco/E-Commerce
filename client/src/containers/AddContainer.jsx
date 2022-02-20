@@ -28,9 +28,7 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     dispatch(createProduct(form));
-    console.log(form);
     setForm(initialState);
     setIsOpen(false);
   };
@@ -159,13 +157,13 @@ const AddContainer = ({ option, setIsOpen }) => {
             </div>
             {openDropdown  && (
                 <div className="add-form--input-wrapper">
-                {categories.map((category, i) => (
-                    <div key={category + i}>
-                      <label>{category}</label>
+                {categories.map((category) => (
+                    <div key={category.id}>
+                      <label>{category.name}</label>
                       <input
                         type="checkbox"
                         name="category"
-                        value={category}
+                        value={category.name}
                         onChange={handleChange}
                         /> 
                     </div>

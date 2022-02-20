@@ -16,6 +16,7 @@ const initialState = {
   productDetail: {},
   UserTest: [],
   categories: [],
+  load: true
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -24,11 +25,12 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         products: action.payload,
+        load: false,
       };
     case CREATE_PRODUCT:
       return {
         ...state,
-        products: [...state.products, action.payload],
+        load: true
       };
     case GET_USER:
       return {
