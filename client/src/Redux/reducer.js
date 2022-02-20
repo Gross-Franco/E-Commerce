@@ -9,7 +9,7 @@ import {
   FILTER_PRODUCTS,
   ORDER_PRODCTS,
   GET_USER,
-} from "./Actions/actionTypes";
+} from "./actions/actionTypes";
 
 const initialState = {
   products: [],

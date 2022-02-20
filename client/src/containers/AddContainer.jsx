@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
-import { createProduct, getCategories } from "../Redux/Actions/actions";
+import { createProduct, getCategories } from "../redux/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const initialState = {
@@ -72,7 +72,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 />
               </div>
               <div className="add-form--input-wrapper_row">
-                <div>
+                <div className="add-form--input-wrapper_column">
                   <label>SKU</label>
                   <input
                     type="text"
@@ -81,7 +81,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                     onChange={handleChange}
                   />
                 </div>
-                <div>
+                <div className="add-form--input-wrapper_column">
                   <label>Cantidad</label>
                   <input
                     type="number"

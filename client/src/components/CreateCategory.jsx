@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { createCategory } from "../Redux/Actions/actions";
+import { createCategory } from "../redux/actions/actions";
 
 const CreateCategory = ({ option, setIsOpen }) => {
   const [form, setForm] = useState({

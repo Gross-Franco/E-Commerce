@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getProducts } from "../Redux/Actions/actions";
+import { getProducts } from "../redux/actions/actions";
 
 const ProductTable = () => {
   const { products } = useSelector((state) => state);
