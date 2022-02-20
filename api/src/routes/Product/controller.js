@@ -43,11 +43,18 @@ const filterByCategory = async (req, res) => {
 
 const getProductId = async (req, res) => {
 	const { id } = req.params;
-	if (!id || typeof id !== "number") {
+	if (!id ||  isNaN(Number(id))) { 
 		res.status(404).send("Invalid ID");
 	}
 	try {
-		const productDetail = await Product.findByPk(id);
+		//const productDetail = await Product.findByPk(id);
+		const productDetail = await Product.findOne(
+			{
+				where:{
+					id:id
+				}
+			}
+		)
 		res.json(productDetail);
 	} catch (err) {
 		console.log(err);
@@ -58,6 +65,7 @@ const getProductId = async (req, res) => {
 const searchProductName = async (req, res) => {
 	const { name } = req.query;
 	if (!name || typeof name !== "string") {
+
 		return res.status(404).send("Invalid name");
 	}
 	try {

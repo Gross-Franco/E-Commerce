@@ -13,6 +13,7 @@ import {
     GET_USER,
     CREATE_CATEGORY,
     SEARCH_CATEGORY_NAME,
+    GET_PRODUCTS_PUBLIC
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -28,6 +29,12 @@ export const getCategories = () => {
     return async (dispatch) => {
         const response = await axios.get(`${URL}/admin/categories`); // chequear con la ruta del server
         dispatch({ type: GET_CATEGORIES, payload: response.data});
+    }
+}
+export const getProductsPublic = () => {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/product`);
+        dispatch({ type: GET_ALL_PRODUCTS, payload: response.data});
     }
 }
 

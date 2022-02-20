@@ -1,5 +1,6 @@
 import React from "react";
 import { useState , useEffect } from "react";
+
 import Button from "react-bootstrap/Button";
 import CardGroup from "react-bootstrap/CardGroup";
 import Card from "react-bootstrap/Card";
@@ -15,23 +16,29 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Footer, NavBar } from ".";
 
 import ProducsTest from "./Utilitis/producsTest.json";
-
-
-
-
+import { useDispatch , useSelector} from "react-redux";
+import {getProducts} from "./../Redux/Actions/actions"
+import {GET_PRODUCTS} from  "./../Redux/Actions/actionTypes"
 
 
 export default function Home() {
 
 const [producs,SetProducts] = useState(Object.values(ProducsTest));
+
 const [ValueRandom,SetValueRandom] = useState([]);
 
+const { products } = useSelector((state) => state);
+
+const dispatch = useDispatch()
+
 useEffect(() => {
-console.log(producs);
-for(let i= 0; i < 10 ; i++)
-{
-  // ValueRandom.push(producs[getRandomInt(0, 10)])
-}
+console.log(getProducts(GET_PRODUCTS));
+
+
+
+
+
+
 })
 
 
