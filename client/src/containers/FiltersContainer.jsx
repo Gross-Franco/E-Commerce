@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { getCategories, filterProducts } from "../Redux/Actions/actions";
 
 const FiltersContainer = () => {
-  const { categories } = useSelector(state => state);
+  const { categories, loadCategories } = useSelector((state) => state);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     if (e.target.name === "category") {
@@ -16,25 +19,22 @@ const FiltersContainer = () => {
         );
       }
     }
+    dispatch(filterProducts(filteredCategories));
   };
+
+  if(loadCategories) dispatch(getCategories());
+
   return (
     <div>
-      <div className="add-form--input-wrapper">
-        <header>
-          <h3>Categorias</h3>
-        </header>
-        <div>
-          <div
-            className="add-form--input"
-            onClick={() => setOpenDropdown(!openDropdown)}
-          >
-            {" "}
-            Elige categoria <RiArrowDropDownLine />{" "}
-          </div>
-        </div>
+      <div
+        className="catalog--filters"
+        onClick={() => setOpenDropdown(!openDropdown)}
+      >
+        {" "}
+        Elige categoria <RiArrowDropDownLine />{" "}
       </div>
       {openDropdown && (
-        <div className="add-form--input-wrapper">
+        <div className="catalog--filter">
           {categories.map((category) => (
             <div key={category.id}>
               <label>{category.name}</label>
