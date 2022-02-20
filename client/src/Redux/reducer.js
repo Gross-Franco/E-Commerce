@@ -52,6 +52,12 @@ const rootReducer = (state = initialState, action) => {
         loadCategories: true
       };
 
+    case FILTER_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload
+      }
+
     case SEARCH_PRODUCT_NAME:
       return {
         ...state,

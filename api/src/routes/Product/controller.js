@@ -35,20 +35,33 @@ const getProducts = async (req, res, next) => {
 };
 
 const filterByCategory = async (req, res) => {
-	const { category } = req.params;
-	if (typeof category != "string" || !category) {
-		res.status(404).send("Invalid category");
-	}
+	const categories  = req.body;
 	try {
 		const filtered = await Product.findAll({
 			include: {
 				model: ProductCategory,
 				where: {
-					name: category,
-				},
+					name: categories
+				}
 			},
 		});
-		res.json(filtered);
+		let response = [];
+		for (let product of filtered) {
+			let inventory = await ProductInventory.findOne({
+				where: { id: product.inventory_id },
+			});
+			inventory.quantity > 0 && response.push({
+				id: product.id,
+				name: product.name,
+				description: product.description,
+				SKU: product.SKU,
+				price: product.price,
+				category: product.productCategories.map((x) => x.name),
+				quantity: inventory.quantity,
+			});
+		}
+
+		res.json(response);
 	} catch (err) {
 		console.log(err);
 		res.status(404).send(err);

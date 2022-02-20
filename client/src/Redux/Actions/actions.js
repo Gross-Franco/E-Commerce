@@ -80,9 +80,11 @@ export const deleteProduct = function() {
     return { type: DELETE_PRODUCT }
 }
 
-export const filterProducts = function() {
-    return { type: FILTER_PRODUCTS }
-}
+export const filterProducts = function(categories) {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/product/filtercategory`, categories); // chequear con la ruta del server
+        dispatch({ type: FILTER_PRODUCTS, payload: response.data});
+    }}
 
 export const orderProducts = function() {
     return { type: ORDER_PRODCTS }
