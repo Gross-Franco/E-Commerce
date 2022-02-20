@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts } from "../Redux/Actions/actions";
 
 const ProductTable = () => {
-  const { products } = useSelector((state) => state);
+  const { products, load } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getProducts());
-  }, []);
-
+  if(load) dispatch(getProducts());
+  
   return (
     <table>
       <thead className="panel-table--head">
@@ -22,10 +20,10 @@ const ProductTable = () => {
       </thead>
       <tbody>
         {products?.map((product) => (
-          <tr key={product.id}>
+          <tr key={product.id + product.name}>
             <td className="panel-table--td">{product.name}</td>
             <td className="panel-table--td">${product.price}</td>
-            <td className="panel-table--td">1</td>
+            <td className="panel-table--td">{product.quantity}</td>
             <td className="panel-table--td"> . . . </td>
           </tr>
         ))}

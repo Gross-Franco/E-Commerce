@@ -4,17 +4,31 @@ const { Discount, ProductCategory, ProductInventory, Product } = require("../../
 
 const getProducts = async (req, res, next) => {
 	try {
-		let products = await Product.findAll({
+		let productSearch = await Product.findAll({
 			include: {
-				model: ProductInventory,
-				where: {
-					quantity: {
-						[Op.gt]: 0,
-					},
+				model: ProductCategory,
+				attributes: ['name'],
+				through: {
+					attributes: [],
 				},
-			},
+			}
 		});
-		return res.status(200).json(products);
+		let allProducts = await Promise.all(productSearch.map(async product => {
+			let productData = product.dataValues;
+			let productinv = await ProductInventory.findOne({where: {id:productData.inventory_id}});
+			if(productinv.dataValues.quantity > 0) return {
+				id: productData.id,
+				name: productData.name,
+				description: productData.description,
+				SKU: productData.SKU,
+				price: productData.price,
+				category: productData.productCategories.map(x => x.name),
+				quantity: productinv.quantity
+			}
+		}))
+		let response = allProducts.filter(product => product != null)
+		// console.log(allProducts)
+		return res.status(200).json(response);
 	} catch (error) {
 		next(error);
 	}
@@ -63,8 +77,12 @@ const getProductId = async (req, res) => {
 };
 
 const searchProductName = async (req, res) => {
-	const { name } = req.params;
-	if (!name || typeof name !== "string") { 
+
+	
+
+	const { name } = req.query;
+	if (!name || typeof name !== "string") {
+
 		return res.status(404).send("Invalid name");
 	}
 	try {

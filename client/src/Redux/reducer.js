@@ -10,6 +10,7 @@ import {
   FILTER_PRODUCTS,
   ORDER_PRODCTS,
   GET_USER,
+  SEARCH_CATEGORY_NAME
 } from "./Actions/actionTypes";
 
 const initialState = {
@@ -18,39 +19,65 @@ const initialState = {
   UserTest: [],
   categories: [],
 
+  load: true
+
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
+
     case GET_PRODUCTS:
       return {
         ...state,
         products: action.payload,
+        load: false,
+      };
+      
+      case GET_PRODUCTS_PUBLIC:
+       const ProductsRandoms =  action.payload;           
+      return {
+        ...state,
+        products: ProductsRandoms,
       };
       case GET_PRODUCTS_PUBLIC:
-       const ProductsRandoms =  action.payload; 
-      
+       const ProductsRandoms =  action.payload;      
       
 
       return {
         ...state,
         products: ProductsRandoms,
       };
+
     case CREATE_PRODUCT:
       return {
         ...state,
-        products: [...state.products, action.payload],
+        load: true
       };
+
+    case SEARCH_PRODUCT_NAME:
+      return {
+        ...state,
+        products: action.payload
+      }
+
     case GET_USER:
       return {
         ...state,
         isAdmin: action.payload,
       };
+
     case GET_CATEGORIES:
       return {
         ...state,
         categories: action.payload,
       };
+
+    case SEARCH_CATEGORY_NAME:
+      return {
+        ...state,
+        categories: action.payload
+      }
+
     default:
       return { ...state };
   }

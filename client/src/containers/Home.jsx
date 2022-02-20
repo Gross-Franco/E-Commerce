@@ -1,5 +1,7 @@
 import React from "react";
-import { useState , useEffect , useSelector} from "react";
+
+import { useState , useEffect } from "react";
+
 import Button from "react-bootstrap/Button";
 import CardGroup from "react-bootstrap/CardGroup";
 import Card from "react-bootstrap/Card";
@@ -15,8 +17,11 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Footer, NavBar } from ".";
 
 import ProducsTest from "./Utilitis/producsTest.json";
-import { useDispatch } from "react-redux";
+
+import { useDispatch , useSelector} from "react-redux";
 import {getProducts} from "./../Redux/Actions/actions"
+import {GET_PRODUCTS} from  "./../Redux/Actions/actionTypes"
+
 
 
 export default function Home() {
@@ -30,12 +35,8 @@ const { products } = useSelector((state) => state);
 const dispatch = useDispatch()
 
 useEffect(() => {
-console.log(getProducts);
 
-dispatch();
-
-
-
+console.log(getProducts(GET_PRODUCTS));
 
 })
 
@@ -136,13 +137,13 @@ dispatch();
       <Card.Footer>
       <h4 className="text-muted" style={{
       
-      }} >{producs[idx].valor +" " }  <h6 style={{
+      }} >{producs[idx].valor +" " }  <p style={{
         color: "green",
         
-      }}> %{getRandomInt(0,70) } OFF</h6></h4>
+      }}> %{getRandomInt(0,70) } OFF</p></h4>
       </Card.Footer>
 
-      <a href="/productDetail" class="stretched-link"></a>
+      <a href="/productDetail" className="stretched-link"></a>
         </Card.Body>
       </Card>
     </Col>

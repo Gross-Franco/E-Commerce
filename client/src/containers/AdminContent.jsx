@@ -1,7 +1,7 @@
 import React from "react";
 import { Panel } from "../containers";
 
-const AdminContent = ({ option, setIsOpen }) => {
+const AdminContent = ({ option, setIsOpen}) => {
   if(option) {
       return <Panel option={option} setIsOpen={setIsOpen} />
   }
