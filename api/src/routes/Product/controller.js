@@ -7,10 +7,7 @@ const getProducts = async (req, res, next) => {
 		let productSearch = await Product.findAll({
 			include: {
 				model: ProductCategory,
-				attributes: ['name'],
-				through: {
-					attributes: [],
-				},
+				attributes: ['name']
 			}
 		});
 		let allProducts = await Promise.all(productSearch.map(async product => {
@@ -20,6 +17,7 @@ const getProducts = async (req, res, next) => {
 				id: productData.id,
 				name: productData.name,
 				description: productData.description,
+				image:productData.image,
 				SKU: productData.SKU,
 				price: productData.price,
 				category: productData.productCategories.map(x => x.name),

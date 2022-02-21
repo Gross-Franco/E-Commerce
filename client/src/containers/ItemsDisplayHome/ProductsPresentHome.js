@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CardItemsHome from './CardItemsHome'
 import { useEffect,useState } from 'react';
+
 let limit=0
 export default function DisplayItemsHome({items}) {
     const [itemsUsed,setItems]= useState([])
@@ -11,7 +12,7 @@ export default function DisplayItemsHome({items}) {
         limit=0
         let itemsSelect=[]
         let indexReg=[]
-        while(limit<=5){
+        while(limit<=7){
             let ind=Math.floor(Math.random()*items.length)
             if(!indexReg.includes(ind)){
                 indexReg.push(ind)
@@ -29,12 +30,20 @@ export default function DisplayItemsHome({items}) {
         return (
             <React.Fragment>
                 <CssBaseline />
+                
                 <Container maxWidth='100vw'  sx={{display:'flex',justifyContent:'center',marginTop:'-100px'}}>
                     <Box sx={{ bgcolor: 'transparent', height: 'auto',width:'90%',display:'flex',flexWrap:'wrap',gap:'1em',padding:'1em',justifyContent:'space-around'}}>
-                        {itemsUsed.map((e,i)=><CardItemsHome key={i} img={e.Image} name={e.Nombre} price={e.valor}/>)}
+                        {itemsUsed.map((e,i)=><CardItemsHome
+                         key={i} 
+                         image={e.image}
+                         name={e.name} 
+                         price={e.price}
+                         id={e.id}
+                         />)}
                     </Box>
                     {console.log(itemsUsed)}
                 </Container>
+               
             </React.Fragment>
         )
     }

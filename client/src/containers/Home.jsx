@@ -32,14 +32,12 @@ export default function Home() {
 
   const [ValueRandom, SetValueRandom] = useState([]);
 
-  const { products } = useSelector((state) => state);
-
+  let { productsPublic } = useSelector((state) => state);
   const dispatch = useDispatch()
 
-
   useEffect(() => {
-    dispatch(getProductsPublic(GET_PRODUCTS_PUBLIC))
-  }, [dispatch])
+     dispatch(getProductsPublic(GET_PRODUCTS_PUBLIC))
+  }, [])
 
 
 
@@ -103,8 +101,7 @@ export default function Home() {
       {
         // ------------------------------
       }
-      
-      <DisplayItemsHome items={producs}/>
+      {productsPublic.length>0&& <DisplayItemsHome items={productsPublic}/>}
       <br />
       <Container>
         <Image variant="top" src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"} style={{
@@ -124,6 +121,3 @@ export default function Home() {
   );
 }
 
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
