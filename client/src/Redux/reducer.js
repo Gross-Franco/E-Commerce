@@ -17,7 +17,6 @@ import {
 
 const initialState = {
   products: [],
-  productsPublic:[],
   productDetail: {},
   UserTest: [],
   categories: [],
@@ -39,7 +38,7 @@ const rootReducer = (state = initialState, action) => {
       case GET_PRODUCTS_PUBLIC:
       return {
         ...state,
-        productsPublic: action.payload,
+        products: action.payload,
       };
     case CREATE_PRODUCT:
       return {
