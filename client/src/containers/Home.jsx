@@ -19,9 +19,9 @@ import { Footer, NavBar } from ".";
 import ProducsTest from "./Utilitis/producsTest.json";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, getProductsPublic } from "./../Redux/Actions/actions"
-import { GET_PRODUCTS, GET_PRODUCTS_PUBLIC } from "./../Redux/Actions/actionTypes"
+import { getProductsPublic } from "./../Redux/Actions/actions"
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
+import products from "../helpers/mockProducts";
 
 
 
@@ -32,11 +32,11 @@ export default function Home() {
 
   const [ValueRandom, SetValueRandom] = useState([]);
 
-  let { productsPublic } = useSelector((state) => state);
+  let { products } = useSelector((state) => state);
   const dispatch = useDispatch()
 
   useEffect(() => {
-     dispatch(getProductsPublic(GET_PRODUCTS_PUBLIC))
+     dispatch(getProductsPublic())
   }, [])
 
 
@@ -101,7 +101,9 @@ export default function Home() {
       {
         // ------------------------------
       }
-      {productsPublic.length > 0 && <DisplayItemsHome items={productsPublic}/>}
+
+      {products.length > 0 && <DisplayItemsHome items={products}/>}
+
       <br />
       <Container>
         <Image variant="top" src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"} style={{

@@ -55,8 +55,8 @@ export default function ProductDetail() {
                                     { textAlign: "center" }
                                 }>
                                     {
-                                        productDetail.category===[]?
-                                    productDetail.category.map(c=>{
+                                        productDetail.category.length > 0 ?
+                                        productDetail.category.map(c=>{
                                         return(
                                             <p>{c}</p>
                                         )
