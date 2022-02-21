@@ -41,15 +41,6 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         productsPublic: action.payload,
       };
-      case GET_PRODUCTS_PUBLIC:
-       const ProductsRandoms =  action.payload;      
-      
-
-      return {
-        ...state,
-        products: ProductsRandoms,
-      };
-
     case CREATE_PRODUCT:
       return {
         ...state,
@@ -73,7 +64,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         products: action.payload,
       }
-
+    case  SEARCH_PRODUCT_ID:{
+      return{
+        ...state,
+        productDetail:action.payload
+      }
+    }
     case GET_USER:
       return {
         ...state,
