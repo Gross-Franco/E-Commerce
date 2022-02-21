@@ -108,7 +108,6 @@ const getProductId = async (req, res) => {
 const searchProductName = async (req, res) => {
 	const { name } = req.query;
 	if (!name || typeof name !== "string") {
-
 		return res.status(404).send("Invalid name");
 	}
 	try {
@@ -120,7 +119,6 @@ const searchProductName = async (req, res) => {
 			},
 			include: { model: ProductCategory }
 		});
-		console.log(productsByName)
 		let response = []
 		for (let product of productsByName) {
 			let inventory = await ProductInventory.findOne({
@@ -137,7 +135,6 @@ const searchProductName = async (req, res) => {
 				quantity: inventory.quantity,
 			});
 		}
-		console.log(response)
 		res.json(response);
 	} catch (err) {
 		console.log(err);
