@@ -68,7 +68,7 @@ const {
 } = sequelize.models;
 
 //User relations
-User.hasMany(UserAddress, { foreignKey: "user_id" });
+User.hasMany(UserAddress, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
 User.hasMany(UserPayment, { foreignKey: "user_id" });
 User.hasMany(UserReviews, { foreignKey: "user_id" });
 
