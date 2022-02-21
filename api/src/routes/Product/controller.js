@@ -106,9 +106,6 @@ const getProductId = async (req, res) => {
 };
 
 const searchProductName = async (req, res) => {
-
-	
-
 	const { name } = req.query;
 	if (!name || typeof name !== "string") {
 
@@ -121,8 +118,27 @@ const searchProductName = async (req, res) => {
 					[Op.iLike]: "%" + name + "%",
 				},
 			},
+			include: { model: ProductCategory }
 		});
-		res.json(productsByName);
+		console.log(productsByName)
+		let response = []
+		for (let product of productsByName) {
+			let inventory = await ProductInventory.findOne({
+				where: { id: product.inventory_id },
+			});
+			inventory.quantity > 0 && response.push({
+				id: product.id,
+				name: product.name,
+				image: product.image,
+				description: product.description,
+				SKU: product.SKU,
+				price: product.price,
+				category: product.productCategories.map((x) => x.name),
+				quantity: inventory.quantity,
+			});
+		}
+		console.log(response)
+		res.json(response);
 	} catch (err) {
 		console.log(err);
 		res.status(404).send(err);
