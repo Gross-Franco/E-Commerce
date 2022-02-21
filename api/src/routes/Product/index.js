@@ -11,7 +11,7 @@ const productRouter = Router();
 
 productRouter.get('/productId/:id', getProductId)
 productRouter.get('/', getProducts)
-productRouter.get('/filtercategory', filterByCategory)
+productRouter.post('/filtercategory', filterByCategory)
 productRouter.get('/name', searchProductName) // recibe nombre por query
 
 // /product/name?name=busqueda

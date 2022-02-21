@@ -11,7 +11,8 @@ import {
   ORDER_PRODCTS,
   GET_USER,
   SEARCH_CATEGORY_NAME,
-  CREATE_CATEGORY
+  CREATE_CATEGORY,
+  ADD_OR_UPDATE
 } from "./Actions/actionTypes";
 
 const initialState = {
@@ -20,7 +21,8 @@ const initialState = {
   UserTest: [],
   categories: [],
   loadProducts: true,
-  loadCategories: true
+  loadCategories: true,
+  addOrUpdate: 'add'
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -83,6 +85,12 @@ const rootReducer = (state = initialState, action) => {
         categories: action.payload
       }
 
+    case ADD_OR_UPDATE:
+      return {
+        ...state,
+        addOrUpdate: action.payload
+      }
+      
     default:
       return { ...state };
   }

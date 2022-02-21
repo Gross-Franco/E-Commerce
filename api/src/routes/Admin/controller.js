@@ -199,17 +199,14 @@ const createProduct = async (req, res) => {
 };
 
 const editProduct = async (req, res, next) => {
-  const id = req.query.id;
-  let { name, description, price } = req.body;
+
+  // falta editar bastante
+
+  const { id, name, description, price, SKU, category, quantity } = req.body;
 
   try {
-    await Product.update({ name, description, price }, { where: { id: id } });
+    await Product.update({ name, description, price, SKU }, { where: { id: id } });
 
-    let productUpdated = await Product.findOne({
-      where: {
-        id: id,
-      },
-    });
     return res.json({ productUpdated, msg: "product updated" });
   } catch (error) {
     next(error);

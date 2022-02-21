@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getProducts } from "../Redux/Actions/actions";
+import { getProducts, addOrUpdate } from "../Redux/Actions/actions";
 
 const ProductTable = ({ setIsOpen }) => {
   const { products, loadProducts } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   if(loadProducts) dispatch(getProducts());
-  const handleClick = () => {
+  
+  const handleClick = (product) => {
+    console.log(product)
+    dispatch(addOrUpdate(product))
     setIsOpen(prev => !prev);
-
   };
+
   return (
     <table>
       <thead className="panel-table--head">
@@ -28,7 +31,7 @@ const ProductTable = ({ setIsOpen }) => {
             <td className="panel-table--td">${product.price}</td>
             <td className="panel-table--td">{product.quantity}</td>
             <td className="panel-table--td">
-              <button onClick={handleClick}>Editar</button>
+              <button onClick={() => handleClick(product)}>Editar</button>
               <button>Eliminar</button> 
             </td>
           </tr>

@@ -35,6 +35,9 @@ const getProducts = async (req, res, next) => {
 };
 
 const filterByCategory = async (req, res) => {
+	
+	console.log(req.body)
+
 	const categories  = req.body;
 	try {
 		const filtered = await Product.findAll({
