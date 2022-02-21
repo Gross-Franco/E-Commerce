@@ -56,6 +56,12 @@ const rootReducer = (state = initialState, action) => {
         loadProducts: true
       };
 
+    case SEARCH_PRODUCT_ID:
+      return {
+        ...state,
+        productDetail: action.payload
+      }
+
     case CREATE_CATEGORY: 
       return {
         ...state,

@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-bootstrap/";
 import { SortContainer, FiltersContainer, ProductsContainer, NavBar, Footer } from "./";
 import {Card, Button, Col , Row, Container, Badge} from "react-bootstrap"
 import Holder from "react-holder";
 import { color, textAlign } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { searchProductId } from "../Redux/Actions/actions";
+import { useParams } from "react-router-dom";
 
 export default function ProductDetail(){
+
+    const {productDetail} = useSelector(state => state);
+    const dispatch = useDispatch();
+    const {id} = useParams();
+
+    useEffect(() => {
+        dispatch(searchProductId(id))
+    }, [])
 
     return(
         <div>
@@ -60,7 +71,7 @@ export default function ProductDetail(){
         width: '200px'
              }}
     
-    >Nombre del producto</Card.Title>
+    >{productDetail.name}</Card.Title>
     </Col>
     <Col>
     <Card.Title> {"<3"}</Card.Title>
@@ -79,7 +90,7 @@ export default function ProductDetail(){
    
 <br /> 
 <Row > 
-<Col>  <Card.Title>2000$</Card.Title></Col>
+<Col>  <Card.Title>{productDetail.price}</Card.Title></Col>
 <Col> <h6
 style={
     {
@@ -93,7 +104,7 @@ style={
 </Row>
 <h6>en 12x 9369 pesos sin interés</h6>
 
-<Card.Title>Stock disponible</Card.Title>
+<Card.Title>Stock disponible: {productDetail.quantity}</Card.Title>
 
 <br />
    <Button variant="primary">Compra ahora</Button>
