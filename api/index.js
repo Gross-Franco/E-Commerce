@@ -38,9 +38,16 @@ const { PORT } = process.env;
 conn.sync({ force: true }).then(() => {
   server.listen(PORT || 3001, () => {
     ProductInventory.bulkCreate(mockinventory).then(() => {
-      Product.bulkCreate(mockproducts)});
+    Product.bulkCreate(mockproducts).then(() => {
+      ProductCategory.bulkCreate(mockcategories).then(()=>{
+        Product.findAll().then(products => {
+          products.forEach(product => {
+            product.addProductCategory(1);
+          })
+        })
+      })
+    })}).catch(error => console.log(error));
     OrderDetails.bulkCreate(mockorders);
-    ProductCategory.bulkCreate(mockcategories);
     User.bulkCreate(mockusers);
     console.log(`%s listening at ${PORT || 3001}`); // eslint-disable-line no-console
   });

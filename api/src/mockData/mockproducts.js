@@ -13,6 +13,7 @@ const mockproducts = [
             "SKU": "WR-5249",
             "image":"https://www.apple.com/newsroom/images/product/iphone/standard/iphonex_front_back_new_glass_full.jpg.og.jpg?20211202",
             "description": "iPhone X.",
+            "category": ["Electronica", "Telefonia", "Tecnologia" ],
             "inventory_id": "2"
         },
         {
@@ -61,7 +62,7 @@ const mockproducts = [
             "price":"729.99",
             "SKU":"GE-V022",
             "description":"intel core i3 1005 G1| 4gb ram|1Tb|15.6 Full Hd",
-            "inventory_id":"2"
+            "inventory_id":"3"
         }
     ]
 

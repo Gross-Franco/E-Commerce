@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getProducts, addOrUpdate } from "../Redux/Actions/actions";
+import { getProducts, setAddOrUpdate } from "../Redux/Actions/actions";
 
 const ProductTable = ({ setIsOpen }) => {
   const { products, loadProducts } = useSelector((state) => state);
@@ -9,8 +9,7 @@ const ProductTable = ({ setIsOpen }) => {
   if(loadProducts) dispatch(getProducts());
   
   const handleClick = (product) => {
-    console.log(product)
-    dispatch(addOrUpdate(product))
+    dispatch(setAddOrUpdate(product))
     setIsOpen(prev => !prev);
   };
 
