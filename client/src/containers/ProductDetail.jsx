@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-bootstrap/";
 import {
   SortContainer,
@@ -10,6 +10,9 @@ import {
 import { Card, Button, Col, Row, Container, Badge } from "react-bootstrap";
 import Holder from "react-holder";
 import { color, textAlign } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { searchProductId } from "../Redux/Actions/actions";
+import { useParams } from "react-router-dom";
 
 export default function ProductDetail() {
   return (

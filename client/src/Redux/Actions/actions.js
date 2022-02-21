@@ -46,7 +46,7 @@ export const getProductsPublic = () => {
 
 export const searchProductId = (id) => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/products/${id}`); // chequear con la ruta del server
+        const response = await axios.get(`${URL}/product/productId/${id}`);
         dispatch({ type: SEARCH_PRODUCT_ID, payload: response.data});
     }
 }
