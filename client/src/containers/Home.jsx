@@ -39,6 +39,10 @@ export default function Home() {
      dispatch(getProductsPublic())
   }, [])
 
+  useEffect(() => {
+    console.log(products)
+  },[products])
+
 
 
   return (
@@ -102,7 +106,7 @@ export default function Home() {
         // ------------------------------
       }
 
-      {products.length > 0 && <DisplayItemsHome items={products}/>}
+      {/* {products?.length > 0 && <DisplayItemsHome items={products}/>} */}
 
       <br />
       <Container>
