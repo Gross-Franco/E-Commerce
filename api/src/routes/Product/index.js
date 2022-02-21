@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { getProductId, searchProductName, getProducts, filterByCategory } = require('./controller');
 
+
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -16,6 +17,7 @@ productRouter.get('/name', searchProductName) // recibe nombre por query
 
 // /product/name?name=busqueda
 // /product/productId/1234123
+
 
 
 module.exports = productRouter;

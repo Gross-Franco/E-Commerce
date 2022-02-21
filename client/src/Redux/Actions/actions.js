@@ -36,7 +36,9 @@ export const getCategories = () => {
 export const getProductsPublic = () => {
     return async (dispatch) => {
         const response = await axios.get(`${URL}/product`);
+
         dispatch({ type: GET_ALL_PRODUCTS, payload: response.data});
+
     }
 }
 

@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useState , useEffect } from "react";
 
 import Button from "react-bootstrap/Button";
@@ -16,9 +17,11 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Footer, NavBar } from ".";
 
 import ProducsTest from "./Utilitis/producsTest.json";
+
 import { useDispatch , useSelector} from "react-redux";
 import {getProducts} from "./../Redux/Actions/actions"
 import {GET_PRODUCTS} from  "./../Redux/Actions/actionTypes"
+
 
 
 export default function Home() {
@@ -32,12 +35,8 @@ const { products } = useSelector((state) => state);
 const dispatch = useDispatch()
 
 useEffect(() => {
+
 console.log(getProducts(GET_PRODUCTS));
-
-
-
-
-
 
 })
 
