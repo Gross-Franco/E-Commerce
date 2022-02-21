@@ -75,15 +75,28 @@ const getProductId = async (req, res) => {
 		res.status(404).send("Invalid ID");
 	}
 	try {
-		//const productDetail = await Product.findByPk(id);
-		const productDetail = await Product.findOne(
-			{
-				where:{
-					id:id
-				}
+		const productDetail = await Product.findOne({
+			where: {
+				id:id
+			},
+			include: {
+				model: ProductCategory
 			}
-		)
-		res.json(productDetail);
+		})
+		let inventory = await ProductInventory.findOne({
+			where: { id: productDetail.inventory_id },
+		});
+		let response = {
+			id: productDetail.id,
+			name: productDetail.name,
+			image: productDetail.image,
+			description: productDetail.description,
+			SKU: productDetail.SKU,
+			price: productDetail.price,
+			category: productDetail.productCategories.map((x) => x.name),
+			quantity: inventory.quantity,
+		};
+		res.json(response);
 	} catch (err) {
 		console.log(err);
 		res.status(404).send(err);
