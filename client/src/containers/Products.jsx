@@ -20,11 +20,9 @@ const Products = () => {
         <Grid container justify="center" spacing={4}>
           {products.map(product=><Grid item key={product.SKU} xs={12} sm={6} md={4} lg={3}>
               <CardItemsHome 
-              name={product.name} 
-              price={product.price} 
-              id={product.id} 
-              section={"catalogo"}
-              description={product.description}/>
+                product={product}
+                section="catalogo"
+              />
           </Grid>)}
           
         </Grid>
