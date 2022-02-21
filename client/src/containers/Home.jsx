@@ -1,6 +1,6 @@
 import React from "react";
+import { useState, useEffect } from "react";
 
-import { useState , useEffect } from "react";
 
 import Button from "react-bootstrap/Button";
 import CardGroup from "react-bootstrap/CardGroup";
@@ -18,27 +18,29 @@ import { Footer, NavBar } from ".";
 
 import ProducsTest from "./Utilitis/producsTest.json";
 
-import { useDispatch , useSelector} from "react-redux";
-import {getProducts} from "./../Redux/Actions/actions"
-import {GET_PRODUCTS} from  "./../Redux/Actions/actionTypes"
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts, getProductsPublic } from "./../Redux/Actions/actions"
+import { GET_PRODUCTS, GET_PRODUCTS_PUBLIC } from "./../Redux/Actions/actionTypes"
+import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
+
 
 
 
 export default function Home() {
 
-const [producs,SetProducts] = useState(Object.values(ProducsTest));
+  const [producs, SetProducts] = useState(Object.values(ProducsTest));
 
-const [ValueRandom,SetValueRandom] = useState([]);
+  const [ValueRandom, SetValueRandom] = useState([]);
 
-const { products } = useSelector((state) => state);
+  const { products } = useSelector((state) => state);
 
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-useEffect(() => {
 
-console.log(getProducts(GET_PRODUCTS));
+  useEffect(() => {
+    dispatch(getProductsPublic(GET_PRODUCTS_PUBLIC))
+  }, [dispatch])
 
-})
 
 
   return (
@@ -47,9 +49,9 @@ console.log(getProducts(GET_PRODUCTS));
       <NavBar />
       <Conntainer>
         <Carousel style={{
-         transform: "scale(1.21, 0.8)",
-         top:"-120px",
-         right:"1px"
+          transform: "scale(1.21, 0.8)",
+          top: "-120px",
+          right: "1px"
         }}>
           <Carousel.Item>
             <img
@@ -58,11 +60,11 @@ console.log(getProducts(GET_PRODUCTS));
               alt="First slide"
             />
             <Carousel.Caption style={{
-             transform: "scale(1, 2)",
+              transform: "scale(1, 2)",
 
             }}>
-            <h3>Go pro Started</h3>
-              <p>Precio: 160.00$</p>             
+              <h3>Go pro Started</h3>
+              <p>Precio: 160.00$</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
@@ -73,9 +75,9 @@ console.log(getProducts(GET_PRODUCTS));
             />
 
             <Carousel.Caption style={{
-             transform: "scale(1, 2)",
+              transform: "scale(1, 2)",
 
-            }}> 
+            }}>
               <h3>Kodad con reflex 2.3</h3>
               <p>Precio: 200.00$</p>
             </Carousel.Caption>
@@ -88,10 +90,10 @@ console.log(getProducts(GET_PRODUCTS));
             />
 
             <Carousel.Caption style={{
-             transform: "scale(1, 2)",
+              transform: "scale(1, 2)",
 
             }}>
-            <h3 >nintendo-switch lite</h3>
+              <h3 >nintendo-switch lite</h3>
               <p>Precio: 180.00$</p>
             </Carousel.Caption>
           </Carousel.Item>
@@ -101,68 +103,20 @@ console.log(getProducts(GET_PRODUCTS));
       {
         // ------------------------------
       }
-
-<Row xs={2} md={1} className="g-5" style={{ 
-          position:"relative",
-          right: "-100px",
-          top:"-130px",
-          textAlign:"center",         
-           width: "1300px"
-            
-          }} > 
-  {Array.from({ length: 8 }).map((_, idx) => (
-    
-    <Col style={{ 
-       height: "300px",
-       width: "300px"
-                 }} 
-    key ={idx}>
-       
-    
-      <Card   style={{ cursor: "pointer"}} >
-        <Card.Img variant="center" src={producs[idx].Image} style={{ 
-           position:"relative",
-           right: "-5px",
-           height: "200px",
-           width: "200px",
-           margin: "1em",
-           padding: "20px",
-          
-          }} 
-          
-          />
-        <Card.Body>
-          <Card.Title >{producs[idx].Nombre}</Card.Title>
-         
-      <Card.Footer>
-      <h4 className="text-muted" style={{
       
-      }} >{producs[idx].valor +" " }  <p style={{
-        color: "green",
-        
-      }}> %{getRandomInt(0,70) } OFF</p></h4>
-      </Card.Footer>
-
-      <a href="/productDetail" className="stretched-link"></a>
-        </Card.Body>
-      </Card>
-    </Col>
-  ))}
-</Row>
-      <br/>
-      
-
+      <DisplayItemsHome items={producs}/>
+      <br />
       <Container>
         <Image variant="top" src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"} style={{
-        position:"relative",
-          right:"75px",
+          position: "relative",
+          right: "75px",
           top: "15px",
           transform: "scale(1, 0.8)",
-          
+
         }} />
-       
-      
-<br/>
+
+
+        <br />
 
       </Container>
       <Footer />
