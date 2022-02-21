@@ -10,6 +10,7 @@ export default function SearchBar() {
 
   const handleChange = (e) => {
     setBusqueda(e.target.value);
+    dispatch(searchProductName(busqueda))
   };
 
   const handleSubmit = (e) => {
@@ -20,16 +21,16 @@ export default function SearchBar() {
 
   return (
     <div className="catalog-search-input--container">
-      <form onSubmit={handleSubmit} className="catalog-search-input--container">
+      <form className="catalog-search-input--container">
         <input
           className="catalog-search--input"
           type="text"
           placeholder="Buscar producto"
           onChange={handleChange}
         />
-        <button className="catalog-search--submit-button">
+        {/* <button className="catalog-search--submit-button">
           <BiSearch className="catalog-search--submit-button-icon" />
-        </button>
+        </button> */}
       </form>
     </div>
   );
