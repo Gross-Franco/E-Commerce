@@ -54,11 +54,15 @@ export default function ProductDetail() {
                                 <Row style={
                                     { textAlign: "center" }
                                 }>
-                                    {productDetail.category.map(c=>{
+                                    {
+                                        productDetail.category===[]?
+                                    productDetail.category.map(c=>{
                                         return(
                                             <p>{c}</p>
                                         )
-                                    })}
+                                    }):
+                                    <p>no se encontraron categorias</p>
+                                }
 
                                 </Row>
 
