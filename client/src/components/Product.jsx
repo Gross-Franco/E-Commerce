@@ -14,7 +14,7 @@ import {Link} from 'react-router-dom';
 const Product = ({ product, section }) => {
   const classes = useStyles();
   return (
-    <Link to={`/productDetail/${id}`} style={{textDecoration:'none'}}>
+    <Link to={`/productDetail/${product.id}`} style={{textDecoration:'none'}}>
     <Card className={classes.root}>
       <CardMedia className={classes.media} image={`${product.image}`} title={product.name} />
       <CardContent>

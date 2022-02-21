@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
-import { createProduct, getCategories, setAddOrUpdate } from "../Redux/Actions/actions";
+import {
+  createProduct,
+  getCategories,
+  setAddOrUpdate,
+} from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
-
-
 const AddContainer = ({ option, setIsOpen }) => {
-
   const { categories, addOrUpdate } = useSelector((state) => state);
 
   const initialState = {
@@ -18,6 +19,7 @@ const AddContainer = ({ option, setIsOpen }) => {
     category: addOrUpdate?.category || [],
     SKU: addOrUpdate?.SKU || "",
     quantity: addOrUpdate?.quantity || "",
+    image: addOrUpdate?.image || "",
   };
 
   const [form, setForm] = useState(initialState);
@@ -46,20 +48,20 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const handleSubmit = (e) => {
-    if(addOrUpdate === 'add') {
+    if (addOrUpdate === "add") {
       dispatch(createProduct(form));
       setForm(initialState);
       setIsOpen(false);
     } else {
       // dispatch(updateProduct({...form, id: addOrUpdate.id}));
-      dispatch(setAddOrUpdate('add'))
+      dispatch(setAddOrUpdate("add"));
       setForm(initialState);
       setIsOpen(false);
     }
   };
-  
+
   const handleClick = () => {
-    dispatch(setAddOrUpdate('add'));
+    dispatch(setAddOrUpdate("add"));
     setIsOpen(false);
   };
 
@@ -157,7 +159,14 @@ const AddContainer = ({ option, setIsOpen }) => {
                 </header>
               </div>
               <div>
-                <input type="text" className="add-form--input" placeholder="https://ipsum/200/300" />
+                <input
+                  type="text"
+                  name="image"
+                  value={form.image}
+                  className="add-form--input"
+                  placeholder="https://ipsum/200/300"
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>
@@ -182,18 +191,22 @@ const AddContainer = ({ option, setIsOpen }) => {
               </header>
               <div>
                 <div
-                  className="add-form--input"
+                  className="add-form--input add-form--input-dropdown"
                   onClick={() => setOpenDropdown(!openDropdown)}
                 >
-                  {" "}
-                  Elige categoria <RiArrowDropDownLine />{" "}
+                  <span>Elige categoria</span>
+                  <RiArrowDropDownLine
+                    className={`add-form--arrow-dropdown ${
+                      openDropdown ? "open" : ""
+                    }`}
+                  />
                 </div>
               </div>
             </div>
             {openDropdown && (
               <div className="add-form--input-wrapper">
                 {categories.map((category) => (
-                  <div key={category.id}>
+                  <div key={category.id} className="add-form--dropdown-option">
                     <label>{category.name}</label>
                     <input
                       type="checkbox"

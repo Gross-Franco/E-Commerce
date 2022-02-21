@@ -133,7 +133,7 @@ export default function ProductDetail() {
                   <Col>
                     300
                     <br />
-                    <h7> ventas en los ultimos xx dias</h7>
+                    <p> ventas en los ultimos xx dias</p>
                   </Col>
                   <Col>
                     <p> brinda X atención</p>
