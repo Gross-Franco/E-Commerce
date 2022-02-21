@@ -5,35 +5,59 @@ import { CreateCategory } from "../components";
 import { createProduct, getCategories } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
-const initialState = {
-  name: "",
-  description: "",
-  price: "",
-  category: "",
-  SKU: "",
-  quantity: "",
-};
+
 
 const AddContainer = ({ option, setIsOpen }) => {
+
+  const { categories, addOrUpdate } = useSelector((state) => state);
+  console.log(addOrUpdate);
+
+  const initialState = {
+    name: addOrUpdate?.name || "",
+    description: addOrUpdate?.description || "",
+    price: addOrUpdate?.price || "",
+    category: addOrUpdate?.category || [],
+    SKU: addOrUpdate?.SKU || "",
+    quantity: addOrUpdate?.quantity || "",
+  };
+
   const [form, setForm] = useState(initialState);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const { categories } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "category") {
+      if (e.target.checked) {
+        setForm({
+          ...form,
+          category: [...form.category, e.target.value],
+        });
+      } else {
+        setForm({
+          ...form,
+          category: form.category.filter((item) => item !== e.target.value),
+        });
+      }
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
-    dispatch(createProduct(form));
-    setForm(initialState);
-    setIsOpen(false);
+    if(addOrUpdate === 'add') {
+      dispatch(createProduct(form));
+      setForm(initialState);
+      setIsOpen(false);
+    } else {
+      // dispatch(updateProduct({...form, id: addOrUpdate.id}));
+      dispatch(addOrUpdate('add'))
+      setForm(initialState);
+      setIsOpen(false);
+    }
   };
-
-  
 
   useEffect(() => {
     dispatch(getCategories());
@@ -65,6 +89,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 <label>Nombre</label>
                 <input
                   type="text"
+                  value={form.name}
                   name="name"
                   className="add-form--input"
                   onChange={handleChange}
@@ -75,6 +100,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <label>SKU</label>
                   <input
                     type="text"
+                    value={form.SKU}
                     name="SKU"
                     className="add-form--input"
                     onChange={handleChange}
@@ -84,6 +110,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <label>Cantidad</label>
                   <input
                     type="number"
+                    value={form.quantity}
                     name="quantity"
                     className="add-form--input"
                     onChange={handleChange}
@@ -94,6 +121,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 <label>Descripción</label>
                 <textarea
                   name="description"
+                  value={form.description}
                   className="add-form--input"
                   onChange={handleChange}
                 />
@@ -109,6 +137,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 <label>Precio</label>
                 <input
                   type="number"
+                  value={form.price}
                   name="price"
                   className="add-form--input"
                   onChange={handleChange}
@@ -155,20 +184,21 @@ const AddContainer = ({ option, setIsOpen }) => {
                 </div>
               </div>
             </div>
-            {openDropdown  && (
-                <div className="add-form--input-wrapper">
+            {openDropdown && (
+              <div className="add-form--input-wrapper">
                 {categories.map((category) => (
-                    <div key={category.id}>
-                      <label>{category.name}</label>
-                      <input
-                        type="checkbox"
-                        name="category"
-                        value={category.name}
-                        onChange={handleChange}
-                        /> 
-                    </div>
+                  <div key={category.id}>
+                    <label>{category.name}</label>
+                    <input
+                      type="checkbox"
+                      checked={form.category.includes(category.name)}
+                      name="category"
+                      value={category.name}
+                      onChange={handleChange}
+                    />
+                  </div>
                 ))}
-                </div>
+              </div>
             )}
           </div>
         </div>

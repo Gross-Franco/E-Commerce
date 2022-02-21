@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCategories } from "../Redux/Actions/actions";
 
 const CategoriesTable = () => {
-  const { categories } = useSelector((state) => state);
+  const { categories, loadCategories } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getCategories());
-  }, []);
+  
+  if(loadCategories) dispatch(getCategories());
 
   return (
     <table>
