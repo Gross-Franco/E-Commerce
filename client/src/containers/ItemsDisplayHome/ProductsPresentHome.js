@@ -39,6 +39,7 @@ export default function DisplayItemsHome({items}) {
                          name={e.name} 
                          price={e.price}
                          id={e.id}
+                         description={e.description}
                          />)}
                     </Box>
                     {console.log(itemsUsed)}
