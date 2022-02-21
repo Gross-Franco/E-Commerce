@@ -1,7 +1,8 @@
 require('dotenv').config()
 const axios = require('axios');
 
-const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js')
+const {Discount, ProductCategory, ProductInventory, Product, OrderDetails, OrderItems} = require ('../../db.js');
+const User = require('../../models/User_Management/User.js');
 
 
 const getOrderStatus = async (req, res)=> {
@@ -290,7 +291,17 @@ const createAdmin = async (req, res) =>{
     res.json({updatedUser, msg: "User changed to admin"})
 }
 
+const deleteUser = async(req, res) =>{
+    let {
+        email
+    } = req.body
 
+    User.destroy(
+        {where: {email: email}}
+    )
+
+    req.status(200).send("User deleted")
+}
 
 
 module.exports = {
@@ -307,6 +318,7 @@ module.exports = {
     createAdmin,
     addToInvetory,
     removeFromInvetory,
-      allStatus
+      allStatus,
+    deleteUser
 
 };

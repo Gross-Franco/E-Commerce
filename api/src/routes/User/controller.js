@@ -24,7 +24,7 @@ const getUsers = async (req, res, next) => {
 const createUser = async (req, res, next) => {
 	let { username, password, first_name, last_name, email, isAdmin } = req.body;
 
-	// const passwordHash = await bcrypt.hash(password, 10);
+	const passwordHash = await bcrypt.hash(password, 10);
 	try {
 		let createdUser = await User.create({
 			username,
