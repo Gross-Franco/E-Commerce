@@ -403,7 +403,9 @@ code {
   gap: .2rem;
 }
 .add-form--input {
+  width: 100%;
   border: none;
+  cursor: pointer;
   border-radius: 0.25rem;
   box-shadow: 0 0 1px rgb(40 51 65 / 10%), 0 1px 2px rgb(40 51 65 / 10%), 0 1px 3px rgb(40 51 65 / 10%);
   padding: 1.5rem 1rem 0.5rem 1rem;
@@ -429,4 +431,23 @@ code {
 }
 .add-form--save-btn:hover {
   background-color: #26957e;
+}
+.add-form--arrow-dropdown {
+  font-size: 3rem;
+  transition: transform 0.5s;
+  transform: rotate(0deg);
+}
+.add-form--input-dropdown {
+  display: flex;
+  flex-direction: row;
+}
+.add-form--input .open {
+  transition: transform 0.5s;
+  transform: rotate(-180deg);
+}
+.add-form--dropdown-option {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
 }
