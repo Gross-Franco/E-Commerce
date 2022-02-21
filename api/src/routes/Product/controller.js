@@ -16,6 +16,7 @@ const getProducts = async (req, res, next) => {
 			if(productinv.dataValues.quantity > 0) return {
 				id: productData.id,
 				name: productData.name,
+				image: product.image,
 				description: productData.description,
 				image:productData.image,
 				SKU: productData.SKU,
@@ -54,6 +55,7 @@ const filterByCategory = async (req, res) => {
 			inventory.quantity > 0 && response.push({
 				id: product.id,
 				name: product.name,
+				image: product.image,
 				description: product.description,
 				SKU: product.SKU,
 				price: product.price,

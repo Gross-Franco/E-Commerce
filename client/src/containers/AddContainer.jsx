@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
-import {
-  createProduct,
-  getCategories,
-  setAddOrUpdate,
-} from "../Redux/Actions/actions";
+import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const AddContainer = ({ option, setIsOpen }) => {
@@ -53,7 +49,7 @@ const AddContainer = ({ option, setIsOpen }) => {
       setForm(initialState);
       setIsOpen(false);
     } else {
-      // dispatch(updateProduct({...form, id: addOrUpdate.id}));
+      dispatch(updateProduct({...form, id: addOrUpdate.id}));
       dispatch(setAddOrUpdate("add"));
       setForm(initialState);
       setIsOpen(false);
