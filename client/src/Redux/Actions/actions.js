@@ -16,7 +16,7 @@ import {
     GET_PRODUCTS_PUBLIC
 } from './actionTypes';
 
-const URL = "http://localhost:3001";
+const URL = "http://localhost:3004";
 
 export const getProducts = () => {
     return async (dispatch) => {
@@ -32,9 +32,14 @@ export const getCategories = () => {
     }
 }
 export const getProductsPublic = () => {
-    return async (dispatch) => {
-        const response = await axios.get(`${URL}/product`);
-        dispatch({ type: GET_ALL_PRODUCTS, payload: response.data});
+    return (dispatch) => {
+        axios.get(`${URL}/product`)
+        .then((res)=>{
+            console.log(res)
+            dispatch({ type:GET_PRODUCTS_PUBLIC, payload:res.data});
+        },(err)=>{
+            alert(err)
+        })
     }
 }
 
