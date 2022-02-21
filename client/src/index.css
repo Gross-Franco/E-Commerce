@@ -113,6 +113,14 @@ code {
   text-decoration: none;
   text-transform: none;
 }
+/* FILTERS */
+.catalog--filters {
+  cursor: pointer;
+}
+.catalog--filter {
+  z-index: 1500;
+  position: absolute;
+}
 /* SORT */
 .catalog-sort--container {
   display: flex;

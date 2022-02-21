@@ -13,7 +13,9 @@ import {
     GET_USER,
     CREATE_CATEGORY,
     SEARCH_CATEGORY_NAME,
-    GET_PRODUCTS_PUBLIC
+    GET_PRODUCTS_PUBLIC,
+    ADD_OR_UPDATE,
+    UPDATE_PRODUCT
 } from './actionTypes';
 
 const URL = "http://localhost:3004";
@@ -40,7 +42,6 @@ export const getProductsPublic = () => {
         },(err)=>{
             alert(err)
         })
-    }
 }
 
 export const searchProductId = (id) => {
@@ -70,6 +71,13 @@ export const createProduct = (newProduct) => {
     }
 }
 
+export const updateProduct = (editedProduct) => {
+    return async (dispatch) => {
+        const post = await axios.post(`${URL}/admin/editProducts`, editedProduct); // chequear con la ruta del server
+        dispatch({ type: UPDATE_PRODUCT, payload: post.data});
+    }
+}
+
 export const createCategory = (newCategory) => {
     return async (dispatch) => {
         const post = await axios.post(`${URL}/admin/createCategory`, newCategory); // chequear con la ruta del server
@@ -85,10 +93,16 @@ export const deleteProduct = function() {
     return { type: DELETE_PRODUCT }
 }
 
-export const filterProducts = function() {
-    return { type: FILTER_PRODUCTS }
-}
+export const filterProducts = function(categories) {
+    return async (dispatch) => {
+        const response = await axios.post(`${URL}/product/filtercategory`, categories); // chequear con la ruta del server
+        dispatch({ type: FILTER_PRODUCTS, payload: response.data});
+    }}
 
 export const orderProducts = function() {
     return { type: ORDER_PRODCTS }
+}
+
+export const addOrUpdate = (addOrUpdate) => { 
+    return { type: ADD_OR_UPDATE, payload: addOrUpdate}
 }

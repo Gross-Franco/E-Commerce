@@ -10,7 +10,9 @@ import {
   FILTER_PRODUCTS,
   ORDER_PRODCTS,
   GET_USER,
-  SEARCH_CATEGORY_NAME
+  SEARCH_CATEGORY_NAME,
+  CREATE_CATEGORY,
+  ADD_OR_UPDATE
 } from "./Actions/actionTypes";
 
 const initialState = {
@@ -19,7 +21,9 @@ const initialState = {
   productDetail: {},
   UserTest: [],
   categories: [],
-  load: true
+  loadProducts: true,
+  loadCategories: true,
+  addOrUpdate: 'add'
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -29,7 +33,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         products: action.payload,
-        load: false,
+        loadProducts: false,
       };
       
       case GET_PRODUCTS_PUBLIC:
@@ -37,17 +41,37 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         productsPublic: action.payload,
       };
+      case GET_PRODUCTS_PUBLIC:
+       const ProductsRandoms =  action.payload;      
+      
+
+      return {
+        ...state,
+        products: ProductsRandoms,
+      };
 
     case CREATE_PRODUCT:
       return {
         ...state,
-        load: true
+        loadProducts: true
       };
+
+    case CREATE_CATEGORY: 
+      return {
+        ...state,
+        loadCategories: true
+      };
+
+    case FILTER_PRODUCTS:
+      return {
+        ...state,
+        products: action.payload
+      }
 
     case SEARCH_PRODUCT_NAME:
       return {
         ...state,
-        products: action.payload
+        products: action.payload,
       }
 
     case GET_USER:
@@ -60,6 +84,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         categories: action.payload,
+        loadCategories: false
       };
 
     case SEARCH_CATEGORY_NAME:
@@ -68,6 +93,12 @@ const rootReducer = (state = initialState, action) => {
         categories: action.payload
       }
 
+    case ADD_OR_UPDATE:
+      return {
+        ...state,
+        addOrUpdate: action.payload
+      }
+      
     default:
       return { ...state };
   }

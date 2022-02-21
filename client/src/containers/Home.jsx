@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
+
 import Button from "react-bootstrap/Button";
 import CardGroup from "react-bootstrap/CardGroup";
 import Card from "react-bootstrap/Card";
@@ -16,10 +17,13 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import { Footer, NavBar } from ".";
 
 import ProducsTest from "./Utilitis/producsTest.json";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, getProductsPublic } from "./../Redux/Actions/actions"
 import { GET_PRODUCTS, GET_PRODUCTS_PUBLIC } from "./../Redux/Actions/actionTypes"
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
+
+
 
 
 export default function Home() {
@@ -32,9 +36,11 @@ export default function Home() {
 
   const dispatch = useDispatch()
 
+
   useEffect(() => {
     dispatch(getProductsPublic(GET_PRODUCTS_PUBLIC))
   }, [dispatch])
+
 
 
   return (
