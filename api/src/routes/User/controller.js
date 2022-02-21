@@ -22,7 +22,7 @@ const getUsers = async (req, res, next) => {
 };
 
 const addAdress = async (req, res, next) => {
-	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, user_Id } = req.body;
+	let { addressLine1, addressLine2, city, postalCode, country, telephone, mobile, user_id } = req.body;
 
 	try {
 		let createdAddress = await UserAddress.create({
@@ -33,7 +33,7 @@ const addAdress = async (req, res, next) => {
 			country,
 			telephone,
 			mobile,
-			user_Id,
+			user_id,
 		});
 		return res.status(201).json({ createdAddress, msg: "added address" });
 	} catch (error) {
@@ -47,7 +47,7 @@ const addPayment = async(req, res) =>{
         provider,
         accountNo,
         expiry,
-        user_Id
+        user_id
     } = req.body
 
     let createdPayment = await UserPayment.create({
@@ -55,7 +55,7 @@ const addPayment = async(req, res) =>{
         provider,
         accountNo,
         expiry,
-        user_Id
+        user_id
     })
 
     res.json({createdPayment, msg: "added payment option"})
