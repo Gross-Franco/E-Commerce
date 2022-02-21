@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 const Product = ({ product, section }) => {
   const classes = useStyles();
   return (
-    <Link to={`/productDetail/${product.id}`} style={{textDecoration:'none'}}>
     <Card className={classes.root}>
       <Link to={`/productDetail/${product.id}`} style={{ textDecoration: 'none'}}>
 
@@ -36,7 +35,6 @@ const Product = ({ product, section }) => {
         </CardContent>
       </Link>
     </Card>
-    </Link>
   );
 };
 

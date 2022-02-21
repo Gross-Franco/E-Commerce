@@ -38,14 +38,14 @@ export default function ProductDetail() {
 
                         }
                     }>
-                        <Col><Card.Img variant="top" src={productDetail.image} />
+                        <Col><Card.Img variant="top" src={productDetail?.image} />
                         
                         <Card style={{
                                 width: 'auto',
                                 textAlign: "left"
                             }}>
                                 <br />
-                                Descripccion {productDetail.description}
+                                Descripcion {productDetail?.description}
                                 <br />
                                 <br />
                                 Categorias
@@ -55,8 +55,8 @@ export default function ProductDetail() {
                                     { textAlign: "center" }
                                 }>
                                     {
-                                        productDetail.category.length > 0 ?
-                                        productDetail.category.map(c=>{
+                                        productDetail?.category?.length > 0 ?
+                                        productDetail?.category?.map(c=>{
                                         return(
                                             <p>{c}</p>
                                         )
@@ -82,14 +82,14 @@ export default function ProductDetail() {
                                 textAlign: "left"
                             }} >
                                 {/* <Card.Img variant="top"  src="holder.js/100px180" /> */}
-                                <h7
+                                <p
                                     style={
                                         {
                                             position: "relative",
                                             right: "-10px",
                                             color: "Grey"
                                         }}
-                                >  Nuevo  |  10 vendidos</h7>
+                                >  Nuevo  |  10 vendidos</p>
 
                                 <Card.Body  >
                                     <Row >
@@ -100,7 +100,7 @@ export default function ProductDetail() {
                                                     width: '200px'
                                                 }}
 
-                                            >{productDetail.name}</Card.Title>
+                                            >{productDetail?.name}</Card.Title>
                                         </Col>
                                         <Col>
                                             <Card.Title> {"<3"}</Card.Title>
@@ -119,7 +119,7 @@ export default function ProductDetail() {
 
                                     <br />
                                     <Row >
-                                        <Col>  <Card.Title>{productDetail.price}</Card.Title></Col>
+                                        <Col>  <Card.Title>{productDetail?.price}</Card.Title></Col>
                                         <Col> <h6
                                             style={
                                                 {
@@ -133,7 +133,7 @@ export default function ProductDetail() {
                                     </Row>
                                     <h6>en 12x 9369 pesos sin interés</h6>
 
-                                    <Card.Title>Stock disponible: {productDetail.quantity}</Card.Title>
+                                    <Card.Title>Stock disponible: {productDetail?.quantity}</Card.Title>
 
                                     <br />
                                     <Button variant="primary">Compra ahora</Button>
@@ -161,16 +161,16 @@ export default function ProductDetail() {
                                     <Col >
                                         300
                                         <br />
-                                        <h7> ventas en los ultimos xx dias</h7>
+                                        <p> ventas en los ultimos xx dias</p>
                                     </Col>
                                     <Col>
 
-                                        <h7> brinda X atención</h7>
+                                        <p> brinda X atención</p>
                                     </Col>
 
                                     <Col >
 
-                                        <h7>Entrega sus productos a tiempo</h7>
+                                        <p>Entrega sus productos a tiempo</p>
                                     </Col>
 
 
