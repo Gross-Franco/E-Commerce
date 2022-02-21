@@ -101,7 +101,7 @@ export default function Home() {
       {
         // ------------------------------
       }
-      {productsPublic.length>0&& <DisplayItemsHome items={productsPublic}/>}
+      {productsPublic.length > 0 && <DisplayItemsHome items={productsPublic}/>}
       <br />
       <Container>
         <Image variant="top" src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"} style={{
