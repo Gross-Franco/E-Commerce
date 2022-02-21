@@ -1,10 +1,36 @@
 const { Router } = require("express");
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
 
-const router = Router();
+const { getOrders, getOrderId, getOrderStatus, addCategoryToProduct, removeCategoryFromProduct, createAdmin, addToInvetory, removeFromInvetory } = require('./controller')
+const { getAllProducts, createProduct, editProduct, getCategory, createCategory, allStatus, searchProductName, searchCategoryName } = require("./controller");
+
+// Importar todos los routers;
+
+const adminRouter = Router();
 
 // Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
 
-module.exports = router;
+adminRouter.get('/orders', getOrders)
+adminRouter.get('/orders/:id', getOrderId)
+adminRouter.get('/orders/status', getOrderStatus)
+
+adminRouter.get('/products', getAllProducts);
+adminRouter.post('/createProducts', createProduct);
+adminRouter.post('/editProducts', editProduct);
+adminRouter.get('/categories', getCategory)
+adminRouter.get('/categoryname', searchCategoryName)
+adminRouter.post('/createCategory', createCategory)
+adminRouter.get('/productname', searchProductName)
+
+adminRouter.post('/addCategory', addCategoryToProduct)
+adminRouter.post('/removeCategory', removeCategoryFromProduct)
+
+adminRouter.post('/createAdmin', createAdmin);
+
+adminRouter.post('/addInventory', addToInvetory);
+adminRouter.post('/removeInventory', removeFromInvetory)
+
+adminRouter.get('/status', allStatus)
+
+
+
+module.exports = adminRouter;

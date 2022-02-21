@@ -1,10 +1,15 @@
-import './App.css';
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./Redux/store";
+import Routes from "./routes/Routes";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Henry Countries</h1>
-    </div>
+    <Provider store={store}>
+      <React.StrictMode>
+        <Routes />
+      </React.StrictMode>
+    </Provider>
   );
 }
 
