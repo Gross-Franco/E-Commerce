@@ -37,11 +37,11 @@ export const getProductsPublic = () => {
     return (dispatch) => {
         axios.get(`${URL}/product`)
         .then((res)=>{
-            console.log(res)
             dispatch({ type:GET_PRODUCTS_PUBLIC, payload:res.data});
         },(err)=>{
             alert(err)
         })
+}
 }
 
 export const searchProductId = (id) => {

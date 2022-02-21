@@ -27,7 +27,7 @@ const Rutas = () => {
           path="/perfilUser"
           element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
         />
-        <Route path="/productDetail" element={<ProductDetail />} />
+        <Route path="/productDetail/:id" element={<ProductDetail />} />
         <Route
           path="/perfilUser"
           element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
