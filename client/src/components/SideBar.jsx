@@ -1,11 +1,15 @@
 import React from 'react'
 import { ControlContainer } from '../containers';
+import { useDispatch } from 'react-redux';
+import { setAddOrUpdate } from '../Redux/Actions/actions';
 
 const SideBar = ({setOption, setIsOpen}) => {
+  const dispatch = useDispatch();
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     setOption("");
     setIsOpen(false);
+    dispatch(setAddOrUpdate('add'));
   }
   return (
     <div className='admin-page--side-bar'>

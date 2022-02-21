@@ -159,6 +159,7 @@ const getAllProducts = async (req, res) => {
       description: product.description,
       SKU: product.SKU,
       price: product.price,
+      image: product.image,
       category: product.productCategories.map((x) => x.name),
       quantity: inventory.quantity,
     });
@@ -168,7 +169,7 @@ const getAllProducts = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  let { name, description, SKU, price, category, quantity } = req.body;
+  let { name, description, SKU, price, image, category, quantity } = req.body;
   try {
     let createdInventory = await ProductInventory.create({
       quantity,
@@ -179,6 +180,7 @@ const createProduct = async (req, res) => {
       description,
       SKU,
       price,
+      image,
       inventory_id: createdInventory.id,
     });
 

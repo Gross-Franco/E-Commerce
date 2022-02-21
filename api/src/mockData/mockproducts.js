@@ -5,6 +5,7 @@ const mockproducts = [
             "SKU": "RM-04PS",
             "image":"https://images.fravega.com/f300/48514eff248347b83bcab8f17ed60468.jpg.webp",
             "description": "Sony Headphones.",
+            "category": ["Electronica", "Audio", "Tecnologia" ],
             "inventory_id": "1"
         },
         {
@@ -13,6 +14,7 @@ const mockproducts = [
             "SKU": "WR-5249",
             "image":"https://www.apple.com/newsroom/images/product/iphone/standard/iphonex_front_back_new_glass_full.jpg.og.jpg?20211202",
             "description": "iPhone X.",
+            "category": ["Electronica", "Telefonia", "Tecnologia" ],
             "inventory_id": "2"
         },
         {
@@ -21,6 +23,7 @@ const mockproducts = [
             "price": "999.99",
             "SKU": "CF-745ZY",
             "description": "Macbook Air.",
+            "category": ["Electronica", "Computacion", "Tecnologia" ],
             "inventory_id": "4"
         },
         {
@@ -29,6 +32,7 @@ const mockproducts = [
             "price": "1999.99",
             "SKU": "FG-56TH",
             "description": "Macbook Pro 2019.",
+            "category": ["Electronica", "Computacion", "Tecnologia" ],
             "inventory_id": "5"
         },
         {
@@ -37,6 +41,7 @@ const mockproducts = [
             "image":"https://www.atajo.com.ar/images/00000HAD-S-KABAA65619HAD-S-KABAA-Consola-Nintendo-Switch-Neon-01.jpg",
             "SKU": "JK-543",
             "description": "Nintendo Switch.",
+            "category": ["Electronica", "Videojuegos", "Tecnologia" ],
             "inventory_id": "6"
         },
         {
@@ -45,6 +50,7 @@ const mockproducts = [
             "price": "299.99",
             "SKU": "XQ-77Y",
             "description": "Playstation 4 Pro.",
+            "category": ["Electronica", "Videojuegos", "Tecnologia" ],
             "inventory_id": "7"
         },
         {
@@ -53,6 +59,7 @@ const mockproducts = [
             "price": "279.99",
             "SKU": "GT-V091",
             "description": "Xbox One.",
+            "category": ["Electronica", "Videojuegos", "Tecnologia" ],
             "inventory_id": "8"
         },
         {
@@ -61,7 +68,8 @@ const mockproducts = [
             "price":"729.99",
             "SKU":"GE-V022",
             "description":"intel core i3 1005 G1| 4gb ram|1Tb|15.6 Full Hd",
-            "inventory_id":"2"
+            "category":["Electronica","Computacion","Tecnologia"],
+            "inventory_id":"3"
         }
     ]
 

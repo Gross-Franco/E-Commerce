@@ -14,7 +14,7 @@ const Product = ({ product }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardMedia className={classes.media} image="https://picsum.photos/200" title={product.name} />
+      <CardMedia className={classes.media} image={`${product.image}`} title={product.name} />
       <CardContent>
         <div className={classes.cardContent}>
           <Typography variant="h5">{product.name}</Typography>

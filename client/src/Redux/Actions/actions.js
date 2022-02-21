@@ -18,7 +18,7 @@ import {
     UPDATE_PRODUCT
 } from './actionTypes';
 
-const URL = "http://localhost:3004";
+const URL = "http://localhost:3001";
 
 export const getProducts = () => {
     return async (dispatch) => {
@@ -103,6 +103,6 @@ export const orderProducts = function() {
     return { type: ORDER_PRODCTS }
 }
 
-export const addOrUpdate = (addOrUpdate) => { 
+export const setAddOrUpdate = (addOrUpdate) => { 
     return { type: ADD_OR_UPDATE, payload: addOrUpdate}
 }

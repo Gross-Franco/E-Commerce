@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
 import p from "../helpers/mockProducts";
 import { Product } from "../components";
-import { getProducts } from "../Redux/Actions/actions";
+import { getProductsPublic } from "../Redux/Actions/actions";
 
 const Products = () => {
   // const { products } = p;
@@ -12,7 +12,7 @@ const Products = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(products.length === 0) dispatch(getProducts());
+    if(products.length === 0) dispatch(getProductsPublic());
   }, [])
 
   return (

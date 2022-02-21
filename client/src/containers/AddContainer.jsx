@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
-import { createProduct, getCategories } from "../Redux/Actions/actions";
+import { createProduct, getCategories, setAddOrUpdate } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 const AddContainer = ({ option, setIsOpen }) => {
 
   const { categories, addOrUpdate } = useSelector((state) => state);
-  console.log(addOrUpdate);
 
   const initialState = {
     name: addOrUpdate?.name || "",
@@ -53,10 +52,15 @@ const AddContainer = ({ option, setIsOpen }) => {
       setIsOpen(false);
     } else {
       // dispatch(updateProduct({...form, id: addOrUpdate.id}));
-      dispatch(addOrUpdate('add'))
+      dispatch(setAddOrUpdate('add'))
       setForm(initialState);
       setIsOpen(false);
     }
+  };
+  
+  const handleClick = () => {
+    dispatch(setAddOrUpdate('add'));
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -69,7 +73,7 @@ const AddContainer = ({ option, setIsOpen }) => {
   return (
     <div className="add--container">
       <div className="add--back">
-        <button onClick={() => setIsOpen(false)} className="add--back-btn">
+        <button onClick={handleClick} className="add--back-btn">
           <BsArrowLeftShort /> {option}
         </button>
       </div>
@@ -111,6 +115,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <input
                     type="number"
                     value={form.quantity}
+                    min="0"
                     name="quantity"
                     className="add-form--input"
                     onChange={handleChange}
@@ -137,6 +142,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 <label>Precio</label>
                 <input
                   type="number"
+                  step="0.01"
                   value={form.price}
                   name="price"
                   className="add-form--input"
@@ -151,7 +157,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 </header>
               </div>
               <div>
-                <input type="file" className="add-form--input" />
+                <input type="text" className="add-form--input" placeholder="https://ipsum/200/300" />
               </div>
             </div>
           </div>
