@@ -103,6 +103,6 @@ export const orderProducts = function() {
     return { type: ORDER_PRODCTS }
 }
 
-export const addOrUpdate = (addOrUpdate) => { 
+export const setAddOrUpdate = (addOrUpdate) => { 
     return { type: ADD_OR_UPDATE, payload: addOrUpdate}
 }

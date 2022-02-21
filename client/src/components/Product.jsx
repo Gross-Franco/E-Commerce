@@ -11,9 +11,11 @@ import { AddShoppingCart } from "@mui/icons-material";
 import useStyles from "../helpers/stylesProduct";
 import { Link } from "react-router-dom";
 
-const Product = ({ product }) => {
+
+const Product = ({ product, section }) => {
   const classes = useStyles();
   return (
+    <Link to={`/productDetail/${product.id}`} style={{textDecoration:'none'}}>
     <Card className={classes.root}>
       <Link to={`/productDetail/${product.id}`} style={{ textDecoration: 'none'}}>
 
@@ -34,6 +36,7 @@ const Product = ({ product }) => {
         </CardContent>
       </Link>
     </Card>
+    </Link>
   );
 };
 

@@ -1,7 +1,7 @@
 require("dotenv").config();
 const axios = require("axios");
 const { filter } = require("bluebird");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 
 const {
   Discount,
@@ -113,36 +113,24 @@ const createCategory = async (req, res) => {
   res.json(createdCategory);
 };
 
-const addCategoryToProduct = async (req, res) => {
-  let { id, category } = req.body;
-
-  let categoryDb = await ProductCategory.findAll({
+const addCategoryToProduct = async (productid, category) => {
+  let categoryDb = await ProductCategory.findOne({
     where: { name: category },
   });
-
   let product = await Product.findOne({
-    where: { id: id },
+    where: { id: productid },
   });
-
-  product.addProductCategory(categoryDb);
-
-  res.json({ product, msg: "added category to product" });
+  await product.addProductCategory(categoryDb.id);
 };
 
-const removeCategoryFromProduct = async (req, res) => {
-  let { id, category } = req.body;
-
-  let categoryDb = await ProductCategory.findAll({
+const removeCategoryFromProduct = async (productid, category) => {
+  let categoryDb = await ProductCategory.findOne({
     where: { name: category },
   });
-
   let product = await Product.findOne({
-    where: { id: id },
+    where: { id: productid },
   });
-
-  product.removeProductCategory(categoryDb);
-
-  res.json({ product, msg: "removed category to product" });
+  await product.removeProductCategory(categoryDb.id);
 };
 
 const getAllProducts = async (req, res) => {
@@ -159,6 +147,7 @@ const getAllProducts = async (req, res) => {
       description: product.description,
       SKU: product.SKU,
       price: product.price,
+      image: product.image,
       category: product.productCategories.map((x) => x.name),
       quantity: inventory.quantity,
     });
@@ -168,7 +157,7 @@ const getAllProducts = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  let { name, description, SKU, price, category, quantity } = req.body;
+  let { name, description, SKU, price, image, category, quantity } = req.body;
   try {
     let createdInventory = await ProductInventory.create({
       quantity,
@@ -179,6 +168,7 @@ const createProduct = async (req, res) => {
       description,
       SKU,
       price,
+      image,
       inventory_id: createdInventory.id,
     });
 
@@ -199,15 +189,44 @@ const createProduct = async (req, res) => {
 };
 
 const editProduct = async (req, res, next) => {
-
-  // falta editar bastante
-
-  const { id, name, description, price, SKU, category, quantity } = req.body;
-
+  const { id, name, image, description, price, SKU, category, quantity } = req.body;
   try {
-    await Product.update({ name, description, price, SKU }, { where: { id: id } });
-
-    return res.json({ productUpdated, msg: "product updated" });
+    const newInventory = await ProductInventory.create({
+      quantity,
+    });
+    const productToUpdate = await Product.findOne({
+      where: {
+        id: id
+      },
+      include: {model: ProductCategory}
+    })
+    productToUpdate.set({
+      name: name,
+      image: image,
+      description: description,
+      price: price,
+      SKU: SKU,
+      inventory_id: newInventory.id
+    })
+    await productToUpdate.save();
+    
+    await Promise.all(productToUpdate.productCategories.map(async oldCategory => {
+      if(!category.includes(oldCategory)) {
+        await removeCategoryFromProduct(id, oldCategory.name)
+      }
+    }))
+    await Promise.all(category.map(async newCategory => {
+      if(!productToUpdate.productCategories.includes(newCategory)) {
+        await addCategoryToProduct(id, newCategory)
+      }
+    }))
+    const updated = await Product.findOne({
+      where: {
+        id: id
+      },
+      include: {model: ProductCategory}
+    })    
+    return res.send(updated);
   } catch (error) {
     next(error);
   }
