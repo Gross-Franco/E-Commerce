@@ -101,7 +101,9 @@ export default function Home() {
       {
         // ------------------------------
       }
+
       {products.length > 0 && <DisplayItemsHome items={products}/>}
+
       <br />
       <Container>
         <Image variant="top" src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"} style={{

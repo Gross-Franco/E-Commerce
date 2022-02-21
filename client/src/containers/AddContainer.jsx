@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
-import { createProduct, getCategories, updateProduct } from "../Redux/Actions/actions";
+
+import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
-
-
 const AddContainer = ({ option, setIsOpen }) => {
-
   const { categories, addOrUpdate } = useSelector((state) => state);
 
   const initialState = {
@@ -18,6 +16,7 @@ const AddContainer = ({ option, setIsOpen }) => {
     category: addOrUpdate?.category || [],
     SKU: addOrUpdate?.SKU || "",
     quantity: addOrUpdate?.quantity || "",
+    image: addOrUpdate?.image || "",
   };
 
   const [form, setForm] = useState(initialState);
@@ -46,16 +45,21 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const handleSubmit = (e) => {
-    if(addOrUpdate === 'add') {
+    if (addOrUpdate === "add") {
       dispatch(createProduct(form));
       setForm(initialState);
       setIsOpen(false);
     } else {
       dispatch(updateProduct({...form, id: addOrUpdate.id}));
-      dispatch(addOrUpdate('add'))
+      dispatch(setAddOrUpdate("add"));
       setForm(initialState);
       setIsOpen(false);
     }
+  };
+
+  const handleClick = () => {
+    dispatch(setAddOrUpdate("add"));
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -68,7 +72,7 @@ const AddContainer = ({ option, setIsOpen }) => {
   return (
     <div className="add--container">
       <div className="add--back">
-        <button onClick={() => setIsOpen(false)} className="add--back-btn">
+        <button onClick={handleClick} className="add--back-btn">
           <BsArrowLeftShort /> {option}
         </button>
       </div>
@@ -110,6 +114,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <input
                     type="number"
                     value={form.quantity}
+                    min="0"
                     name="quantity"
                     className="add-form--input"
                     onChange={handleChange}
@@ -136,6 +141,7 @@ const AddContainer = ({ option, setIsOpen }) => {
                 <label>Precio</label>
                 <input
                   type="number"
+                  step="0.01"
                   value={form.price}
                   name="price"
                   className="add-form--input"
@@ -150,7 +156,14 @@ const AddContainer = ({ option, setIsOpen }) => {
                 </header>
               </div>
               <div>
-                <input type="file" className="add-form--input" />
+                <input
+                  type="text"
+                  name="image"
+                  value={form.image}
+                  className="add-form--input"
+                  placeholder="https://ipsum/200/300"
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>
@@ -175,18 +188,22 @@ const AddContainer = ({ option, setIsOpen }) => {
               </header>
               <div>
                 <div
-                  className="add-form--input"
+                  className="add-form--input add-form--input-dropdown"
                   onClick={() => setOpenDropdown(!openDropdown)}
                 >
-                  {" "}
-                  Elige categoria <RiArrowDropDownLine />{" "}
+                  <span>Elige categoria</span>
+                  <RiArrowDropDownLine
+                    className={`add-form--arrow-dropdown ${
+                      openDropdown ? "open" : ""
+                    }`}
+                  />
                 </div>
               </div>
             </div>
             {openDropdown && (
               <div className="add-form--input-wrapper">
                 {categories.map((category) => (
-                  <div key={category.id}>
+                  <div key={category.id} className="add-form--dropdown-option">
                     <label>{category.name}</label>
                     <input
                       type="checkbox"
