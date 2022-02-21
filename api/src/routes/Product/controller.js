@@ -4,37 +4,65 @@ const { Discount, ProductCategory, ProductInventory, Product } = require("../../
 
 const getProducts = async (req, res, next) => {
 	try {
-		let products = await Product.findAll({
+		let productSearch = await Product.findAll({
 			include: {
-				model: ProductInventory,
-				where: {
-					quantity: {
-						[Op.gt]: 0,
-					},
-				},
-			},
+				model: ProductCategory,
+				attributes: ['name']
+			}
 		});
-		return res.status(200).json(products);
+		let allProducts = await Promise.all(productSearch.map(async product => {
+			let productData = product.dataValues;
+			let productinv = await ProductInventory.findOne({where: {id:productData.inventory_id}});
+			if(productinv.dataValues.quantity > 0) return {
+				id: productData.id,
+				name: productData.name,
+				description: productData.description,
+				image:productData.image,
+				SKU: productData.SKU,
+				price: productData.price,
+				category: productData.productCategories.map(x => x.name),
+				quantity: productinv.quantity
+			}
+		}))
+		let response = allProducts.filter(product => product != null)
+		// console.log(allProducts)
+		return res.status(200).json(response);
 	} catch (error) {
 		next(error);
 	}
 };
 
 const filterByCategory = async (req, res) => {
-	const { category } = req.params;
-	if (typeof category != "string" || !category) {
-		res.status(404).send("Invalid category");
-	}
+	
+	console.log(req.body)
+
+	const categories  = req.body;
 	try {
 		const filtered = await Product.findAll({
 			include: {
 				model: ProductCategory,
 				where: {
-					name: category,
-				},
+					name: categories
+				}
 			},
 		});
-		res.json(filtered);
+		let response = [];
+		for (let product of filtered) {
+			let inventory = await ProductInventory.findOne({
+				where: { id: product.inventory_id },
+			});
+			inventory.quantity > 0 && response.push({
+				id: product.id,
+				name: product.name,
+				description: product.description,
+				SKU: product.SKU,
+				price: product.price,
+				category: product.productCategories.map((x) => x.name),
+				quantity: inventory.quantity,
+			});
+		}
+
+		res.json(response);
 	} catch (err) {
 		console.log(err);
 		res.status(404).send(err);
@@ -43,12 +71,32 @@ const filterByCategory = async (req, res) => {
 
 const getProductId = async (req, res) => {
 	const { id } = req.params;
-	if (!id || typeof id !== "number") {
+	if (!id ||  isNaN(Number(id))) { 
 		res.status(404).send("Invalid ID");
 	}
 	try {
-		const productDetail = await Product.findByPk(id);
-		res.json(productDetail);
+		const productDetail = await Product.findOne({
+			where: {
+				id:id
+			},
+			include: {
+				model: ProductCategory
+			}
+		})
+		let inventory = await ProductInventory.findOne({
+			where: { id: productDetail.inventory_id },
+		});
+		let response = {
+			id: productDetail.id,
+			name: productDetail.name,
+			image: productDetail.image,
+			description: productDetail.description,
+			SKU: productDetail.SKU,
+			price: productDetail.price,
+			category: productDetail.productCategories.map((x) => x.name),
+			quantity: inventory.quantity,
+		};
+		res.json(response);
 	} catch (err) {
 		console.log(err);
 		res.status(404).send(err);
@@ -56,8 +104,12 @@ const getProductId = async (req, res) => {
 };
 
 const searchProductName = async (req, res) => {
-	const { name } = req.params;
+
+	
+
+	const { name } = req.query;
 	if (!name || typeof name !== "string") {
+
 		return res.status(404).send("Invalid name");
 	}
 	try {

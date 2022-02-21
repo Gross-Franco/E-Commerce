@@ -1,14 +1,20 @@
 const { Router } = require("express");
-const { Cart, TotalPrice, deleteProductFromCart }  = require('./controller');
+const { shoppingSessionInit, addCartItem, shoppingTotalEdit, deleteShoppingSession, editItemQuantity, deleteCartItem, createOrder }  = require('./controller');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
-const shopingRouter = Router();
+const router = Router();
 
 // Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
-shopingRouter.get('/cart', Cart);
-shopingRouter.get('/totalPrice', TotalPrice);
-shopingRouter.get('/deleteProductFromCart', deleteProductFromCart);
+//shopping session
+router.post("/session", shoppingSessionInit);
+router.put("/session", shoppingTotalEdit);
+router.delete("/session", deleteShoppingSession);
+//cart items
+router.post("/cart", addCartItem);
+router.put("/cart", editItemQuantity);
+router.delete("/cart", deleteCartItem);
+//purchase order
+router.post("/order", createOrder);
 
-module.exports = shopingRouter;
+module.exports = router;

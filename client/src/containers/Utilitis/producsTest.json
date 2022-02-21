@@ -1,0 +1,59 @@
+[
+  {
+          "Nombre": "Nintendo DS",
+          "valor":"100$",
+         "Image":"https://cdn.pixabay.com/photo/2017/04/04/18/09/video-game-console-2202585_960_720.jpg"
+  },
+    {
+      "Nombre": "Xbox Series x",
+         "valor":"150$",
+         "Image":"https://cdn.pixabay.com/photo/2019/04/20/21/18/xbox-4142757_960_720.jpg"
+  },
+    {
+      
+       "Nombre": "Portatil intel",
+          "valor":"120$",
+         "Image":"https://cdn.pixabay.com/photo/2021/11/05/11/08/laptop-6771039_960_720.jpg"
+  },
+    {
+       "Nombre": "Macbook",
+       "valor":"140$",
+         "Image":"https://cdn.pixabay.com/photo/2014/09/24/14/29/macbook-459196_960_720.jpg"
+  },
+    {
+       "Nombre": "Nintendo Famicon",
+       "valor":"120$",
+         "Image":"https://cdn.pixabay.com/photo/2017/08/17/01/25/nes-2649705_960_720.jpg"
+  },
+    {
+       "Nombre": "Nintendo Switch",
+       "valor":"90$",
+         "Image":"https://cdn.pixabay.com/photo/2017/03/18/16/23/nintendo-switch-2154437_960_720.jpg"
+  },
+    {
+       "Nombre": "RTX 20 80",
+       "valor":"245$",
+         "Image":"https://cdn.pixabay.com/photo/2020/06/06/01/21/nvidia-5264921_960_720.jpg"
+  },
+    {
+      "Nombre": "GTX 1070",
+       "valor":"200$",
+         "Image":"https://cdn.pixabay.com/photo/2017/04/04/17/23/nvidia-2202280_960_720.jpg"
+  },
+    {
+      "Nombre": "joysticks PS4",
+       "valor":"60$",
+         "Image":"https://cdn.pixabay.com/photo/2021/09/07/07/11/joysticks-6603119_960_720.jpg"
+  },
+    {
+       "Nombre": "joysticks Xbox",
+       "valor":"62$",
+         "Image":"https://cdn.pixabay.com/photo/2016/02/14/20/51/xbox-360-e-1200222_960_720.jpg"
+  },
+  
+   {     "Nombre": "Apple watch",
+         "valor":"70$",
+         "Image":"https://cdn.pixabay.com/photo/2017/10/28/23/47/dock-2898497_960_720.jpg"
+  }
+ 
+  ]

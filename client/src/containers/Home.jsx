@@ -1,4 +1,6 @@
 import React from "react";
+import { useState, useEffect } from "react";
+
 
 import Button from "react-bootstrap/Button";
 import CardGroup from "react-bootstrap/CardGroup";
@@ -8,51 +10,89 @@ import Carousel from "react-bootstrap/Carousel";
 
 import Holder from "react-holder";
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import { Footer, NavBar } from ".";
+
+import ProducsTest from "./Utilitis/producsTest.json";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts, getProductsPublic } from "./../Redux/Actions/actions"
+import { GET_PRODUCTS, GET_PRODUCTS_PUBLIC } from "./../Redux/Actions/actionTypes"
+import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
+
+
+
 
 export default function Home() {
+
+  const [producs, SetProducts] = useState(Object.values(ProducsTest));
+
+  const [ValueRandom, SetValueRandom] = useState([]);
+
+  let { productsPublic } = useSelector((state) => state);
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+     dispatch(getProductsPublic(GET_PRODUCTS_PUBLIC))
+  }, [])
+
+
+
   return (
     <div>
       {/* <h1>HOME</h1> */}
-
+      <NavBar />
       <Conntainer>
-        <Carousel>
+        <Carousel style={{
+          transform: "scale(1.21, 0.8)",
+          top: "-120px",
+          right: "1px"
+        }}>
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://media.istockphoto.com/photos/asian-male-florist-owner-of-small-business-flower-shop-using-digital-picture-id1317277259"
+              src="https://cdn.pixabay.com/photo/2020/01/24/13/26/camera-4790247_960_720.jpg"
               alt="First slide"
             />
-            <Carousel.Caption>
-              <h3>First slide label</h3>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            <Carousel.Caption style={{
+              transform: "scale(1, 2)",
+
+            }}>
+              <h3>Go pro Started</h3>
+              <p>Precio: 160.00$</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://media.istockphoto.com/photos/multiethnic-team-of-composers-working-in-studio-picture-id1168477456"
+              src="https://cdn.pixabay.com/photo/2016/10/04/22/11/gopro-1715601_960_720.jpg"
               alt="Second slide"
             />
 
-            <Carousel.Caption>
-              <h3>Second slide label</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <Carousel.Caption style={{
+              transform: "scale(1, 2)",
+
+            }}>
+              <h3>Kodad con reflex 2.3</h3>
+              <p>Precio: 200.00$</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://media.istockphoto.com/photos/business-owner-flower-shop-picture-id925172618"
+              src="https://cdn.pixabay.com/photo/2019/01/24/23/54/nintendo-switch-3953601_960_720.jpg"
               alt="Third slide"
             />
 
-            <Carousel.Caption>
-              <h3>Third slide label</h3>
-              <p>
-                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-              </p>
+            <Carousel.Caption style={{
+              transform: "scale(1, 2)",
+
+            }}>
+              <h3 >nintendo-switch lite</h3>
+              <p>Precio: 180.00$</p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
@@ -61,149 +101,23 @@ export default function Home() {
       {
         // ------------------------------
       }
-
-      <Conntainer>
-        <CardGroup>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This card has supporting text below as a natural lead-in to
-                additional content.{" "}
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This card has even longer content
-                than the first to show that equal height action.
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This card has even longer content
-                than the first to show that equal height action.
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-        </CardGroup>
-        {
-          // ------------------------------
-        }
-        <CardGroup>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This card has supporting text below as a natural lead-in to
-                additional content.{" "}
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This card has even longer content
-                than the first to show that equal height action.
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-          <Card>
-            <Card.Img variant="top" src="holder.js/100px300" />
-            <Card.Body>
-              <Card.Title>Card title</Card.Title>
-              <Card.Text>
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This card has even longer content
-                than the first to show that equal height action.
-              </Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
-            </Card.Footer>
-          </Card>
-        </CardGroup>
-      </Conntainer>
-
-      <div />
-      <br />
+      {productsPublic.length>0&& <DisplayItemsHome items={productsPublic}/>}
       <br />
       <Container>
-        <Image variant="top" src="holder.js/100px300" />
-        <ButtonGroup>
-          <Button className="sticky-top">Ver</Button>
-          {/* <Button className="position-absolute top-100 start-50">Middle</Button>
-    <Button className="position-absolute top-100 start-100">Right</Button> */}
-        </ButtonGroup>
-      </Container>
+        <Image variant="top" src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"} style={{
+          position: "relative",
+          right: "75px",
+          top: "15px",
+          transform: "scale(1, 0.8)",
 
-      <div />
+        }} />
 
-      <Container>
-        <Image variant="top" src="holder.js/100px300" />
-        <ButtonGroup>
-          <Button className="sticky-top">Ver</Button>
-          {/* <Button className="position-absolute top-100 start-50">Middle</Button>
-          <Button className="position-absolute top-100 start-100">Right</Button> */}
-        </ButtonGroup>
+
+        <br />
+
       </Container>
+      <Footer />
     </div>
   );
 }
+

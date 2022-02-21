@@ -1,8 +1,12 @@
 import React from "react";
 import { BiSearch } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { searchProductName } from "../Redux/Actions/actions";
 
 export default function SearchBar() {
   const [busqueda, setBusqueda] = React.useState("");
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setBusqueda(e.target.value);
@@ -10,7 +14,8 @@ export default function SearchBar() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(busqueda);
+    dispatch(searchProductName(busqueda))
+    setBusqueda("");
   };
 
   return (
