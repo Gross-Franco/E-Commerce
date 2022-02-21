@@ -13,11 +13,12 @@ export default function SearchBar() {
     dispatch(searchProductName(busqueda))
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(searchProductName(busqueda))
-    setBusqueda("");
-  };
+  
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   dispatch(searchProductName(busqueda))
+  //   setBusqueda("");
+  // };
 
   return (
     <div className="catalog-search-input--container">
