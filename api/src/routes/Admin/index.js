@@ -30,7 +30,7 @@ adminRouter.get('/categoryname', searchCategoryName)
 adminRouter.post('/createCategory', createCategory)
 
 // Admin routes
-adminRouter.post('/createAdmin', createAdmin);
-adminRouter.post('/deleteUser', deleteUser)
+adminRouter.get('/createAdmin/:id', createAdmin);
+adminRouter.get('/deleteUser/:id', deleteUser)
 
 module.exports = adminRouter;

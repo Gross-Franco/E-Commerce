@@ -133,7 +133,11 @@ export default function ProductDetail() {
                   <h6>en 12x 9369 pesos sin interés</h6>
 
                   <Card.Title>
-                    Stock disponible: {productDetail?.quantity}
+                    {
+                      productDetail?.quantity > 0 ? `Stock disponible: ${productDetail?.quantity}`:
+                      'Producto no disponible'
+                    }
+                    
                   </Card.Title>
 
                   <br />
