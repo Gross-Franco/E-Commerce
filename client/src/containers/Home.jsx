@@ -1,36 +1,36 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 
-import Button from "react-bootstrap/Button";
+/* import Button from "react-bootstrap/Button";
 import CardGroup from "react-bootstrap/CardGroup";
-import Card from "react-bootstrap/Card";
+import Card from "react-bootstrap/Card"; */
 import Conntainer from "react-bootstrap/Container";
 import Carousel from "react-bootstrap/Carousel";
 
-import Holder from "react-holder";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Image from "react-bootstrap/Image";
+/* import Holder from "react-holder";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col"; */
+import Image from "react-bootstrap/Image";
+import Container from "react-bootstrap/Container";
 import { Footer, NavBar } from ".";
-
-import ProducsTest from "./Utilitis/producsTest.json";
+/* 
+import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic } from "./../Redux/Actions/actions"
+import { getProductsPublic } from "./../Redux/Actions/actions"/* 
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
-import products from "../helpers/mockProducts";
+import products from "../helpers/mockProducts"; */
 
 
 
 
 export default function Home() {
 
-  const [producs, SetProducts] = useState(Object.values(ProducsTest));
+  /* const [producs, SetProducts] = useState(Object.values(ProducsTest));
 
-  const [ValueRandom, SetValueRandom] = useState([]);
+  const [ValueRandom, SetValueRandom] = useState([]); */
 
   let { products } = useSelector((state) => state);
   const dispatch = useDispatch()

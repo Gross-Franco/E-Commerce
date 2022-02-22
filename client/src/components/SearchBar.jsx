@@ -27,9 +27,9 @@ export default function SearchBar() {
           placeholder="Buscar producto"
           onChange={handleChange}
         />
-        {/* <button className="catalog-search--submit-button">
+        <div className="catalog-search--submit-button">
           <BiSearch className="catalog-search--submit-button-icon" />
-        </button> */}
+        </div> 
       </form>
     </div>
   );
