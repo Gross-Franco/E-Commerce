@@ -163,28 +163,28 @@ const postReviewProduct = async (req,res)=>{
         }
     }
     
-    const OrdersUser = async (req, res) => {
-        const {first_name, last_name} = req.body;
-        try {
-            const Myorders = await User.findAll({
-                include: {
-                    model: OrderDetails,
-                    as: "PurchaseOrder",
+const OrdersUser = async (req, res) => {
+    const {first_name, last_name} = req.body;
+    try {
+        const Myorders = await User.findAll({
+            include: {
+                model: OrderDetails,
+                as: "PurchaseOrder",
 
-                }
-            })
-           
-            if(first_name && last_name) {
-              const map = Myorders.map(e => e.dataValues)
-              const myOrder = map.filter(e=> e.first_name.toLowerCase() === first_name.toLowerCase() && 
-                e.last_name.toLowerCase() === last_name.toLowerCase());
-              res.status(200).send(myOrder) 
             }
-        } catch (error) {
-            console.log(error);
-            res.status(404).send(error)
+        })
+        
+        if(first_name && last_name) {
+          const map = Myorders.map(e => e.dataValues)
+          const myOrder = map.filter(e=> e.first_name.toLowerCase() === first_name.toLowerCase() && 
+            e.last_name.toLowerCase() === last_name.toLowerCase());
+          res.status(200).send(myOrder) 
         }
+    } catch (error) {
+        console.log(error);
+        res.status(404).send(error)
     }
+}
 
 const forgotPassword = async(req, res) =>{
 
@@ -314,7 +314,8 @@ const passwordResetToken = async(req, res) =>{
 
 
 module.exports = {
-    getUsers, 
+    getUsers,
+    OrdersUser, 
     addAdress, 
     postReviewProduct,
     createUser,

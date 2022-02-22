@@ -3,7 +3,7 @@ const { Router } = require("express");
 const { getOrders, getOrderId, allStatus, filterOrderByStatus, changeOrderStatus } = require('./controllerOrders')
 const { getAllProducts, createProduct, editProduct, searchProductName } = require('./controllerProducts')
 const { getCategory, createCategory, searchCategoryName } = require("./controllerCategories");
-const { createAdmin } = require('./controller')
+const { createAdmin, deleteUser } = require('./controller')
 
 // Importar todos los routers;
 
