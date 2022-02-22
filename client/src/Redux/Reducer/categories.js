@@ -1,6 +1,5 @@
 import {
   GET_CATEGORIES,
-  SEARCH_PRODUCT_ID,
   SEARCH_CATEGORY_NAME,
   CREATE_CATEGORY,
 } from "../Actions/actionTypes";
@@ -12,12 +11,6 @@ const initialState = {
 
 const reducer = (state = initialState, {type, payload}) => {
   switch (type) {
-
-    case SEARCH_PRODUCT_ID:
-      return {
-        ...state,
-        productDetail: payload
-      }
 
     case CREATE_CATEGORY: 
       return {
