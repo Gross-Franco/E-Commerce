@@ -16,7 +16,6 @@ import {
 const initialState = {
   products: [],
   productDetail: {},
-  UserTest: [],
   loadProducts: true,
 };
 

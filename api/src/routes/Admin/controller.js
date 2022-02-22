@@ -4,8 +4,8 @@ const {
   User
 } = require("../../db.js");
 
-const createAdmin = async (req, res) => {
-  let { id } = req.body;
+const createAdmin = async function (req, res) {
+  let { id } = req.params;
 
   User.update(
     {
@@ -14,20 +14,14 @@ const createAdmin = async (req, res) => {
     { where: { id: id } }
   );
 
-  let updatedUser = await User.findOne({
-    where: { id: id },
-  });
-
-  res.json({ updatedUser, msg: "User changed to admin" });
+  res.send("User changed to admin");
 };
 
-const deleteUser = async(req, res) =>{
-    let {
-        email
-    } = req.body
+const deleteUser = async function (req, res) {
+    let { id } = req.params;
 
     User.destroy(
-        {where: {email: email}}
+        {where: {id: id}}
     )
 
     res.status(200).send("User deleted")

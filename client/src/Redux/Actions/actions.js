@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { 
     GET_PRODUCTS,
-    GET_ALL_PRODUCTS, 
-    GET_BACKUP, 
     GET_CATEGORIES, 
     SEARCH_PRODUCT_ID, 
     SEARCH_PRODUCT_NAME, 
@@ -10,13 +8,15 @@ import {
     CREATE_PRODUCT, 
     FILTER_PRODUCTS, 
     ORDER_PRODCTS,
-    GET_USER,
+    GET_USERS,
     CREATE_CATEGORY,
     SEARCH_CATEGORY_NAME,
     GET_PRODUCTS_PUBLIC,
     ADD_OR_UPDATE,
     UPDATE_PRODUCT,
-    SEARCH_PRODUCT_NAME_PUBLIC
+    SEARCH_PRODUCT_NAME_PUBLIC,
+    PROMOTE_USER,
+    DELETE_USER
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -93,10 +93,6 @@ export const createCategory = (newCategory) => {
     }
 }
 
-export const getBackup = function() {
-    return { type: GET_BACKUP }
-}
-
 export const deleteProduct = function() {
     return { type: DELETE_PRODUCT }
 }
@@ -113,4 +109,25 @@ export const orderProducts = function() {
 
 export const setAddOrUpdate = (addOrUpdate) => { 
     return { type: ADD_OR_UPDATE, payload: addOrUpdate}
+}
+
+export const getUsers = () => {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/user/getUsers`);
+        dispatch({ type: GET_USERS, payload: response.data});
+    }
+}
+
+export const promoteUser = (userId) => {
+    return async (dispatch) => {
+        const post = await axios.get(`${URL}/admin/createAdmin/${userId}`); // chequear con la ruta del server
+        dispatch({ type: PROMOTE_USER, payload: post.data});
+    }
+}
+
+export const deleteUser = (userId) => {
+    return async (dispatch) => {
+        const post = await axios.get(`${URL}/admin/deleteUser/${userId}`); 
+        dispatch({ type: DELETE_USER, payload: post.data});
+    }
 }
