@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, STRING } = require('sequelize');
 const bcrypt = require('bcrypt');
 var validator = require('validator');
 
@@ -51,6 +51,14 @@ module.exports = (sequelize) => {
     isAdmin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    resetPasswordToken:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    resetPasswordExpires: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
 
 },{
