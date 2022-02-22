@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {User, UserAddress, UserPayment, Product, Review, OrderDetails} = require ('../../db.js')
+const {User, UserAddress, UserPayment, Product, Review, OrderDetails  } = require ('../../db.js')
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -315,6 +315,7 @@ const passwordResetToken = async(req, res) =>{
 
 module.exports = {
     getUsers, 
+    OrdersUser,
     addAdress, 
     postReviewProduct,
     createUser,
