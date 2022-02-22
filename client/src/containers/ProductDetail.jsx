@@ -9,7 +9,7 @@ import { searchProductId } from "../Redux/Actions/actions";
 import { useParams } from "react-router-dom";
 
 export default function ProductDetail() {
-  const { productDetail } = useSelector((state) => state);
+  const { productDetail } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const { id } = useParams();
 

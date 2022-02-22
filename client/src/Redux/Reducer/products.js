@@ -18,7 +18,6 @@ const initialState = {
   productDetail: {},
   UserTest: [],
   loadProducts: true,
-  addOrUpdate: 'add'
 };
 
 const rootReducer = (state = initialState, {type, payload}) => {
@@ -78,6 +77,7 @@ const rootReducer = (state = initialState, {type, payload}) => {
         ...state,
         loadProducts: true
       }
+
     default:
       return state;
   }
