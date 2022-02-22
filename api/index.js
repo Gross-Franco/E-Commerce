@@ -19,6 +19,7 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { mockorders } = require("./src/mockData/mockorders");
+const { mockorderItems } = require("./src/mockData/mockorderItems")
 const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
@@ -26,11 +27,13 @@ const { mockinventory } = require("./src/mockData/mockinventory");
 const {
   conn,
   OrderDetails,
+  OrderItems,
   User,
   Product,
   ProductCategory,
   ProductInventory,
 } = require("./src/db.js");
+// const { mockorderItems } = require("./src/mockData/mockorderItems.js");
 const { PORT } = process.env;
 
 // Syncing all the models at once.
@@ -48,6 +51,7 @@ conn.sync({ force: true }).then(() => {
       })
     })}).catch(error => console.log(error));
     OrderDetails.bulkCreate(mockorders);
+    OrderItems.bulkCreate(mockorderItems)
     User.bulkCreate(mockusers);
     console.log(`%s listening at ${PORT || 3001}`); // eslint-disable-line no-console
   });
