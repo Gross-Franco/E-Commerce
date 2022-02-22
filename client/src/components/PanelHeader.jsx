@@ -6,8 +6,8 @@ const PanelHeader = ({ title, setIsOpen }) => {
     <div className="panel--header">
       <h2>{title}</h2>
 
-      {title !== "Pedidos" && (
-        <button
+      {(title !== "Pedidos" && title !== "Usuarios") && (
+       <button
           className="panel--header-button"
           onClick={() => setIsOpen((prev) => !prev)}
         >

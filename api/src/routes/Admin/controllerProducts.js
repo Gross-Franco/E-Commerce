@@ -8,7 +8,11 @@ const {
 } = require("../../db.js");
 
 const getAllProducts = async (req, res) => {
-    let search = await getInfoProducts();
+    let search = await Product.findAll({
+      include: {
+        model: ProductCategory
+      }
+    });
   
     let allProducts = [];
     for (let product of search) {
