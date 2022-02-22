@@ -38,7 +38,7 @@ const mockproducts = [
             "image":"https://www.atajo.com.ar/images/00000HAD-S-KABAA65619HAD-S-KABAA-Consola-Nintendo-Switch-Neon-01.jpg",
             "SKU": "JK-543",
             "description": "Nintendo Switch.",
-            "inventory_id": "6"
+            "inventory_id": "6",
         },
         {
             "name": "Playstation 4",

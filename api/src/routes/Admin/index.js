@@ -31,5 +31,6 @@ adminRouter.post('/createCategory', createCategory)
 
 // Admin routes
 adminRouter.post('/createAdmin', createAdmin);
+adminRouter.post('/deleteUser', deleteUser)
 
 module.exports = adminRouter;

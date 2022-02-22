@@ -21,6 +21,19 @@ const createAdmin = async (req, res) => {
   res.json({ updatedUser, msg: "User changed to admin" });
 };
 
+const deleteUser = async(req, res) =>{
+    let {
+        email
+    } = req.body
+
+    User.destroy(
+        {where: {email: email}}
+    )
+
+    res.status(200).send("User deleted")
+}
+
 module.exports = {
   createAdmin,
+  deleteUser
 };
