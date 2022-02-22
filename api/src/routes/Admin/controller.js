@@ -10,14 +10,18 @@ const {
   Product,
   OrderDetails,
   OrderItems,
+  CartItems
 } = require("../../db.js");
 
 const getOrderStatus = async (req, res) => {
+  const status = req.body
   try {
-    const status = await OrderDetails.findAll({
-      attributes: ["status"],
+    const estatus = await OrderDetails.findAll({
+      attributes: ['status'], 
     });
-    res.status(200).send(status);
+    console.log(estatus)
+    
+    res.status(200).send(estatus);
   } catch (err) {
     console.log(err);
     res.status(404).send(err);
@@ -26,11 +30,19 @@ const getOrderStatus = async (req, res) => {
 
 const filterOrderByStatus = async (req, res) => {
   try {
-    const { status } = req.params;
-    const filteredOrders = await OrderDetails.findAll({
-      where: { status: status },
+    const {status}  = req.body;
+    console.log(status)
+    const allOrders = await OrderDetails.findAll({
+      include: {
+        model: OrderItems,
+        as: 'CartItems'
+      }
     });
-    res.json(filteredOrders);
+    console.log(allOrders)
+    const map = allOrders.map(e => e.dataValues)
+    console.log(map)
+    const finalStatus = map.filter(e=> e.status === status)
+     finalStatus.length? res.status(200).send(finalStatus) : res.status(404).send('no esta')
   } catch (err) {
     console.log(err);
     res.status(404).send(err);
@@ -41,9 +53,12 @@ const changeOrderStatus = async (req, res) => {
   try {
     const { orderId, status } = req.body;
     const order = await OrderDetails.findByPk(orderId);
-    order.status = status;
+    order.set({
+     status : status
+      
+    })
     await order.save();
-    res.send("Order updated");
+    res.send(order);
   } catch (err) {
     console.log(err);
     res.status(404).send(err);
@@ -65,7 +80,12 @@ const getInfoProducts = async () => {
 
 const getOrders = async (req, res) => {
   try {
-    let orders = await OrderItems.findAll();
+    let orders = await OrderDetails.findAll({
+      include: {
+        model: OrderItems,
+        as: 'CartItems'
+      }
+    });
     res.status(200).send(orders);
   } catch (err) {
     console.log(err);
@@ -232,10 +252,16 @@ const editProduct = async (req, res, next) => {
   }
 };
 const allStatus = async (req, res) => {
-  const status = await OrderDetails.findAll({
-    attributes: ["status"],
+  const {status} = req.body
+  const estatus = await OrderDetails.findAll({
+    attributes: ['status'],
+    include: {
+      model :  OrderItems,
+      as: "CartItems",
+      attributes: ['product_id'],
+    }
   });
-  res.send(status);
+  res.send(estatus);
 };
 
 const addToInvetory = async (req, res) => {
