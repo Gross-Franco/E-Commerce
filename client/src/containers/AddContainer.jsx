@@ -7,7 +7,8 @@ import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../
 import { useDispatch, useSelector } from "react-redux";
 
 const AddContainer = ({ option, setIsOpen }) => {
-  const { categories, addOrUpdate } = useSelector((state) => state);
+  const { categories } = useSelector((state) => state.categories);
+  const { addOrUpdate } = useSelector((state) => state.general);
 
   const initialState = {
     name: addOrUpdate?.name || "",
