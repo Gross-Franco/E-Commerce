@@ -12,12 +12,13 @@ import {
   GET_USER,
   SEARCH_CATEGORY_NAME,
   CREATE_CATEGORY,
-  ADD_OR_UPDATE
+  ADD_OR_UPDATE,
+  SEARCH_PRODUCT_NAME_PUBLIC,
+  UPDATE_PRODUCT
 } from "./Actions/actionTypes";
 
 const initialState = {
   products: [],
-  productsPublic:[],
   productDetail: {},
   UserTest: [],
   categories: [],
@@ -39,7 +40,7 @@ const rootReducer = (state = initialState, action) => {
       case GET_PRODUCTS_PUBLIC:
       return {
         ...state,
-        productsPublic: action.payload,
+        products: action.payload,
       };
     case CREATE_PRODUCT:
       return {
@@ -70,6 +71,13 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         products: action.payload,
       }
+
+    case SEARCH_PRODUCT_NAME_PUBLIC:
+      return {
+        ...state,
+        products: action.payload,
+      }
+
     case  SEARCH_PRODUCT_ID:{
       return{
         ...state,
@@ -100,7 +108,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         addOrUpdate: action.payload
       }
-      
+    
+    case UPDATE_PRODUCT:
+      return {
+        ...state,
+        loadProducts: true
+      }
     default:
       return { ...state };
   }

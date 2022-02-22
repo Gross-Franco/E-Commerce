@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
+
 import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
