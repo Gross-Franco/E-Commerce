@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts, setAddOrUpdate } from "../Redux/Actions/actions";
 
 const ProductTable = ({ setIsOpen }) => {
-  const { products, loadProducts } = useSelector((state) => state);
+  const { products, loadProducts } = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   if(loadProducts) dispatch(getProducts());

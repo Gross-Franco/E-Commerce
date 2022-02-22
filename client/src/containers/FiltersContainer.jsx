@@ -5,7 +5,7 @@ import { getCategories, filterProducts, getProductsPublic } from "../Redux/Actio
 import { useEffect } from "react";
 
 const FiltersContainer = () => {
-  const { categories, loadCategories } = useSelector((state) => state);
+  const { categories, loadCategories } = useSelector((state) => state.categories);
   const [openDropdown, setOpenDropdown] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const dispatch = useDispatch();
