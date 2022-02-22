@@ -222,6 +222,8 @@ code {
   width: 75%;
   text-align: center;
   font-size: 4rem;
+  padding: 6rem;
+  background-color: #f1f6fc;
 }
 /* SIDE BAR */
 .side-bar--container {
@@ -249,12 +251,14 @@ code {
   cursor: pointer;
 }
 .side-bar--list-item {
-  padding: 0.8rem 3rem;
+  padding: 1rem 4rem;
 }
 .side-bar--list-item:hover {
   background: #f5f5f5;
   border-radius: 1px;
   cursor: pointer;
+  border: #232341 1px solid;
+  border-radius: 0.5rem;
 }
 /* PANEL */
 .panel--container {
@@ -330,6 +334,18 @@ code {
 }
 .panel-table--td {
   padding: 1rem;
+}
+.panel-table--td_buttons {
+  border: none;
+  background-color: white;
+  margin-right: 5px;
+}
+.panel-table--td_buttons:hover {
+  border-radius: 0.5rem;
+  background-color: #f1f6fc;
+}
+.panel-table--td_buttons:focus {
+  outline: none;
 }
 
 /* ADD PRODUCTS */
