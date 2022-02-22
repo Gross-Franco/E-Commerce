@@ -46,6 +46,7 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     if (addOrUpdate === "add") {
       dispatch(createProduct(form));
       setForm(initialState);
@@ -79,7 +80,7 @@ const AddContainer = ({ option, setIsOpen }) => {
       </div>
       <form className="add-form--container" onSubmit={handleSubmit}>
         <header>
-          <h2>Añadir {option}</h2>
+          <h2> {`${addOrUpdate === 'add' ? 'Añadir' : 'Editar'} ` + option}</h2>
         </header>
         <div className="add-form--inputs">
           <div className="add-form--main-space">
