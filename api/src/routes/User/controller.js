@@ -79,7 +79,10 @@ const createUser = async (req, res) => {
         if (!username || !first_name || !last_name || !email) {
             res.status(400).json({ success: false, error: 'fields are missing in the form' })
         } else {
-            let [user, created] = await User.findOrCreate({ where: { email: email }, defaults: { username, password, first_name, last_name, email, isAdmin } })
+            let [user, created] = await User.findOrCreate({ 
+              where: { email }, 
+              defaults: { username, password, first_name, last_name, email, isAdmin } 
+            })
             if (created) {
                 res.status(201).json({ success: true, inf: 'User created' })
             } else {
@@ -163,28 +166,29 @@ const postReviewProduct = async (req,res)=>{
         }
     }
     
-    const OrdersUser = async (req, res) => {
-        const {first_name, last_name} = req.body;
-        try {
-            const Myorders = await User.findAll({
-                include: {
-                    model: OrderDetails,
-                    as: "PurchaseOrder",
+const OrdersUser = async (req, res) => {
+  const {first_name, last_name} = req.body;
+  try {
+    const Myorders = await User.findAll({
+      include: {
+        model: OrderDetails,
+        as: "PurchaseOrder",
 
-                }
-            })
-           
-            if(first_name && last_name) {
-              const map = Myorders.map(e => e.dataValues)
-              const myOrder = map.filter(e=> e.first_name.toLowerCase() === first_name.toLowerCase() && 
-                e.last_name.toLowerCase() === last_name.toLowerCase());
-              res.status(200).send(myOrder) 
-            }
-        } catch (error) {
-            console.log(error);
-            res.status(404).send(error)
-        }
+      }
+    })
+
+    if(first_name && last_name) {
+      const map = Myorders.map(e => e.dataValues)
+      const myOrder = map.filter(e=> e.first_name.toLowerCase() === first_name.toLowerCase() 
+                                     && e.last_name.toLowerCase() === last_name.toLowerCase());
+
+      return res.status(200).send(myOrder) 
     }
+  } catch (error) {
+      console.log(error);
+      return next(error)
+    }
+  }
 
 const forgotPassword = async(req, res) =>{
 
@@ -321,5 +325,6 @@ module.exports = {
     postLogin,
     addPayment,
     forgotPassword,
-    passwordResetToken
+    passwordResetToken,
+    OrdersUser
 }
