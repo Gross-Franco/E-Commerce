@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { getProductsPublic, searchProductName } from "../Redux/Actions/actions";
+import { getProductsPublic, searchProductNamePublic } from "../Redux/Actions/actions";
 
 export default function SearchBar() {
   const [busqueda, setBusqueda] = React.useState("");
@@ -13,7 +13,7 @@ export default function SearchBar() {
   };
 
   useEffect(() => {
-    busqueda.length > 0 ? dispatch(searchProductName(busqueda)) :
+    busqueda.length > 0 ? dispatch(searchProductNamePublic(busqueda)) :
     dispatch(getProductsPublic())
   }, [busqueda])
 
@@ -27,9 +27,9 @@ export default function SearchBar() {
           placeholder="Buscar producto"
           onChange={handleChange}
         />
-        {/* <button className="catalog-search--submit-button">
+        <div className="catalog-search--submit-button">
           <BiSearch className="catalog-search--submit-button-icon" />
-        </button> */}
+        </div> 
       </form>
     </div>
   );

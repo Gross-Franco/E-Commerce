@@ -6,7 +6,7 @@ import { getProductsPublic } from "../Redux/Actions/actions";
 
 const Products = () => {
 
-  const {products} = useSelector((state) => state);
+  const {products} = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Products = () => {
     <main>
       <div>
         <Grid container justify="center" spacing={4}>
-          {products.map(product=><Grid item key={product.SKU} xs={12} sm={6} md={4} lg={3}>
+          {products?.map(product=><Grid item key={product.SKU} xs={12} sm={6} md={4} lg={3}>
               <Product
                 product={product}
                 section="catalogo"

@@ -17,13 +17,17 @@ const addCartItem = async (req, res, next) => {
 						product_id
 					},
 				});
-				if(created) return res.status(201).json(item);
+				if(created){
+					// await shoppingTotalEdit(session_id, product_id);
+					return res.status(201).json(item);
+				} 
 				else{
 					await CartItems.update({quantity: (item.quantity + quantity)}, {
 						where: {
 							id: item.id,
 						}
 					});
+					// await shoppingTotalEdit(session_id, product_id);
 					return res.sendStatus(200);
 				}
 			} else {
@@ -45,7 +49,10 @@ const editItemQuantity = async (req, res, next) => {
 					},
 				}
 			);
-			if(updated)	return res.status(200).json(updated);
+			if(updated){
+				// await shoppingTotalEdit(session_id, product_id);
+				return res.status(200).json(updated);
+			}	
 			else next({status: 404, message: "Not Found"})
 		} catch (error) {
 			next(error);
@@ -75,42 +82,41 @@ const shoppingSessionInit = async (req, res, next) => {
 		}
 	};
 
-const shoppingTotalEdit = async (req, res, next) => {
-		const { user_id, product_id } = req.query;
+const shoppingTotalEdit = async (session_id, product_id) => {
 		try {
-			const session = await ShoppingSession.findOne({
-				atributes: ["total", "id"],
-				where: {
-					user_id,
-				},
+			const sessionToUpdate = await ShoppingSession.findByPk(session_id,{
+				atributes: ["total", "user_id"],
 			});
 
-			let totalPrice = session.total;
+			let totalPrice = sessionToUpdate.total
 
 			const productPrice = await Product.findByPk(product_id, {
 				atributes: ["price"],
 			});
 
-			const quantity = await CartItems.findOne({
+			const productQuantity = await CartItems.findOne({
 				atributes: ["quantity"],
 				where: {
-					[Op.and]: [{ session_id: session.id }, { product_id }],
+					[Op.and]: [{ session_id }, { product_id }],
 				},
 			});
 
-			totalPrice += productPrice.price * quantity.quantity;
+			totalPrice = parseFloat(totalPrice);
 
-			await ShoppingSession.update(
-				{ total: totalPrice },
-				{
-					where: {
-						[Op.and]: [{ user_id }, { product_id }],
-					},
-				}
-			);
-			return res.sendStatus(200);
+			totalPrice += (parseFloat(productPrice.price) * parseInt(productQuantity.quantity));
+
+			console.log(typeof totalPrice)
+
+			sessionToUpdate.set({
+				...sessionToUpdate,
+				total: totalPrice,
+			})
+
+			await sessionToUpdate.save();
+
+			// console.log(sessionToUpdate.total);
 		} catch (error) {
-			next(error);
+			// console.log(error);
 		}
 	};
 
@@ -127,7 +133,7 @@ const createOrder = async (req, res, next) => {
 		if(cart){
 			const orderCreated = await OrderDetails.create({
 				total: cart.total,
-				status: "created",
+				status: "Created",
 				user_id: cart.user.id
 			});
 			

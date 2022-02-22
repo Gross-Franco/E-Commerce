@@ -15,7 +15,8 @@ import {
     SEARCH_CATEGORY_NAME,
     GET_PRODUCTS_PUBLIC,
     ADD_OR_UPDATE,
-    UPDATE_PRODUCT
+    UPDATE_PRODUCT,
+    SEARCH_PRODUCT_NAME_PUBLIC
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -55,6 +56,13 @@ export const searchProductName = (name) => {
     return async (dispatch) => {
         const response = await axios.get(`${URL}/admin/productname?name=${name}`);
         dispatch({ type: SEARCH_PRODUCT_NAME, payload: response.data});
+    }
+}
+
+export const searchProductNamePublic = (name) => {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/product/name?name=${name}`);
+        dispatch({ type: SEARCH_PRODUCT_NAME_PUBLIC, payload: response.data});
     }
 }
 
