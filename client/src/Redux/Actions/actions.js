@@ -18,6 +18,8 @@ import {
     PROMOTE_USER,
     DELETE_USER,
     ADD_USER_PUBLIC,
+    RESET_PASSWORD,
+
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -133,7 +135,21 @@ export const deleteUser = (userId) => {
     }
 }
 
-    
+export const resetPassword = (email) => {
+    return async (dispatch) => {
+        await axios.post(`${URL}/user/resetpassword`, { email: email}); 
+    }
+}
+
+export const passwordResetToken = (token, newPassword) => {
+    return async (dispatch) => {
+        const post = await axios.post(`${URL}/user/${token}`, newPassword);
+        dispatch({ type: RESET_PASSWORD, payload: post.data});
+    }
+}
+
+
+
     export const RegisterUserPublic = (UserData) => {
         return (dispatch) => {
            
@@ -141,10 +157,9 @@ export const deleteUser = (userId) => {
             .then((res)=>{
               
                 //correo de verificacion
-                // return res.redirect('/home');
+                //redirect
                 window.location.href = `/`;
-                alert("Registro exitoso, Se le ha enviado un mensaje de verificación al correo.")
-              //  dispatch({ type:GET_PROD+UCTS_PUBLIC, payload:res.data});
+                alert("Registro exitoso, Se le ha enviado un mensaje de verificación al correo.")          
             },(err)=>{ 
                 //alert(err)
                   alert("EL usuario ya existe en el sistema")
@@ -152,4 +167,3 @@ export const deleteUser = (userId) => {
             })
     }
     }
-

@@ -18,6 +18,6 @@ userRouter.post('/login', postLogin)
 userRouter.post('/addPayment', addPayment)
 userRouter.get('/ordersuser', OrdersUser)
 userRouter.post('/resetpassword', forgotPassword);
-userRouter.post('/resetpassword/:token', passwordResetToken)
+userRouter.post('/:token', passwordResetToken)
 
 module.exports = userRouter;

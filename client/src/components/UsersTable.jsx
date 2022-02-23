@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers, deleteUser, promoteUser } from "../Redux/Actions/actions";
+import { getUsers, deleteUser, promoteUser, resetPassword } from "../Redux/Actions/actions";
 
 const UsersTable = () => {
   const { users, loadUsers } = useSelector((state) => state.users);
@@ -16,9 +16,9 @@ const UsersTable = () => {
     dispatch(promoteUser(id))
   };
 
-  // const handlePasswordReset = () => {
-  //   dispatch(pr)
-  // }
+  const handlePasswordReset = (email) => {
+    dispatch(resetPassword(email))
+  }
 
   return (
     <table>
@@ -45,10 +45,10 @@ const UsersTable = () => {
               !user.isAdmin &&
                 <button className="panel-table--td_buttons" onClick={() => handleDelete(user.id)} >Eliminar</button>
               }
-              {/* {
+              {
               !user.isAdmin &&
-                <button className="panel-table--td_buttons" onClick={() => handlePasswordReset(user.id)} >Reset password</button>
-              } */}
+                <button className="panel-table--td_buttons" onClick={() => handlePasswordReset(user.email)} >Reset password</button>
+              }
             </td>
           </tr>
         ))}

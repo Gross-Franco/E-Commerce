@@ -22,7 +22,9 @@ export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
 
 // Misc
+export const RESET_PASSWORD = "RESET_PASSWORD";
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
+
 
 // register/login
 export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";

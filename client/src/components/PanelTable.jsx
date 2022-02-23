@@ -1,6 +1,6 @@
 import React from "react";
-import { OrdersTable, ProductTable, CategoriesTable, Us } from "../components";
-import UsersTable from "./UsersTable";
+import { OrdersTable, ProductTable, CategoriesTable, UsersTable } from "../components";
+
 
 const PanelTable = ({ option, setIsOpen }) => {
     // const data = useSelector(state => state.data);
