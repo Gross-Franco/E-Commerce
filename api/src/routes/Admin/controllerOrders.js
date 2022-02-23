@@ -5,7 +5,8 @@ const {
   OrderDetails,
   OrderItems,
   PaymentDetails,
-  User
+  User,
+  Product
 } = require("../../db.js");
 
 const getOrders = async (req, res) => {
@@ -33,9 +34,10 @@ const getOrders = async (req, res) => {
             user: user.username,
             email: user.email,
           },
-          orderItems: order.orderItems.map((item) => {
-            return {product: item.product_id, quantity: item.quantity}
-          }),
+          orderItems: await Promise.all(order.orderItems.map(async item => {
+            let product = await Product.findByPk(item.product_id)
+            return {product: product.name, quantity: item.quantity}
+          })),
         }
       })) 
       res.status(200).send(response);
@@ -91,9 +93,10 @@ const filterOrderByStatus = async (req, res) => {
           user: user.username,
           email: user.email,
         },
-        orderItems: order.orderItems.map((item) => {
-          return {product: item.product_id, quantity: item.quantity}
-        }),
+        orderItems: await Promise.all(order.orderItems.map(async item => {
+          let product = await Product.findByPk(item.product_id)
+          return {product: product.name, quantity: item.quantity}
+        })),
       }
     })) 
     res.status(200).send(response);
@@ -101,24 +104,6 @@ const filterOrderByStatus = async (req, res) => {
     console.log(err);
     res.status(404).send(err);
   }  
-  
-  // try {
-    //   const {status}  = req.body;
-    //   console.log(status)
-    //   const allOrders = await OrderDetails.findAll({
-    //     include: {
-    //       model: OrderItems,
-    //     }
-    //   });
-    //   console.log(allOrders)
-    //   const map = allOrders.map(e => e.dataValues)
-    //   console.log(map)
-    //   const finalStatus = map.filter(e=> e.status === status)
-    //    finalStatus.length? res.status(200).send(finalStatus) : res.status(404).send('no esta')
-    // } catch (err) {
-    //   console.log(err);
-    //   res.status(404).send(err);
-    // }
 };
 
 const changeOrderStatus = async (req, res) => {

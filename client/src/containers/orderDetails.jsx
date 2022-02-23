@@ -12,7 +12,7 @@ const OrderDetails = ({ option, setIsOpen }) => {
     date: new Date(addOrUpdate.createdAt).toLocaleDateString(),
     paymentDetails: addOrUpdate.payment,
     userDetails: addOrUpdate.user,
-    orderiIems: addOrUpdate.orderItems,
+    orderiItems: addOrUpdate.orderItems,
   };
   const [form, setForm] = useState(initialState);
   const [value, setValue] = useState("");
