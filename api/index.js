@@ -18,12 +18,12 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
-const { mockorders } = require("./src/mockData/mockorders");
+/* const { mockorders } = require("./src/mockData/mockorders");
 const { mockorderItems } = require("./src/mockData/mockorderItems")
 const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
-const { mockinventory } = require("./src/mockData/mockinventory");
+const { mockinventory } = require("./src/mockData/mockinventory"); */
 const {
   conn,
   OrderDetails,
@@ -40,7 +40,7 @@ const { PORT } = process.env;
 
 conn.sync({ force: true }).then(() => {
   server.listen(PORT, () => {
-    ProductInventory.bulkCreate(mockinventory).then(() => {
+    /* ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
         Product.findAll().then(products => {
@@ -52,7 +52,7 @@ conn.sync({ force: true }).then(() => {
     })}).catch(error => console.log(error));
     OrderDetails.bulkCreate(mockorders);
     OrderItems.bulkCreate(mockorderItems)
-    User.bulkCreate(mockusers);
+    User.bulkCreate(mockusers); */
     console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
   });
 });
