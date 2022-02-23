@@ -1,13 +1,24 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories } from "../Redux/Actions/actions";
+import { getUsers, deleteUser, promoteUser, resetPassword } from "../Redux/Actions/actions";
 
 const UsersTable = () => {
-  const { categories, loadCategories } = useSelector((state) => state);
+  const { users, loadUsers } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
-  
-  if(loadCategories) dispatch(getCategories());
+  if(loadUsers) dispatch(getUsers());
+
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id))
+  };
+
+  const handlePromote = (id) => {
+    dispatch(promoteUser(id))
+  };
+
+  const handlePasswordReset = (email) => {
+    dispatch(resetPassword(email))
+  }
 
   return (
     <table>
@@ -20,18 +31,31 @@ const UsersTable = () => {
         </tr>
       </thead>
       <tbody>
-        {categories?.map((category) => (
-          <tr key={category.id}>
-            <td className="panel-table--td">{category.name}</td>
-            <td className="panel-table--td">{category.description}</td>
-            <td className="panel-table--td">{category.description}</td>
-            <td className="panel-table--td"> . . . </td>
+        {users?.map((user) => (
+          <tr key={user.id}>
+            <td className="panel-table--td">{user.username}</td>
+            <td className="panel-table--td">{user.email}</td>
+            <td className="panel-table--td"><input type="checkbox" checked={user.isAdmin} disabled/></td>
+            <td className="panel-table--td"> 
+              {
+              !user.isAdmin &&
+                <button className="panel-table--td_buttons" onClick={() => handlePromote(user.id)} >Promover</button>
+              }
+              {
+              !user.isAdmin &&
+                <button className="panel-table--td_buttons" onClick={() => handleDelete(user.id)} >Eliminar</button>
+              }
+              {
+              !user.isAdmin &&
+                <button className="panel-table--td_buttons" onClick={() => handlePasswordReset(user.email)} >Reset password</button>
+              }
+            </td>
           </tr>
         ))}
-        {categories?.length === 0 && (
+        {users?.length === 0 && (
           <tr>
             <td colSpan="4" className="panel-table--td opacity">
-              No hay categorias
+              No hay usuarios
             </td>
           </tr>
         )}

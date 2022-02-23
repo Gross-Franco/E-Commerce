@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {User, UserAddress, UserPayment, Product, Review, OrderDetails} = require ('../../db.js')
+const {User, UserAddress, UserPayment, Product, Review, OrderDetails  } = require ('../../db.js')
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -168,34 +168,33 @@ const postReviewProduct = async (req,res)=>{
     }
     
 const OrdersUser = async (req, res) => {
-  const {first_name, last_name} = req.body;
-  try {
-    const Myorders = await User.findAll({
-      include: {
-        model: OrderDetails,
-        as: "PurchaseOrder",
+    const {first_name, last_name} = req.body;
+    try {
+        const Myorders = await User.findAll({
+            include: {
+                model: OrderDetails,
+                as: "PurchaseOrder",
 
-      }
-    })
-
-    if(first_name && last_name) {
-      const map = Myorders.map(e => e.dataValues)
-      const myOrder = map.filter(e=> e.first_name.toLowerCase() === first_name.toLowerCase() 
-                                     && e.last_name.toLowerCase() === last_name.toLowerCase());
-
-      return res.status(200).send(myOrder) 
+            }
+        })
+        
+        if(first_name && last_name) {
+          const map = Myorders.map(e => e.dataValues)
+          const myOrder = map.filter(e=> e.first_name.toLowerCase() === first_name.toLowerCase() && 
+            e.last_name.toLowerCase() === last_name.toLowerCase());
+          res.status(200).send(myOrder) 
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(404).send(error)
     }
-  } catch (error) {
-      console.log(error);
-      return next(error)
-    }
-  }
+}
 
 const forgotPassword = async(req, res) =>{
 
   try{
     const {email} = req.body;
-    // console.log(email)
+    console.log(req.body);
     //set token for password recovery
     let token = crypto.randomBytes(20).toString('hex')
     // console.log(token)
@@ -320,6 +319,7 @@ const passwordResetToken = async(req, res) =>{
 
 module.exports = {
     getUsers, 
+    OrdersUser,
     addAdress, 
     postReviewProduct,
     createUser,

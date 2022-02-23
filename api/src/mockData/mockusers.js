@@ -4,7 +4,7 @@ const mockusers = [
             "password": "12345",
             "first_name": "Francisco",
             "last_name": "Fernandez",
-            "email": "f2000.fernandez@gmail"
+            "email": "f2000.fernandez@gmail",
         },
         {
             "username": "rodricapo",
@@ -33,6 +33,13 @@ const mockusers = [
             "first_name": "Ricardo",
             "last_name": "Gonzales",
             "email": "rjoacog@gmail.com"
+        },
+        {
+            "username": "Regum",
+            "password": "crackDelFrontEnd",
+            "first_name": "Abdias",
+            "last_name": "Jimenez",
+            "email": "abdiasejr@gmail.com",
         },
     ]
 
