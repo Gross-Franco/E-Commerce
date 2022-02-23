@@ -16,7 +16,8 @@ import {
     UPDATE_PRODUCT,
     SEARCH_PRODUCT_NAME_PUBLIC,
     PROMOTE_USER,
-    DELETE_USER
+    DELETE_USER,
+    RESET_PASSWORD,
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -129,5 +130,18 @@ export const deleteUser = (userId) => {
     return async (dispatch) => {
         const post = await axios.get(`${URL}/admin/deleteUser/${userId}`); 
         dispatch({ type: DELETE_USER, payload: post.data});
+    }
+}
+
+export const resetPassword = (email) => {
+    return async (dispatch) => {
+        await axios.post(`${URL}/user/resetpassword`, { email: email}); 
+    }
+}
+
+export const passwordResetToken = (token, newPassword) => {
+    return async (dispatch) => {
+        const post = await axios.post(`${URL}/user/${token}`, newPassword);
+        dispatch({ type: RESET_PASSWORD, payload: post.data});
     }
 }

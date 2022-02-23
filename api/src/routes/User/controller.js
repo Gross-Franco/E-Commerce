@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const {User, UserAddress, UserPayment, Product, Review, OrderDetails} = require ('../../db.js')
+const {User, UserAddress, UserPayment, Product, Review, OrderDetails  } = require ('../../db.js')
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -190,7 +190,7 @@ const forgotPassword = async(req, res) =>{
 
   try{
     const {email} = req.body;
-    // console.log(email)
+    console.log(req.body);
     //set token for password recovery
     let token = crypto.randomBytes(20).toString('hex')
     // console.log(token)
@@ -314,8 +314,8 @@ const passwordResetToken = async(req, res) =>{
 
 
 module.exports = {
-    getUsers,
-    OrdersUser, 
+    getUsers, 
+    OrdersUser,
     addAdress, 
     postReviewProduct,
     createUser,
