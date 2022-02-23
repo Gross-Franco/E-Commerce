@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import styled, { keyframes } from "styled-components";
+
+
 
 const img = [
   "https://cdn.pixabay.com/photo/2019/01/24/23/54/nintendo-switch-3953601_960_720.jpg",
@@ -7,32 +9,29 @@ const img = [
   "https://cdn.pixabay.com/photo/2020/01/24/13/26/camera-4790247_960_720.jpg",
 ];
 
+const fader = keyframes`
+  0% { background-image: url(${img[0]}); }
+  25% { background-image: url(${img[1]}); }
+  50% { background-image: url(${img[2]}); }
+  75% { background-image: url(${img[1]}); }
+  100% { background-image: url(${img[0]}); }
+`;
+
+const CarrouselStyled = styled.div`
+  animation: ${fader} 16s cubic-bezier(1,0,0,1) infinite;
+  width: 100%;
+  background-size: cover;
+`;
+
 const Carrousel = () => {
-  return (
-    <div className="carrousel">
-      <div className="carrousel--container">
-        {img.map((item, index) => {
-          return (
-            <div
-              key={item + index}
-              className="carrousel--gallery"
-              style={{ backgroundImage: `url(${item})` }}
-            >
-              <p className="carrousel--title">
-                {" "}
-                Deserunt occaecat do magna aliquip reprehenderit ullamco commodo
-                qui anim ea cupidatat.
-              </p>
-              <p carrousel="carrousel--sub-title">Proident labore anim.</p>
-              <Link to="/catalogo" className="carrousel--call-to-action">
-                Shop Now
-              </Link>
-            </div>
-          );
-        })}
-      </div>
+    return (
+      <div className="carrousel">
+      <CarrouselStyled className="carrousel--container" >
+        <img src={img[0]} alt="img" className="carrousel--img" />
+      </CarrouselStyled>
     </div>
-  );
+    );
+  
 };
 
 export default Carrousel;

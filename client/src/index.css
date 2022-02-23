@@ -79,8 +79,10 @@ code {
 }
 
 /* CARROUSEL */
-
-
+.carrousel--img {
+  width: 100%;
+  opacity: 0;
+}
 /* CATALOG PAGE */
 .catalog--container {
   display: flex;
