@@ -27,8 +27,13 @@ export default function Home() {
 
   const [ValueRandom, SetValueRandom] = useState([]); */
 
+<<<<<<< HEAD
   let { products } = useSelector((state) => state);
   const dispatch = useDispatch();
+=======
+  let { products } = useSelector((state) => state.products);
+  const dispatch = useDispatch()
+>>>>>>> Developement
 
   useEffect(() => {
     dispatch(getProductsPublic());

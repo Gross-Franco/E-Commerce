@@ -1,5 +1,6 @@
 const { Router } = require("express");
-const {getUsers, addAdress, createUser, postReviewProduct, postLogin, addPayment } = require("./controller");
+
+const {getUsers, addAdress, createUser, postReviewProduct, postLogin, addPayment, OrdersUser, forgotPassword, passwordResetToken } = require("./controller");
 
 
 // Importar todos los routers;
@@ -13,7 +14,10 @@ userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)
 userRouter.post('/register', createUser)
 userRouter.post('/login', postLogin)
-userRouter.post('/createUser', createUser);
+// userRouter.post('/createUser', createUser);
 userRouter.post('/addPayment', addPayment)
+userRouter.get('/ordersuser', OrdersUser)
+userRouter.post('/resetpassword', forgotPassword);
+userRouter.post('/:token', passwordResetToken)
 
 module.exports = userRouter;

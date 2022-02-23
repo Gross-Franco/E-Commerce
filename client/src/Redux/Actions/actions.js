@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { 
     GET_PRODUCTS,
-    GET_ALL_PRODUCTS, 
-    GET_BACKUP, 
     GET_CATEGORIES, 
     SEARCH_PRODUCT_ID, 
     SEARCH_PRODUCT_NAME, 
@@ -10,13 +8,18 @@ import {
     CREATE_PRODUCT, 
     FILTER_PRODUCTS, 
     ORDER_PRODCTS,
-    GET_USER,
+    GET_USERS,
     CREATE_CATEGORY,
     SEARCH_CATEGORY_NAME,
     GET_PRODUCTS_PUBLIC,
     ADD_OR_UPDATE,
     UPDATE_PRODUCT,
-    SEARCH_PRODUCT_NAME_PUBLIC
+    SEARCH_PRODUCT_NAME_PUBLIC,
+    PROMOTE_USER,
+    DELETE_USER,
+    ADD_USER_PUBLIC,
+    RESET_PASSWORD,
+
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -93,10 +96,6 @@ export const createCategory = (newCategory) => {
     }
 }
 
-export const getBackup = function() {
-    return { type: GET_BACKUP }
-}
-
 export const deleteProduct = function() {
     return { type: DELETE_PRODUCT }
 }
@@ -114,3 +113,57 @@ export const orderProducts = function() {
 export const setAddOrUpdate = (addOrUpdate) => { 
     return { type: ADD_OR_UPDATE, payload: addOrUpdate}
 }
+
+export const getUsers = () => {
+    return async (dispatch) => {
+        const response = await axios.get(`${URL}/user/getUsers`);
+        dispatch({ type: GET_USERS, payload: response.data});
+    }
+}
+
+export const promoteUser = (userId) => {
+    return async (dispatch) => {
+        const post = await axios.get(`${URL}/admin/createAdmin/${userId}`); // chequear con la ruta del server
+        dispatch({ type: PROMOTE_USER, payload: post.data});
+    }
+}
+
+export const deleteUser = (userId) => {
+    return async (dispatch) => {
+        const post = await axios.get(`${URL}/admin/deleteUser/${userId}`); 
+        dispatch({ type: DELETE_USER, payload: post.data});
+    }
+}
+
+export const resetPassword = (email) => {
+    return async (dispatch) => {
+        await axios.post(`${URL}/user/resetpassword`, { email: email}); 
+    }
+}
+
+export const passwordResetToken = (token, newPassword) => {
+    return async (dispatch) => {
+        const post = await axios.post(`${URL}/user/${token}`, newPassword);
+        dispatch({ type: RESET_PASSWORD, payload: post.data});
+    }
+}
+
+
+
+    export const RegisterUserPublic = (UserData) => {
+        return (dispatch) => {
+           
+            axios.post(`${URL}/user/register`, UserData)
+            .then((res)=>{
+              
+                //correo de verificacion
+                //redirect
+                window.location.href = `/`;
+                alert("Registro exitoso, Se le ha enviado un mensaje de verificación al correo.")          
+            },(err)=>{ 
+                //alert(err)
+                  alert("EL usuario ya existe en el sistema")
+
+            })
+    }
+    }

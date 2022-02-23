@@ -16,6 +16,8 @@ const ControlContainer = ({setOption, setIsOpen}) => {
             <li className='side-bar--list-item' onClick={handleClick} >Pedidos</li>
             <li className='side-bar--list-item' onClick={handleClick} >Productos</li>
             <li className='side-bar--list-item' onClick={handleClick} >Categorias</li>
+            <li className='side-bar--list-item' onClick={handleClick} >Usuarios</li>
+
         </ul>
     </div>
   );

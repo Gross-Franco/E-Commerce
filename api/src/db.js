@@ -68,9 +68,9 @@ const {
  } = sequelize.models;
 
 //User relations
-User.hasMany(UserAddress, { foreignKey: "user_id" });
-User.hasMany(UserPayment, { foreignKey: "user_id" });
-User.hasMany(UserReviews, { foreignKey: "user_id" });
+User.hasMany(UserAddress, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+User.hasMany(UserPayment, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+User.hasMany(UserReviews, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
 
 //Product relations
 ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
@@ -87,6 +87,7 @@ ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
 User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
 User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id" });
+ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
 Product.hasMany(UserReviews, { foreignKey: "review_id" });
 Product.hasMany(CartItems, { foreignKey: "product_id" })
 

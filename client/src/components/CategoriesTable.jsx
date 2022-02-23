@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCategories } from "../Redux/Actions/actions";
 
 const CategoriesTable = () => {
-  const { categories, loadCategories } = useSelector((state) => state);
+  const { categories, loadCategories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
 
   
