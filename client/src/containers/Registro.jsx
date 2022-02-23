@@ -8,6 +8,8 @@ import Button from "react-bootstrap/Button";
 
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { RegisterUserPublic } from "../Redux/Actions/actions"
+import { useDispatch } from "react-redux";
 
 
 export default function Registro(){
@@ -32,25 +34,22 @@ export default function Registro(){
   let [ValuePostalCode , setPostalCode] = useState("")
 
   let [ValuePolitica, setCheakBoxPolitical]  = useState(false)
-
-
- function handleSubmit(e)
+ 
+  let Dispatch = useDispatch();
+ 
+  async function handleSubmit(e)
 {
-  alert( 
-          "Test Info: "+
-          ValueEmail       +" / "+
-          ValueFirstName   +" / "+
-          ValueSecondName  +" / "+
-          ValueName        +" / "+
-          ValuePasword     +" / "+   
-          ValidatePas      +" / "+   
-          ValuePayMetode   +" / "+
-          ValueDirection   +" / "+  
-          ValueDirection2  +" / "+
-          ValueTelefono    +" / "+  
-          ValuePostalCode  +" / "+
-          ValuePolitica    
-    )
+  
+ await Dispatch(RegisterUserPublic(
+      {
+     "username":ValueName ,
+      "password": ValuePasword,
+      "first_name":ValueFirstName ,
+      "last_name": ValueSecondName,
+      "email": ValueEmail
+      }
+    ))    
+
   e.preventDefault();
 }
 
@@ -142,14 +141,14 @@ width: "600px",
    <br/>
 {/* ---------Metodo de pago------------ */}
   
-<Form.Label>Pay Metode*</Form.Label>
+<Form.Label>Payment method*</Form.Label>
    <Form.Select aria-label="Default select example" 
       onChange={e=>{  SetPayMetode(e.target.value)}}
    >
   <option>Open this select option</option>
-  <option value="Metodo 1">Metodo 1</option>
-  <option value="Metodo 2">Metodo  2</option>
-  <option value="Metodo 3">Metodo  3</option>
+  <option value="Method 1">Metodo 1</option>
+  <option value="Method 2">Metodo  2</option>
+  <option value="Method 3">Metodo  3</option>
 </Form.Select>
 
 

@@ -24,6 +24,7 @@ import {
     DELETE_USER,
     PROMOTE_USER,
     RESET_PASSWORD,
+    ADD_USER_PUBLIC,
     
     // Orders
     GET_ORDERS,
@@ -189,3 +190,24 @@ export const getOrderId = (orderId) => {
         dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data});
     }
 }
+
+
+
+    export const RegisterUserPublic = (UserData) => {
+        return (dispatch) => {
+           
+            axios.post(`${URL}/user/register`, UserData)
+            .then((res)=>{
+              
+                //correo de verificacion
+                //redirect
+                window.location.href = `/`;
+                alert("Registro exitoso, Se le ha enviado un mensaje de verificación al correo.")          
+            },(err)=>{ 
+                //alert(err)
+                  alert("EL usuario ya existe en el sistema")
+
+            })
+    }
+    }
+

@@ -13,7 +13,7 @@ userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)
 userRouter.post('/login', postLogin)
-userRouter.post('/createUser', createUser);
+// userRouter.post('/createUser', createUser);
 userRouter.post('/addPayment', addPayment)
 userRouter.get('/ordersuser', OrdersUser)
 userRouter.post('/resetpassword', forgotPassword);
