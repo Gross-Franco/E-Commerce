@@ -17,7 +17,9 @@ import {
     SEARCH_PRODUCT_NAME_PUBLIC,
     PROMOTE_USER,
     DELETE_USER,
+    ADD_USER_PUBLIC,
     RESET_PASSWORD,
+
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -145,3 +147,23 @@ export const passwordResetToken = (token, newPassword) => {
         dispatch({ type: RESET_PASSWORD, payload: post.data});
     }
 }
+
+
+
+    export const RegisterUserPublic = (UserData) => {
+        return (dispatch) => {
+           
+            axios.post(`${URL}/user/register`, UserData)
+            .then((res)=>{
+              
+                //correo de verificacion
+                //redirect
+                window.location.href = `/`;
+                alert("Registro exitoso, Se le ha enviado un mensaje de verificación al correo.")          
+            },(err)=>{ 
+                //alert(err)
+                  alert("EL usuario ya existe en el sistema")
+
+            })
+    }
+    }
