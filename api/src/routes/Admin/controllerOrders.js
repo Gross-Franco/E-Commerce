@@ -5,7 +5,7 @@ const {
   OrderDetails,
   OrderItems,
   PaymentDetails,
-  Users
+  User
 } = require("../../db.js");
 
 const getOrders = async (req, res) => {
@@ -16,7 +16,7 @@ const getOrders = async (req, res) => {
       const response = await Promise.all(orders.map(async order => {
         let user = {}
         let payment = {}
-        if (order.user_id) user = await Users.findOne({where: {id:order.user_id}})
+        if (order.user_id) user = await User.findOne({where: {id:order.user_id}})
         if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
         return {
           id: order.id,
