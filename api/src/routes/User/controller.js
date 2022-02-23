@@ -190,7 +190,7 @@ const forgotPassword = async(req, res) =>{
 
   try{
     const {email} = req.body;
-    // console.log(email)
+    console.log(req.body);
     //set token for password recovery
     let token = crypto.randomBytes(20).toString('hex')
     // console.log(token)
