@@ -17,6 +17,7 @@ code {
   flex-direction: row;
   justify-content: space-between;
   padding: 1.5rem 3rem;
+  background-color: transparent;
 }
 .header-cart--container {
   display: flex;
@@ -76,6 +77,9 @@ code {
   font-size: 12px;
   font-weight: bold;
 }
+
+/* CARROUSEL */
+
 
 /* CATALOG PAGE */
 .catalog--container {
