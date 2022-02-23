@@ -16,7 +16,8 @@ import {
     UPDATE_PRODUCT,
     SEARCH_PRODUCT_NAME_PUBLIC,
     PROMOTE_USER,
-    DELETE_USER
+    DELETE_USER,
+    ADD_USER_PUBLIC,
 } from './actionTypes';
 
 const URL = "http://localhost:3001";
@@ -131,3 +132,24 @@ export const deleteUser = (userId) => {
         dispatch({ type: DELETE_USER, payload: post.data});
     }
 }
+
+    
+    export const RegisterUserPublic = (UserData) => {
+        return (dispatch) => {
+           
+            axios.post(`${URL}/user/register`, UserData)
+            .then((res)=>{
+              
+                //correo de verificacion
+                // return res.redirect('/home');
+                window.location.href = `/`;
+                alert("Registro exitoso, Se le ha enviado un mensaje de verificación al correo.")
+              //  dispatch({ type:GET_PROD+UCTS_PUBLIC, payload:res.data});
+            },(err)=>{ 
+                //alert(err)
+                  alert("EL usuario ya existe en el sistema")
+
+            })
+    }
+    }
+
