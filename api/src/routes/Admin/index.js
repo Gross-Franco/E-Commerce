@@ -13,8 +13,8 @@ const adminRouter = Router();
 adminRouter.get('/orders', getOrders)
 adminRouter.get('/orders/:id', getOrderId)
 adminRouter.get('/status', allStatus)
-adminRouter.get('/filterOrderByStatus', filterOrderByStatus)
-adminRouter.get('/changeOrderStatus', changeOrderStatus)
+adminRouter.post('/filterOrderByStatus', filterOrderByStatus)
+adminRouter.post('/changeOrderStatus', changeOrderStatus)
 
 // Product routes
 adminRouter.get('/products', getAllProducts);
