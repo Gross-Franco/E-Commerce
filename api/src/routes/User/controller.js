@@ -17,13 +17,16 @@ const getUserInfo = async () => {
 	return search;
 };
 const getUsers = async (req, res, next) => {
-	try {
+	
+  
+  try {
 		let search = await getUserInfo();
 
 		return res.status(200).send(search);
 	} catch (error) {
 		next(error);
 	}
+
 };
 
 const addAdress = async (req, res, next) => {
@@ -67,13 +70,15 @@ const addPayment = async(req, res) =>{
 }
 
 const createUser = async (req, res) => {
-    try {
+   
+
+  try {
         let {
             username,
             password,
             first_name,
-            last_name,
-            email,
+            last_name, 
+            email, 
             isAdmin
         } = req.body
         if (!username || !first_name || !last_name || !email) {

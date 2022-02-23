@@ -21,6 +21,8 @@ export const CREATE_USER = "CREATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
 export const RESET_PASSWORD = "RESET_PASSWORD";
+export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";
+export const RESET_PASSWORD = "RESET_PASSWORD";
 
 // Orders / Shopping
 export const GET_ORDERS = "GET_ORDERS";
@@ -30,3 +32,5 @@ export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
 
 // Misc
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
+
+
