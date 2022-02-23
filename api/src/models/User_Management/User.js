@@ -21,10 +21,10 @@ module.exports = (sequelize) => {
                 msg: "The password has to contain at least 1 uppercase letter, 1 lowercase letter, 1 digit and be at least 8 characters total"
             },
         }, 
-        set(value) {
-            const hash = bcrypt.hashSync(value, 10);
-            this.setDataValue('password', hash);
-        }
+        // set(value) {
+        //     const hash = bcrypt.hashSync(value, 10);
+        //     this.setDataValue('password', hash);
+        // }
 
     },
 
@@ -73,7 +73,7 @@ module.exports = (sequelize) => {
     hooks:{
         beforeCreate:(user)=>{
             if(user.password){
-                user.password = bcrypt.hashSync(user.password,10)
+                user.password = bcrypt.hashSync(user.password, 10)
             }
         },
         beforeUpdate:(user)=>{
