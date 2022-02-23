@@ -4,10 +4,10 @@ const {User, UserAddress, UserPayment, Product, Review, OrderDetails} = require 
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const {FIRM} =process.env
+const {AUTH_SECRET, AUTH_ROUND, AUTH_EXPIRES} =process.env
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
-var xoauth2 = require('xoauth2');
+// var xoauth2 = require('xoauth2');
 
 
 const getUserInfo = async () => {
@@ -16,6 +16,7 @@ const getUserInfo = async () => {
 	});
 	return search;
 };
+
 const getUsers = async (req, res, next) => {
 	try {
 		let search = await getUserInfo();
@@ -66,7 +67,7 @@ const addPayment = async(req, res) =>{
     res.json({createdPayment, msg: "added payment option"})
 }
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
     try {
         let {
             username,
@@ -77,7 +78,7 @@ const createUser = async (req, res) => {
             isAdmin
         } = req.body
         if (!username || !first_name || !last_name || !email) {
-            res.status(400).json({ success: false, error: 'fields are missing in the form' })
+            return res.status(400).json({ success: false, error: 'fields are missing in the form' })
         } else {
             let [user, created] = await User.findOrCreate({ 
               where: { email }, 
@@ -90,7 +91,7 @@ const createUser = async (req, res) => {
             }
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Failed in the process to register: ' + error })
+        next(error)
     }
 }
 
@@ -113,7 +114,7 @@ const postLogin = (req,res) => {
                     last_name,
                     isAdmin
                 }=result
-                let Token= jwt.sign({username,email,first_name,last_name,isAdmin},FIRM,{expiresIn:'5d'})
+                let Token= jwt.sign({username,email,first_name,last_name,isAdmin},AUTH_SECRET,{expiresIn:'5d'})
                 res.status(200).json({success:true,data:{Token,user:{username,email,first_name,last_name,isAdmin}}})
             }else{
                 // si la contraseña comparada no son validas, reporto un error de validacion de password
@@ -204,7 +205,7 @@ const forgotPassword = async(req, res) =>{
     })
     //if no user is found send error message
     if(!user){
-      res.json({message: "no account witht that email"})
+      res.json({message: "no account with that email"})
     }
     //creates a token and an expiration date for the password reset
     user.set({
