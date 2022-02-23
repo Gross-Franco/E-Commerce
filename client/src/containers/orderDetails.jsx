@@ -10,9 +10,9 @@ const OrderDetails = ({ option, setIsOpen }) => {
     total: addOrUpdate.total,
     status: addOrUpdate.status,
     date: new Date(addOrUpdate.createdAt).toLocaleDateString(),
-    paymentDetails: addOrUpdate.payment_id,
-    userDetails: addOrUpdate.user_id,
-    orderiIems: addOrUpdate.CartItems,
+    paymentDetails: addOrUpdate.payment,
+    userDetails: addOrUpdate.user,
+    orderiIems: addOrUpdate.orderItems,
   };
   const [form, setForm] = useState(initialState);
   const [value, setValue] = useState("");
@@ -71,21 +71,82 @@ const OrderDetails = ({ option, setIsOpen }) => {
                 </div>
               </div>
             </div>
+            {Object.keys(form.userDetails).length!=0  ? 
             <div className="add-form--input-wrapper">
               <div>
                 <header>
-                  <h3>Usuario</h3>
+                  <h3>Pedido del usuario {form?.userDetails.id}</h3>
                 </header>
               </div>
+              <div className="add-form--input-wrapper_row">
+                <div className="add-form--input-wrapper_column">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    name="description"
+                    className="add-form--input"
+                    value={form?.userDetails.user || ""}
+                    disabled
+                  />
+                </div>
+                <div className="add-form--input-wrapper_column">
+                  <label>Email</label>
+                  <input
+                    type="text"
+                    name="description"
+                    className="add-form--input"
+                    value={form?.userDetails.email || ""}
+                    disabled
+                  />
+                </div>
+              </div>
+            </div> :
+            <div className="add-form--input-wrapper">
               <div>
-                <input
-                  type="text"
-                  className="add-form--input"
-                  value={form?.userDetails || ""}
-                  disabled
-                />
+                <header>
+                  <h3>Pedido del Invitado</h3>
+                </header>
               </div>
             </div>
+            } 
+            {Object.keys(form.paymentDetails).length!=0  ? 
+            <div className="add-form--input-wrapper">
+              <div>
+                <header>
+                  <h3>Pago mediante el proveedor {form?.paymentDetails.provider}</h3>
+                </header>
+              </div>
+              <div className="add-form--input-wrapper_row">
+                <div className="add-form--input-wrapper_column">
+                  <label>Amount</label>
+                  <input
+                    type="text"
+                    name="description"
+                    className="add-form--input"
+                    value={form?.paymentDetails.amount || ""}
+                    disabled
+                  />
+                </div>
+                <div className="add-form--input-wrapper_column">
+                  <label>Status</label>
+                  <input
+                    type="text"
+                    name="description"
+                    className="add-form--input"
+                    value={form?.paymentDetails.status || ""}
+                    disabled
+                  />
+                </div>
+              </div>
+            </div> :
+            <div className="add-form--input-wrapper">
+              <div>
+                <header>
+                  <h3>Detalles del pago no encontrados</h3>
+                </header>
+              </div>
+            </div>
+            }
           </div>
           <div className="add-form--side-space">
             <div className="add-form--input-wrapper">
