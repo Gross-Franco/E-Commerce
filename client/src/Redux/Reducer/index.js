@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   products,
   categories,
   general,
-  // shopping,
+  shopping,
   users
 })
 

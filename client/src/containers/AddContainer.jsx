@@ -5,6 +5,7 @@ import { CreateCategory } from "../components";
 
 import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
+import OrderDetails from "./orderDetails";
 
 const AddContainer = ({ option, setIsOpen }) => {
   const { categories } = useSelector((state) => state.categories);
@@ -70,6 +71,9 @@ const AddContainer = ({ option, setIsOpen }) => {
 
   if (option === "Categorias")
     return <CreateCategory option={option} setIsOpen={setIsOpen} />;
+    
+  if (option === "Pedidos")
+    return <OrderDetails option={option} setIsOpen={setIsOpen} />;
 
   return (
     <div className="add--container">
