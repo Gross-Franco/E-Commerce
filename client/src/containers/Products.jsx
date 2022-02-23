@@ -6,7 +6,7 @@ import { getProductsPublic } from "../Redux/Actions/actions";
 
 const Products = () => {
 
-  const {products} = useSelector((state) => state);
+  const {products} = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -3,12 +3,36 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const { PassThrough } = require("stream");
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/ecommerce`, {
-	logging: false, // set to console.log to see the raw SQL queries
-	native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-});
+let sequelize = process.env.NODE_ENV === 'production'
+	? new Sequelize({
+		database: DB_NAME,
+		dialect: "postgres",
+		host: DB_HOST,
+		port: 5432,
+		username: DB_USER,
+		password: DB_PASSWORD,
+		pool: {
+			max: 3,
+			min: 1,
+			idle: 10000,
+		},
+		dialectOptions: {
+			ssl: {
+				require: true,
+				rejectUnauthorized: false
+			},
+			keepAlive: true,
+		},
+		ssl: true,
+	})
+	: new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/ecommerce`, {
+		logging: false, // set to console.log to see the raw SQL queries
+		native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+	});
+
+
 sequelize.authenticate().then(
 	success => {
 		console.log("Connection ok");
@@ -65,12 +89,12 @@ const {
 	OrderItems,
 	PaymentDetails,
 	ShoppingSession
- } = sequelize.models;
+} = sequelize.models;
 
 //User relations
-User.hasMany(UserAddress, { foreignKey: "user_id" });
-User.hasMany(UserPayment, { foreignKey: "user_id" });
-User.hasMany(UserReviews, { foreignKey: "user_id" });
+User.hasMany(UserAddress, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+User.hasMany(UserPayment, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+User.hasMany(UserReviews, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
 
 //Product relations
 ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
@@ -87,6 +111,7 @@ ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
 User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
 User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id" });
+ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
 Product.hasMany(UserReviews, { foreignKey: "review_id" });
 Product.hasMany(CartItems, { foreignKey: "product_id" })
 

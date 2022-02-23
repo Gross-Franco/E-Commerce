@@ -12,3 +12,4 @@ export { default as ProductTable } from './ProductTable';
 export { default as CategoriesTable } from './CategoriesTable';
 export { default as OrdersTable } from './OrdersTable';
 export { default as CreateCategory } from './CreateCategory';
+export { default as UsersTable } from './UsersTable';

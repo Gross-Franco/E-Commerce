@@ -1,5 +1,6 @@
 import React from "react";
-import { OrdersTable, ProductTable, CategoriesTable } from "../components";
+import { OrdersTable, ProductTable, CategoriesTable, UsersTable } from "../components";
+
 
 const PanelTable = ({ option, setIsOpen }) => {
     // const data = useSelector(state => state.data);
@@ -9,9 +10,12 @@ const PanelTable = ({ option, setIsOpen }) => {
     // }, [dispatch, option]);
     if(option === "Productos") return <ProductTable setIsOpen={setIsOpen} />
 
+    if(option === "Usuarios") return <UsersTable setIsOpen={setIsOpen}/>
+
     if(option === "Categorias") return <CategoriesTable setIsOpen={setIsOpen} />
+    
     return (
-      <OrdersTable />
+      <OrdersTable setIsOpen={setIsOpen}/>
   );
 };
 
