@@ -1,7 +1,8 @@
-import { ADD_OR_UPDATE } from "../Actions/actionTypes";
+import { ADD_OR_UPDATE, RESET_PASSWORD } from "../Actions/actionTypes";
 
 const initialState = {
-    addOrUpdate: 'add'
+    addOrUpdate: 'add',
+    reset: ""
 }
 const reducer = (state = initialState, {type, payload}) => {
     switch(type){
@@ -10,6 +11,11 @@ const reducer = (state = initialState, {type, payload}) => {
         return {
             ...state,
             addOrUpdate: payload
+        }
+        case RESET_PASSWORD:
+        return {
+            ...state,
+            reset: payload
         }
 
         default: return state;
