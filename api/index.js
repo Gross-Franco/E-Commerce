@@ -61,6 +61,8 @@ conn.sync({ force: true }).then(() => {
       })
     })
     .catch(error => console.log(error));
-    console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
+    server.listen(3001, () => {
+      console.log('%s listening at 3001'); // eslint-disable-line no-console
+    });
   });
 });
