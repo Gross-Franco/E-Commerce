@@ -1,10 +1,10 @@
 require('dotenv').config()
 
-const {User, UserAddress, UserPayment, Product, Review, OrderDetails  } = require ('../../db.js')
+const { User, UserAddress, UserPayment, Product, Review, OrderDetails  } = require ('../../db.js')
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
-const {AUTH_SECRET, AUTH_ROUND, AUTH_EXPIRES} =process.env
+// const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken')
+// const {AUTH_SECRET, AUTH_ROUND, AUTH_EXPIRES} =process.env
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 // var xoauth2 = require('xoauth2');

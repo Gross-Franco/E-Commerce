@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { PassThrough } = require("stream");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+// const RefreshTokens = require("./models/Authentication/RefreshTokens.js")
 
 let sequelize = process.env.NODE_ENV === 'production'
 	? new Sequelize({
@@ -64,10 +65,10 @@ fs.readdirSync(path.join(__dirname, "/models/Shopping_Session"))
 		modelDefiners.push(require(path.join(__dirname, "/models/Shopping_Session", file)));
 	});
 
-fs.readdirSync(path.join(__dirname, "/models/Authenticate"))
+fs.readdirSync(path.join(__dirname, "/models/Authentication"))
 	.filter(file => file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js")
 	.forEach(file => {
-		modelDefiners.push(require(path.join(__dirname, "/models/Authenticate", file)));
+		modelDefiners.push(require(path.join(__dirname, "/models/Authentication", file)));
 	});
 
 // Injectamos la conexion (sequelize) a todos los modelos
@@ -94,15 +95,11 @@ const {
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
-<<<<<<< HEAD
 	ShoppingSession,
 
 	RefreshTokens,
  } = sequelize.models;
-=======
-	ShoppingSession
-} = sequelize.models;
->>>>>>> 74508aa97f693482f5f41d81991f84ec5e6d8a8e
+//  console.log(RefreshTokens);
 
 //User relations
 User.hasMany(UserAddress, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
