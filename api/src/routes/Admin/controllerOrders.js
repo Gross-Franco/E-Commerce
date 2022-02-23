@@ -4,17 +4,41 @@ const { Op } = require("sequelize");
 const {
   OrderDetails,
   OrderItems,
+  PaymentDetails,
+  Users
 } = require("../../db.js");
 
 const getOrders = async (req, res) => {
     try {
       let orders = await OrderDetails.findAll({
-        include: {
-          model: OrderItems,
-          as: 'CartItems'
-        }
+        include: { model: OrderItems, }
       });
-      res.status(200).send(orders);
+      const response = await Promise.all(orders.map(async order => {
+        let user = {}
+        let payment = {}
+        if (order.user_id) user = await Users.findOne({where: {id:order.user_id}})
+        if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
+        return {
+          id: order.id,
+          total: order.total,
+          status: order.status,
+          createdAt: order.createdAt,
+          payment: {
+            amount: payment.amount,
+            provider: payment.provider,
+            status: payment.status
+          },
+          user: {
+            id: user.id,
+            user: user.username,
+            email: user.email,
+          },
+          orderItems: order.orderItems.map((item) => {
+            return {product: item.product_id, quantity: item.quantity}
+          }),
+        }
+      })) 
+      res.status(200).send(response);
     } catch (err) {
       console.log(err);
       res.status(404).send(err);

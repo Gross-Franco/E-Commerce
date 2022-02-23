@@ -104,7 +104,7 @@ Discount.hasMany(Product, { foreignKey: "discount_id" });
 
 //Shopping relations
 PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
-OrderDetails.hasMany(OrderItems, { as: "CartItems", foreignKey: "order_id" });
+OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
 ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 
 //Mixed relations
