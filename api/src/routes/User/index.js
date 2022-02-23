@@ -12,7 +12,10 @@ const userRouter = Router();
 userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)
+<<<<<<< HEAD
 // userRouter.post('/register', createUser)
+=======
+>>>>>>> beaf91bc6bb220d9779f107e7cc4a9c624925842
 userRouter.post('/login', postLogin)
 userRouter.post('/createUser', createUser);
 userRouter.post('/addPayment', addPayment)
