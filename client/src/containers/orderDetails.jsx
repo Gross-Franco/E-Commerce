@@ -12,7 +12,7 @@ const OrderDetails = ({ option, setIsOpen }) => {
     date: new Date(addOrUpdate.createdAt).toLocaleDateString(),
     paymentDetails: addOrUpdate.payment,
     userDetails: addOrUpdate.user,
-    orderiItems: addOrUpdate.orderItems,
+    orderItems: addOrUpdate.orderItems,
   };
   const [form, setForm] = useState(initialState);
   const [value, setValue] = useState("");
@@ -48,6 +48,18 @@ const OrderDetails = ({ option, setIsOpen }) => {
                   <h3>Detalles del pedido {form?.id}</h3>
                 </header>
               </div>
+              <div className="add-form--input-wrapper_column">
+                  <label>Lista de pedidos</label>
+                  <div className="add-form--input-wrapper">
+                    {form?.orderItems?.map((item) => (
+                      <div key={item.id}>
+                        <span>
+                          {item.product} x {item.quantity}         
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               <div className="add-form--input-wrapper_row">
                 <div className="add-form--input-wrapper_column">
                   <label>Total</label>
