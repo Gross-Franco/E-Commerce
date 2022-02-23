@@ -21,6 +21,7 @@ module.exports = (sequelize) => {
                 msg: "The password has to contain at least 1 uppercase letter, 1 lowercase letter, 1 digit and be at least 8 characters total"
             },
         }, 
+        //Si dejo el set cuando posteo todos los password pasan
         // set(value) {
         //     const hash = bcrypt.hashSync(value, 10);
         //     this.setDataValue('password', hash);

@@ -7,7 +7,7 @@ const router = Router();
 
 // Configurar los routers
 //shopping session
-router.post("/session", shoppingSessionInit);
+// router.post("/session", shoppingSessionInit);
 router.put("/session", shoppingTotalEdit);
 router.delete("/session", deleteShoppingSession);
 //cart items

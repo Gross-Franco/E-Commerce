@@ -68,8 +68,44 @@ const signin = (req,res, next) => {
     })
 }
 
+const shoppingSessionInit = async (req, res, next) => {
+		// const { user_id } = req.query;
+		try {
+			let [session, created] = await ShoppingSession.findOrCreate({
+				where: {
+					user_id,
+				},
+			});
+
+			if(created){
+				let user = await User.findByPk(user_id);
+				await user.setSession(user_id);
+				return res.status(201).json(session);
+			}else{
+				res.status(200).json(session);
+			}
+
+		} catch (error) {
+			next(error);
+		}
+};
+
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if(!token){
+        req.token = undefined;
+        next();
+    }
+    jwt.verify(token, AUTH_SECRET, (err, values) => {
+        if (err) return res.sendStatus(403);
+    })
+}
+
 
 module.exports = {
     signup,
     signin,
+    shoppingSessionInit
 }

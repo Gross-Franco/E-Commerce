@@ -59,28 +59,28 @@ const editItemQuantity = async (req, res, next) => {
 		}
 	};
 
-const shoppingSessionInit = async (req, res, next) => {
-		const { user_id } = req.query;
+// const shoppingSessionInit = async (req, res, next) => {
+// 		const { user_id } = req.query;
 
-		try {
-			let [session, created] = await ShoppingSession.findOrCreate({
-				where: {
-					user_id,
-				},
-			});
+// 		try {
+// 			let [session, created] = await ShoppingSession.findOrCreate({
+// 				where: {
+// 					user_id,
+// 				},
+// 			});
 
-			if(created){
-				let user = await User.findByPk(user_id);
-				await user.setSession(user_id);
-				return res.status(201).json(session);
-			}else{
-				res.status(200).json(session);
-			}
+// 			if(created){
+// 				let user = await User.findByPk(user_id);
+// 				await user.setSession(user_id);
+// 				return res.status(201).json(session);
+// 			}else{
+// 				res.status(200).json(session);
+// 			}
 
-		} catch (error) {
-			next(error);
-		}
-	};
+// 		} catch (error) {
+// 			next(error);
+// 		}
+// 	};
 
 const shoppingTotalEdit = async (session_id, product_id) => {
 		try {
@@ -206,7 +206,7 @@ const deleteCartItem = async (req,res,next) => {
 
 module.exports = {
 	addCartItem,
-	shoppingSessionInit,
+	// shoppingSessionInit,
 	shoppingTotalEdit,
 	editItemQuantity,
 	createOrder,

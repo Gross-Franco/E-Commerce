@@ -70,36 +70,7 @@ const addPayment = async(req, res) =>{
     res.json({createdPayment, msg: "added payment option"})
 }
 
-<<<<<<< HEAD
 // const createUser = async (req, res, next) => {
-=======
-const createUser = async (req, res) => {
-   
-
-  try {
-        let {
-            username,
-            password,
-            first_name,
-            last_name, 
-            email, 
-            isAdmin
-        } = req.body
-        if (!username || !first_name || !last_name || !email) {
-            res.status(400).json({ success: false, error: 'fields are missing in the form' })
-        } else {
-            let [user, created] = await User.findOrCreate({ where: { email: email }, defaults: { username, password, first_name, last_name, email, isAdmin } })
-            if (created) {
-                res.status(201).json({ success: true, inf: 'User created' })
-            } else {
-                res.status(400).json({ success: false, inf: 'This email is already registered' })
-            }
-        }
-    } catch (error) {
-        res.status(500).json({ success: false, error: 'Failed in the process to register: ' + error })
-    }
-}
->>>>>>> d174d255334175e66e85d08a11ffca4706da778a
 
 //     try {
 //         let {
