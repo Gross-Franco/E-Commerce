@@ -41,7 +41,7 @@ const { PORT } = process.env;
 // Syncing all the models at once.
 
 conn.sync({ force: true }).then(() => {
-  server.listen(PORT, () => {
+  server.listen(PORT || 3001, () => {
     ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
@@ -61,6 +61,8 @@ conn.sync({ force: true }).then(() => {
       })
     })
     .catch(error => console.log(error));
-    console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
+    console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
+
+  
   });
 });
