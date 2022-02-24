@@ -2,12 +2,12 @@ import React from "react";
 import { useEffect } from "react";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
-import { Footer, NavBar, Carrousel } from ".";
+import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
 /* 
 import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic } from "./../Redux/Actions/actions"; /* 
+import { getProductsPublic } from "../Redux/Actions/actions"; /* 
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
 import products from "../helpers/mockProducts"; */
 
@@ -27,6 +27,7 @@ export default function Home() {
     <div>
       <NavBar />
       <Carrousel />
+      <HomeCategories />
       {
         // ------------------------------
       }
