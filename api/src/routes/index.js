@@ -4,7 +4,7 @@ const userRouter = require("./User/index.js");
 const adminRouter = require("./Admin/index.js");
 const productRouter = require("./Product/index.js");
 const shoppingRouter = require("./Shoping/index.js");
-const authRouter = require("./Authentication/index.js")
+const authRouter = require("./Auth/index.js")
 
 const router = Router();
 

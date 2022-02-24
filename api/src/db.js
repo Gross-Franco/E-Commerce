@@ -99,7 +99,6 @@ const {
 
 	RefreshTokens,
  } = sequelize.models;
-//  console.log(RefreshTokens);
 
 //User relations
 User.hasMany(UserAddress, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
@@ -144,7 +143,7 @@ UserReviews. belongsTo(Product, { foreignKey: "review_id" })
 //Authentication
 
 User.hasOne(RefreshTokens, {as: "token", foreignKey: "user_id", onDelete: "cascade"})
-RefreshTokens.belongsTo(User, {as: "token", foreignKey: "user_id"})
+RefreshTokens.belongsTo(User, { foreignKey: "user_id" })
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

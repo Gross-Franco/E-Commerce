@@ -2,11 +2,12 @@ const { Product, OrderDetails, OrderItems, PaymentDetails, User, ShoppingSession
 const { Op } = require("sequelize");
 
 const addCartItem = async (req, res, next) => {
-		const { session_id, product_id, quantity } = req.body;
-		try {
-			const isSession = await ShoppingSession.findByPk(session_id);
-			const isProduct = await Product.findByPk(product_id);
-			if (isSession && isProduct && (typeof quantity === "number" && quantity)) {
+	const { session_id, product_id, quantity } = req.body;
+
+	try {
+		const isSession = await ShoppingSession.findByPk(session_id);
+		const isProduct = await Product.findByPk(product_id);
+		if (isSession && isProduct && (typeof quantity === "number" && quantity)) {
 				let [item, created] = await CartItems.findOrCreate({
 					where: {
 						[Op.and]: [{session_id}, {product_id}]
@@ -30,9 +31,9 @@ const addCartItem = async (req, res, next) => {
 					// await shoppingTotalEdit(session_id, product_id);
 					return res.sendStatus(200);
 				}
-			} else {
+		}else {
 				next({ status: 404, message: "Not Found" });
-			}
+		}
 		} catch (error) {
 			next(error);
 		}
