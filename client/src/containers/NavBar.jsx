@@ -18,20 +18,27 @@ const NavBar = () => {
 
   useEffect(() => {
     LoadSet(getCookie("Email") === "");
-  });
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
 
   return (
-    <div className="header-container">
-      <Nav />
-      <Link to="/" className="header-logo">
-        commerce
-      </Link>
-      {/* <SearchBar /> */}
-      <div className="header-cart--container">
-        {load ? <Login /> : <Dropdowns />}
-        <Cart />
+    <header className="header" onScrollCapture={() => console.log('hola')}>
+      <div className={`header--container ${isScroll ? 'on-scroll' : ''}`}>
+        <Nav isScroll={isScroll} />
+        <Link to="/" className={`header-logo ${isScroll ? 'scroll' : ''}`}>
+          commerce
+        </Link>
+        {/* <SearchBar /> */}
+        <div className={`header-cart--container ${isScroll ? 'scroll' : ''}`}>
+          {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          <Cart />
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 export default NavBar;
