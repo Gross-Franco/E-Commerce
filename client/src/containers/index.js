@@ -15,4 +15,5 @@ export { default as ControlContainer } from './ControlContainer';
 export { default as Panel } from './Panel';
 export { default as AdminContent } from './AdminContent';
 export { default as AddContainer } from './AddContainer';
+export { default as Carrousel } from './Carrousel';
 export { default as OrderDetails } from './orderDetails';

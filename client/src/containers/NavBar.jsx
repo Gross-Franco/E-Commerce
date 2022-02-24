@@ -1,20 +1,13 @@
-import React, { useState, useEffect }from "react";
-import { AppBar, Toolbar } from "@mui/material";
-import { Cart, Nav } from "../components";
+import React, { useState, useEffect } from "react";
 import { Login, Dropdowns } from "./";
-import useStyles from "../helpers/stylesNavBar";
 import { getCookie } from "./Utilitis/getCookie";
+import { Link } from "react-router-dom";
+import { Nav, Cart } from "../components";
 
 const NavBar = () => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
   const [isScroll, setIsScroll] = useState(false);
 
-  useEffect(() => {
-    
-    LoadSet(getCookie("Email") === "");
-   
-  });
-  const classes = useStyles();
   const handleScroll = () => {
     if (window.scrollY > 0) {
       setIsScroll(true);
@@ -22,25 +15,30 @@ const NavBar = () => {
       setIsScroll(false);
     }
   };
+
+  useEffect(() => {
+    LoadSet(getCookie("Email") === "");
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+
   return (
-    <>
-      <AppBar
-        className={isScroll ? "nav-bar--scroll" : ""}
-        color="inherit"
-        style={{ zIndex: 1000 }}
-        onScroll={handleScroll}
-      >
-        <Toolbar>
-          <Nav />
-          <div className={classes.grow} />
-          <div className={classes.button}>
-            {load ? <Login /> : <Dropdowns />}
-            <Cart />
-          </div>
-        </Toolbar>
-      </AppBar>
-    </>
+    <header className="header" onScrollCapture={() => console.log('hola')}>
+      <div className={`header--container ${isScroll ? 'on-scroll' : ''}`}>
+        <Nav isScroll={isScroll} />
+        <Link to="/" className={`header-logo ${isScroll ? 'scroll' : ''}`}>
+          commerce
+        </Link>
+        {/* <SearchBar /> */}
+        <div className={`header-cart--container ${isScroll ? 'scroll' : ''}`}>
+          {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          <Cart />
+        </div>
+      </div>
+    </header>
   );
 };
-
 export default NavBar;

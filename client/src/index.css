@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Poppins', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -12,11 +12,18 @@ code {
     monospace;
 }
 /* HEADER */
-.header-container {
+.header {
+  position: fixed;
+  z-index: 10;
+}
+.header--container {
   display: flex;
+  width: 100vw;
   flex-direction: row;
   justify-content: space-between;
-  padding: 1.5rem 3rem;
+  padding: 1.25rem 3rem;
+  background-color: transparent;
+  color: white;
 }
 .header-cart--container {
   display: flex;
@@ -27,38 +34,82 @@ code {
   flex-direction: row;
   align-self: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1.3rem;
 }
 .header-nav--link {
-  color: black;
-  font-weight: 500;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   text-decoration: none;
   text-transform: none;
+}
+.header-nav--link:hover {
+  color: white;
 }
 .header-logo {
   display: flex;
   align-items: center;
   position: absolute;
-  top: 5.7%;
+  top: 46.8%;
   left: 50%;
   transform: translate(-50%,-50%);
-  color: black;
-  font-weight: bold;
-  font-size: 2rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1.7rem;
+  letter-spacing: -1.2px;
+  font-family: 'Noto Sans', cursive;
   text-decoration: none;
   text-transform: none;
 }
 .header-logo:hover {
-  color: black;
+  color: white;
 }
-#header--button {
+#header-button-- {
   background-color: transparent;
   border: none;
-  font-weight: bold;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
 }
-#header--button:focus {
+#header-button--:focus {
   box-shadow: none;
   outline: none;
+}
+#header-button--on-scroll {
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.5px;
+}
+#header-button--on-scroll:focus {
+  box-shadow: none;
+  outline: none;
+}
+.header .on-scroll {
+  color: black;
+  background-color: white;
+  transition: all 0.5s ease-in-out;
+  border-bottom: 1px solid black;
+}
+.scroll {
+  color: black;
+  letter-spacing: -1.6px;
+}
+.scroll:hover {
+  color: black;
+}
+
+.scroll-link {
+  color: black;
+}
+.scroll-link:hover {
+  color: black;
 }
 /* CART */
 .cart-container {
@@ -68,13 +119,84 @@ code {
 }
 
 .cart-icon {
-  font-size: 2rem;
+  font-size: 1.5rem;
   align-self: center;
 }
 
 .cart-count {
-  font-size: 12px;
-  font-weight: bold;
+  position: absolute;
+  font-size: .6875rem;
+  line-height: 1rem;
+  font-weight: 700;
+  right: 2.55rem;
+  top: 1.15rem;
+  max-width: 10px;
+  z-index: 11;
+}
+
+/* CARROUSEL */
+.carrousel--container {
+  margin: 0 auto;
+  overflow: hidden;
+  max-width: 100vw;
+}
+
+.carrousel--show-slide {
+  white-space: nowrap;
+  transition: ease 0ms;
+}
+
+.carrousel--slide {
+  display: inline-block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 70% 30%;
+  height: 85vh;
+  width: 100%;
+  padding: 3rem 0;
+}
+.carrousel--hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  height: 75vh;
+}
+.carrousel-hero--header {
+  font-family: 'Dela Gothic One', sans-serif;
+  white-space: initial;
+  font-size: 4rem;
+  line-height: 4.5rem;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 3px rgb(33 33 33 / 50%);
+}
+.carrousel-hero--subheader {
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-family: 'Poppins', cursive;
+  font-weight: 400;
+  text-shadow:  2px 2px 3px rgb(33 33 33 / 50%);
+  color: white;
+}
+.carrousel-hero--btn {
+  display: flex;
+  height: 3.5rem;
+  text-shadow: 1px 1px 3px rgb(33 33 33 / 50%);
+  border: 1px solid #fff;
+  background-color: transparent;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  text-transform: none;
+  padding: 0 3rem;
+}
+.carrousel-hero--btn:hover {
+  text-decoration: none;
+  color: #fff;
+  background-color: rgba(255,255,255,.248);
 }
 
 /* CATALOG PAGE */

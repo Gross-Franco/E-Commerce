@@ -10,6 +10,7 @@ import Admin from "../pages/Admin";
 import PassReset from "../pages/PassReset";
 import ProductDetail from "../containers/ProductDetail";
 import { getCookie } from "../containers/Utilitis/getCookie";
+import Carrousel from "../containers/Carrousel";
 
 const Rutas = () => {
   const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");
@@ -24,6 +25,7 @@ const Rutas = () => {
         <Route path="/" element={<Home />} />
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/user/resetpassword/:token" element={<PassReset />} />
+        <Route path="carrousel" element={<Carrousel />} />
         <Route path="/admin" element={<Admin />} />
         <Route
           path="/perfilUser"
