@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Home, Catalog, Registro, PerfilUser } from "../containers";
+import { Home, Catalog, Registro, PerfilUser, Verificate } from "../containers";
 import Admin from "../pages/Admin";
 import PassReset from "../pages/PassReset";
 import ProductDetail from "../containers/ProductDetail";
@@ -38,6 +38,9 @@ const Rutas = () => {
           path="/registro"
           element={AutenCookin ? <Registro /> : <Navigate to="/" replace />}
         />
+
+          <Route path="/verificate/:ap" element={<Verificate/>} />
+
       </Routes>
     </Router>
   );
