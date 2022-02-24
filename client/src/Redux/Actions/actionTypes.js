@@ -13,18 +13,21 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 // Categories
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const CREATE_CATEGORY = "CREATE_CATEGORY";
-export const SEARCH_CATEGORY_NAME = 'SEARCH_CATEGORY_NAME'
+export const SEARCH_CATEGORY_NAME = 'SEARCH_CATEGORY_NAME';
 
 // Users
 export const GET_USERS = "GET_USERS";
 export const CREATE_USER = "CREATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
+export const RESET_PASSWORD = "RESET_PASSWORD";
+export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";
+
+// Orders / Shopping
+export const GET_ORDERS = "GET_ORDERS";
+export const FILTER_ORDERS = "FILTER_ORDERS";
+export const CHANGE_ORDER_STATUS = "CHANGE_ORDER_STATUS";
+export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
 
 // Misc
-export const RESET_PASSWORD = "RESET_PASSWORD";
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
-
-
-// register/login
-export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";

@@ -551,9 +551,20 @@ code {
 .add-form--input:focus {
   outline: none;
   box-shadow: 0 0 0 4px #d6e4f7;
+  border: 1px solid #232341;
+}
+
+.add-form--input-wrapper .selected {
+  box-shadow: 0 0 0 4px #d6e4f7;
+  border: 1px solid #232341;
 }
 .add-form--input:hover {
   border: 1px solid #232341;
+}
+.add-form--input-wrapper .disabled {
+  cursor: not-allowed;
+  background-color: -internal-light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));;
+  border: none;
 }
 .add-form--save-btn {
   background-color: #207d6a;
@@ -577,7 +588,11 @@ code {
 }
 .add-form--input-dropdown {
   display: flex;
+  font-size: 0.9rem;
+  padding: 0.3rem;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 .add-form--input .open {
   transition: transform 0.5s;
@@ -588,4 +603,7 @@ code {
   flex-direction: row;
   gap: 1rem;
   align-items: center;
+}
+.add-form--dropdown-container li {
+  cursor: pointer;
 }

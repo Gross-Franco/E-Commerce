@@ -15,7 +15,7 @@ const PanelTable = ({ option, setIsOpen }) => {
     if(option === "Categorias") return <CategoriesTable setIsOpen={setIsOpen} />
     
     return (
-      <OrdersTable />
+      <OrdersTable setIsOpen={setIsOpen}/>
   );
 };
 
