@@ -108,7 +108,7 @@ OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
 ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
 
 //Mixed relations
-Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
+Product.hasMany(OrderItems, {  foreignKey: "product_id" });
 User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
 User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id" });
 ShoppingSession.belongsTo(User, { foreignKey: "user_id" });

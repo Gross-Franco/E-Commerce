@@ -24,6 +24,7 @@ const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
+const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")
 const {
   conn,
   OrderDetails,
@@ -32,6 +33,7 @@ const {
   Product,
   ProductCategory,
   ProductInventory,
+  PaymentDetails
 } = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
 const { PORT } = process.env;
@@ -45,14 +47,22 @@ conn.sync({ force: true }).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
         Product.findAll().then(products => {
           products.forEach(product => {
-            product.addProductCategory(1);
+            product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1);
           })
         })
       })
-    })}).catch(error => console.log(error));
-    OrderDetails.bulkCreate(mockorders);
-    OrderItems.bulkCreate(mockorderItems)
-    User.bulkCreate(mockusers);
-    console.log(`%s listening at ${PORT || 3001}`); // eslint-disable-line no-console
+
+    })}).then(() => {
+      User.bulkCreate(mockusers);
+      PaymentDetails.bulkCreate(mockpaymentdetails)
+    }).then(() => {
+      OrderDetails.bulkCreate(mockorders).then(() => {
+        OrderItems.bulkCreate(mockorderItems).then(() => {
+        })
+      })
+    })
+    .catch(error => console.log(error));
+    console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
+
   });
 });

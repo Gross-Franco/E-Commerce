@@ -5,7 +5,8 @@ const {
   OrderDetails,
   OrderItems,
   PaymentDetails,
-  Users
+  User,
+  Product
 } = require("../../db.js");
 
 const getOrders = async (req, res) => {
@@ -16,7 +17,7 @@ const getOrders = async (req, res) => {
       const response = await Promise.all(orders.map(async order => {
         let user = {}
         let payment = {}
-        if (order.user_id) user = await Users.findOne({where: {id:order.user_id}})
+        if (order.user_id) user = await User.findOne({where: {id:order.user_id}})
         if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
         return {
           id: order.id,
@@ -33,9 +34,10 @@ const getOrders = async (req, res) => {
             user: user.username,
             email: user.email,
           },
-          orderItems: order.orderItems.map((item) => {
-            return {product: item.product_id, quantity: item.quantity}
-          }),
+          orderItems: await Promise.all(order.orderItems.map(async item => {
+            let product = await Product.findByPk(item.product_id)
+            return {product: product.name, quantity: item.quantity}
+          })),
         }
       })) 
       res.status(200).send(response);
@@ -65,24 +67,43 @@ const allStatus = async (req, res) => {
 };
 
 const filterOrderByStatus = async (req, res) => {
-    try {
-      const {status}  = req.body;
-      console.log(status)
-      const allOrders = await OrderDetails.findAll({
-        include: {
-          model: OrderItems,
-          as: 'CartItems'
-        }
-      });
-      console.log(allOrders)
-      const map = allOrders.map(e => e.dataValues)
-      console.log(map)
-      const finalStatus = map.filter(e=> e.status === status)
-       finalStatus.length? res.status(200).send(finalStatus) : res.status(404).send('no esta')
-    } catch (err) {
-      console.log(err);
-      res.status(404).send(err);
-    }
+  try {
+    const {status}  = req.body;
+    let orders = await OrderDetails.findAll({
+      where: {status:status},
+      include: { model: OrderItems, }
+    });
+    const response = await Promise.all(orders.map(async order => {
+      let user = {}
+      let payment = {}
+      if (order.user_id) user = await User.findOne({where: {id:order.user_id}})
+      if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
+      return {
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        payment: {
+          amount: payment.amount,
+          provider: payment.provider,
+          status: payment.status
+        },
+        user: {
+          id: user.id,
+          user: user.username,
+          email: user.email,
+        },
+        orderItems: await Promise.all(order.orderItems.map(async item => {
+          let product = await Product.findByPk(item.product_id)
+          return {product: product.name, quantity: item.quantity}
+        })),
+      }
+    })) 
+    res.status(200).send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send(err);
+  }  
 };
 
 const changeOrderStatus = async (req, res) => {

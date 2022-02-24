@@ -5,7 +5,7 @@ import "./estilos/login.css";
 import { Link } from "react-router-dom";
 import { getCookie } from "./Utilitis/getCookie";
 
-export default function Login() {
+export default function Login({isScroll}) {
   const [show, setShow] = React.useState(false);
 
   const handleClose = () => setShow(false);
@@ -56,7 +56,7 @@ export default function Login() {
 
   return (
     <>
-      <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
+      <Button variant="btn btn-light" id={`header-button--${isScroll ? 'on-scroll' : ''}`} onClick={handleShow}>
         Login
       </Button>
 

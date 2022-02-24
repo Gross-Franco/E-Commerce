@@ -23,7 +23,6 @@ export const PROMOTE_USER = "PROMOTE_USER";
 export const RESET_PASSWORD = "RESET_PASSWORD";
 export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";
 
-
 // Orders / Shopping
 export const GET_ORDERS = "GET_ORDERS";
 export const FILTER_ORDERS = "FILTER_ORDERS";

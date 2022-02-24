@@ -20,7 +20,7 @@ const ProductTable = ({ setIsOpen }) => {
           <th className="panel-table--th">Producto</th>
           <th className="panel-table--th">Precio</th>
           <th className="panel-table--th">Cantidad</th>
-          <th className="panel-table--th">Opciones</th>
+          <th className="panel-table--th">Opcion</th>
         </tr>
       </thead>
       <tbody>
@@ -31,7 +31,6 @@ const ProductTable = ({ setIsOpen }) => {
             <td className="panel-table--td">{product.quantity}</td>
             <td className="panel-table--td">
               <button className="panel-table--td_buttons" onClick={() => handleClick(product)}>Editar</button>
-              <button className="panel-table--td_buttons" >Eliminar</button> 
             </td>
           </tr>
         ))}
