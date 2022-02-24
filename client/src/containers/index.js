@@ -1,5 +1,4 @@
 export { default as LandingPage } from './LandingPage';
-export { default as Home } from './Home';
 export { default as Catalog } from './Catalog';
 export { default as Login } from './Login';
 export { default as Registro } from './Registro';
@@ -16,4 +15,5 @@ export { default as Panel } from './Panel';
 export { default as AdminContent } from './AdminContent';
 export { default as AddContainer } from './AddContainer';
 export { default as Carrousel } from './Carrousel';
-export { default as OrderDetails } from './orderDetails';
+export { default as OrderDetails } from './OrderDetails';
+export { default as HomeCategories } from './HomeCategories';
