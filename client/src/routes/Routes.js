@@ -5,9 +5,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Catalog, Registro, PerfilUser } from "../containers";
-import { Home, Admin, PassReset } from "../pages"
-import ProductDetail from "../containers/ProductDetail";
+import { Catalog, Registro, PerfilUser, ProductDetail } from "../containers";
+import { Home, Admin, PassReset, Cart } from "../pages"
 import { getCookie } from "../containers/Utilitis/getCookie";
 
 const Rutas = () => {
@@ -21,6 +20,7 @@ const Rutas = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/user/resetpassword/:token" element={<PassReset />} />
         <Route path="/admin" element={<Admin />} />
