@@ -3,12 +3,13 @@ import { Login, Dropdowns } from "./";
 import { getCookie } from "./Utilitis/getCookie";
 import { Link } from "react-router-dom";
 import { Nav, Cart } from "../components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createShoppingSession } from "../Redux/Actions/actions";
 
 const NavBar = ({isScroll = false}) => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
   const dispatch = useDispatch();
+  let {login}= useSelector(state=>state.userSession)
 
   useEffect(() => {
     LoadSet(getCookie("Email") === "");
@@ -24,7 +25,7 @@ const NavBar = ({isScroll = false}) => {
         </Link>
         {/* <SearchBar /> */}
         <div className={`header-cart--container ${isScroll ? "scroll" : ""}`}>
-          {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          {!login ? <Login isScroll={isScroll} /> : <Dropdowns />}
           <Link
             to="/cart"
             className={`header-cart ${isScroll ? "scroll" : ""}`}
