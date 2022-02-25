@@ -6,7 +6,7 @@ import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
 import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic, createShoppingSession, checkSession } from "../Redux/Actions/actions"; /* 
+import { getProductsPublic, createShoppingSession, checkSession } from "../Redux/Actions/actions"; /*
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
 import products from "../helpers/mockProducts"; */
 
@@ -37,7 +37,6 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getProductsPublic());
-    dispatch(createShoppingSession());
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);

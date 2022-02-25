@@ -261,13 +261,12 @@ export const getCartItems = (sessionId) => {
     }
   };
 };
-export const addCartItem = ({ sessionId, productId, quantity }) => {
+export const addCartItem = (sessionId, productId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post(`${URL}/shopping/cart`, {
         session_id: sessionId,
         product_id: productId,
-        quantity: quantity,
       });
       if (data) {
         dispatch({ type: ADD_CART_ITEM, payload: data });

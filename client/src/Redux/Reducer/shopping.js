@@ -18,7 +18,7 @@ const initialState = {
   orderDetails: {},
   cartItems: [],
   session: {},
-  loadCart: true,
+  loadCart: false,
   loadOrders: true,
 };
 
@@ -70,7 +70,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case ADD_CART_ITEM:
       return {
         ...state,
-        loadCart: true
+        loadCart: true,
       };
     case EDIT_CART_ITEM_QTY:
       return {

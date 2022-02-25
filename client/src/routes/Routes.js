@@ -8,7 +8,6 @@ import {
 
 import { Catalog, Registro, PerfilUser, ProductDetail , Verificate } from "../containers";
 import { Home, Admin, PassReset, Cart } from "../pages"
-
 import { getCookie } from "../containers/Utilitis/getCookie";
 import Checkout from "../pages/Checkout";
 
@@ -32,7 +31,7 @@ const Rutas = () => {
           path="/perfilUser"
           element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
         />
-        <Route path="/productDetail/:id" element={<ProductDetail />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route
           path="/perfilUser"
           element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
