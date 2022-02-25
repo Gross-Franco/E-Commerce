@@ -22,7 +22,7 @@ export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
 export const RESET_PASSWORD = "RESET_PASSWORD";
 export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";
-export const RESET_PASSWORD = "RESET_PASSWORD";
+//export const RESET_PASSWORD = "RESET_PASSWORD";
 
 // Orders / Shopping
 export const GET_ORDERS = "GET_ORDERS";
