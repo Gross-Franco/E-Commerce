@@ -51,6 +51,7 @@ conn.sync({ force: true }).then(() => {
           })
         })
       })
+
     })}).then(() => {
       User.bulkCreate(mockusers);
       PaymentDetails.bulkCreate(mockpaymentdetails)
@@ -63,6 +64,5 @@ conn.sync({ force: true }).then(() => {
     .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 
-  
   });
 });

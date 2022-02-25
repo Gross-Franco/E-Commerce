@@ -5,8 +5,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Catalog, Registro, PerfilUser, ProductDetail } from "../containers";
+
+import { Catalog, Registro, PerfilUser, ProductDetail , Verificate } from "../containers";
 import { Home, Admin, PassReset, Cart } from "../pages"
+
 import { getCookie } from "../containers/Utilitis/getCookie";
 
 const Rutas = () => {
@@ -37,6 +39,9 @@ const Rutas = () => {
           path="/registro"
           element={AutenCookin ? <Registro /> : <Navigate to="/" replace />}
         />
+
+          <Route path="/verificate/:ap" element={<Verificate/>} />
+
       </Routes>
     </Router>
   );

@@ -81,20 +81,155 @@ const createUser = async (req, res) => {
             email, 
             isAdmin
         } = req.body
+
+       
         if (!username || !first_name || !last_name || !email) {
             res.status(400).json({ success: false, error: 'fields are missing in the form' })
         } else {
+
+        
             let [user, created] = await User.findOrCreate({ where: { email: email }, defaults: { username, password, first_name, last_name, email, isAdmin } })
             if (created) {
+            
+//generar token
+
+let token =  jwt.sign({username,email},FIRM,{expiresIn:'1d'})
+console.log("hola mundo")
+              //enviar mail 
+    // set up nodemailer configs
+    var transporter = nodemailer.createTransport({
+      service: "Outlook365",
+      host: "smtp.office365.com",
+      port: "587",
+      tls: {
+        ciphers: "SSLv3",
+        rejectUnauthorized: false,
+      },
+      auth: {
+        user: 'ecommerce53@outlook.com', //email created to send the emails from
+        pass: 'ecommerce777*'
+      },
+    });
+    const options = {
+      from: 'ecommerce53@outlook.com',
+      to: email,
+      subject: 'Wellcome EC you need click verificate link',
+      //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
+      // <a href="${process.env.CLIENT_URL}/user/resetpassword/${token}">${token}</a>
+      html:`<p>CORTESIA DE JOSE:<p>
+           
+            <p> Hi ${first_name},<p>
+
+            <p> We just need to verify your email address before you can access [customer portal].<p>
+            
+            <p> Verify your email address :<p>
+            <a href="http://localhost:3001/user/confirm/${token}">${token}</a>
+            <p> Thanks! &#8211; The [company] team<p>`
+          };
+
+          
+    // this function sends the email using the information for options
+   
+    transporter.sendMail(options, function(err, info){
+     
+      if(err){
+        console.log(err)
+        return;
+      }
+      console.log('email sent ' + info.response)
+      res.status(201).json({message: `Verificate reset request sent to ${email} reset link: http://localhost:3001/user/resetpassword/${token}`})
+    })
+
+    //--------------------------------------I--------------------------------------
+
                 res.status(201).json({ success: true, inf: 'User created' })
-            } else {
+            
+              } else {
+            
                 res.status(400).json({ success: false, inf: 'This email is already registered' })
+                
             }
         }
     } catch (error) {
         res.status(500).json({ success: false, error: 'Failed in the process to register: ' + error })
     }
 }
+
+
+const confirm = async (req, res) => {
+
+
+  try {
+
+     // Obtener el token
+     const { token } = req.params;
+     
+     // Verificar la data
+     let data =  null;
+
+     jwt.verify(token, FIRM, (err, decoded) => {
+         if(err) {
+             console.log('Error al obtener data del token');
+         } 
+         else {
+             data = decoded;
+         }
+     });
+ 
+  // console.log()
+
+     if(data === null) {
+          return res.json({
+              success: false,
+              msg: 'Error al obtener data'
+          });
+     }
+
+     console.log(data);
+
+     const {username,email} = data;
+
+     // Verificar existencia del usuario
+     //
+    //  const user = await User.findOne({ email }) || null;
+
+     const user = await User.findOne({
+      where: {email: email}
+    }) || null;
+
+     if(user === null) {
+          return res.json({
+              success: false,
+              msg: 'Usuario no existe'
+          });
+     }
+
+     // Verificar el código
+    //  if(code !== user.code) {
+    //       return res.redirect('/error.html');
+    //  }
+
+     // Actualizar usuario
+    //  user.set('verificate', true);
+     user.verificate = true;
+     await user.save();
+
+
+
+     // Redireccionar a la confirmación
+  res.redirect('http://localhost:3000/verificate/'+ username)
+
+      
+  } catch (error) {
+      console.log(error);
+      // window.location.href = `/verificate/No_Verficate`;
+      return res.json({
+          success: false,
+          msg: 'Error al confirmar usuario'
+      });
+  }
+}
+
 
 const postLogin = (req,res) => {
     try{
@@ -129,6 +264,10 @@ const postLogin = (req,res) => {
         res.status(500).json({success:false,error:e})
     }
 }
+
+
+
+
 
 const postReviewProduct = async (req,res)=>{
     // si se envia el token
@@ -329,5 +468,6 @@ module.exports = {
     postLogin,
     addPayment,
     forgotPassword,
-    passwordResetToken
+    passwordResetToken,
+    confirm
 }
