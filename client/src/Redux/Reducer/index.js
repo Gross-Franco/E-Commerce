@@ -123,6 +123,7 @@ import categories from "./categories";
 import general from "./general";
 import users from "./users"
 import shopping from "./shopping"
+import userSesion from './UserSesion'
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
@@ -130,7 +131,8 @@ const rootReducer = combineReducers({
   categories,
   general,
   shopping,
-  users
+  users,
+  userSesion
 })
 
 export default rootReducer;

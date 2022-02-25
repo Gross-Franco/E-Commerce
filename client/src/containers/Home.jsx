@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect,useLayoutEffect } from "react";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import { Footer, NavBar, Carrousel } from ".";
@@ -18,6 +18,14 @@ export default function Home() {
 
   let { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  useLayoutEffect(()=>{
+    if(JSON.parse(localStorage.getItem('eCUs'))){
+      console.log("hay un token")
+    }else{
+      console.log('nada')
+    }
+
+  },[])
 
   useEffect(() => {
     dispatch(getProductsPublic());

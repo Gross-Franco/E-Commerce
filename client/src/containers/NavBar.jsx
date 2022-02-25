@@ -3,10 +3,12 @@ import { Login, Dropdowns } from "./";
 import { getCookie } from "./Utilitis/getCookie";
 import { Link } from "react-router-dom";
 import { Nav, Cart } from "../components";
+import {useSelector} from 'react-redux';
 
 const NavBar = () => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
   const [isScroll, setIsScroll] = useState(false);
+  let {user}= useSelector(state => state.userSesion) 
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -34,7 +36,8 @@ const NavBar = () => {
         </Link>
         {/* <SearchBar /> */}
         <div className={`header-cart--container ${isScroll ? 'scroll' : ''}`}>
-          {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          
+          {!user? <Login isScroll={isScroll} /> : <Dropdowns />}
           <Cart />
         </div>
       </div>

@@ -25,6 +25,7 @@ import {
     PROMOTE_USER,
     RESET_PASSWORD,
     ADD_USER_PUBLIC,
+    LOGOUT,
     
     // Orders
     GET_ORDERS,
@@ -42,20 +43,20 @@ const URL = "http://localhost:3001";
 
 export const getProducts = () => {
     return async (dispatch) => {
-        const response = await axios.get(`/admin/products`);
+        const response = await axios.get(URL+`/admin/products`);
         dispatch({ type: GET_PRODUCTS, payload: response.data});
     }
 }
 
 export const getCategories = () => {
     return async (dispatch) => {
-        const response = await axios.get(`/admin/categories`); // chequear con la ruta del server
+        const response = await axios.get(URL+`/admin/categories`); // chequear con la ruta del server
         dispatch({ type: GET_CATEGORIES, payload: response.data});
     }
 }
 export const getProductsPublic = () => {
     return (dispatch) => {
-        axios.get(`/product`)
+        axios.get(URL+`/product`)
         .then((res)=>{
             dispatch({ type:GET_PRODUCTS_PUBLIC, payload:res.data});
         },(err)=>{
@@ -66,48 +67,48 @@ export const getProductsPublic = () => {
 
 export const searchProductId = (id) => {
     return async (dispatch) => {
-        const response = await axios.get(`/product/productId/${id}`);
+        const response = await axios.get(URL+`/product/productId/${id}`);
         dispatch({ type: SEARCH_PRODUCT_ID, payload: response.data});
     }
 }
 
 export const searchProductName = (name) => {
     return async (dispatch) => {
-        const response = await axios.get(`/admin/productname?name=${name}`);
+        const response = await axios.get(URL+`/admin/productname?name=${name}`);
         dispatch({ type: SEARCH_PRODUCT_NAME, payload: response.data});
     }
 }
 
 export const searchProductNamePublic = (name) => {
     return async (dispatch) => {
-        const response = await axios.get(`/product/name?name=${name}`);
+        const response = await axios.get(URL+`/product/name?name=${name}`);
         dispatch({ type: SEARCH_PRODUCT_NAME_PUBLIC, payload: response.data});
     }
 }
 
 export const searchCategoryName = (name) => {
     return async (dispatch) => {
-        const response = await axios.get(`/admin/categoryname?name=${name}`);
+        const response = await axios.get(URL+`/admin/categoryname?name=${name}`);
         dispatch({ type: SEARCH_CATEGORY_NAME, payload: response.data});
     }
 }
 export const createProduct = (newProduct) => {
     return async (dispatch) => {
-        const post = await axios.post(`/admin/createProducts`, newProduct); // chequear con la ruta del server
+        const post = await axios.post(URL+`/admin/createProducts`, newProduct); // chequear con la ruta del server
         dispatch({ type: CREATE_PRODUCT, payload: post.data});
     }
 }
 
 export const updateProduct = (editedProduct) => {
     return async (dispatch) => {
-        const post = await axios.post(`/admin/editProducts`, editedProduct); // chequear con la ruta del server
+        const post = await axios.post(URL+`/admin/editProducts`, editedProduct); // chequear con la ruta del server
         dispatch({ type: UPDATE_PRODUCT, payload: post.data});
     }
 }
 
 export const createCategory = (newCategory) => {
     return async (dispatch) => {
-        const post = await axios.post(`/admin/createCategory`, newCategory); // chequear con la ruta del server
+        const post = await axios.post(URL+`/admin/createCategory`, newCategory); // chequear con la ruta del server
         dispatch({ type: CREATE_CATEGORY, payload: post.data});
     }
 }
@@ -118,7 +119,7 @@ export const deleteProduct = function() {
 
 export const filterProducts = function(categories) {
     return async (dispatch) => {
-        const response = await axios.post(`/product/filtercategory`, categories); // chequear con la ruta del server
+        const response = await axios.post(URL+`/product/filtercategory`, categories); // chequear con la ruta del server
         dispatch({ type: FILTER_PRODUCTS, payload: response.data});
     }}
 
@@ -132,21 +133,21 @@ export const setAddOrUpdate = (addOrUpdate) => {
 
 export const getUsers = () => {
     return async (dispatch) => {
-        const response = await axios.get(`/user/getUsers`);
+        const response = await axios.get(URL+`/user/getUsers`);
         dispatch({ type: GET_USERS, payload: response.data});
     }
 }
 
 export const promoteUser = (userId) => {
     return async (dispatch) => {
-        const post = await axios.get(`/admin/createAdmin/${userId}`); // chequear con la ruta del server
+        const post = await axios.get(URL+`/admin/createAdmin/${userId}`); // chequear con la ruta del server
         dispatch({ type: PROMOTE_USER, payload: post.data});
     }
 }
 
 export const deleteUser = (userId) => {
     return async (dispatch) => {
-        const post = await axios.get(`/admin/deleteUser/${userId}`); 
+        const post = await axios.get(URL+`/admin/deleteUser/${userId}`); 
         dispatch({ type: DELETE_USER, payload: post.data});
     }
 }
@@ -154,7 +155,7 @@ export const deleteUser = (userId) => {
 
 export const resetPassword = (email) => {
     return async (dispatch) => {
-        await axios.post(`/user/resetpassword`, { email: email}); 
+        await axios.post(URL+`/user/resetpassword`, { email: email}); 
     }
 }
 
@@ -167,28 +168,28 @@ export const passwordResetToken = (token, newPassword) => {
 
 export const getOrders = () => {
     return async (dispatch) => {
-        const response = await axios.get(`/admin/orders`);
+        const response = await axios.get(URL+`/admin/orders`);
         dispatch({ type: GET_ORDERS, payload: response.data});
     }
 }
 
 export const filterOrderByStatus = (filter) => {
     return async (dispatch) => {
-        const response = await axios.post(`/admin/filterOrderByStatus`, {status:filter});
+        const response = await axios.post(URL+`/admin/filterOrderByStatus`, {status:filter});
         dispatch({ type: FILTER_ORDERS, payload: response.data});
     }
 }
 
 export const changeOrderStatus = (orderId, status) => {
     return async (dispatch) => {
-        const response = await axios.post(`/admin/changeOrderStatus`, {orderId, status});
+        const response = await axios.post(URL+`/admin/changeOrderStatus`, {orderId, status});
         dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data});
     }
 }
 
 export const getOrderId = (orderId) => {
     return async (dispatch) => {
-        const response = await axios.get(`/admin/orders/${orderId}`);
+        const response = await axios.get(URL+`/admin/orders/${orderId}`);
         dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data});
     }
 }
@@ -196,10 +197,9 @@ export const getOrderId = (orderId) => {
 
 
 
-    export const RegisterUserPublic = (UserData) => {
-        return (dispatch) => {
-           
-            axios.post(`/user/register`, UserData)
+export const RegisterUserPublic = (UserData) => {
+        return (dispatch) => {  
+            axios.post(URL+`/user/register`, UserData)
             .then((res)=>{
               
                 //correo de verificacion
@@ -215,3 +215,20 @@ export const getOrderId = (orderId) => {
     }
     }
 
+export const logUser= (data)=>{
+    return (dispatch)=>{
+        axios.post(URL+'/user/login',data)
+        .then(res=>{
+            let {Token}= res.data.data
+            localStorage.setItem('eCUs',JSON.stringify(Token))
+            dispatch({type:ADD_USER_PUBLIC,payload:res.data.data.user})
+        },
+            (error)=>{
+                console.log(error)
+            })
+    }
+}
+export const logout=()=>{
+    localStorage.removeItem('eCUs');
+    return {type:LOGOUT}
+}

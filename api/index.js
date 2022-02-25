@@ -44,6 +44,7 @@ conn.sync({ force: true }).then(() => {
   server.listen(PORT || 3001, () => {
     ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
+      User.bulkCreate(mockusers)
       ProductCategory.bulkCreate(mockcategories).then(()=>{
         Product.findAll().then(products => {
           products.forEach(product => {
@@ -51,15 +52,7 @@ conn.sync({ force: true }).then(() => {
           })
         })
       })
-    })}).then(() => {
-      User.bulkCreate(mockusers);
-      PaymentDetails.bulkCreate(mockpaymentdetails)
-    }).then(() => {
-      OrderDetails.bulkCreate(mockorders).then(() => {
-        OrderItems.bulkCreate(mockorderItems).then(() => {
-        })
-      })
-    })
+    })})
     .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 

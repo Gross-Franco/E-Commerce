@@ -3,7 +3,12 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
   
     sequelize.define('paymentDetails', {  
-
+    id:{
+        primaryKey:true,
+        allowNull:false,
+        type:DataTypes.INTEGER,
+        autoIncrement:true
+    },
     amount: {
         type: DataTypes.INTEGER,
         allowNull: false,

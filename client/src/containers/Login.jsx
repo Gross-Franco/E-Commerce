@@ -1,58 +1,47 @@
-import React from "react";
+import React ,{useState}from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "./estilos/login.css";
 import { Link } from "react-router-dom";
-import { getCookie } from "./Utilitis/getCookie";
+import {logUser} from './../Redux/Actions/actions.js'
+import {useDispatch} from 'react-redux'
 
 export default function Login({isScroll}) {
   const [show, setShow] = React.useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const [inputs, setInputs] = React.useState({
-    email: null,
-    contraseña: null,
+  let [inputs, setInputs] =useState({
+    email:'',
+    password: '',
   });
+  let dispatch= useDispatch()
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputs.email && inputs.contraseña) {
-      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`);
+    if (inputs.email && inputs.password) {
+      alert(`Usu ${inputs.email} contra ${inputs.password}`);
+      dispatch(logUser({email:inputs.email,password:inputs.password}))
       handleClose();
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
     } else {
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
       alert("se tiene q rellenar los espacios en blanco");
     }
   };
   const handleInputs = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
+    setInputs(prev=>{
+      return {...prev,[e.target.name]:e.target.value}
     });
   };
 
-  //Testeo de inicio sesion ---- provicional
-  function ValidateRequest(e) {
-    //verificamos
-    if (getCookie("Email") === "") {
-      //añadimos data a las cokkies
-      document.cookie = "Email=" + inputs.email;
-
-      document.cookie = "Password=" + inputs.contraseña;
-
-      //refrest windoms
-      window.location.reload(false);
-    }
-    e.preventDefault();
-  }
+  
 
   return (
     <>
@@ -81,13 +70,13 @@ export default function Login({isScroll}) {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Contraseña</Form.Label>
+              <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Contraseña"
-                name="contraseña"
+                placeholder="password"
+                name="password"
                 onChange={handleInputs}
-                value={inputs.contraseña}
+                value={inputs.password}
               />
             </Form.Group>
 
@@ -95,7 +84,7 @@ export default function Login({isScroll}) {
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" type="submit" onClick={ValidateRequest}>
+              <Button variant="primary" type="submit">
                 Iniciar
               </Button>
             </Modal.Footer>
