@@ -51,7 +51,6 @@ const addCartItem = async (req, res, next) => {
   try {
     const isSession = await ShoppingSession.findByPk(session_id);
     const isProduct = await Product.findByPk(product_id);
-	console.log(isSession);
     if (isSession && isProduct) {
       let [item, created] = await CartItems.findOrCreate({
         where: {
