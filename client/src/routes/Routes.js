@@ -11,6 +11,7 @@ import PassReset from "../pages/PassReset";
 import ProductDetail from "../containers/ProductDetail";
 import { getCookie } from "../containers/Utilitis/getCookie";
 import Carrousel from "../containers/Carrousel";
+import Checkout from "../pages/Checkout";
 
 const Rutas = () => {
   const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");
@@ -40,6 +41,7 @@ const Rutas = () => {
           path="/registro"
           element={AutenCookin ? <Registro /> : <Navigate to="/" replace />}
         />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );
