@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect} from "react";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
@@ -6,7 +6,7 @@ import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
 import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic, createShoppingSession } from "../Redux/Actions/actions"; /* 
+import { getProductsPublic, createShoppingSession, checkSession } from "../Redux/Actions/actions"; /* 
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
 import products from "../helpers/mockProducts"; */
 
@@ -26,6 +26,14 @@ export default function Home() {
 
   let { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+
+  useLayoutEffect(()=>{
+    let Token=JSON.parse(localStorage.getItem('eCUs'))
+    if(Token){
+      dispatch(checkSession(Token))
+    }
+  },[])
+
 
   useEffect(() => {
     dispatch(getProductsPublic());
