@@ -215,12 +215,27 @@ export const RegisterUserPublic = (UserData) => {
     }
     }
 
+export const checkSession=(token)=>{
+    return (dispatch)=>{
+        axios.post(URL+'/user/login',null,{headers:{authorization:token}})
+        .then(res=>{
+            dispatch({type:ADD_USER_PUBLIC,payload:res.data.data.user})
+        },
+            (error)=>{
+                alert(error)
+            })
+    }
+
+}
+
 export const logUser= (data)=>{
     return (dispatch)=>{
         axios.post(URL+'/user/login',data)
         .then(res=>{
             let {Token}= res.data.data
-            localStorage.setItem('eCUs',JSON.stringify(Token))
+            if(Token){
+                localStorage.setItem('eCUs',JSON.stringify({Token}))
+            }
             dispatch({type:ADD_USER_PUBLIC,payload:res.data.data.user})
         },
             (error)=>{

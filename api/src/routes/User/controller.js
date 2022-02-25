@@ -97,7 +97,7 @@ const createUser = async (req, res) => {
 }
 
 const postLogin = (req,res) => {
-    console.log(req.body)
+
     try{
         const {email,password}= req.body
         !email||!password&& res.status(401).json({success:false,error:'Incomplete data form'})

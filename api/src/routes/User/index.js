@@ -1,5 +1,5 @@
 const { Router } = require("express");
-
+const {authent} =require('./../../middlewares/auth/auth.js')
 const {getUsers, addAdress, createUser, postReviewProduct, postLogin, addPayment, OrdersUser, forgotPassword, passwordResetToken } = require("./controller");
 
 
@@ -12,7 +12,7 @@ const userRouter = Router();
 userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)
-userRouter.post('/login', postLogin)
+userRouter.post('/login',authent,postLogin)
 userRouter.post('/createUser', createUser);
 userRouter.post('/addPayment', addPayment)
 userRouter.get('/ordersuser', OrdersUser)

@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect,useLayoutEffect } from "react";
+import { useEffect,useLayoutEffect,useState} from "react";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import { Footer, NavBar, Carrousel } from ".";
@@ -7,20 +7,21 @@ import { Footer, NavBar, Carrousel } from ".";
 import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic } from "./../Redux/Actions/actions"; /* 
+import { getProductsPublic } from "./../Redux/Actions/actions"; 
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
-import products from "../helpers/mockProducts"; */
+import {checkSession} from './../Redux/Actions/actions'
 
 export default function Home() {
-  /* const [producs, SetProducts] = useState(Object.values(ProducsTest));
-
-  const [ValueRandom, SetValueRandom] = useState([]); */
-
+  const [ValueRandom, SetValueRandom] = useState([]);
+  let {login}= useSelector(state=> state.userSesion)
   let { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   useLayoutEffect(()=>{
     if(JSON.parse(localStorage.getItem('eCUs'))){
-      console.log("hay un token")
+      let {Token,session}=JSON.parse(localStorage.getItem('eCUs'))
+      if(Token&&!login){
+        dispatch(checkSession(Token))
+      }
     }else{
       console.log('nada')
     }
