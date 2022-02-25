@@ -13,7 +13,6 @@ const mockproducts = [
             "SKU": "WR-5249",
             "image":"https://www.apple.com/newsroom/images/product/iphone/standard/iphonex_front_back_new_glass_full.jpg.og.jpg?20211202",
             "description": "iPhone X.",
-            "category": ["Electronica", "Telefonia", "Tecnologia" ],
             "inventory_id": "2"
         },
         {

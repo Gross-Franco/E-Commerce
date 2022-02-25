@@ -5,7 +5,7 @@ import { SortContainer, FiltersContainer, ProductsContainer, NavBar, Footer } fr
 const Catalog = () => {
   return (
     <>
-      <NavBar />
+      <NavBar isScroll={true} />
       <div className="catalog--container">
         <div className="catalog-search--container">
           <SearchBar />

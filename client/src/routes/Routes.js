@@ -5,13 +5,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Home, Catalog, Registro, PerfilUser } from "../containers";
-import Admin from "../pages/Admin";
-import PassReset from "../pages/PassReset";
-import ProductDetail from "../containers/ProductDetail";
+
+import { Catalog, Registro, PerfilUser, ProductDetail , Verificate } from "../containers";
+import { Home, Admin, PassReset, Cart } from "../pages"
+
 import { getCookie } from "../containers/Utilitis/getCookie";
-import Carrousel from "../containers/Carrousel";
 import Checkout from "../pages/Checkout";
+
 
 const Rutas = () => {
   const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");
@@ -24,9 +24,9 @@ const Rutas = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/catalogo" element={<Catalog />} />
         <Route path="/user/resetpassword/:token" element={<PassReset />} />
-        <Route path="carrousel" element={<Carrousel />} />
         <Route path="/admin" element={<Admin />} />
         <Route
           path="/perfilUser"
@@ -42,6 +42,10 @@ const Rutas = () => {
           element={AutenCookin ? <Registro /> : <Navigate to="/" replace />}
         />
         <Route path="/checkout" element={<Checkout />} />
+
+
+          <Route path="/verificate/:ap" element={<Verificate/>} />
+
       </Routes>
     </Router>
   );

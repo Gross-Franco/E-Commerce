@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./estilos/login.css";
 import { Link } from "react-router-dom";
 import { getCookie } from "./Utilitis/getCookie";
+import {useDispatch} from 'react-redux'
+import {login} from './../Redux/Actions/actions'
 
 export default function Login({isScroll}) {
   const [show, setShow] = React.useState(false);
@@ -15,10 +17,13 @@ export default function Login({isScroll}) {
     email: null,
     contraseña: null,
   });
+  let dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.contraseña) {
       alert(`Usu ${inputs.email} contra ${inputs.contraseña}`);
+      dispatch(login(inputs))
+      
       handleClose();
       setInputs({
         email: "",
@@ -39,20 +44,7 @@ export default function Login({isScroll}) {
     });
   };
 
-  //Testeo de inicio sesion ---- provicional
-  function ValidateRequest(e) {
-    //verificamos
-    if (getCookie("Email") === "") {
-      //añadimos data a las cokkies
-      document.cookie = "Email=" + inputs.email;
-
-      document.cookie = "Password=" + inputs.contraseña;
-
-      //refrest windoms
-      window.location.reload(false);
-    }
-    e.preventDefault();
-  }
+  
 
   return (
     <>
@@ -95,7 +87,7 @@ export default function Login({isScroll}) {
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" type="submit" onClick={ValidateRequest}>
+              <Button variant="primary" type="submit" >
                 Iniciar
               </Button>
             </Modal.Footer>

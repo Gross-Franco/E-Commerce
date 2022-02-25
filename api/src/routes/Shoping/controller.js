@@ -1,5 +1,35 @@
-const { Product, OrderDetails, OrderItems, PaymentDetails, User, ShoppingSession, CartItems } = require('../../db.js');
+const { Product, OrderDetails, OrderItems, PaymentDetails, User, ShoppingSession, CartItems, ProductInventory } = require('../../db.js');
 const { Op } = require("sequelize");
+
+const getCartItems = async (req, res) => {
+	const {session_id} = req.query;
+	try {
+		let items = await CartItems.findAll({where: {session_id}});
+		let cartitems = await Promise.all(items.map(async item => {
+			let product = await Product.findOne({
+				where: {id : item.product_id},
+				attributes: {exclude: ['createdAt', 'updatedAt', 'description', 'SKU',]},
+			});
+			let inventory = await ProductInventory.findOne({where: {id: product.inventory_id}})
+			return {
+				id: item.id,
+				product: {
+					id: product.id,
+					name: product.name,
+					image: product.image,
+					price: product.price,
+					inventory: inventory.quantity,
+					discount_id: product.discount_id
+				},
+				quantity: item.quantity
+			}
+		})) 
+		res.json(cartitems);
+	} catch(err) {
+		console.log(err);
+		res.send(err)
+	}
+}
 
 const addCartItem = async (req, res, next) => {
 		const { session_id, product_id, quantity } = req.body;
@@ -63,20 +93,21 @@ const shoppingSessionInit = async (req, res, next) => {
 		const { user_id } = req.query;
 
 		try {
-			let [session, created] = await ShoppingSession.findOrCreate({
-				where: {
-					user_id,
-				},
-			});
-
-			if(created){
-				let user = await User.findByPk(user_id);
-				await user.setSession(user_id);
+			if(user_id) {
+				let [session, created] = await ShoppingSession.findOrCreate({
+					where: {
+						user_id,
+					},
+				});
+				if(created) {
+					let user = await User.findByPk(user_id);
+					await user.setSession(user_id);
+				}	
 				return res.status(201).json(session);
-			}else{
+			} else {
+				let session = await ShoppingSession.create({});
 				res.status(200).json(session);
 			}
-
 		} catch (error) {
 			next(error);
 		}
@@ -167,15 +198,25 @@ const createOrder = async (req, res, next) => {
 
 const processPayment = () => {};
 
+const destroyCartItems = async session_id => {
+	const destroyeditems = await CartItems.destroy({
+		where:{
+			session_id,
+		}
+	})
+	return destroyeditems;
+}
+const deleteCart = async (req, res) => {
+	const {session_id} = req.query;
+	await ShoppingSession.update({total: 0.00}, {where: {id:session_id}})
+	res.json(destroyCartItems(session_id))
+}
+
 const deleteShoppingSession =  async (req, res, next) => {
 	const { session_id } = req.query;
 	let destroyed = {};
 	try{
-		destroyed.items = await CartItems.destroy({
-			where:{
-				session_id,
-			}
-		})
+		destroyed.items = await destroyCartItems(session_id);
 		destroyed.cart = await ShoppingSession.destroy({
 			where: {
 				id: session_id,
@@ -190,13 +231,11 @@ const deleteShoppingSession =  async (req, res, next) => {
 const deleteCartItem = async (req,res,next) => {
 	const { session_id, product_id } = req.query;
 	try{
-
 		let destroyed = await CartItems.destroy({
 			where:{
 				[Op.and]: [{session_id},{product_id}],
 			}
 		})
-
 		destroyed ? res.status(200).json(destroyed) : next({status: 404, message:"Not Found"});
 
 	}catch(error){
@@ -205,6 +244,8 @@ const deleteCartItem = async (req,res,next) => {
 };
 
 module.exports = {
+	getCartItems,
+	deleteCart,
 	addCartItem,
 	shoppingSessionInit,
 	shoppingTotalEdit,

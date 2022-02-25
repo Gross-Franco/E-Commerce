@@ -1,13 +1,12 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect,useLayoutEffect} from "react";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
-import { Footer, NavBar, Carrousel } from ".";
+import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
 /* 
 import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic } from "./../Redux/Actions/actions"; /* 
+import { getProductsPublic, createShoppingSession, checkSession } from "../Redux/Actions/actions"; /* 
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
 import products from "../helpers/mockProducts"; */
 
@@ -15,18 +14,43 @@ export default function Home() {
   /* const [producs, SetProducts] = useState(Object.values(ProducsTest));
 
   const [ValueRandom, SetValueRandom] = useState([]); */
+  const [isScroll, setIsScroll] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
 
   let { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
+  useLayoutEffect(()=>{
+    let Token=JSON.parse(localStorage.getItem('eCUs'))
+    if(Token){
+      dispatch(checkSession(Token))
+    }
+  },[])
+
+
   useEffect(() => {
     dispatch(getProductsPublic());
+    dispatch(createShoppingSession());
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
+
+  
 
   return (
     <div>
-      <NavBar />
+      <NavBar isScroll={isScroll} handleScroll={handleScroll} />
       <Carrousel />
+      <HomeCategories />
       {
         // ------------------------------
       }
