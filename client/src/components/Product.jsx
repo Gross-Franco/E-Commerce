@@ -29,7 +29,7 @@ const Product = ({ product, section }) => {
           </Typography>
           <CardActions className={classes.cardActions}>
             <IconButton aria-label="Add to cart">
-              <AddShoppingCart />
+              <AddShoppingCart id="product-card--add-item" />
             </IconButton>
           </CardActions>
         </CardContent>
