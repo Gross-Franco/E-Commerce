@@ -4,38 +4,30 @@ import { getCookie } from "./Utilitis/getCookie";
 import { Link } from "react-router-dom";
 import { Nav, Cart } from "../components";
 
-const NavBar = () => {
+const NavBar = ({isScroll = false}) => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
-  const [isScroll, setIsScroll] = useState(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setIsScroll(true);
-    } else {
-      setIsScroll(false);
-    }
-  };
+  
 
   useEffect(() => {
     LoadSet(getCookie("Email") === "");
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
   }, []);
 
-
   return (
-    <header className="header" onScrollCapture={() => console.log('hola')}>
-      <div className={`header--container ${isScroll ? 'on-scroll' : ''}`}>
+    <header className="header" onScrollCapture={() => console.log("hola")}>
+      <div className={`header--container ${isScroll ? "on-scroll" : ""}`}>
         <Nav isScroll={isScroll} />
-        <Link to="/" className={`header-logo ${isScroll ? 'scroll' : ''}`}>
+        <Link to="/" className={`header-logo ${isScroll ? "scroll" : ""}`}>
           commerce
         </Link>
         {/* <SearchBar /> */}
-        <div className={`header-cart--container ${isScroll ? 'scroll' : ''}`}>
+        <div className={`header-cart--container ${isScroll ? "scroll" : ""}`}>
           {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
-          <Cart />
+          <Link
+            to="/cart"
+            className={`header-cart ${isScroll ? "scroll" : ""}`}
+          >
+            <Cart />
+          </Link>
         </div>
       </div>
     </header>

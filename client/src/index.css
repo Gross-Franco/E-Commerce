@@ -29,6 +29,21 @@ code {
   display: flex;
   flex-direction: row;
 }
+.header-cart {
+  color: white;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: -1.6px;
+  transition: all 0.3s ease;
+}
+.header-cart:hover {
+  color: white;
+}
+.header-cart.scroll {
+  color: black;
+  text-decoration: none;
+  text-transform: none;
+}
 .header-nav {
   display: flex;
   flex-direction: row;
@@ -121,6 +136,7 @@ code {
 .cart-icon {
   font-size: 1.5rem;
   align-self: center;
+  cursor: pointer;
 }
 
 .cart-count {
@@ -320,6 +336,9 @@ code {
   border: 1px solid #d8d8d8;
   border-radius: 0.5rem;
   flex-direction: column;
+}
+#product-card--add-item {
+  position: absolute;
 }
 
 /* ADMIN PAGE */
