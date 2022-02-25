@@ -200,7 +200,7 @@ export const changeOrderStatus = (orderId, status) => {
 export const getOrderId = (orderId) => {
   return async (dispatch) => {
     const response = await axios.get(`${URL}/admin/orders/${orderId}`);
-    dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data });
+    dispatch({ type: GET_ORDER_DETAILS, payload: response.data });
   };
 };
 
@@ -210,19 +210,20 @@ export const RegisterUserPublic = (UserData) => {
       (res) => {
         //correo de verificacion
 
-        //redirect
+        // redirect
         window.location.href = `/`;
         alert(
           "Registro exitoso, Se le ha enviado un mensaje de verificación al correo."
         );
       },
       (err) => {
-        //alert(err)
+        // alert(err)
         alert("EL usuario ya existe en el sistema");
       }
     );
   };
 };
+
 export const createShoppingSession = (userId = 1) => { //userId = 1 mientras no hay logueo
   return async (dispatch) => {
     const response = await axios.post(
@@ -291,7 +292,8 @@ export const editCartItemQty = ({ sessionId, productId, quantity }) => {
     }
   };
 };
-export const deleteCartItem = ({ sessionId, productId }) => {
+
+export const deleteCartItem = ( sessionId, productId ) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.delete(`${URL}/shopping/cart?product_id=${productId}&session_id=${sessionId}`);
@@ -303,6 +305,7 @@ export const deleteCartItem = ({ sessionId, productId }) => {
     }
   };
 };
+
 export const deleteCart = (sessionId) => {
   return async (dispatch) => {
     try {
