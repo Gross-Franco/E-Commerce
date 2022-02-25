@@ -42,6 +42,7 @@ import {
   EDIT_CART_ITEM_QTY,
   DELETE_CART_ITEM,
   DELETE_CART,
+  LOGOUT,
 } from "./actionTypes";
 
 const URL = "http://localhost:3001";
@@ -318,3 +319,31 @@ export const deleteCart = (sessionId) => {
     }
   };
 };
+export const login=(data)=>{
+  return (dispatch)=>{
+    axios.post(`${URL}/user/login`)
+    .then(resp=>{
+      let {user,Token}= resp.data.data
+      localStorage.setItem('eCUs',JSON.stringify({Token,session:''}))
+       dispatch({type:ADD_USER_PUBLIC,payload:user})
+    },(err)=>{
+      alert("Error: "+err)
+    })
+  }
+}
+export const checkSession=(token)=>{
+  return (dispatch)=>{
+    axios.post(`${URL}/user/login`,null,{headers:{authorization:token}})
+    .then(resp=>{
+      let {user}= resp.data.data
+      dispatch({type:ADD_USER_PUBLIC,payload:user})
+    },(err)=>{
+      alert("Error: "+err)
+    })
+  } 
+}
+export const logout=()=>{
+  return (dispatch)=>{
+    dispatch({type:LOGOUT})
+  }
+}

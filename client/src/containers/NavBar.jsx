@@ -3,9 +3,11 @@ import { Login, Dropdowns } from "./";
 import { getCookie } from "./Utilitis/getCookie";
 import { Link } from "react-router-dom";
 import { Nav, Cart } from "../components";
+import {useSelector} from 'react-redux'
 
 const NavBar = ({isScroll = false}) => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
+  let {login}= useSelector(state=>state.userSession)
   
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const NavBar = ({isScroll = false}) => {
         </Link>
         {/* <SearchBar /> */}
         <div className={`header-cart--container ${isScroll ? "scroll" : ""}`}>
-          {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          {!login ? <Login isScroll={isScroll} /> : <Dropdowns />}
           <Link
             to="/cart"
             className={`header-cart ${isScroll ? "scroll" : ""}`}
