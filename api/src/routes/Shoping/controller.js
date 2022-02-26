@@ -19,7 +19,7 @@ const getCartItems = async (req, res) => {
         let product = await Product.findOne({
           where: { id: item.product_id },
           attributes: {
-            exclude: ["createdAt", "updatedAt", "description", "SKU"],
+            exclude: ["createdAt", "updatedAt", "description"],
           },
         });
         let inventory = await ProductInventory.findOne({
@@ -32,6 +32,7 @@ const getCartItems = async (req, res) => {
             name: product.name,
             image: product.image,
             price: product.price,
+            SKU: product.SKU,
             inventory: inventory.quantity,
             discount_id: product.discount_id,
           },
