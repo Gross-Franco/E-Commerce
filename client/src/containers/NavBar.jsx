@@ -15,7 +15,6 @@ const NavBar = ({ isScroll = false }) => {
   let { login } = useSelector((state) => state.userSession);
 
   useEffect(() => {
-    LoadSet(getCookie("Email") === "");
     dispatch(createShoppingSession());
   }, []);
 

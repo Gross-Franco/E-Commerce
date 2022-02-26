@@ -320,7 +320,7 @@ export const deleteCart = (sessionId) => {
 };
 export const login=(data)=>{
   return (dispatch)=>{
-    axios.post(`${URL}/user/login`)
+    axios.post(`${URL}/user/login`,data)
     .then(resp=>{
       let {user,Token}= resp.data.data
       localStorage.setItem('eCUs',JSON.stringify({Token,session:''}))
@@ -332,7 +332,7 @@ export const login=(data)=>{
 }
 export const checkSession=(token)=>{
   return (dispatch)=>{
-    axios.post(`${URL}/user/login`,null,{headers:{authorization:token}})
+    axios.post(`${URL}/user/login`,null,{headers:{Authorization:'Bearer '+token}})
     .then(resp=>{
       let {user}= resp.data.data
       dispatch({type:ADD_USER_PUBLIC,payload:user})
@@ -343,6 +343,7 @@ export const checkSession=(token)=>{
 }
 export const logout=()=>{
   return (dispatch)=>{
+    localStorage.removeItem('eCUs');
     dispatch({type:LOGOUT})
   }
 }

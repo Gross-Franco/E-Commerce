@@ -14,33 +14,32 @@ export default function Login({isScroll}) {
   const handleShow = () => setShow(true);
 
   const [inputs, setInputs] = React.useState({
-    email: null,
-    contraseña: null,
+    email: '',
+    password: '',
   });
   let dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputs.email && inputs.contraseña) {
-      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`);
+    if (inputs.email && inputs.password) {
+      alert(`Usu ${inputs.email} contra ${inputs.password}`);
       dispatch(login(inputs))
       
       handleClose();
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
     } else {
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
       alert("se tiene q rellenar los espacios en blanco");
     }
   };
   const handleInputs = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
+    setInputs(prev=>{
+      return {...prev,[e.target.name]:e.target.value}
     });
   };
 
@@ -77,9 +76,9 @@ export default function Login({isScroll}) {
               <Form.Control
                 type="password"
                 placeholder="Contraseña"
-                name="contraseña"
+                name="password"
                 onChange={handleInputs}
-                value={inputs.contraseña}
+                value={inputs.password}
               />
             </Form.Group>
 

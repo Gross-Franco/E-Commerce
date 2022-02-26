@@ -6,7 +6,8 @@ let {FIRM}= process.env
 
 module.exports={
     authent:(req,res,next)=>{
-        let Token= req.headers['athorization']
+        console.log(req.headers)
+        let Token= req.headers['authorization']?.split(' ')[1]
         if(Token){
             jwt.verify(Token,FIRM,(err,decode)=>{
                 if(decode){
@@ -19,7 +20,7 @@ module.exports={
                             last_name,
                             isAdmin
                         }=r
-                        res.status(200).json({success,data:{user:{username,email,first_name,last_name,isAdmin}}})
+                        res.status(200).json({success:true,data:{user:{username,email,first_name,last_name,isAdmin}}})
                     },err=>{
                         res.status(400).json({success:false,error:"User not found"})
                     })
