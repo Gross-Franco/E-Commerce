@@ -28,9 +28,12 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useLayoutEffect(()=>{
-    let Token=JSON.parse(localStorage.getItem('eCUs'))
-    if(Token){
-      dispatch(checkSession(Token))
+    
+    if(JSON.parse(localStorage.getItem('eCUs'))){
+      let {Token}=JSON.parse(localStorage.getItem('eCUs'))
+      if(Token!==''){
+        dispatch(checkSession(Token))
+      }
     }
   },[])
 
