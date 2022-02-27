@@ -1,6 +1,6 @@
 // Products
 export const GET_PRODUCTS = 'GET_PRODUCTS';
-export const GET_PRODUCTS_PUBLIC =  "GET_PRODUCTS_PUBLIC";
+export const GET_PRODUCTS_PUBLIC = "GET_PRODUCTS_PUBLIC";
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const SEARCH_PRODUCT_NAME = 'SEARCH_PRODUCT_NAME';
@@ -32,5 +32,6 @@ export const GET_ORDER_DETAILS = "GET_ORDER_DETAILS";
 
 // Misc
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
+export const SET_AUTH_LEVEL = "SET_AUTH_LEVEL";
 
 

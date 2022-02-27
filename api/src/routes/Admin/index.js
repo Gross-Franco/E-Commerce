@@ -10,27 +10,27 @@ const { createAdmin, deleteUser } = require('./controller')
 const adminRouter = Router();
 
 // Order routes
-adminRouter.get('/orders', getOrders)
-adminRouter.get('/orders/:id', getOrderId)
-adminRouter.get('/status', allStatus)
-adminRouter.post('/filterOrderByStatus', filterOrderByStatus)
-adminRouter.post('/changeOrderStatus', changeOrderStatus)
+adminRouter.get('/orders', getOrders);
+adminRouter.get('/orders/:id', getOrderId);
+adminRouter.get('/status', allStatus);
+adminRouter.post('/filterOrderByStatus', filterOrderByStatus);
+adminRouter.post('/changeOrderStatus', changeOrderStatus);
 
 // Product routes
 adminRouter.get('/products', getAllProducts);
 adminRouter.post('/createProducts', createProduct);
 adminRouter.post('/editProducts', editProduct);
-adminRouter.get('/productname', searchProductName)
+adminRouter.get('/productname', searchProductName);
 // adminRouter.post('/addInventory', addToInvetory);
 // adminRouter.post('/removeInventory', removeFromInvetory)
 
 // Category routes
-adminRouter.get('/categories', getCategory)
-adminRouter.get('/categoryname', searchCategoryName)
-adminRouter.post('/createCategory', createCategory)
+adminRouter.get('/categories', getCategory);
+adminRouter.get('/categoryname', searchCategoryName);
+adminRouter.post('/createCategory', createCategory);
 
 // Admin routes
 adminRouter.get('/createAdmin/:id', createAdmin);
-adminRouter.get('/deleteUser/:id', deleteUser)
+adminRouter.get('/deleteUser/:id', deleteUser);
 
 module.exports = adminRouter;

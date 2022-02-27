@@ -1,37 +1,62 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const { ShopingSession } = require("../../db");
-let { FIRM } = process.env
-
-
+const { createSession, destroySession } = require('./utilities');
+const { FIRM, TOKEN_COOKIE, SESSION_COOKIE } = process.env
 
 const authenticate = async (req, res, next) => {
-    // console.log(res)
-    let Token = req.headers['authorization']?.split(' ')[1]
+    const { [TOKEN_COOKIE]: Token, [SESSION_COOKIE]: session_id } = req.cookies;
 
     if (Token) {
-        jwt.verify(Token, FIRM, (err, decode) => {
-            if (decode) {
-
+        jwt.verify(Token, FIRM, (err, values) => {
+            if (err) {
+                if (err.expiredAt) {
+                    destroySession(session_id)
+                        .then(() => {
+                            const decoded = jwt.decode(Token)
+                            return createSession({ ...decoded })
+                        })
+                        .then(({ token, id }) => {
+                            req.setMyCookies = {
+                                [TOKEN_COOKIE]: token,
+                                [SESSION_COOKIE]: id
+                            }
+                            req.permits = jwt.decode(token);
+                            next();
+                        })
+                        .catch(error => {
+                            return res.status(500).json(error);
+                        })
+                } else {
+                    return res.status(403).json(err);
+                }
             } else {
-                res.status(403).json(err)
+                req.permits = values;
+                next();
+                return;
             }
         })
     } else {
-        Token = await createToken();
+        const { token, id } = await createSession();
+        req.setMyCookies = {
+            [TOKEN_COOKIE]: token,
+            [SESSION_COOKIE]: id
+        }
+        next();
+        return;
     }
 }
 
-const createToken = async (info = undefined) => {
-    const session = ShopingSession.create()
-    let body = {
-        session_id: session.id,
-        ...info,
+const setResCookies = (req, res, next) => {
+    const cookies = req.setMyCookies;
+    if (cookies) {
+        for (let cookie in cookies) {
+            res.cookie(cookie, cookies[cookie], { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+        }
     }
-    let token = jwt.sign(body, AUTH_SECRET, { expiresIn: AUTH_EXPIRES })
-    return token;
+    next();
 }
 
 module.exports = {
-    authenticate
+    authenticate,
+    setResCookies,
 }
