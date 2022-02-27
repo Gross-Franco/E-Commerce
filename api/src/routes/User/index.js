@@ -1,7 +1,7 @@
 const { Router } = require("express");
-const { authenticateToken } = require("../Auth/controller");
+const { authenticate } = require("../../middlewares/auth/authentication");
 
-const { getUsers, addAdress, postReviewProduct, addPayment, forgotPassword, passwordResetToken, OrdersUser, createUser } = require("./controller");
+const { getUsers, addAdress, createUser, confirm, postReviewProduct, postLogin, addPayment, OrdersUser, forgotPassword, passwordResetToken } = require("./controller");
 
 
 // Importar todos los routers;
@@ -10,18 +10,15 @@ const userRouter = Router();
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-//?----- Users ------//
-userRouter.get('/', getUsers);
-userRouter.post('/signup', authenticateToken, createUser);
-userRouter.post('/adress', addAdress);
-//?----- Password ----//
-// userRouter.post('/login', postLogin);
-userRouter.post('/resetpassword', forgotPassword);
-userRouter.post('/token', passwordResetToken);
-//?----- Posts -----//
-userRouter.post('/post/product/:idProduct',postReviewProduct);
-//?----- Purchase Order -------//
+userRouter.post('/post/product/:idProduct', postReviewProduct);
+userRouter.get('/getUsers', getUsers);
+userRouter.post('/addAddress', addAdress);
+userRouter.post('/login', authenticate, postLogin);
+userRouter.post('/createUser', createUser);
+userRouter.get('/confirm/:token', confirm);
 userRouter.post('/addPayment', addPayment);
 userRouter.get('/ordersuser', OrdersUser);
+userRouter.post('/resetpassword', forgotPassword);
+userRouter.post('/:token', passwordResetToken);
 
 module.exports = userRouter;

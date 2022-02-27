@@ -109,11 +109,17 @@ User.hasMany(UserReviews, { foreignKey: "user_id", onDelete: 'cascade', hooks: t
 UserReviews.belongsTo(User, { foreignKey: "user_id" });
 
 //Product relations
+<<<<<<< Updated upstream
+=======
+ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
+Product.belongsTo(ProductInventory, { foreignKey: "inventory_id" });
+>>>>>>> Stashed changes
 ProductCategory.belongsToMany(Product, { through: "product_Categories", foreignKey: "category_id" });
 Product.belongsToMany(ProductCategory, { through: "product_Categories", foreignKey: "product_id" });
 ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
 Product.belongsTo(ProductInventory, { foreignKey: "inventory_id", onDelete: "cascade" })
 Discount.hasMany(Product, { foreignKey: "discount_id" });
+<<<<<<< Updated upstream
 Product.belongsTo(Discount, { foreignKey: "discount_id", onDelete: "cascade" });
 
 //Shopping relations
@@ -129,6 +135,24 @@ CartItems.belongsTo(ShoppingSession, { foreignKey: "session_id" });
 Product.hasMany(CartItems, { foreignKey: "product_id", onDelete: "cascade" })
 CartItems.belongsTo(Product, { foreignKey: "product_id" })
 User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id", onDelete: "cascade" });
+=======
+Product.belongsTo(Discount, { foreignKey: "discount_id" });
+
+//Shopping relations
+PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
+OrderDetails.belongsTo(PaymentDetails, { foreignKey: "payment_id" })
+OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
+OrderItems.belongsTo(OrderDetails, { foreignKey: "order_id" })
+ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
+CartItems.belongsTo(ShoppingSession, { foreignKey: "session_id" })
+
+//Mixed relations
+Product.hasMany(OrderItems, { foreignKey: "product_id" });
+OrderItems.belongsTo(Product, { foreignKey: "product_id" });
+User.hasMany(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
+OrderDetails.belongsTo(User, { foreignKey: "user_id" })
+User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id" });
+>>>>>>> Stashed changes
 ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
 
 //Purchase order management
@@ -139,11 +163,17 @@ OrderDetails.belongsTo(User, { foreignKey: "user_id"})
 
 //Reviews
 Product.hasMany(UserReviews, { foreignKey: "review_id" });
+<<<<<<< Updated upstream
 UserReviews. belongsTo(Product, { foreignKey: "review_id" })
 //Authentication
 
 User.hasOne(RefreshTokens, {as: "token", foreignKey: "user_id", onDelete: "cascade"})
 RefreshTokens.belongsTo(User, { foreignKey: "user_id" })
+=======
+UserReviews.belongsTo(Product, { foreignKey: "review_id" })
+Product.hasMany(CartItems, { foreignKey: "product_id" })
+CartItems.belongsTo(Product, { foreignKey: "product_id" })
+>>>>>>> Stashed changes
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

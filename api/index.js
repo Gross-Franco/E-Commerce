@@ -41,15 +41,16 @@ const { PORT } = process.env;
 conn.sync({ force: true }).then(() => {
   server.listen(PORT, () => {
     ProductInventory.bulkCreate(mockinventory).then(() => {
-    Product.bulkCreate(mockproducts).then(() => {
-      ProductCategory.bulkCreate(mockcategories).then(()=>{
-        Product.findAll().then(products => {
-          products.forEach(product => {
-            product.addProductCategory(1);
+      Product.bulkCreate(mockproducts).then(() => {
+        ProductCategory.bulkCreate(mockcategories).then(() => {
+          Product.findAll().then(products => {
+            products.forEach(product => {
+              product.addProductCategory(1);
+            })
           })
         })
       })
-    })}).catch(error => console.log(error));
+    }).catch(error => console.log(error));
     OrderDetails.bulkCreate(mockorders);
     OrderItems.bulkCreate(mockorderItems)
     User.bulkCreate(mockusers);
