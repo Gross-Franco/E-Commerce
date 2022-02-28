@@ -1,5 +1,7 @@
+export const setOverflowY = (isOpen) => {
+  document.body.style.overflow = isOpen ? "hidden" : "unset";
+};
 
-// Nota: esto solo esta de ejemplo para la consulda a la base de datos
-export async function getDiets(){
-    return await axios.get('http://localhost:3001/types');
-}
+export const isFullfilled = (form) => {
+  return Object.keys(form).some((key) => form[key] !== "");
+};
