@@ -22,10 +22,9 @@ axiosWithCredentials.interceptors.request.use((config) => {
         level = 3;
     } else if (url === "user") {
         level = 2;
-    } else {
-        level = 1;
     }
 
-    config.headers.common["Permits"] = `Level ${1}`;
+    config.headers.common["Permits"] = `Level ${level}`;
+
     return config;
 })

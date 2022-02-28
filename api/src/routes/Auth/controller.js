@@ -28,7 +28,8 @@ const signup = async (req, res, next) => {
             if (created) {
 
                 const { token } = createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
-                res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
+                // res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
+                setCookie(res, token);
 
                 sendVerificationEmail(token, user.email, user.first_name);
 
@@ -77,7 +78,7 @@ const signout = (req, res, next) => {
 
     destroySession(session_id)
         .then(() => {
-            res.cookie(TOKEN_COOKIE, token, { maxAge: 0, sameSite: "None", httpOnly: true });
+            res.cookie(TOKEN_COOKIE, token, { maxAge: 0 });
             return res.sendStatus(200);
         })
 }
