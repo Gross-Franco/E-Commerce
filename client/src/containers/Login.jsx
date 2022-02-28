@@ -1,9 +1,7 @@
 import React from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import "./estilos/login.css";
 import { Link } from "react-router-dom";
-import { getCookie } from "./Utilitis/getCookie";
 import {useDispatch} from 'react-redux'
 import {login} from './../Redux/Actions/actions'
 
@@ -21,7 +19,6 @@ export default function Login({isScroll}) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.password) {
-      alert(`Usu ${inputs.email} contra ${inputs.password}`);
       dispatch(login(inputs))
       
       handleClose();
@@ -34,7 +31,6 @@ export default function Login({isScroll}) {
         email: "",
         password: "",
       });
-      alert("se tiene q rellenar los espacios en blanco");
     }
   };
   const handleInputs = (e) => {
