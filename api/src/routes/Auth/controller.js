@@ -2,7 +2,7 @@ require("dotenv").config();
 const { User } = require("../../db.js");
 const bcrypt = require("bcrypt");
 const { createSession, sendVerificationEmail, destroySession, setCookie } = require("../../middlewares/utilities.js");
-const { TOKEN_COOKIE, API } = process.env
+const { TOKEN_COOKIE } = process.env
 
 const signup = async (req, res, next) => {
     try {
@@ -57,7 +57,7 @@ const signin = (req, res, next) => {
         },
         atributes: ["id", "isAdmin", "password"],
     }).then((user) => {
-        if (password === user.password) {
+        if (bcrypt.compare(password, user.password)) {//Los usuarios creados con bulkcreate no estan hasheados
             return createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin });
         } else {
             // si la contraseña comparada no son validas, reporto un error de validacion de password

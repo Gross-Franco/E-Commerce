@@ -1,6 +1,6 @@
 import React from "react";
 import Dropdown from  "react-bootstrap/Dropdown";
-import { delete_cookie } from "./Utilitis/getCookie";
+// import { delete_cookie } from "./Utilitis/getCookie";
 import { axiosWithCredentials as axios} from "../utilities/axios";
 
 
@@ -8,7 +8,7 @@ export default function Dropdowns() {
 
 function Salir()
 {
-    axios.post("/api/signout");
+    axios.post("/user/logout");
 }
 
 return<div>

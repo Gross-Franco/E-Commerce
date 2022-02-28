@@ -12,9 +12,10 @@ const NavBar = () => {
 
   useEffect(() => {
     
-    LoadSet(authLevel < 2);
+    LoadSet(() => authLevel < 2);
    
   }, [authLevel]);
+
   const classes = useStyles();
   const handleScroll = () => {
     if (window.scrollY > 0) {
