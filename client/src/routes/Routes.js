@@ -3,21 +3,19 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 
-import { Catalog, Registro, PerfilUser, ProductDetail , Verificate } from "../containers";
-import { Home, Admin, PassReset, Cart } from "../pages"
-import { getCookie } from "../containers/Utilitis/getCookie";
+import {
+  Catalog,
+  PerfilUser,
+  ProductDetail,
+  Verificate,
+} from "../containers";
+import { Home, Admin, PassReset, Cart, Register } from "../pages";
 import Checkout from "../pages/Checkout";
 
-
 const Rutas = () => {
-  const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");
 
-  useEffect(() => {
-    SetAutenCookin(getCookie("Email") === "");
-  }, []);
 
   return (
     <Router>
@@ -29,22 +27,16 @@ const Rutas = () => {
         <Route path="/admin" element={<Admin />} />
         <Route
           path="/perfilUser"
-          element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
+          element={<PerfilUser />}
         />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route
-          path="/perfilUser"
-          element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
-        />
-        <Route
           path="/registro"
-          element={AutenCookin ? <Registro /> : <Navigate to="/" replace />}
+          element={<Register />}
         />
         <Route path="/checkout" element={<Checkout />} />
 
-
-          <Route path="/verificate/:ap" element={<Verificate/>} />
-
+        <Route path="/verificate/:ap" element={<Verificate />} />
       </Routes>
     </Router>
   );
