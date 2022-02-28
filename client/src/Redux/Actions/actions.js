@@ -125,7 +125,10 @@ export const deleteProduct = function () {
 
 export const filterProducts = function (categories) {
   return async (dispatch) => {
-    const response = await axios.post(`${URL}/product/filtercategory`, categories); // chequear con la ruta del server
+    const response = await axios.post(
+      `${URL}/product/filtercategory`,
+      categories
+    ); // chequear con la ruta del server
     dispatch({ type: FILTER_PRODUCTS, payload: response.data });
   };
 };
@@ -205,27 +208,34 @@ export const getOrderId = (orderId) => {
   };
 };
 
-export const RegisterUserPublic = (UserData) => {
+export const createUser = ({
+  username,
+  password,
+  firstName,
+  lastName,
+  email,
+}) => {
   return (dispatch) => {
-    axios.post(`${URL}/user/createUser`, UserData).then(
-      (res) => {
-        //correo de verificacion
-
-        // redirect
-        window.location.href = `/`;
-        alert(
-          "Registro exitoso, Se le ha enviado un mensaje de verificación al correo."
-        );
-      },
-      (err) => {
-        // alert(err)
-        alert("EL usuario ya existe en el sistema");
-      }
-    );
+    axios
+      .post(`${URL}/user/createUser`, {
+        username,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+      })
+      .then(response => {
+        dispatch({ type: CREATE_USER, payload: response.data });
+      })
+      .catch(({ response }) => {
+        console.log(response.data);
+        dispatch({ type: CREATE_USER, payload: response.data });
+      });
   };
 };
 
-export const createShoppingSession = (userId = 1) => { //userId = 1 mientras no hay logueo
+export const createShoppingSession = (userId = 1) => {
+  //userId = 1 mientras no hay logueo
   return async (dispatch) => {
     const response = await axios.post(
       `${URL}/shopping/session?user_id=${userId}`
@@ -293,10 +303,12 @@ export const editCartItemQty = ({ sessionId, productId, quantity }) => {
   };
 };
 
-export const deleteCartItem = ( sessionId, productId ) => {
+export const deleteCartItem = (sessionId, productId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`${URL}/shopping/cart?product_id=${productId}&session_id=${sessionId}`);
+      const { data } = await axios.delete(
+        `${URL}/shopping/cart?product_id=${productId}&session_id=${sessionId}`
+      );
       if (data) {
         dispatch({ type: DELETE_CART_ITEM, payload: data });
       }
@@ -309,7 +321,9 @@ export const deleteCartItem = ( sessionId, productId ) => {
 export const deleteCart = (sessionId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`${URL}/shopping/cart?session_id=${sessionId}`);
+      const { data } = await axios.delete(
+        `${URL}/shopping/cart?session_id=${sessionId}`
+      );
       if (data) {
         dispatch({ type: DELETE_CART, payload: data });
       }
@@ -318,32 +332,40 @@ export const deleteCart = (sessionId) => {
     }
   };
 };
-export const login=(data)=>{
-  return (dispatch)=>{
-    axios.post(`${URL}/user/login`,data)
-    .then(resp=>{
-      let {user,Token}= resp.data.data
-      localStorage.setItem('eCUs',JSON.stringify({Token,session:''}))
-       dispatch({type:ADD_USER_PUBLIC,payload:user})
-    },(err)=>{
-      alert("Error: "+err)
-    })
-  }
-}
-export const checkSession=(token)=>{
-  return (dispatch)=>{
-    axios.post(`${URL}/user/login`,null,{headers:{Authorization:'Bearer '+token}})
-    .then(resp=>{
-      let {user}= resp.data.data
-      dispatch({type:ADD_USER_PUBLIC,payload:user})
-    },(err)=>{
-      alert("Error: "+err)
-    })
-  } 
-}
-export const logout=()=>{
-  return (dispatch)=>{
-    localStorage.removeItem('eCUs');
-    dispatch({type:LOGOUT})
-  }
-}
+export const login = (data) => {
+  return (dispatch) => {
+    axios.post(`${URL}/user/login`, data).then(
+      (resp) => {
+        let { user, Token } = resp.data.data;
+        localStorage.setItem("eCUs", JSON.stringify({ Token, session: "" }));
+        dispatch({ type: ADD_USER_PUBLIC, payload: user });
+      },
+      (err) => {
+        alert("Error: " + err);
+      }
+    );
+  };
+};
+export const checkSession = (token) => {
+  return (dispatch) => {
+    axios
+      .post(`${URL}/user/login`, null, {
+        headers: { Authorization: "Bearer " + token },
+      })
+      .then(
+        (resp) => {
+          let { user } = resp.data.data;
+          dispatch({ type: ADD_USER_PUBLIC, payload: user });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+  };
+};
+export const logout = () => {
+  return (dispatch) => {
+    localStorage.removeItem("eCUs");
+    dispatch({ type: LOGOUT });
+  };
+};
