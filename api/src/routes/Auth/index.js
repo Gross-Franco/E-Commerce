@@ -12,6 +12,6 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 router.post('/signup', signup);
 router.post("/signin", signin);
-router.post("/signout", signout);
+// router.post("/signout", signout);
 
 module.exports = router;

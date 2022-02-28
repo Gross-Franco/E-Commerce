@@ -15,16 +15,16 @@ axiosWithCredentials.interceptors.response.use((response) => {
 })
 
 axiosWithCredentials.interceptors.request.use((config) => {
-    const url = config.url.split("/");
-    // let level;
+    const url = config.url.split("/")[1];
+    let level = 1;
 
-    // if (url.includes("admin")) {
-    //     level = 3;
-    // } else if (url.includes("user")) {
-    //     level = 2;
-    // } else {
-    //     level = 1;
-    // }
+    if (url === "admin") {
+        level = 3;
+    } else if (url === "user") {
+        level = 2;
+    } else {
+        level = 1;
+    }
 
     config.headers.common["Permits"] = `Level ${1}`;
     return config;

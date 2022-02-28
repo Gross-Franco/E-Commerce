@@ -123,7 +123,7 @@ CartItems.belongsTo(ShoppingSession, { foreignKey: "session_id" });
 
 //Mixed relations
 //Cart management
-Product.hasMany(CartItems, { foreignKey: "product_id", onDelete: "cascade" })
+Product.hasMany(CartItems, { foreignKey: "product_id" })
 CartItems.belongsTo(Product, { foreignKey: "product_id" })
 User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id", onDelete: "cascade" });
 ShoppingSession.belongsTo(User, { foreignKey: "user_id" });

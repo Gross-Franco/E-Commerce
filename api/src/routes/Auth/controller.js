@@ -39,7 +39,7 @@ const signup = async (req, res, next) => {
             }
         }
     } catch (error) {
-        next(error)
+        return res.status(500).json(error)
     }
 }
 
@@ -56,7 +56,6 @@ const signin = (req, res, next) => {
         atributes: ["id", "isAdmin", "password"],
     }).then((user) => {
         if (bcrypt.compareSync(password, user.password)) {
-            // return res.status(200).json({token}
             user.setSession(session_id);
 
             return createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })

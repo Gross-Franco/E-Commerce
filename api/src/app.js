@@ -28,9 +28,9 @@ server.use((req, res, next) => {
 });
 
 server.use(authenticate);
-// server.use(authorize);
+server.use(authorize);
 server.use("/", routes);
-server.use(flash())
+server.use(flash());
 
 
 // Error catching endware.
