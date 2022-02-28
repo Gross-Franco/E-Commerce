@@ -3,6 +3,8 @@ const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
 var flash = require('express-flash');
+const { authenticate } = require("./middlewares/auth/authentication.js");
+const { authorize } = require("./middlewares/auth/authorization.js");
 require("dotenv").config();
 
 
@@ -24,6 +26,8 @@ server.use((req, res, next) => {
 	next();
 });
 
+server.use(authenticate);
+server.use(authorize);
 server.use("/", routes);
 server.use(flash())
 

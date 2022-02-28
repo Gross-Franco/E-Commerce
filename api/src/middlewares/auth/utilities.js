@@ -1,21 +1,31 @@
-const { ShopingSession } = require("../../db");
+require("dotenv").config();
+const { ShoppingSession } = require("../../db");
+const jwt = require("jsonwebtoken");
+const { FIRM } = process.env;
 
 const createSession = async (info = undefined) => {
     let body = {
         ...info,
     }
     try {
-        const session = await ShopingSession.create()
-        let token = jwt.sign(body, AUTH_SECRET, { expiresIn: "10s" })
-        return { token, id: session.id };
+        if (!body.session_id) {
+            const session = await ShoppingSession.create();
+            body = {
+                ...body,
+                session_id: session.id,
+            }
+        }
+        let token = jwt.sign(body, FIRM, { expiresIn: "10s" })
+        console.log(jwt.decode(token));
+        return { token };
     } catch (error) {
-        return error;
+        console.log(error);
     }
 }
 
 const destroySession = async (id) => {
     try {
-        await ShopingSession.destroy({
+        await ShoppingSession.destroy({
             where: {
                 id
             },

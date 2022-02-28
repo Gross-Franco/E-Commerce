@@ -12,14 +12,10 @@ const authenticate = async (req, res, next) => {
                 if (err.expiredAt) {
                     destroySession(session_id)
                         .then(() => {
-                            const decoded = jwt.decode(Token)
-                            return createSession({ ...decoded })
+                            return createSession();
                         })
-                        .then(({ token, id }) => {
-                            req.setMyCookies = {
-                                [TOKEN_COOKIE]: token,
-                                [SESSION_COOKIE]: id
-                            }
+                        .then(token => {
+                            res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
                             req.permits = jwt.decode(token);
                             next();
                         })
@@ -36,27 +32,27 @@ const authenticate = async (req, res, next) => {
             }
         })
     } else {
-        const { token, id } = await createSession();
-        req.setMyCookies = {
-            [TOKEN_COOKIE]: token,
-            [SESSION_COOKIE]: id
+        try {
+            const { token } = await createSession();
+            res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+            next();
+            return;
+        } catch (error) {
+            return error;
         }
-        next();
-        return;
     }
 }
 
-const setResCookies = (req, res, next) => {
-    const cookies = req.setMyCookies;
-    if (cookies) {
-        for (let cookie in cookies) {
-            res.cookie(cookie, cookies[cookie], { maxAge: 2592000000, sameSite: "None", httpOnly: true })
-        }
-    }
-    next();
-}
+// const setResCookies = (req, res, next) => {
+//     const cookies = req.setMyCookies;
+//     if (cookies) {
+//         for (let cookie in cookies) {
+//             res.cookie(cookie, cookies[cookie], { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+//         }
+//     }
+//     next();
+// }
 
 module.exports = {
     authenticate,
-    setResCookies,
 }

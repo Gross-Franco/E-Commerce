@@ -2,7 +2,7 @@ import axios from "axios";
 require("dotenv").config();
 
 export const axiosWithCredentials = axios.create({
-    baseURL: process.env.REAC_APP_API,
+    baseURL: process.env.REACT_APP_API,
     withCredentials: true,
 })
 
@@ -14,15 +14,16 @@ axiosWithCredentials.interceptors.response.use((response) => {
 
 axiosWithCredentials.interceptors.request.use((config) => {
     const url = config.url.split("/");
-    let level;
+    console.log(url);
+    // let level;
 
-    if (url.includes("admin")) {
-        level = 3;
-    } else if (url.includes("user") || url.includes("product")) {
-        level = 2;
-    } else {
-        level = 1;
-    }
+    // if (url.includes("admin")) {
+    //     level = 3;
+    // } else if (url.includes("user")) {
+    //     level = 2;
+    // } else {
+    //     level = 1;
+    // }
 
-    config.headers.common["Authorization"] = `Level ${level}`;
+    config.headers.common["Authorization"] = `Level ${1}`;
 })
