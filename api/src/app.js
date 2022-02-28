@@ -7,6 +7,7 @@ const { authenticate } = require("./middlewares/auth/authentication.js");
 const { authorize } = require("./middlewares/auth/authorization.js");
 require("dotenv").config();
 
+const { DOMAIN } = process.env
 
 require("./db.js");
 
@@ -19,15 +20,15 @@ server.use(express.json({ limit: "50mb" }));
 server.use(cookieParser());
 server.use(morgan("dev"));
 server.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", process.env.DOMAIN); // update to match the domain you will make the request from
+	res.header("Access-Control-Allow-Origin", DOMAIN); // update to match the domain you will make the request from
 	res.header("Access-Control-Allow-Credentials", "true");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Permits");
 	res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
 	next();
 });
 
 server.use(authenticate);
-server.use(authorize);
+// server.use(authorize);
 server.use("/", routes);
 server.use(flash())
 

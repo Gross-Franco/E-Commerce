@@ -1,5 +1,5 @@
 import axios from "axios";
-require("dotenv").config();
+// require("dotenv").config();
 
 export const axiosWithCredentials = axios.create({
     baseURL: process.env.REACT_APP_API,
@@ -8,13 +8,14 @@ export const axiosWithCredentials = axios.create({
 
 axiosWithCredentials.interceptors.response.use((response) => {
     console.log(response);
+    return response;
 }, (error) => {
     console.log(error);
+    return error;
 })
 
 axiosWithCredentials.interceptors.request.use((config) => {
     const url = config.url.split("/");
-    console.log(url);
     // let level;
 
     // if (url.includes("admin")) {
@@ -26,4 +27,5 @@ axiosWithCredentials.interceptors.request.use((config) => {
     // }
 
     config.headers.common["Permits"] = `Level ${1}`;
+    return config;
 })

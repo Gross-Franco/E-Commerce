@@ -1,16 +1,14 @@
 import React from "react";
 import Dropdown from  "react-bootstrap/Dropdown";
 import { delete_cookie } from "./Utilitis/getCookie";
+import { axiosWithCredentials as axios} from "../utilities/axios";
 
 
 export default function Dropdowns() {
 
-function Salir(e)
+function Salir()
 {
-    delete_cookie("Email");
-    delete_cookie("Password");
-    window.location.reload(false);   
-    e.preventDefault();
+    axios.post("/api/signout");
 }
 
 return<div>

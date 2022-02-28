@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { signup, signin } = require("./controller");
+const { signup, signin, signout } = require("./controller");
 
 // const { signup, signin, authenticateToken } = require("./controller");
 
@@ -12,7 +12,6 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 router.post('/signup', signup);
 router.post("/signin", signin);
-// router.get("/auth", authenticateToken);
-
+router.post("/signout", signout);
 
 module.exports = router;

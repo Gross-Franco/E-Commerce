@@ -1,7 +1,8 @@
 require("dotenv").config();
 const { User } = require("../../db.js");
 const bcrypt = require("bcrypt");
-const { createSession } = require("../../middlewares/auth/utilities.js");
+const { createSession, sendVerificationEmail, destroySession, setCookie } = require("../../middlewares/utilities.js");
+const { TOKEN_COOKIE, API } = process.env
 
 const signup = async (req, res, next) => {
     try {
@@ -28,6 +29,8 @@ const signup = async (req, res, next) => {
 
                 const { token } = createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
                 res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
+
+                sendVerificationEmail(token, user.email, user.first_name);
 
                 return res.status(201).json({ message: 'User created', isUser: true, isAdmin });
 
@@ -63,12 +66,25 @@ const signin = (req, res, next) => {
             return res.status(400).json('Invalid Password or Email')
         }
     }).then(({ token }) => {
-        res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+        // res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+        setCookie(res, token);
         return res.status(200).json({ message: "Ususario logeado correctamente", isUser: true, isAdmin });
     }).catch(err => res.status(500).json(err))
+}
+
+const signout = (req, res, next) => {
+    const { session_id } = req.permits;
+    const { [TOKEN_COOKIE]: token } = req.cookies;
+
+    destroySession(session_id)
+        .then(() => {
+            res.cookie(TOKEN_COOKIE, token, { maxAge: 0, sameSite: "None", httpOnly: true });
+            return res.sendStatus(200);
+        })
 }
 
 module.exports = {
     signup,
     signin,
+    signout
 }

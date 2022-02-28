@@ -1,29 +1,33 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const { createSession, destroySession } = require('./utilities');
-const { FIRM, TOKEN_COOKIE, SESSION_COOKIE } = process.env
+const { createSession, destroySession, setCookie } = require('../utilities');
+const { FIRM, TOKEN_COOKIE } = process.env
 
 const authenticate = async (req, res, next) => {
     const { [TOKEN_COOKIE]: Token } = req.cookies;
+    // console.log(req.cookies)
 
     if (Token) {
         jwt.verify(Token, FIRM, (err, values) => {
             if (err) {
                 if (err.expiredAt) {
-                    destroySession(session_id)
+                    const decoded = jwt.decode(Token);
+                    destroySession(decoded.session_id)
                         .then(() => {
                             return createSession();
                         })
-                        .then(token => {
-                            res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
-                            req.permits = jwt.decode(token);
+                        .then(({ token, permits }) => {
+                            // res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true, secure: true })
+                            setCookie(res, token);
+                            req.permits = permits
                             next();
                         })
                         .catch(error => {
                             return res.status(500).json(error);
                         })
                 } else {
-                    res.cookie(TOKEN_COOKIE, Token, { maxAge: 0, sameSite: "None", httpOnly: true });
+                    // res.cookie(TOKEN_COOKIE, Token, { maxAge: 0, sameSite: "None", httpOnly: true, secure: true });
+                    setCookie(res, Token);
                     return res.status(401).json(err);
                 }
             } else {
@@ -36,7 +40,8 @@ const authenticate = async (req, res, next) => {
         try {
             const { token, permits } = await createSession();
             req.permits = permits
-            res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+            // res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+            setCookie(res, token);
             next();
             return;
         } catch (error) {
@@ -44,16 +49,6 @@ const authenticate = async (req, res, next) => {
         }
     }
 }
-
-// const setResCookies = (req, res, next) => {
-//     const cookies = req.setMyCookies;
-//     if (cookies) {
-//         for (let cookie in cookies) {
-//             res.cookie(cookie, cookies[cookie], { maxAge: 2592000000, sameSite: "None", httpOnly: true })
-//         }
-//     }
-//     next();
-// }
 
 module.exports = {
     authenticate,
