@@ -5,7 +5,6 @@ const { FIRM, TOKEN_COOKIE } = process.env
 
 const authenticate = async (req, res, next) => {
     const { [TOKEN_COOKIE]: Token } = req.cookies;
-    console.log("hello")
 
     if (Token) {
         jwt.verify(Token, FIRM, (err, values) => {
@@ -26,8 +25,8 @@ const authenticate = async (req, res, next) => {
                             return res.status(500).json(error);
                         })
                 } else {
-                    // res.cookie(TOKEN_COOKIE, Token, { maxAge: 0, sameSite: "None", httpOnly: true, secure: true });
-                    setCookie(res, Token);
+                    res.cookie(TOKEN_COOKIE, Token, { maxAge: 0 });
+                    // setCookie(res, Token);
                     return res.status(401).json(err);
                 }
             } else {

@@ -13,9 +13,10 @@ export default function Login() {
   const handleShow = () => setShow(true);
 
   const [inputs, setInputs] = React.useState({
-    email: null,
-    password: null,
+    email: "",
+    password: "",
   });
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.password) {
@@ -27,18 +28,19 @@ export default function Login() {
         handleClose();
         setInputs({
           email: "",
-          contraseña: "",
+          password: "",
         });
         alert(`Usu ${inputs.email} contra ${inputs.password}`);
       })
     } else {
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
       alert("se tiene q rellenar los espacios en blanco");
     }
   };
+
   const handleInputs = (e) => {
     setInputs({
       ...inputs,
@@ -92,7 +94,7 @@ export default function Login() {
               <Form.Control
                 type="password"
                 placeholder="Contraseña"
-                name="contraseña"
+                name="password"
                 onChange={handleInputs}
                 value={inputs.password}
               />

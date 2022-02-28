@@ -31,7 +31,7 @@ const signup = async (req, res, next) => {
                 // res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
                 setCookie(res, token);
 
-                sendVerificationEmail(token, user.email, user.first_name);
+                // sendVerificationEmail(token, user.email, user.first_name);
 
                 return res.status(201).json({ message: 'User created', isUser: true, isAdmin });
 
@@ -48,6 +48,7 @@ const signin = (req, res, next) => {
     const { email, password } = req.body;
     const { session_id } = req.permits;
 
+
     !email || !password && res.status(400).json({ success: false, error: 'Incomplete data form' })
 
     User.findOne({
@@ -56,20 +57,23 @@ const signin = (req, res, next) => {
         },
         atributes: ["id", "isAdmin", "password"],
     }).then((user) => {
-        if (bcrypt.compareSync(password, user.password)) {
-            user.setSession(session_id);
-
-            return createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
-
+        if (password === user.password) {
+            return createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin });
         } else {
             // si la contraseña comparada no son validas, reporto un error de validacion de password
-            return res.status(400).json('Invalid Password or Email')
+            return res.status(401).json({ msg: 'Invalid Password or Email' })
         }
-    }).then(({ token }) => {
-        // res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
-        setCookie(res, token);
-        return res.status(200).json({ message: "Ususario logeado correctamente", isUser: true, isAdmin });
-    }).catch(err => res.status(500).json(err))
+    })
+        .then(({ token, permits }) => {
+            // res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+            if (token) {
+                setCookie(res, token);
+                return res.status(200).json({ message: "Ususario logeado correctamente", isUser: true, isAdmin: permits.isAdmin });
+            }
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json(err)
+        })
 }
 
 const signout = (req, res, next) => {

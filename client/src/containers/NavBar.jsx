@@ -3,7 +3,6 @@ import { AppBar, Toolbar } from "@mui/material";
 import { Cart, Nav } from "../components";
 import { Login, Dropdowns } from "./";
 import useStyles from "../helpers/stylesNavBar";
-// import { getCookie } from "./Utilitis/getCookie";
 import { useSelector } from "react-redux";
 
 const NavBar = () => {
@@ -13,7 +12,6 @@ const NavBar = () => {
 
   useEffect(() => {
     
-    // console.log(authLevel >= 2);
     LoadSet(authLevel < 2);
    
   }, [authLevel]);

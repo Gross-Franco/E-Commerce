@@ -1,4 +1,6 @@
 import axios from "axios";
+import { setAuthLevel } from "../Redux/Actions/actions";
+import store from "../Redux/store"
 // require("dotenv").config();
 
 export const axiosWithCredentials = axios.create({
@@ -7,7 +9,14 @@ export const axiosWithCredentials = axios.create({
 })
 
 axiosWithCredentials.interceptors.response.use((response) => {
-    console.log(response);
+    // console.log(response);
+    if (response.data.isAdmin) {
+        store.dispatch(setAuthLevel(3));
+    } else if (response.data.isUser) {
+        store.dispatch(setAuthLevel(2));
+    } else {
+        store.dispatch(setAuthLevel(1));
+    }
     return response;
 }, (error) => {
     console.log(error);

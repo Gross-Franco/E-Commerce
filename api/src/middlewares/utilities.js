@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { ShoppingSession } = require("../db");
+const { ShoppingSession, User } = require("../db");
 const jwt = require("jsonwebtoken");
 const { FIRM, TOKEN_COOKIE } = process.env;
 
@@ -14,6 +14,13 @@ const createSession = async (info = undefined) => {
                 ...body,
                 session_id: session.id,
             }
+        }
+        if (body.user_id) {
+            User.findByPk(body.user_id)
+                .then(user => {
+                    user.setSession(body.session_id)
+                })
+                .catch(error => console.log(error));
         }
         let token = jwt.sign(body, FIRM, { expiresIn: "10s" })
         // console.log(jwt.decode(token));
