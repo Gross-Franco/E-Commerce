@@ -5,7 +5,7 @@ const { FIRM, TOKEN_COOKIE } = process.env
 
 const authenticate = async (req, res, next) => {
     const { [TOKEN_COOKIE]: Token } = req.cookies;
-    // console.log(req.cookies)
+    console.log("hello")
 
     if (Token) {
         jwt.verify(Token, FIRM, (err, values) => {

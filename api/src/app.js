@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const routes = require("./routes/index.js");
 var flash = require('express-flash');
 const { authenticate } = require("./middlewares/auth/authentication.js");
-const { authorize } = require("./middlewares/auth/authorization.js");
+const { authorize, optionsReqHandler } = require("./middlewares/auth/authorization.js");
 require("dotenv").config();
 
 const { DOMAIN } = process.env
@@ -24,6 +24,7 @@ server.use((req, res, next) => {
 	res.header("Access-Control-Allow-Credentials", "true");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Permits");
 	res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+	if (req.method === "OPTIONS") return res.sendStatus(200);
 	next();
 });
 
