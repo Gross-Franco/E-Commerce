@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   users: [],
+  response: null,
   loadUsers: true,
 };
 
@@ -23,6 +24,10 @@ const reducer = (state = initialState, {type, payload}) => {
     case CREATE_USER:
       return {
         ...state,
+        response: {
+          success: payload.success,
+          message: payload.message,
+        },
         loadUsers: true
       }
 
