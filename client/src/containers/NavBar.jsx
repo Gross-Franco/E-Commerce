@@ -4,16 +4,18 @@ import { Cart, Nav } from "../components";
 import { Login, Dropdowns } from "./";
 import useStyles from "../helpers/stylesNavBar";
 import { getCookie } from "./Utilitis/getCookie";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
-  const [load, LoadSet] = useState(getCookie("email") !== "");
+  const { authLevel } = useSelector(state => state.session)
+  const [load, LoadSet] = useState(authLevel >= 2);
   const [isScroll, setIsScroll] = useState(false);
 
   useEffect(() => {
     
-    LoadSet(getCookie("Email") === "");
+    LoadSet(authLevel >= 2);
    
-  });
+  }, [authLevel]);
   const classes = useStyles();
   const handleScroll = () => {
     if (window.scrollY > 0) {

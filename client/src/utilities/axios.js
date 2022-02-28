@@ -25,5 +25,5 @@ axiosWithCredentials.interceptors.request.use((config) => {
     //     level = 1;
     // }
 
-    config.headers.common["Authorization"] = `Level ${1}`;
+    config.headers.common["Permits"] = `Level ${1}`;
 })

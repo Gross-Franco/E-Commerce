@@ -4,7 +4,7 @@ const { createSession, destroySession } = require('./utilities');
 const { FIRM, TOKEN_COOKIE, SESSION_COOKIE } = process.env
 
 const authenticate = async (req, res, next) => {
-    const { [TOKEN_COOKIE]: Token, [SESSION_COOKIE]: session_id } = req.cookies;
+    const { [TOKEN_COOKIE]: Token } = req.cookies;
 
     if (Token) {
         jwt.verify(Token, FIRM, (err, values) => {
@@ -23,7 +23,8 @@ const authenticate = async (req, res, next) => {
                             return res.status(500).json(error);
                         })
                 } else {
-                    return res.status(403).json(err);
+                    res.cookie(TOKEN_COOKIE, Token, { maxAge: 0, sameSite: "None", httpOnly: true });
+                    return res.status(401).json(err);
                 }
             } else {
                 req.permits = values;
@@ -33,12 +34,13 @@ const authenticate = async (req, res, next) => {
         })
     } else {
         try {
-            const { token } = await createSession();
+            const { token, permits } = await createSession();
+            req.permits = permits
             res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
             next();
             return;
         } catch (error) {
-            return error;
+            return res.status(500).json(error);
         }
     }
 }

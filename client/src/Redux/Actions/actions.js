@@ -194,7 +194,7 @@ export const getOrderId = (orderId) => {
 
 export const RegisterUserPublic = (UserData) => {
     return (dispatch) => {
-        axios.post(`/user/register`, UserData)
+        axios.post(`/api/signup`, UserData)
             .then((res) => {
 
                 //correo de verificacion

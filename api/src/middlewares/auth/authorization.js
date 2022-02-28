@@ -6,7 +6,7 @@ const authorize = (req, res, next) => {
     if (Number(required) === 3 && req.permits.isAdmin) next();
     else if (Number(required) === 2 && req.permits.user_id) next();
     else if (Number(required) === 1) next();
-    else return res.sendStatus(401);
+    else return res.sendStatus(403);
 }
 
 module.exports = {

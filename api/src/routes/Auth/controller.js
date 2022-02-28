@@ -1,12 +1,11 @@
 require("dotenv").config();
 const { User } = require("../../db.js");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { AUTH_SECRET, AUTH_EXPIRES } = process.env;
-const { ShoppingSession } = require("../../db");
+const { createSession } = require("../../middlewares/auth/utilities.js");
 
 const signup = async (req, res, next) => {
     try {
+        const { session_id } = req.permits;
         const {
             username,
             password,
@@ -20,19 +19,20 @@ const signup = async (req, res, next) => {
             return res.status(400).json({ success: false, error: 'fields are missing in the form' })
         } else {
 
-            let [user, created] = await User.findOrCreate({ 
-              where: { email }, 
-              defaults: { username, password, first_name, last_name, email, isAdmin } 
+            let [user, created] = await User.findOrCreate({
+                where: { email },
+                defaults: { username, password, first_name, last_name, email, isAdmin }
             })
 
             if (created) {
 
-                const token = jwt.sign({ user_id: user.id, isAdmin: user.isAdmin}, AUTH_SECRET, { expiresIn: AUTH_EXPIRES });
+                const { token } = createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
+                res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
 
-                return res.status(201).json({ success: true, inf: 'User created', token })
+                return res.status(201).json({ message: 'User created', isUser: true, isAdmin });
 
             } else {
-                res.status(400).json({ success: false, inf: 'This email is already registered' })
+                res.status(400).json({ message: 'This email is already registered' })
             }
         }
     } catch (error) {
@@ -40,15 +40,11 @@ const signup = async (req, res, next) => {
     }
 }
 
-const editToken = async (req, res) => {
-    const token = jwt.sign(req.edit, AUTH_SECRET, { expiresIn: AUTH_EXPIRES });
-    return res
-}
+const signin = (req, res, next) => {
+    const { email, password } = req.body;
+    const { session_id } = req.permits;
 
-const signin = (req,res,next) => {
-    const {email , password } = req.body
-
-    !email || !password && res.status(401).json({success:false,error:'Incomplete data form'})
+    !email || !password && res.status(400).json({ success: false, error: 'Incomplete data form' })
 
     User.findOne({
         where: {
@@ -56,86 +52,23 @@ const signin = (req,res,next) => {
         },
         atributes: ["id", "isAdmin", "password"],
     }).then((user) => {
-
-        if(bcrypt.compareSync(password, user.password)){    
+        if (bcrypt.compareSync(password, user.password)) {
             // return res.status(200).json({token}
             user.setSession(session_id);
-            req.edit = { user_id, isAdmin, session_id };
-            next();
-        }else{
+
+            return createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
+
+        } else {
             // si la contraseña comparada no son validas, reporto un error de validacion de password
-            return res.status(400).json({error:'Invalid Password'})
+            return res.status(400).json('Invalid Password or Email')
         }
-    }).catch(err => {
-        // next(err);
-    })
+    }).then(({ token }) => {
+        res.cookie(TOKEN_COOKIE, token, { maxAge: 2592000000, sameSite: "None", httpOnly: true })
+        return res.status(200).json({ message: "Ususario logeado correctamente", isUser: true, isAdmin });
+    }).catch(err => res.status(500).json(err))
 }
-
-const shoppingSessionInit = async () => {
-		// const { user_id } = req.query;
-		try {
-			return await ShoppingSession.create();
-		} catch (error) {
-			console.log(error);
-		}
-};
-
-const authenticateToken = async (req, res, next) => {
-    const authHeader = req.headers["authorization"];
-    //? "Bearer TOKEN"
-    let token = authHeader && authHeader.split(" ")[1];
-
-    if(!token){
-        const session =  await shoppingSessionInit();
-        token = jwt.sign({ session_id: session.id }, AUTH_SECRET, { expiresIn: AUTH_EXPIRES })
-        // req.token = token
-        return res.status(201).json({
-            token,
-            session_id: session.id
-        });
-        // next();
-    }else{    
-        jwt.verify(token, AUTH_SECRET, (err, values) => {
-            if (err){ 
-                return res.status(403).json([err,values]);
-            }
-            else{
-                // next();
-                return res.status(200).json({
-                    session_id: values.session_id, 
-                    user_id: values.user_id, 
-                    isAdmin: values.isAdmin 
-                })
-            }
-        })
-    }
-}
-
-const deleteShoppingSession =  async () => {
-	const { session_id } = req.query;
-	let destroyed = {};
-	try{
-		destroyed.items = await CartItems.destroy({
-			where:{
-				session_id,
-			}
-		})
-		destroyed.cart = await ShoppingSession.destroy({
-			where: {
-				id: session_id,
-			}
-		});
-		return res.status(200).json(destroyed);
-	}catch(error){
-		next(error);
-	}
-};
-
 
 module.exports = {
-    // signup,
+    signup,
     signin,
-    shoppingSessionInit,
-    authenticateToken,
-    editToken,
 }

@@ -16,8 +16,8 @@ const createSession = async (info = undefined) => {
             }
         }
         let token = jwt.sign(body, FIRM, { expiresIn: "10s" })
-        console.log(jwt.decode(token));
-        return { token };
+        // console.log(jwt.decode(token));
+        return { token, permits: jwt.decode(token) };
     } catch (error) {
         console.log(error);
     }

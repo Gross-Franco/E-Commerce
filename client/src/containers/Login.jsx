@@ -3,7 +3,8 @@ import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "./estilos/login.css";
 import { Link } from "react-router-dom";
-import { getCookie } from "./Utilitis/getCookie";
+// import { getCookie } from "./Utilitis/getCookie";
+import { axiosWithCredentials as axios } from "../utilities/axios.js"
 
 export default function Login() {
   const [show, setShow] = React.useState(false);
@@ -13,17 +14,23 @@ export default function Login() {
 
   const [inputs, setInputs] = React.useState({
     email: null,
-    contraseña: null,
+    password: null,
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputs.email && inputs.contraseña) {
-      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`);
-      handleClose();
-      setInputs({
-        email: "",
-        contraseña: "",
-      });
+    if (inputs.email && inputs.password) {
+      axios.post("/api/signin", inputs).then(() => {
+        
+      }).catch((err) => {
+        console.log(err)
+      }).finally(() => {
+        handleClose();
+        setInputs({
+          email: "",
+          contraseña: "",
+        });
+        alert(`Usu ${inputs.email} contra ${inputs.password}`);
+      })
     } else {
       setInputs({
         email: "",
@@ -40,19 +47,19 @@ export default function Login() {
   };
 
   //Testeo de inicio sesion ---- provicional
-  function ValidateRequest(e) {
-    //verificamos
-    if (getCookie("Email") === "") {
-      //añadimos data a las cokkies
-      document.cookie = "Email=" + inputs.email;
+  // function ValidateRequest(e) {
+  //   //verificamos
+  //   if (getCookie("Email") === "") {
+  //     //añadimos data a las cokkies
+  //     document.cookie = "Email=" + inputs.email;
 
-      document.cookie = "Password=" + inputs.contraseña;
+  //     document.cookie = "Password=" + inputs.password;
 
-      //refrest windoms
-      window.location.reload(false);
-    }
-    e.preventDefault();
-  }
+  //     //refrest windoms
+  //     window.location.reload(false);
+  //   }
+  //   e.preventDefault();
+  // }
 
   return (
     <>
@@ -87,7 +94,7 @@ export default function Login() {
                 placeholder="Contraseña"
                 name="contraseña"
                 onChange={handleInputs}
-                value={inputs.contraseña}
+                value={inputs.password}
               />
             </Form.Group>
 
@@ -95,7 +102,7 @@ export default function Login() {
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" type="submit" onClick={ValidateRequest}>
+              <Button variant="primary" type="submit" >
                 Iniciar
               </Button>
             </Modal.Footer>
