@@ -1,7 +1,6 @@
 export { default as LandingPage } from './LandingPage';
 export { default as Catalog } from './Catalog';
 export { default as Login } from './Login';
-export { default as Registro } from './Registro';
 export { default as SortContainer } from './SortContainer';
 export { default as FiltersContainer } from './FiltersContainer';
 export { default as ProductsContainer } from './ProductsContainer';
