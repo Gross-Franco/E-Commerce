@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Login, Dropdowns } from "./";
-import { getCookie } from "./Utilitis/getCookie";
+// import useStyles from "../helpers/stylesNavBar";
 import { Link } from "react-router-dom";
 import { Nav, CartButton } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { createShoppingSession } from "../Redux/Actions/actions";
+// import { createShoppingSession } from "../Redux/Actions/actions";
 import { Cart } from "../pages";
 import { Modal } from "../containers";
 
 
 const NavBar = ({ isScroll = false }) => {
-  const [load, LoadSet] = useState(getCookie("email") !== "");
+  const { authLevel } = useSelector(state => state.session)
+  const [load, LoadSet] = useState(authLevel < 2);
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  let { login } = useSelector((state) => state.userSession);
+//   let { login } = useSelector((state) => state.session);
 
+//   useEffect(() => {
+//     dispatch(createShoppingSession());
+//   }, []);
+  
   useEffect(() => {
-    dispatch(createShoppingSession());
-  }, []);
+    LoadSet(() => authLevel < 2);
+  }, [authLevel]);
 
   
 
@@ -27,6 +32,14 @@ const NavBar = ({ isScroll = false }) => {
     document.body.style.overflow = "unset";
   }
 
+//   const classes = useStyles();
+//   const handleScroll = () => {
+//     if (window.scrollY > 0) {
+//       setIsScroll(true);
+//     } else {
+//       setIsScroll(false);
+//     }
+//   };
   return (
     <header className="header" >
       <div className={`header--container ${isScroll ? "on-scroll" : ""}`}>

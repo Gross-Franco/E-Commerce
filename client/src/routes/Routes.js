@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -14,39 +13,34 @@ import Checkout from "../pages/Checkout";
 
 
 const Rutas = () => {
-  const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");
+
   let { login } = useSelector((state) => state.userSession);
-  useEffect(() => {
-    SetAutenCookin(getCookie("Email") === "");
-  }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/catalogo" element={<Catalog />} />
-        <Route path="/user/resetpassword/:token" element={<PassReset />} />
-        <Route path="/admin" element={<Admin />} />
-        <Route
+
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/catalogo" element={<Catalog />} />
+      <Route path="/user/resetpassword/:token" element={<PassReset />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route
           path="/perfilUser"
         //  element={login ? <Navigate to="/" replace /> : <PerfilUser />}
         element={ <PerfilUser />}
         />
-        <Route path="/product/:id" element={<ProductDetail />} />
-
-        <Route
+//       <Route path="/productDetail/:id" element={<ProductDetail />} />
+       <Route path="/product/:id" element={<ProductDetail />} />
+  
+          <Route path="/checkout" element={<Checkout />} />
+     <Route
           path="/registro"
           element={login ? <Registro /> : <Navigate to="/" replace />}
         />
-        <Route path="/checkout" element={<Checkout />} />
+            
+         <Route path="/verificate/:ap" element={<Verificate/>} />
+    </Routes>
 
-
-          <Route path="/verificate/:ap" element={<Verificate/>} />
-
-      </Routes>
-    </Router>
-  );
+  );//clase render
 };
 
 export default Rutas;

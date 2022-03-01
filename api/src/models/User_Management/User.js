@@ -1,6 +1,6 @@
 const { DataTypes, STRING } = require('sequelize');
 const bcrypt = require('bcrypt');
-var validator = require('validator');
+// var validator = require('validator');
 
 module.exports = (sequelize) => {
   
@@ -9,36 +9,39 @@ module.exports = (sequelize) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
     },
 
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-        // Este validate no funciona por alguna razon nidea
-        // validate: {
-        //     is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-        //     notEmpty: true
-        //     // Minnumum 8 characters, 1 uppercase, 1 lowercase, 1 number. Can contain special characters 
-        // }, 
-        set(value) {
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(value, salt);
-            this.setDataValue('password', hash)
-            // To check password load hash from your password DB.
-            // bcrypt.compareSync(correctpassword, hash); // true
-            // bcrypt.compareSync(wrongPassword, hash); // false
-        }
-
+        validate: {
+            is: {
+                args: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z\d]).{8,}$/gm,
+                msg: "The password has to contain at least 1 uppercase letter, 1 lowercase letter, 1 digit and be at least 8 characters total"
+            },
+        },
+        
     },
+
     first_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate:{
+            isAlpha: {
+                msg: "The first name can only contain letters"
+            },
+        }
     },
 
     last_name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isAlpha: {
+                msg: "The last name can only contain letters"
+            },
+        }
     },
     
     email: {
@@ -70,7 +73,7 @@ module.exports = (sequelize) => {
     hooks:{
         beforeCreate:(user)=>{
             if(user.password){
-                user.password= bcrypt.hashSync(user.password,10)
+                user.password = bcrypt.hashSync(user.password, 10)
             }
         },
         beforeUpdate:(user)=>{

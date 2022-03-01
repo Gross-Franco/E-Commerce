@@ -1,17 +1,24 @@
 import React from "react";
 import Dropdown from  "react-bootstrap/Dropdown";
-import {logout} from './../Redux/Actions/actions'
-import {useDispatch,useSelector, } from 'react-redux';
+
+
+import {useSelector, } from 'react-redux';
 import { useEffect } from "react";
 export default function Dropdowns() {
-let dispatch= useDispatch()
-let { user } = useSelector((state) => state.userSession);
 
-function Salir(e)
+let dispatch= useDispatch()
+
+let { user } = useSelector((state) => state.userSession); 
+  
+import { axiosWithCredentials as axios} from "../utilities/axios";
+// import {logout} from './../Redux/Actions/actions'
+
+  
+  
+// let dispatch= useDispatch()
+function Salir()
 {
-  //get user data
-  console.log(user);
-  dispatch(logout())
+    axios.post("/user/logout");
 }
 
 useEffect(() => {

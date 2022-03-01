@@ -3,9 +3,10 @@ import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "./estilos/login.css";
 import { Link } from "react-router-dom";
-import { getCookie } from "./Utilitis/getCookie";
-import {useDispatch} from 'react-redux'
-import {login} from './../Redux/Actions/actions'
+// import { getCookie } from "./Utilitis/getCookie";
+import { axiosWithCredentials as axios } from "../utilities/axios.js"
+// import {useDispatch} from 'react-redux'
+// import {login} from './../Redux/Actions/actions'
 
 export default function Login({isScroll}) {
   const [show, setShow] = React.useState(false);
@@ -14,21 +15,28 @@ export default function Login({isScroll}) {
   const handleShow = () => setShow(true);
 
   const [inputs, setInputs] = React.useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  let dispatch = useDispatch()
+  
+//   let dispatch = useDispatch()
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.password) {
-      alert(`Usu ${inputs.email} contra ${inputs.password}`);
-      dispatch(login(inputs))
-      
-      handleClose();
-      setInputs({
-        email: "",
-        password: "",
-      });
+      axios.post("/api/signin", inputs)
+        .then(() => {
+        alert(`Usu ${inputs.email} contra ${inputs.password}`);
+      })
+        .catch((err) => {
+        console.log(err)
+      })
+        .finally(() => {
+        handleClose();
+        setInputs({
+          email: "",
+          password: "",
+        });
     } else {
       setInputs({
         email: "",
@@ -37,13 +45,15 @@ export default function Login({isScroll}) {
       alert("se tiene q rellenar los espacios en blanco");
     }
   };
+
   const handleInputs = (e) => {
-    setInputs(prev=>{
-      return {...prev,[e.target.name]:e.target.value}
+    setInputs( prev => {
+      return {
+        ...prev,
+        [e.target.name]:e.target.value
+      }
     });
   };
-
-  
 
   return (
     <>
