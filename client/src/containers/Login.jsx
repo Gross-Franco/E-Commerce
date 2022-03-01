@@ -2,25 +2,25 @@ import React from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
-import {useDispatch} from 'react-redux'
-import {login} from './../Redux/Actions/actions'
+import { useDispatch } from "react-redux";
+import { login } from "./../Redux/Actions/actions";
 
-export default function Login({isScroll}) {
+export default function Login({ isScroll }) {
   const [show, setShow] = React.useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [inputs, setInputs] = React.useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  let dispatch = useDispatch()
+  let dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.password) {
-      dispatch(login(inputs))
-      
+      dispatch(login(inputs));
+
       handleClose();
       setInputs({
         email: "",
@@ -34,16 +34,18 @@ export default function Login({isScroll}) {
     }
   };
   const handleInputs = (e) => {
-    setInputs(prev=>{
-      return {...prev,[e.target.name]:e.target.value}
+    setInputs((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
     });
   };
 
-  
-
   return (
     <>
-      <Button variant="btn btn-light" id={`header-button--${isScroll ? 'on-scroll' : ''}`} onClick={handleShow}>
+      <Button
+        variant="btn btn-light"
+        id={`header-button--${isScroll ? "on-scroll" : ""}`}
+        onClick={handleShow}
+      >
         Login
       </Button>
 
@@ -82,7 +84,7 @@ export default function Login({isScroll}) {
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" type="submit" >
+              <Button variant="primary" type="submit">
                 Iniciar
               </Button>
             </Modal.Footer>
@@ -90,7 +92,7 @@ export default function Login({isScroll}) {
         </Modal.Body>
 
         <Link
-          to="/registro"
+          to="/register"
           onClick={handleClose}
           style={{
             textDecoration: "none",
