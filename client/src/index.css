@@ -45,7 +45,6 @@ code {
   text-decoration: none;
   text-transform: none;
   letter-spacing: -1.6px;
-  transition: all 0.3s ease;
 }
 .header-cart:hover {
   color: white;
@@ -121,7 +120,7 @@ code {
 .header .on-scroll {
   color: black;
   background-color: white;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
   border-bottom: 1px solid black;
 }
 .scroll {
@@ -799,6 +798,7 @@ code {
   font-size: 0.875rem;
   font-weight: 400;
   margin: 0;
+  margin-right: 1rem;
 }
 .modal-cart--footer-buttons {
   display: flex;
@@ -1000,7 +1000,7 @@ code {
   align-items: center;
   justify-content: center;
   width: 100%; 
-  background-color: white;
+  min-height: 100vh;
   padding: 0 3rem;
   padding-top: 7rem;
   padding-bottom: 3rem;
