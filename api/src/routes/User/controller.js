@@ -249,7 +249,7 @@ const postReviewProduct = async (req, res) => {
     !product && new Error('Product no found')
     let review = await Review.create(req.body)
     // dara un error si no hay una id de un usuario
-    User.findOne({ where: { id: id } })
+    User.findOne({ where: { id: user_id } })
       .then((result) => {
         review.addUser(result)
         product.setReview(review)
@@ -425,8 +425,6 @@ module.exports = {
   OrdersUser,
   addAdress,
   postReviewProduct,
-  // createUser,
-  // postLogin,
   addPayment,
   forgotPassword,
   passwordResetToken,

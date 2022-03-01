@@ -12,7 +12,7 @@ const { Op } = require("sequelize");
 const { destroySession, createSession, setCookie } = require('../../middlewares/utilities.js');
 
 const getCartItems = async (req, res) => {
-	const { session_id } = req.query;
+	const { session_id } = req.permits;
 	try {
 		let items = await CartItems.findAll({ where: { session_id } });
 		let cartitems = await Promise.all(
