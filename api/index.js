@@ -18,13 +18,14 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
-const { mockorders } = require("./src/mockData/mockorders");
+/* const { mockorders } = require("./src/mockData/mockorders");
 const { mockorderItems } = require("./src/mockData/mockorderItems")
 const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
 const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")
+
 const {
   conn,
   OrderDetails,
@@ -40,9 +41,10 @@ const { PORT } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: true }).then(() => {
-  server.listen(PORT || 3001, () => {
-    ProductInventory.bulkCreate(mockinventory).then(() => {
+conn.sync({ force: false }).then(() => {
+
+server.listen(PORT || 3001, () => {
+    /* ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
         Product.findAll().then(products => {
@@ -51,12 +53,11 @@ conn.sync({ force: true }).then(() => {
           })
         })
       })
-
     })}).then(() => {
       User.bulkCreate(mockusers);
 
     })
-    .catch(error => console.log(error));
+    .catch(error => console.log(error)); */
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 
   });
