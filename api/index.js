@@ -35,7 +35,7 @@ const {
   ProductCategory,
   ProductInventory,
   PaymentDetails
-} = require("./src/db.js");
+} = require("./src/db.js");*/
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
 const { PORT } = process.env;
 
