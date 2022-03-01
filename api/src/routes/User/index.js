@@ -14,6 +14,7 @@ userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)
 userRouter.post('/login',authent, postLogin)
+userRouter.get('/test', postLogin)
 userRouter.post('/createUser', createUser);
 userRouter.get('/confirm/:token', confirm);
 userRouter.post('/addPayment', addPayment)

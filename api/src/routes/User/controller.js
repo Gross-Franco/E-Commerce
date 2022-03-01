@@ -57,7 +57,7 @@ const addPayment = async(req, res) =>{
         expiry,
         user_id
     } = req.body
-
+ 
     let createdPayment = await UserPayment.create({
         paymentType,
         provider,
@@ -86,8 +86,8 @@ const createUser = async (req, res) => {
         if (!username || !first_name || !last_name || !email) {
             res.status(400).json({ success: false, error: 'fields are missing in the form' })
         } else {
-
-        
+          let token =  jwt.sign({password},FIRM,{expiresIn:'1d'})
+        //
             let [user, created] = await User.findOrCreate({ where: { email: email }, defaults: { username, password, first_name, last_name, email, isAdmin } })
             if (created) {
             
@@ -231,15 +231,23 @@ const confirm = async (req, res) => {
 }
 
 
-const postLogin = (req,res) => {
-    try{
+const postLogin =   (req,res) => {
+   
+ 
+  try{      
+     
         const {email,password}= req.body
+        // const salt = bcrypt.genSaltSync(10);
+        // const hash = bcrypt.hashSync(password, salt);
         !email||!password&& res.status(401).json({success:false,error:'Incomplete data form'})
         User.findOne({where:{email:email}})
-        .then((result) => {
+        .then((result) => { 
+        //  res.send(password +"  / "+ result.password);
             // si existe el usuario registrado comparo la contraseña tipeada con la que esta en la base de datos
-            const verify= bcrypt.compareSync(password,result.password)
+            const verify=  bcrypt.compare(password,result.password)
+           
             if(verify){
+             // res.send(verify.dataValues)
                 // si la contraseña es correcta 
                 // extraigo los datos necesarios para el front-end y el token
                 // y devuelvo el token y datos necesarios del usuario
@@ -306,7 +314,7 @@ const postReviewProduct = async (req,res)=>{
             res.status(400).json({success:false,inf:e})
         }
     }
-    
+    //
 const OrdersUser = async (req, res) => {
     const {first_name, last_name} = req.body;
     try {

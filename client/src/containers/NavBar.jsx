@@ -8,6 +8,7 @@ import { createShoppingSession } from "../Redux/Actions/actions";
 import { Cart } from "../pages";
 import { Modal } from "../containers";
 
+
 const NavBar = ({ isScroll = false }) => {
   const [load, LoadSet] = useState(getCookie("email") !== "");
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,8 @@ const NavBar = ({ isScroll = false }) => {
   useEffect(() => {
     dispatch(createShoppingSession());
   }, []);
+
+  
 
   if(isOpen) {
     document.body.style.overflow = "hidden";

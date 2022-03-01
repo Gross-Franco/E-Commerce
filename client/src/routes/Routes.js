@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Routes,
@@ -14,7 +15,7 @@ import Checkout from "../pages/Checkout";
 
 const Rutas = () => {
   const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");
-
+  let { login } = useSelector((state) => state.userSession);
   useEffect(() => {
     SetAutenCookin(getCookie("Email") === "");
   }, []);
@@ -29,16 +30,14 @@ const Rutas = () => {
         <Route path="/admin" element={<Admin />} />
         <Route
           path="/perfilUser"
-          element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
+        //  element={login ? <Navigate to="/" replace /> : <PerfilUser />}
+        element={ <PerfilUser />}
         />
         <Route path="/product/:id" element={<ProductDetail />} />
-        <Route
-          path="/perfilUser"
-          element={AutenCookin ? <Navigate to="/" replace /> : <PerfilUser />}
-        />
+
         <Route
           path="/registro"
-          element={AutenCookin ? <Registro /> : <Navigate to="/" replace />}
+          element={login ? <Registro /> : <Navigate to="/" replace />}
         />
         <Route path="/checkout" element={<Checkout />} />
 

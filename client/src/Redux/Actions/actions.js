@@ -323,7 +323,9 @@ export const login=(data)=>{
     axios.post(`${URL}/user/login`,data)
     .then(resp=>{
       let {user,Token}= resp.data.data
+      //porque la session es null
       localStorage.setItem('eCUs',JSON.stringify({Token,session:''}))
+      console.log(user)
        dispatch({type:ADD_USER_PUBLIC,payload:user})
     },(err)=>{
       alert("Error: "+err)
@@ -331,6 +333,7 @@ export const login=(data)=>{
   }
 }
 export const checkSession=(token)=>{
+  console.log("Hola mundo test")
   return (dispatch)=>{
     axios.post(`${URL}/user/login`,null,{headers:{Authorization:'Bearer '+token}})
     .then(resp=>{

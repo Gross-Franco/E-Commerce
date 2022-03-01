@@ -12,12 +12,17 @@ export default function DisplayItemsHome({items}) {
         limit=0
         let itemsSelect=[]
         let indexReg=[]
-        while(limit<=7){
+        if(items.length >0)
+        {
+
+            while(limit<=7){
             let ind=Math.floor(Math.random()*items.length)
             if(!indexReg.includes(ind)){
-                indexReg.push(ind)
-                itemsSelect.push(items[ind])
-                limit++
+                    indexReg.push(ind)
+                    if(items[ind] === null)break; 
+                    itemsSelect.push(items[ind])
+                    limit++
+                }
             }
         }
         setItems(itemsSelect)
