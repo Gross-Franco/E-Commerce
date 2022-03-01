@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { getCategories, filterProducts, getProductsPublic } from "../Redux/Actions/actions";
+import { getCategoriesPublic, filterProducts, getProductsPublic } from "../Redux/Actions/actions";
 import { useEffect } from "react";
 
 const FiltersContainer = () => {
@@ -27,7 +27,7 @@ const FiltersContainer = () => {
     dispatch(getProductsPublic());
   },[filteredCategories])
 
-  if(loadCategories) dispatch(getCategories());
+  if(loadCategories) dispatch(getCategoriesPublic());
 
   return (
     <div>

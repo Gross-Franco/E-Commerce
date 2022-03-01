@@ -3,26 +3,25 @@ import { useDispatch } from "react-redux";
 import { deleteCartItem, editCartItemQty } from "../Redux/Actions/actions";
 import { FiMinus, FiPlus } from "react-icons/fi";
 
-const CartItem = ({ item, session }) => {
+const CartItem = ({ item }) => {
   const dispatch = useDispatch();
   const [qty, setQty] = useState(item.quantity);
 
-  const handleEditQuantity = (session, product, e) => {
+  const handleEditQuantity = (product, e) => {
     setQty(e.target.value);
     if (e.target.value === "0") {
-      dispatch(deleteCartItem(session, product));
+      dispatch(deleteCartItem(product));
     }
     dispatch(
       editCartItemQty({
-        sessionId: session,
         productId: product,
         quantity: e.target.value,
       })
     );
   };
 
-  const handleDeleteItem = (session, product) => {
-    dispatch(deleteCartItem(session, product));
+  const handleDeleteItem = ( product) => {
+    dispatch(deleteCartItem( product));
   };
 
   return (
@@ -46,7 +45,7 @@ const CartItem = ({ item, session }) => {
             <FiMinus
               className="item--icon"
               onClick={() =>
-                handleEditQuantity(session, item.product.id, {
+                handleEditQuantity(item.product.id, {
                   target: { value: item.quantity - 1 },
                 })
               }
@@ -57,12 +56,12 @@ const CartItem = ({ item, session }) => {
               min={1}
               max={item.product.quantity}
               value={qty}
-              onChange={(e) => handleEditQuantity(session, item.product.id, e)}
+              onChange={(e) => handleEditQuantity(item.product.id, e)}
             />
             <FiPlus
               className="item--icon"
               onClick={() =>
-                handleEditQuantity(session, item.product.id, {
+                handleEditQuantity(item.product.id, {
                   target: { value: item.quantity + 1 },
                 })
               }
@@ -70,7 +69,7 @@ const CartItem = ({ item, session }) => {
           </div>
           <p
             className="item-info--footer-delete"
-            onClick={() => handleDeleteItem(session, item.product.id)}
+            onClick={() => handleDeleteItem(item.product.id)}
           >
             Eliminar
           </p>

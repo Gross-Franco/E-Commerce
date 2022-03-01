@@ -45,14 +45,9 @@ import {
   DELETE_CART_ITEM,
   DELETE_CART,
   LOGOUT,
+  GET_CATEGORIES_PUBLIC,
 } from "./actionTypes";
 
-export const getProducts = () => {
-    return async (dispatch) => {
-        const response = await axios.get(`/admin/products`);
-        dispatch({ type: GET_PRODUCTS, payload: response.data });
-    }
-}
 
 export const getCategories = () => {
     return async (dispatch) => {
@@ -60,6 +55,20 @@ export const getCategories = () => {
         dispatch({ type: GET_CATEGORIES, payload: response.data });
     }
 }
+export const getProducts = () => {
+    return async (dispatch) => {
+        const response = await axios.get(`/admin/products`);
+        dispatch({ type: GET_PRODUCTS, payload: response.data });
+    }
+}
+
+export const getCategoriesPublic = () => {
+    return async (dispatch) => {
+        const response = await axios.get(`/product/categories`); // chequear con la ruta del server
+        dispatch({ type: GET_CATEGORIES_PUBLIC, payload: response.data });
+    }
+}
+
 export const getProductsPublic = () => {
     return (dispatch) => {
         axios.get(`/product`)
@@ -242,11 +251,11 @@ export const setAuthLevel = payload => {
 //     }
 //   };
 // };
-export const getCartItems = (sessionId) => {
+export const getCartItems = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(
-        `${URL}/shopping/cart?session_id=${sessionId}`
+        `/shopping/cart`
       );
       if (data) {
         dispatch({ type: GET_CART_ITEMS, payload: data });
@@ -260,8 +269,7 @@ export const getCartItems = (sessionId) => {
 export const addCartItem = (sessionId, productId) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post(`${URL}/shopping/cart`, {
-        session_id: sessionId,
+      const { data } = await axios.post(`/shopping/cart`, {
         product_id: productId,
       });
       if (data) {
@@ -276,8 +284,7 @@ export const addCartItem = (sessionId, productId) => {
 export const editCartItemQty = ({ sessionId, productId, quantity }) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`${URL}/shopping/cart`, {
-        session_id: sessionId,
+      const { data } = await axios.put(`/shopping/cart`, {
         product_id: productId,
         quantity: quantity,
       });
@@ -290,10 +297,10 @@ export const editCartItemQty = ({ sessionId, productId, quantity }) => {
   };
 };
 
-export const deleteCartItem = ( sessionId, productId ) => {
+export const deleteCartItem = ( productId ) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`${URL}/shopping/cart?product_id=${productId}&session_id=${sessionId}`);
+      const { data } = await axios.delete(`/shopping/item?product_id=${productId}`);
       if (data) {
         dispatch({ type: DELETE_CART_ITEM, payload: data });
       }
@@ -303,10 +310,10 @@ export const deleteCartItem = ( sessionId, productId ) => {
   };
 };
 
-export const deleteCart = (sessionId) => {
+export const deleteCart = () => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`/shopping/cart?session_id=${sessionId}`);
+      const { data } = await axios.delete(`/shopping/cart`);
       if (data) {
         dispatch({ type: DELETE_CART, payload: data });
       }

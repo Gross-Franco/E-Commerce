@@ -49,19 +49,19 @@ const getCartItems = async (req, res) => {
 };
 
 const addCartItem = async (req, res, next) => {
-	const { product_id, quantity } = req.body;
+	const { product_id } = req.body;
 	const { session_id } = req.permits;
 
 	try {
 		const isSession = await ShoppingSession.findByPk(session_id);
 		const isProduct = await Product.findByPk(product_id);
-		if (isSession && isProduct && (typeof quantity === "number" && quantity)) {
+		if (isSession && isProduct) {
 			let [item, created] = await CartItems.findOrCreate({
 				where: {
 					[Op.and]: [{ session_id }, { product_id }]
 				},
 				defaults: {
-					quantity,
+					quantity: 1,
 					session_id,
 					product_id
 				},

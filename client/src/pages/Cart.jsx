@@ -8,12 +8,12 @@ import { Link } from "react-router-dom";
 
 const Cart = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch();
-  const { cartItems, loadCart, session } = useSelector(
+  const { cartItems, loadCart } = useSelector(
     (state) => state.shopping
   );
 
   if (loadCart) {
-      dispatch(getCartItems(session.id));
+      dispatch(getCartItems());
   } 
   const subTotal = Number(Math.round((cartItems?.reduce((acc, item) => {
     return acc + item.product.price * item.quantity;
@@ -47,7 +47,7 @@ const Cart = ({ openModal, setOpenModal }) => {
         <div>
           <div className="modal-cart--body">
             {cartItems.map((item) => (
-              <CartItem key={item.id} item={item} session={session} />
+              <CartItem key={item.id} item={item} />
             ))}
           </div>
           <div className="modal-cart--footer">

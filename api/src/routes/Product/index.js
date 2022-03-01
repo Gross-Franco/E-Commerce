@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { getCategory } = require("../Admin/controllerCategories");
 const { getProductId, searchProductName, getProducts, filterByCategory } = require('./controller');
 
 
@@ -12,6 +13,7 @@ const productRouter = Router();
 
 productRouter.get('/productId/:id', getProductId)
 productRouter.get('/', getProducts)
+productRouter.get('/categories', getCategory)
 productRouter.post('/filtercategory', filterByCategory)
 productRouter.get('/name', searchProductName) // recibe nombre por query
 
