@@ -376,12 +376,12 @@ const forgotPassword = async (req, res) => {
         rejectUnauthorized: false,
       },
       auth: {
-        user: "support@hcommerce.store", //email created to send the emails from
+        user: "welcome@hcommerce.store", //email created to send the emails from
         pass: "1-Nunca-pares-de-aprender-!",
       },
     });
     const options = {
-      from: "HENRY e-Commerce <support@hcommerce.com>",
+      from: "HENRY e-Commerce <welcome@hcommerce.store>",
       to: email,
       subject: "Password Reset for the ecommerce platform",
       //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
@@ -445,12 +445,12 @@ const passwordResetToken = async (req, res) => {
         rejectUnauthorized: false,
       },
       auth: {
-        user: "support@hcommerce.com", //email created to send the emails from
+        user: "welcome@hcommerce.store", //email created to send the emails from
         pass: "1-Nunca-pares-de-aprender-!",
       },
     });
     const options = {
-      from: "HENRY e-Commerce <support@hcommerce.com>",
+      from: "HENRY e-Commerce <welcome@hcommerce.store>",
       to: user.email,
       subject: "your password has been changed",
       html: `<h2>Password reset<h2>
