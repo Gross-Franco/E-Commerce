@@ -24,7 +24,7 @@ const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
-const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")
+const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")*/
 
 const {
   conn,
@@ -35,7 +35,7 @@ const {
   ProductCategory,
   ProductInventory,
   PaymentDetails
-} = require("./src/db.js");*/
+} = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
 // const { PORT } = process.env;
 
@@ -43,7 +43,7 @@ const {
 
 conn.sync({ force: false }).then(() => {
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 3001, () => {
     /* ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
