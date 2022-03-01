@@ -72,76 +72,42 @@ const addPayment = async (req, res) => {
   res.json({ createdPayment, msg: "added payment option" })
 }
 
-const createUser = async (req, res, next) => {
-  try {
-    const { session_id } = req.permits;
-    const {
-      username,
-      password,
-      first_name,
-      last_name,
-      email,
-      isAdmin
-    } = req.body
-
-    if (!username || !first_name || !last_name || !email) {
-      return res.status(400).json({ success: false, error: 'fields are missing in the form' })
-    } else {
-
-      let [user, created] = await User.findOrCreate({
-        where: { email },
-        defaults: { username, password, first_name, last_name, email, isAdmin }
-      })
-
-      if (created) {
-
-        const { token } = createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
-        res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
-
-        // sendVerificationEmail(token, user.email, user.first_name);
-
-        return res.status(201).json({ message: 'User created', isUser: true, isAdmin });
-
-      } else {
-        res.status(400).json({ message: 'This email is already registered' })
-      }
-    }
-  } catch (error) {
-    return res.status(500).json(error)
-  }
-}
-
-// const postLogin = (req, res) => {
+// const createUser = async (req, res, next) => {
 //   try {
-//     const { email, password } = req.body
-//     !email || !password && res.status(401).json({ success: false, error: 'Incomplete data form' })
-//     User.findOne({ where: { email: email } })
-//       .then((result) => {
-//         // si existe el usuario registrado comparo la contraseña tipeada con la que esta en la base de datos
-//         const verify = bcrypt.compareSync(password, result.password)
-//         if (verify) {
-//           // si la contraseña es correcta 
-//           // extraigo los datos necesarios para el front-end y el token
-//           // y devuelvo el token y datos necesarios del usuario
-//           // let {
-//           //     username,
-//           //     email,
-//           //     first_name,
-//           //     last_name,
-//           //     isAdmin
-//           // }=result
-//           // let Token= jwt.sign({username,email,first_name,last_name,isAdmin},AUTH_SECRET,{expiresIn:'5d'})
-//           res.status(200).json({ success: true, data: { Token, user: { username, email, first_name, last_name, isAdmin } } })
-//         } else {
-//           // si la contraseña comparada no son validas, reporto un error de validacion de password
-//           res.status(400).json({ success: false, error: 'Invalid Password' })
-//         }
-//       }).catch((err) => {
-//         // en caso de que el usuario no exista
-//         res.status(401).json({ success: false, error: 'User not found: ' + err })
-//       });
-//   } catch (e) {
-//     res.status(500).json({ success: false, error: e })
+//     const { session_id } = req.permits;
+//     const {
+//       username,
+//       password,
+//       first_name,
+//       last_name,
+//       email,
+//       isAdmin
+//     } = req.body
+
+//     if (!username || !first_name || !last_name || !email) {
+//       return res.status(400).json({ success: false, error: 'fields are missing in the form' })
+//     } else {
+
+//       let [user, created] = await User.findOrCreate({
+//         where: { email },
+//         defaults: { username, password, first_name, last_name, email, isAdmin }
+//       })
+
+//       if (created) {
+
+//         const { token } = createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
+//         res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true, secure: true })//Para usar en localhost sacar el secure y el sameSite
+
+//         // sendVerificationEmail(token, user.email, user.first_name);
+
+//         return res.status(201).json({ message: 'User created', isUser: true, isAdmin });
+
+//       } else {
+//         res.status(400).json({ message: 'This email is already registered' })
+//       }
+//     }
+//   } catch (error) {
+//     return res.status(500).json(error)
 //   }
 // }
 
@@ -163,26 +129,140 @@ const postReviewProduct = async (req, res) => {
       if (req.body.hasOneProperty('starsPoint') && typeof req.body['starsPoint'] !== 'number') {
         throw Error('Data types error ')
       }
-    }
-    let product = await Product.findOne({ where: { id: idProduct } })
-    !product && new Error('Product no found')
-    let review = await Review.create(req.body)
-    // dara un error si no hay una id de un usuario
-    User.findOne({ where: { id: id } })
-      .then((result) => {
-        review.addUser(result)
-        product.setReview(review)
-        res.status(201).json({ success: true, inf: 'Review added to Product' })
-      }, (error) => {
-        res.status(400).json({ success: false, inf: 'user not found: ' + error })
-      })
+
+const confirm = async (req, res) => {
+  try {
+
+     // Obtener el token
+     const { token } = req.cookies;
+     
+     // Verificar la data
+     let data =  null;
+
+     jwt.verify(token, FIRM, (err, decoded) => {
+         if(err) {
+             console.log('Error al obtener data del token');
+         } 
+         else {
+             data = decoded;
+         }
+     });
+ 
+  // console.log()
+
+     if(data === null) {
+          return res.json({
+              success: false,
+              msg: 'Error al obtener data'
+          });
+     }
+
+     console.log(data);
+
+     const {username,email} = data;
+
+     // Verificar existencia del usuario
+     //
+    //  const user = await User.findOne({ email }) || null;
+
+     const user = await User.findOne({
+      where: {email: email}
+    }) || null;
+
+     if(user === null) {
+          return res.json({
+              success: false,
+              msg: 'Usuario no existe'
+          });
+     }
+
+     // Verificar el código
+    //  if(code !== user.code) {
+    //       return res.redirect('/error.html');
+    //  }
+
+     // Actualizar usuario
+    //  user.set('verificate', true);
+     user.verificate = true;
+     await user.save();
 
 
-  } catch (e) {
-    res.status(400).json({ success: false, inf: e })
+
+     // Redireccionar a la confirmación
+  res.redirect('http://localhost:3000/verificate/'+ username)
+
+      
+  } catch (error) {
+      console.log(error);
+      // window.location.href = `/verificate/No_Verficate`;
+      return res.json({
+          success: false,
+          msg: 'Error al confirmar usuario'
+      });
   }
 }
 
+
+// const postLogin = (req,res) => {
+//   const {}
+//   try{
+//     let product = await Product.findOne({ where: { id: idProduct } })
+//     !product && new Error('Product no found')
+//     let review = await Review.create(req.body)
+//     // dara un error si no hay una id de un usuario
+//     User.findOne({ where: { id: id } })
+//       .then((result) => {
+//         review.addUser(result)
+//         product.setReview(review)
+//         res.status(201).json({ success: true, inf: 'Review added to Product' })
+//       }, (error) => {
+//         res.status(400).json({ success: false, inf: 'user not found: ' + error })
+//       })
+
+
+//   } catch (e) {
+//     res.status(400).json({ success: false, inf: e })
+//   }
+// }
+
+const postReviewProduct = async (req,res)=>{
+    // si se envia el token
+    //let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
+    // de lo contrario se envia el id del usuario de forma manual
+    //let {userID}= req.query
+    // per es necesario un identificador para buscar el usuario en la base de datos
+    // o si se usar cookie-session 
+    // let {usAuth}= req.session
+    // let {id} = jwt.decode(usAuth)
+    try{
+        let {idProduct} =req.params
+        if(req.body){
+            if(req.body.hasOneProperty('description')&& typeof req.body['description']!== 'string'){
+                throw Error('Data types error ')
+            }
+            if(req.body.hasOneProperty('starsPoint')&& typeof req.body['starsPoint']!== 'number'){
+                throw Error('Data types error ')
+            }
+        }
+        let product=await Product.findOne({where:{id:idProduct}})
+        !product&& new Error('Product no found')
+        let review= await Review.create(req.body)
+        // dara un error si no hay una id de un usuario
+        User.findOne({where:{id:id}})
+            .then((result) => {
+                review.addUser(result)
+                product.setReview(review)
+                res.status(201).json({success:true,inf:'Review add to Product'})
+            },(error)=>{
+                res.status(400).json({success:false,inf:'user nof found: '+error})
+            })
+            
+            
+        }catch(e){
+            res.status(400).json({success:false,inf:e})
+        }
+}
+    
 const OrdersUser = async (req, res) => {
   const { user_id } = req.permits;
   try {

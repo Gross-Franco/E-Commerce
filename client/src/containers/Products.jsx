@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Grid } from "@mui/material";
 import { Product } from "../components";
 import { getProductsPublic } from "../Redux/Actions/actions";
 
@@ -14,19 +13,11 @@ const Products = () => {
   }, [])
 
   return (
-    <main>
-      <div>
-        <Grid container justify="center" spacing={4}>
-          {products?.map(product=><Grid item key={product.SKU} xs={12} sm={6} md={4} lg={3}>
-              <Product
-                product={product}
-                section="catalogo"
-              />
-          </Grid>)}
-          
-        </Grid>
-      </div>
-    </main>
+    <div className="products--list">
+      {products?.map((product) => (
+        <Product key={product.SKU} product={product} />
+      ))}
+    </div>
   );
 };
 

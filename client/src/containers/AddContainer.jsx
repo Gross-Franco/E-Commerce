@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
+import { OrderDetails } from "./";
 
 import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
-import { useDispatch, useSelector } from "react-redux";
-import OrderDetails from "./orderDetails";
 
 const AddContainer = ({ option, setIsOpen }) => {
   const { categories } = useSelector((state) => state.categories);
@@ -194,7 +194,9 @@ const AddContainer = ({ option, setIsOpen }) => {
               </header>
               <div>
                 <div
-                  className="add-form--input add-form--input-dropdown"
+                  className={`add-form--input add-form--input-dropdown ${
+                    openDropdown ? "selected" : ""
+                  }`}
                   onClick={() => setOpenDropdown(!openDropdown)}
                 >
                   <span>Elige categoria</span>

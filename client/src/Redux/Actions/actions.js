@@ -1,7 +1,6 @@
 // import axios from 'axios';
 import { axiosWithCredentials as axios } from '../../utilities/axios';
 import {
-
     // Products
     GET_PRODUCTS,
     SEARCH_PRODUCT_ID,
@@ -37,7 +36,16 @@ import {
     ADD_OR_UPDATE,
     SET_AUTH_LEVEL,
 
-} from './actionTypes';
+  // Shopping
+  CREATE_SHOPPING_SESSION,
+  DELETE_SHOPPING_SESSION,
+  GET_CART_ITEMS,
+  ADD_CART_ITEM,
+  EDIT_CART_ITEM_QTY,
+  DELETE_CART_ITEM,
+  DELETE_CART,
+  LOGOUT,
+} from "./actionTypes";
 
 export const getProducts = () => {
     return async (dispatch) => {
@@ -166,28 +174,28 @@ export const passwordResetToken = (token, newPassword) => {
 
 export const getOrders = () => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/admin/orders`);
+        const response = await axios.get(`/admin/orders`);
         dispatch({ type: GET_ORDERS, payload: response.data });
     }
 }
 
 export const filterOrderByStatus = (filter) => {
     return async (dispatch) => {
-        const response = await axios.post(`${URL}/admin/filterOrderByStatus`, { status: filter });
+        const response = await axios.post(`/admin/filterOrderByStatus`, { status: filter });
         dispatch({ type: FILTER_ORDERS, payload: response.data });
     }
 }
 
 export const changeOrderStatus = (orderId, status) => {
     return async (dispatch) => {
-        const response = await axios.post(`${URL}/admin/changeOrderStatus`, { orderId, status });
+        const response = await axios.post(`/admin/changeOrderStatus`, { orderId, status });
         dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data });
     }
 }
 
 export const getOrderId = (orderId) => {
     return async (dispatch) => {
-        const response = await axios.get(`${URL}/admin/orders/${orderId}`);
+        const response = await axios.get(`/admin/orders/${orderId}`);
         dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data });
     }
 }
@@ -212,5 +220,127 @@ export const setAuthLevel = payload => {
     return { type: SET_AUTH_LEVEL, payload };
 }
 
+// export const createShoppingSession = (userId = 1) => { //userId = 1 mientras no hay logueo
+//   return async (dispatch) => {
+//     const response = await axios.post(
+//       `${URL}/shopping/session?user_id=${userId}`
+//     );
+//     dispatch({ type: CREATE_SHOPPING_SESSION, payload: response.data });
+//   };
+// };
+// export const deleteShoppingSession = (sessionId) => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios.delete(
+//         `${URL}/shopping/session?session_id=${sessionId}`
+//       );
+//       if (data) {
+//         dispatch({ type: DELETE_SHOPPING_SESSION, payload: data });
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
+export const getCartItems = (sessionId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(
+        `${URL}/shopping/cart?session_id=${sessionId}`
+      );
+      if (data) {
+        dispatch({ type: GET_CART_ITEMS, payload: data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
+export const addCartItem = (sessionId, productId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`${URL}/shopping/cart`, {
+        session_id: sessionId,
+        product_id: productId,
+      });
+      if (data) {
+        dispatch({ type: ADD_CART_ITEM, payload: data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
+export const editCartItemQty = ({ sessionId, productId, quantity }) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`${URL}/shopping/cart`, {
+        session_id: sessionId,
+        product_id: productId,
+        quantity: quantity,
+      });
+      if (data) {
+        dispatch({ type: EDIT_CART_ITEM_QTY, payload: data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteCartItem = ( sessionId, productId ) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.delete(`${URL}/shopping/cart?product_id=${productId}&session_id=${sessionId}`);
+      if (data) {
+        dispatch({ type: DELETE_CART_ITEM, payload: data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const deleteCart = (sessionId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.delete(`/shopping/cart?session_id=${sessionId}`);
+      if (data) {
+        dispatch({ type: DELETE_CART, payload: data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const login=(data)=>{
+  return (dispatch)=>{
+    axios.post(`/user/login`,data)
+    .then(resp=>{
+      let {user,Token}= resp.data.data
+      localStorage.setItem('eCUs',JSON.stringify({Token,session:''}))
+       dispatch({type:ADD_USER_PUBLIC,payload:user})
+    },(err)=>{
+      alert("Error: "+err)
+    })
+  }
+}
+export const checkSession=(token)=>{
+  return (dispatch)=>{
+    axios.post(`/user/login`,null,{headers:{Authorization:'Bearer '+token}})
+    .then(resp=>{
+      let {user}= resp.data.data
+      dispatch({type:ADD_USER_PUBLIC,payload:user})
+    },(err)=>{
+      alert("Error: "+err)
+    })
+  } 
+}
+export const logout=()=>{
+  return (dispatch)=>{
+    localStorage.removeItem('eCUs');
+    dispatch({type:LOGOUT})
+  }
+}

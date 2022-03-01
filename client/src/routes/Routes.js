@@ -4,11 +4,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Home, Catalog, Registro, PerfilUser } from "../containers";
-import Admin from "../pages/Admin";
-import PassReset from "../pages/PassReset";
-import ProductDetail from "../containers/ProductDetail";
+
+import { Catalog, Registro, PerfilUser, ProductDetail , Verificate } from "../containers";
+import { Home, Admin, PassReset, Cart } from "../pages"
 import { getCookie } from "../containers/Utilitis/getCookie";
+import Checkout from "../pages/Checkout";
+
 
 const Rutas = () => {
   const [AutenCookin, SetAutenCookin] = useState(getCookie("Email") === "");

@@ -62,6 +62,10 @@ module.exports = (sequelize) => {
     resetPasswordExpires: {
         type: DataTypes.DATE,
         allowNull: true
+    },
+    verificate: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 
 },{

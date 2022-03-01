@@ -5,8 +5,10 @@ import "./estilos/login.css";
 import { Link } from "react-router-dom";
 // import { getCookie } from "./Utilitis/getCookie";
 import { axiosWithCredentials as axios } from "../utilities/axios.js"
+// import {useDispatch} from 'react-redux'
+// import {login} from './../Redux/Actions/actions'
 
-export default function Login() {
+export default function Login({isScroll}) {
   const [show, setShow] = React.useState(false);
 
   const handleClose = () => setShow(false);
@@ -16,22 +18,25 @@ export default function Login() {
     email: "",
     password: "",
   });
+  
+//   let dispatch = useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.password) {
-      axios.post("/api/signin", inputs).then(() => {
-        
-      }).catch((err) => {
+      axios.post("/api/signin", inputs)
+        .then(() => {
+        alert(`Usu ${inputs.email} contra ${inputs.password}`);
+      })
+        .catch((err) => {
         console.log(err)
-      }).finally(() => {
+      })
+        .finally(() => {
         handleClose();
         setInputs({
           email: "",
           password: "",
         });
-        alert(`Usu ${inputs.email} contra ${inputs.password}`);
-      })
     } else {
       setInputs({
         email: "",
@@ -42,30 +47,17 @@ export default function Login() {
   };
 
   const handleInputs = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
+    setInputs( prev => {
+      return {
+        ...prev,
+        [e.target.name]:e.target.value
+      }
     });
   };
 
-  //Testeo de inicio sesion ---- provicional
-  // function ValidateRequest(e) {
-  //   //verificamos
-  //   if (getCookie("Email") === "") {
-  //     //añadimos data a las cokkies
-  //     document.cookie = "Email=" + inputs.email;
-
-  //     document.cookie = "Password=" + inputs.password;
-
-  //     //refrest windoms
-  //     window.location.reload(false);
-  //   }
-  //   e.preventDefault();
-  // }
-
   return (
     <>
-      <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
+      <Button variant="btn btn-light" id={`header-button--${isScroll ? 'on-scroll' : ''}`} onClick={handleShow}>
         Login
       </Button>
 

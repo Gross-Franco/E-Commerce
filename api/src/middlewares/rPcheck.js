@@ -60,8 +60,3 @@ rts.setR('Admin')
 rts.addRt('Admin', '/admin')
 console.log(rts.isPerm('Admin', '/admin'))
 module.exports = rts
-
-
-
-
-
