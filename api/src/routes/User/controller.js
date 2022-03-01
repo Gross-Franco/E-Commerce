@@ -111,94 +111,94 @@ const addPayment = async (req, res) => {
 //   }
 // }
 
-const postReviewProduct = async (req, res) => {
-  // si se envia el token
-  //let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
-  // de lo contrario se envia el id del usuario de forma manual
-  //let {userID}= req.query
-  // per es necesario un identificador para buscar el usuario en la base de datos
-  // o si se usar cookie-session 
-  // let {usAuth}= req.session
-  // let {id} = jwt.decode(usAuth)
-  try {
-    let { idProduct } = req.params
-    if (req.body) {
-      if (req.body.hasOneProperty('description') && typeof req.body['description'] !== 'string') {
-        throw Error('Data types error ')
-      }
-      if (req.body.hasOneProperty('starsPoint') && typeof req.body['starsPoint'] !== 'number') {
-        throw Error('Data types error ')
-      }
+// const postReviewProduct = async (req, res) => {
+//   // si se envia el token
+//   //let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
+//   // de lo contrario se envia el id del usuario de forma manual
+//   //let {userID}= req.query
+//   // per es necesario un identificador para buscar el usuario en la base de datos
+//   // o si se usar cookie-session 
+//   // let {usAuth}= req.session
+//   // let {id} = jwt.decode(usAuth)
+//   try {
+//     let { idProduct } = req.params
+//     if (req.body) {
+//       if (req.body.hasOneProperty('description') && typeof req.body['description'] !== 'string') {
+//         throw Error('Data types error ')
+//       }
+//       if (req.body.hasOneProperty('starsPoint') && typeof req.body['starsPoint'] !== 'number') {
+//         throw Error('Data types error ')
+//       }
 
 const confirm = async (req, res) => {
   try {
 
-     // Obtener el token
-     const { token } = req.cookies;
-     
-     // Verificar la data
-     let data =  null;
+    // Obtener el token
+    const { token } = req.cookies;
 
-     jwt.verify(token, FIRM, (err, decoded) => {
-         if(err) {
-             console.log('Error al obtener data del token');
-         } 
-         else {
-             data = decoded;
-         }
-     });
- 
-  // console.log()
+    // Verificar la data
+    let data = null;
 
-     if(data === null) {
-          return res.json({
-              success: false,
-              msg: 'Error al obtener data'
-          });
-     }
+    jwt.verify(token, FIRM, (err, decoded) => {
+      if (err) {
+        console.log('Error al obtener data del token');
+      }
+      else {
+        data = decoded;
+      }
+    });
 
-     console.log(data);
+    // console.log()
 
-     const {username,email} = data;
+    if (data === null) {
+      return res.json({
+        success: false,
+        msg: 'Error al obtener data'
+      });
+    }
 
-     // Verificar existencia del usuario
-     //
+    console.log(data);
+
+    const { username, email } = data;
+
+    // Verificar existencia del usuario
+    //
     //  const user = await User.findOne({ email }) || null;
 
-     const user = await User.findOne({
-      where: {email: email}
+    const user = await User.findOne({
+      where: { email: email }
     }) || null;
 
-     if(user === null) {
-          return res.json({
-              success: false,
-              msg: 'Usuario no existe'
-          });
-     }
+    if (user === null) {
+      return res.json({
+        success: false,
+        msg: 'Usuario no existe'
+      });
+    }
 
-     // Verificar el código
+    // Verificar el código
     //  if(code !== user.code) {
     //       return res.redirect('/error.html');
     //  }
 
-     // Actualizar usuario
+    // Actualizar usuario
     //  user.set('verificate', true);
-     user.verificate = true;
-     await user.save();
+    user.verificate = true;
+    await user.save();
 
 
 
-     // Redireccionar a la confirmación
-  res.redirect('http://localhost:3000/verificate/'+ username)
+    // Redireccionar a la confirmación
+    res.redirect('http://localhost:3000/verificate/' + username)
 
-      
+
   } catch (error) {
-      console.log(error);
-      // window.location.href = `/verificate/No_Verficate`;
-      return res.json({
-          success: false,
-          msg: 'Error al confirmar usuario'
-      });
+    console.log(error);
+    // window.location.href = `/verificate/No_Verficate`;
+    return res.json({
+      success: false,
+      msg: 'Error al confirmar usuario'
+    });
   }
 }
 
@@ -225,44 +225,45 @@ const confirm = async (req, res) => {
 //   }
 // }
 
-const postReviewProduct = async (req,res)=>{
-    // si se envia el token
-    //let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
-    // de lo contrario se envia el id del usuario de forma manual
-    //let {userID}= req.query
-    // per es necesario un identificador para buscar el usuario en la base de datos
-    // o si se usar cookie-session 
-    // let {usAuth}= req.session
-    // let {id} = jwt.decode(usAuth)
-    try{
-        let {idProduct} =req.params
-        if(req.body){
-            if(req.body.hasOneProperty('description')&& typeof req.body['description']!== 'string'){
-                throw Error('Data types error ')
-            }
-            if(req.body.hasOneProperty('starsPoint')&& typeof req.body['starsPoint']!== 'number'){
-                throw Error('Data types error ')
-            }
-        }
-        let product=await Product.findOne({where:{id:idProduct}})
-        !product&& new Error('Product no found')
-        let review= await Review.create(req.body)
-        // dara un error si no hay una id de un usuario
-        User.findOne({where:{id:id}})
-            .then((result) => {
-                review.addUser(result)
-                product.setReview(review)
-                res.status(201).json({success:true,inf:'Review add to Product'})
-            },(error)=>{
-                res.status(400).json({success:false,inf:'user nof found: '+error})
-            })
-            
-            
-        }catch(e){
-            res.status(400).json({success:false,inf:e})
-        }
+const postReviewProduct = async (req, res) => {
+  // si se envia el token
+  //let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
+  // de lo contrario se envia el id del usuario de forma manual
+  //let {userID}= req.query
+  // per es necesario un identificador para buscar el usuario en la base de datos
+  // o si se usar cookie-session 
+  // let {usAuth}= req.session
+  // let {id} = jwt.decode(usAuth)
+  try {
+    const { user_id } = req.permits;
+    let { idProduct } = req.params
+    if (req.body) {
+      if (req.body.hasOneProperty('description') && typeof req.body['description'] !== 'string') {
+        throw Error('Data types error ')
+      }
+      if (req.body.hasOneProperty('starsPoint') && typeof req.body['starsPoint'] !== 'number') {
+        throw Error('Data types error ')
+      }
+    }
+    let product = await Product.findOne({ where: { id: idProduct } })
+    !product && new Error('Product no found')
+    let review = await Review.create(req.body)
+    // dara un error si no hay una id de un usuario
+    User.findOne({ where: { id: id } })
+      .then((result) => {
+        review.addUser(result)
+        product.setReview(review)
+        res.status(201).json({ success: true, inf: 'Review add to Product' })
+      }, (error) => {
+        res.status(400).json({ success: false, inf: 'user nof found: ' + error })
+      })
+
+
+  } catch (e) {
+    res.status(400).json({ success: false, inf: e })
+  }
 }
-    
+
 const OrdersUser = async (req, res) => {
   const { user_id } = req.permits;
   try {
@@ -424,7 +425,7 @@ module.exports = {
   OrdersUser,
   addAdress,
   postReviewProduct,
-  createUser,
+  // createUser,
   // postLogin,
   addPayment,
   forgotPassword,
