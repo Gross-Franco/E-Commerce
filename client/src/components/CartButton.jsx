@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems } from "../Redux/Actions/actions";
+import { getCartItems, getLocalStorage } from "../Redux/Actions/actions";
 
-const Cart = ({ setOpenModal, openModal }) => {
-  const { cartItems, loadCart, session } = useSelector(
+const CartButton = ({ setOpenModal, openModal }) => {
+  const { cartItems, loadCart, session, cartStorage } = useSelector(
     (state) => state.shopping
   );
   const dispatch = useDispatch();
 
-  if (loadCart) dispatch(getCartItems(session.id));
+  let strgQty =
+    cartStorage?.length > 0
+      ? cartStorage.reduce((acc, item) => {
+          return acc + item.quantity;
+        }, 0)
+      : 0;
+  let dbQty =
+    cartItems?.length > 0
+      ? cartItems.reduce((acc, item) => {
+          return acc + item.quantity;
+        }, 0)
+      : 0;
+  let qty = cartItems?.length > 0 ? dbQty : strgQty;
+
+  useEffect(() => {
+    if (session.length > 0) {
+      dispatch(getCartItems(session.id));
+    }
+    {
+      dispatch(getLocalStorage());
+    }
+  }, []);
 
   const handelClick = () => {
     setOpenModal(!openModal);
@@ -18,8 +39,8 @@ const Cart = ({ setOpenModal, openModal }) => {
   return (
     <div className="cart-container" onClick={handelClick}>
       <FiShoppingCart className="cart-icon" />
-      <div className="cart-count">{cartItems.length || 0}</div>
+      <div className="cart-count">{qty}</div>
     </div>
   );
 };
-export default Cart;
+export default CartButton;
