@@ -43,6 +43,11 @@ import {
   DELETE_CART_ITEM,
   DELETE_CART,
   LOGOUT,
+  SAVE_LOCAL_STORAGE,
+  GET_LOCAL_STORAGE,
+  DELETE_ITEM_LOCAL_STORAGE,
+  EDIT_LOCAL_STORAGE_QTY,
+  UPDATE_SUBTOTAL
 } from "./actionTypes";
 
 const URL = "http://localhost:3001";
@@ -369,3 +374,35 @@ export const logout = () => {
     dispatch({ type: LOGOUT });
   };
 };
+
+export const saveLocal = () => {
+  return (dispatch) => {
+    dispatch({ type: SAVE_LOCAL_STORAGE});
+  };
+};
+
+export const getLocalStorage = () => {
+  return (dispatch) => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems"));
+    console.log(cartItems);
+    dispatch({ type: GET_LOCAL_STORAGE, payload: cartItems });
+  };
+}
+
+export const deleteItemLocalStorage = (id) => {
+  return (dispatch) => {
+    dispatch({ type: DELETE_ITEM_LOCAL_STORAGE, payload: id });
+  };
+}
+
+export const editLocalQty = (id, qty) => {
+  return (dispatch) => {
+    console.log(id, qty);
+    dispatch({ type: EDIT_LOCAL_STORAGE_QTY, payload: { id, qty} });
+  };
+}
+export const updateSubtotal = () => {
+  return (dispatch) => {
+    dispatch({ type: UPDATE_SUBTOTAL });
+  };
+}
