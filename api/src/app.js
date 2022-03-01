@@ -15,7 +15,7 @@ const server = express();
 const cors = require('cors');
 
 server.name = "API";
-server.use(cors())
+server.use(cors({credentials: true, origin: DOMAIN}))
 
 
 

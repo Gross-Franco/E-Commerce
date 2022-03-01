@@ -46,7 +46,7 @@ const NavBar = ({ isScroll = false }) => {
         </Link>
         {/* <SearchBar /> */}
         <div className={`header-cart--container ${isScroll ? "scroll" : ""}`}>
-          {!login ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          {load ? <Login isScroll={isScroll} /> : <Dropdowns />}
           <CartButton openModal={isOpen} setOpenModal={setIsOpen} />
         </div>
         {!!isOpen && (

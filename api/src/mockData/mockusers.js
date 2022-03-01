@@ -5,6 +5,7 @@ const mockusers = [
             "first_name": "Francisco",
             "last_name": "Fernandez",
             "email": "f2000.fernandez@gmail.com",
+            "isAdmin": true
         },
         {
             "username": "rodricapo",

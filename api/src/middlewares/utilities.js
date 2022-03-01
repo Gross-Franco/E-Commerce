@@ -1,24 +1,24 @@
 require("dotenv").config();
 const { ShoppingSession, User } = require("../db");
 const jwt = require("jsonwebtoken");
-const { FIRM, TOKEN_COOKIE } = process.env;
+const { FIRM, TOKEN_COOKIE, AUTH_EXPIRES } = process.env;
 
 const createSession = async (info = undefined) => {
     let body = {
         ...info,
-    }
+    }   
     try {
-        if (!body.session_id) {
+        if (!body.hasOwnProperty('session_id')) {
             const session = await ShoppingSession.create();
             body = {
                 ...body,
                 session_id: session.id,
             }
         }
-        if (body.user_id) {
+        if (body.hasOwnProperty('user_id')) {
             User.findByPk(body.user_id)
                 .then(user => {
-                    user.setSession(body.session_id)
+                    user.setSession(body.user_id);
                 })
                 .catch(error => console.log(error));
         }
