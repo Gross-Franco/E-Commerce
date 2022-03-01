@@ -11,15 +11,22 @@ import {
   EDIT_CART_ITEM_QTY,
   DELETE_CART_ITEM,
   DELETE_CART,
+  SAVE_LOCAL_STORAGE,
+  GET_LOCAL_STORAGE,
+  DELETE_ITEM_LOCAL_STORAGE,
+  EDIT_LOCAL_STORAGE_QTY,
+  UPDATE_SUBTOTAL,
 } from "../Actions/actionTypes";
 
 const initialState = {
   orders: [],
   orderDetails: {},
   cartItems: [],
+  cartStorage: [],
   session: {},
   loadCart: false,
   loadOrders: true,
+  subTotal: 0,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -87,7 +94,54 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         loadCart: true
       };
-    default:
+    case SAVE_LOCAL_STORAGE:
+      let cartStorage = JSON.parse(localStorage.getItem("cartItems"));
+      return {
+        ...state,
+        cartStorage: cartStorage,
+        loadCart: true,
+      };
+    case GET_LOCAL_STORAGE: 
+      return {
+        ...state,
+        cartStorage: payload,
+        loadCart: false,
+        subTotal: localStorage.getItem("subTotal"),
+      };
+    case DELETE_ITEM_LOCAL_STORAGE: 
+
+      let newCart = JSON.parse(localStorage.getItem("cartItems"));
+      newCart = newCart?.filter((item) => item.id !== payload) || [];
+      localStorage.setItem("cartItems", JSON.stringify(newCart));
+      return {
+        ...state,
+        cartStorage: newCart,
+        loadCart: false,
+      };
+    case EDIT_LOCAL_STORAGE_QTY: 
+      let newCartStrg = JSON.parse(localStorage.getItem("cartItems"));
+      
+      newCartStrg = newCartStrg?.map(item => {
+        if (item.id === payload.id) {
+          item.quantity = payload.qty;
+        }
+        return item;
+      });
+      localStorage.setItem("cartItems", JSON.stringify(newCartStrg));
+      return {
+        ...state,
+        cartStorage: newCartStrg,
+        loadCart: false,
+      };
+    case UPDATE_SUBTOTAL:
+      let lastCart = JSON.parse(localStorage.getItem("cartItems"));
+      let subTotal = lastCart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+      localStorage.setItem("subTotal", JSON.stringify(subTotal));
+      return {
+        ...state,
+        subTotal: subTotal,
+      };
+    default: 
       return state;
   }
 };
