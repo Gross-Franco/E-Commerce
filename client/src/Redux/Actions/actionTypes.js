@@ -1,6 +1,6 @@
 // Products
 export const GET_PRODUCTS = 'GET_PRODUCTS';
-export const GET_PRODUCTS_PUBLIC =  "GET_PRODUCTS_PUBLIC";
+export const GET_PRODUCTS_PUBLIC = "GET_PRODUCTS_PUBLIC";
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const SEARCH_PRODUCT_NAME = 'SEARCH_PRODUCT_NAME';
@@ -36,5 +36,7 @@ export const ADD_CART_ITEM = "ADD_CART_ITEM";
 export const EDIT_CART_ITEM_QTY = "EDIT_CART_ITEM_QUANTITY";
 export const DELETE_CART_ITEM = "DELETE_CART_ITEM";
 export const DELETE_CART = "DELETE_CART";
+
 // Misc
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
+export const SET_AUTH_LEVEL = "SET_AUTH_LEVEL";

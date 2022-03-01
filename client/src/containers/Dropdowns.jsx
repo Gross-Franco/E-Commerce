@@ -1,15 +1,14 @@
 import React from "react";
 import Dropdown from  "react-bootstrap/Dropdown";
-import {logout} from './../Redux/Actions/actions'
-import {useDispatch,useSelector} from 'react-redux';
+import { axiosWithCredentials as axios} from "../utilities/axios";
+// import {logout} from './../Redux/Actions/actions'
+// import {useDispatch,useSelector} from 'react-redux';
 
 export default function Dropdowns() {
-let dispatch= useDispatch()
-
-
-function Salir(e)
+// let dispatch= useDispatch()
+function Salir()
 {
-  dispatch(logout())
+    axios.post("/user/logout");
 }
 
 return<div>
