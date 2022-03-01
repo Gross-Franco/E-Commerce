@@ -43,7 +43,7 @@ const {
 
 conn.sync({ force: false }).then(() => {
 
-server.listen(process.env.PORT || 3001, () => {
+server.listen(process.env.PORT, () => {
     /* ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
