@@ -1,23 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../components/CartItem";
-import { getCartItems } from "../Redux/Actions/actions";
+import { getCartItems, getLocalStorage } from "../Redux/Actions/actions";
 import { IoMdClose } from "react-icons/io";
 import { BsBag } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Cart = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch();
-  const { cartItems, loadCart, session } = useSelector(
+  const { cartItems, cartStorage, session, subTotal } = useSelector(
     (state) => state.shopping
   );
 
-  if (loadCart) {
+  let cart = cartItems?.length > 0 ? cartItems : cartStorage;
+  let qty =
+    cart?.length > 0
+      ? cartStorage.reduce((acc, item) => {
+          return acc + item.quantity;
+        }, 0)
+      : 0;
+
+  useEffect(() => {
+    if (session.length > 0) {
       dispatch(getCartItems(session.id));
-  } 
-  const subTotal = Number(Math.round((cartItems?.reduce((acc, item) => {
-    return acc + item.product.price * item.quantity;
-  }, 0)) + "e2") + "e-2") || 0;
+      return;
+    }
+    dispatch(getLocalStorage());
+  }, []);
+
   const handleCompra = (items) => {
     // dispatch(createOrder(items)) // falta la action de createOrder en redux
   };
@@ -32,7 +42,7 @@ const Cart = ({ openModal, setOpenModal }) => {
         <p className="modal-cart--header-title">Carrito de compras</p>
         <IoMdClose className="modal-cart--close" onClick={handleClick} />
       </div>
-      {!cartItems.length > 0 && (
+      {!cart?.length > 0 && (
         <div className="modal-cart--empty-container">
           <div className="modal-cart--empty-container-items">
             <BsBag className="modal-cart--empty-container-items-icon" />
@@ -43,10 +53,10 @@ const Cart = ({ openModal, setOpenModal }) => {
           </p>
         </div>
       )}
-      {cartItems?.length > 0 && (
+      {cart?.length > 0 && (
         <div>
           <div className="modal-cart--body">
-            {cartItems.map((item) => (
+            {cart.map((item) => (
               <CartItem key={item.id} item={item} session={session} />
             ))}
           </div>
@@ -54,12 +64,21 @@ const Cart = ({ openModal, setOpenModal }) => {
             <div className="modal-cart--footer-total">
               <p className="modal-cart--footer-total-text">Subtotal</p>
               <p className="modal-cart--footer-total-price">${subTotal}</p>
+              <p className="modal-cart--footer-total-text">Productos Totales</p>
+              <p className="modal-cart--footer-total-price">{qty}</p>
             </div>
             <div className="modal-cart--footer-buttons">
-              <Link to="/catalogo" className="modal-cart--footer-button shopping" onClick={handleClick}>
+              <Link
+                to="/catalogo"
+                className="modal-cart--footer-button shopping"
+                onClick={handleClick}
+              >
                 Continuar Comprando
               </Link>
-              <Link to={"/checkout"} className="modal-cart--footer-button checkout">
+              <Link
+                to={"/checkout"}
+                className="modal-cart--footer-button checkout"
+              >
                 Checkout
               </Link>
             </div>
