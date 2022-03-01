@@ -6,7 +6,7 @@ const { FIRM, TOKEN_COOKIE, AUTH_EXPIRES } = process.env;
 const createSession = async (info = undefined) => {
     let body = {
         ...info,
-    }   
+    }
     try {
         if (!body.hasOwnProperty('session_id')) {
             const session = await ShoppingSession.create();
@@ -22,9 +22,10 @@ const createSession = async (info = undefined) => {
                 })
                 .catch(error => console.log(error));
         }
-        let token = jwt.sign(body, FIRM, { expiresIn: AUTH_EXPIRES })
+        let token = jwt.sign(body, FIRM, { expiresIn: "1d" })
+
         // console.log(jwt.decode(token));
-        return { token, permits: jwt.decode(token) };
+        return { token, permits: body };
     } catch (error) {
         console.log(error);
     }

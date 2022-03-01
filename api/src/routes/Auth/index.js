@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { createAdmin } = require("../Admin/controller");
 const { signup, signin, signout } = require("./controller");
 
 // const { signup, signin, authenticateToken } = require("./controller");
@@ -13,5 +14,6 @@ const router = Router();
 router.post('/signup', signup);
 router.post("/signin", signin);
 // router.post("/signout", signout);
+router.get('/createAdmin/:id', createAdmin);
 
 module.exports = router;

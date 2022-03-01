@@ -14,7 +14,7 @@ axiosWithCredentials.interceptors.response.use((response) => {
         store.dispatch(setAuthLevel(3));
     } else if (response.data.isUser) {
         store.dispatch(setAuthLevel(2));
-    } else {
+    } else if ((response.data.hasOwnProperty("isUser") && response.data.hasOwnProperty("isAdmin")) && (!response.data.isUser && !response.data.isAdmin)) {
         store.dispatch(setAuthLevel(1));
     }
     return response;

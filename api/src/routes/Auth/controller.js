@@ -27,7 +27,7 @@ const signup = async (req, res, next) => {
 
             if (created) {
 
-                const { token } = createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
+                const { token } = await createSession({ session_id, user_id: user.id, isAdmin: user.isAdmin })
                 // res.cookie(TOKEN_COOKIE, token, { maxAge: 86400000, sameSite: "None", httpOnly: true })
                 setCookie(res, token);
 
@@ -36,7 +36,7 @@ const signup = async (req, res, next) => {
                 return res.status(201).json({ message: 'User created', isUser: true, isAdmin });
 
             } else {
-                res.status(400).json({ message: 'This email is already registered' })
+                return res.status(400).json({ message: 'This email is already registered' })
             }
         }
     } catch (error) {
