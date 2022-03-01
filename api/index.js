@@ -37,13 +37,13 @@ const {
   PaymentDetails
 } = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
-// const { PORT } = process.env;
+const { PORT } = process.env;
 
 // Syncing all the models at once.
 
 conn.sync({ force: false }).then(() => {
 
-server.listen(process.env.PORT || 3001, () => {
+server.listen(PORT || 3001, () => {
     /* ProductInventory.bulkCreate(mockinventory).then(() => {
     Product.bulkCreate(mockproducts).then(() => {
       ProductCategory.bulkCreate(mockcategories).then(()=>{
