@@ -1,16 +1,15 @@
 import React from "react";
 import Dropdown from  "react-bootstrap/Dropdown";
-import { delete_cookie } from "./Utilitis/getCookie";
-
+import {logout} from './../Redux/Actions/actions'
+import {useDispatch,useSelector} from 'react-redux';
 
 export default function Dropdowns() {
+let dispatch= useDispatch()
+
 
 function Salir(e)
 {
-    delete_cookie("Email");
-    delete_cookie("Password");
-    window.location.reload(false);   
-    e.preventDefault();
+  dispatch(logout())
 }
 
 return<div>

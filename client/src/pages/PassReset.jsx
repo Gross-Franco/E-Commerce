@@ -14,7 +14,7 @@ const PassReset = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(passwordResetToken(token, newPassword));
-    navigate("/", { replace: true });
+    navigate("/login", { replace: true });
   };
   return (
     <>

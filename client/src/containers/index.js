@@ -1,8 +1,6 @@
 export { default as LandingPage } from './LandingPage';
-export { default as Home } from './Home';
 export { default as Catalog } from './Catalog';
 export { default as Login } from './Login';
-export { default as Registro } from './Registro';
 export { default as SortContainer } from './SortContainer';
 export { default as FiltersContainer } from './FiltersContainer';
 export { default as ProductsContainer } from './ProductsContainer';
@@ -15,3 +13,9 @@ export { default as ControlContainer } from './ControlContainer';
 export { default as Panel } from './Panel';
 export { default as AdminContent } from './AdminContent';
 export { default as AddContainer } from './AddContainer';
+export { default as Verificate } from './Verificate';
+export { default as Carrousel } from './Carrousel';
+export { default as OrderDetails } from './orderDetails';
+export { default as HomeCategories } from './HomeCategories';
+export { default as ProductDetail } from './ProductDetail';
+export { default as Modal } from './Modal';
