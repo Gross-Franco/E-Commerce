@@ -369,20 +369,19 @@ const forgotPassword = async (req, res) => {
     // console.log(user)
     // set up nodemailer configs
     var transporter = nodemailer.createTransport({
-      service: "Outlook365",
-      host: "smtp.office365.com",
-      port: "587",
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
       tls: {
-        ciphers: "SSLv3",
         rejectUnauthorized: false,
       },
       auth: {
-        user: "ecommerce53@outlook.com", //email created to send the emails from
-        pass: "ecommerce777*",
+        user: "support@hcommerce.store", //email created to send the emails from
+        pass: "1-Nunca-pares-de-aprender-!",
       },
     });
     const options = {
-      from: "ecommerce53@outlook.com",
+      from: "HENRY e-Commerce <support@hcommerce.com>",
       to: email,
       subject: "Password Reset for the ecommerce platform",
       //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
@@ -439,20 +438,19 @@ const passwordResetToken = async (req, res) => {
     // console.log(user)
     //same email code as before
     var transporter = nodemailer.createTransport({
-      service: "Outlook365",
-      host: "smtp.office365.com",
-      port: "587",
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
       tls: {
-        ciphers: "SSLv3",
         rejectUnauthorized: false,
       },
       auth: {
-        user: "ecommerce53@outlook.com", //email created to send the emails from
-        pass: "ecommerce777*",
+        user: "support@hcommerce.com", //email created to send the emails from
+        pass: "1-Nunca-pares-de-aprender-!",
       },
     });
     const options = {
-      from: "ecommerce53@outlook.com",
+      from: "HENRY e-Commerce <support@hcommerce.com>",
       to: user.email,
       subject: "your password has been changed",
       html: `<h2>Password reset<h2>
