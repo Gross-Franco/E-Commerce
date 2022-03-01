@@ -16,7 +16,7 @@ const getProducts = async (req, res, next) => {
 			if(productinv.dataValues.quantity > 0) return {
 				id: productData.id,
 				name: productData.name,
-				image: product.image,
+				image: productData.image,
 				description: productData.description,
 				image:productData.image,
 				SKU: productData.SKU,
