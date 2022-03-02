@@ -15,8 +15,6 @@ import { Home, Admin, PassReset, Cart, Register, Login } from "../pages";
 import Checkout from "../pages/Checkout";
 
 const Rutas = () => {
-
-
   return (
     <Router>
       <Routes>
