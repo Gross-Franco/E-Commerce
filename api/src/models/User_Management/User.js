@@ -59,7 +59,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
-      verificate: {
+      verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },

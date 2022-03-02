@@ -81,6 +81,5 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
 export default function Checkout() {
 	return (
 		<StripeButton />
-
 	);
 }
