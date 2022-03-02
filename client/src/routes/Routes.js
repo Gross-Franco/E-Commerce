@@ -12,6 +12,7 @@ import {
   Verificate,
 } from "../containers";
 import { Home, Admin, PassReset, Cart, Register, Login } from "../pages";
+
 import Checkout from "../pages/Checkout";
 
 const Rutas = () => {
@@ -37,7 +38,9 @@ const Rutas = () => {
         />
         <Route path="/checkout" element={<Checkout />} />
 
+
         <Route path="/verificate/:ap" element={<Verificate />} />
+
       </Routes>
     </Router>
   );
