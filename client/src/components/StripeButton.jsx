@@ -4,7 +4,7 @@ import StripeCheckout from 'react-stripe-checkout';
 //the test card to use on stripe is # 4242424242424242 expiration date needs to be in the future las number any 3
 
 const StripeButton = () =>{
-    //set up products, below is just example
+    //set up products, below is just example, at the moment we can only take 1 product at a time for the back end to function properly, so the price in the state needs to be final
     const[product, setProduct] = useState({
         id: 1,
         name: 'Product 1',
@@ -37,6 +37,7 @@ const StripeButton = () =>{
         <StripeCheckout stripeKey={process.env.REACT_APP_STRIPE_PK_KEY} 
         token={makePayment} 
         amount={product.price * 100}
+        shippingAddress
         >
 
 
