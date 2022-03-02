@@ -9,14 +9,12 @@ require("./db.js");
 
 const server = express();
 const cors = require('cors');
+const { setCookie } = require("./middlewares/utilities.js");
 
 server.name = "API";
 server.use(cors())
 
 const { DOMAIN } = process.env
-
-
-
 
 server.use(express.urlencoded({ extended: true, limit: "50mb" }));
 server.use(express.json({ limit: "50mb" }));
@@ -31,6 +29,7 @@ server.use((req, res, next) => {
 	next();
 });
 
+server.use(setCookie);
 server.use("/", routes);
 server.use(flash())
 

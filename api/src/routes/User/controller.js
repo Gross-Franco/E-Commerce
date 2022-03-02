@@ -83,11 +83,11 @@ const createUser = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Fields are missing in the form" });
   } else {
-    let [user, created]= await User.findOrCreate({
+    let [user, created] = await User.findOrCreate({
       where: { email: email, username: username },
       defaults: { username, password, first_name, last_name, email },
     });
-    if(!created) {
+    if (!created) {
       res.status(400).json({ success: false, message: "Email already exists" });
     } else {
       //generar token 
@@ -149,15 +149,15 @@ const createUser = async (req, res) => {
           success: true,
           message: "account created succesfully, please confirm your email!",
         });
-    } 
+    }
   }
-/*   try {
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Failed in the process to register: " + error,
-    });
-  } */
+  /*   try {
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: "Failed in the process to register: " + error,
+      });
+    } */
 };
 
 const confirm = async (req, res) => {
@@ -212,7 +212,7 @@ const confirm = async (req, res) => {
 
     // Actualizar usuario
     //  user.set('verificate', true);
-    user.verificate = true;
+    user.verified = true;
     await user.save();
 
     // Redireccionar a la confirmación
