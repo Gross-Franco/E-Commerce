@@ -6,7 +6,7 @@ import { Card, Button, Col, Row, Container, Badge } from "react-bootstrap";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
 import { searchProductId } from "../Redux/Actions/actions";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export default function ProductDetail() {
   const { productDetail } = useSelector((state) => state.products);
@@ -35,7 +35,7 @@ export default function ProductDetail() {
             }}
           >
             <Col>
-              <Card.Img variant="top" src={productDetail?.image} />
+              <Card.Img variant="top" src={productDetail?.image} class= "img-responsive"/>
 
               <Card
                 style={{
@@ -60,6 +60,10 @@ export default function ProductDetail() {
                   )}
                 </Row>
               </Card>
+                <Link
+                      to={'/catalogo'}>
+                <Button variant="secondary" style={{ textAlign :"center"}} align-item="center">Catalogo</Button>
+                </Link>
             </Col>
 
             <Col
@@ -74,7 +78,7 @@ export default function ProductDetail() {
                   textAlign: "left",
                 }}
               >
-                {/* <Card.Img variant="top"  src="holder.js/100px180" /> */}
+                {/* { <Card.Img variant="top"  src="holder.js/100px180" /> } */}
                 <p
                   style={{
                     position: "relative",
@@ -141,7 +145,10 @@ export default function ProductDetail() {
                   </Card.Title>
 
                   <br />
-                  <Button variant="primary">Compra ahora</Button>
+                  <Link
+                      to={'/checkout'}>
+                  <Button variant="primary" >Compra ahora</Button>
+                  </Link>
                   <br />
                   <br />
                   <Button variant="secondary">Agregar al carrito</Button>
