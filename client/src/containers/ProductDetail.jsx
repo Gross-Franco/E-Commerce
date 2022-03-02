@@ -62,7 +62,7 @@ export default function ProductDetail() {
               </Card>
                 <Link
                       to={'/catalogo'}>
-                <Button variant="secondary" style={{ textAlign :"center"}} align-item="center">Catalogo</Button>
+                <Button variant="secondary" align="center">Catalogo</Button>
                 </Link>
             </Col>
 
