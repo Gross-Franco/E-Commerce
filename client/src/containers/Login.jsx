@@ -1,62 +1,51 @@
 import React from "react";
 import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import "./estilos/login.css";
 import { Link } from "react-router-dom";
-import { getCookie } from "./Utilitis/getCookie";
+import { useDispatch } from "react-redux";
+import { login } from "./../Redux/Actions/actions";
 
-export default function Login() {
+export default function Login({ isScroll }) {
   const [show, setShow] = React.useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [inputs, setInputs] = React.useState({
-    email: null,
-    contraseña: null,
+    email: "",
+    password: "",
   });
+  let dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (inputs.email && inputs.contraseña) {
-      alert(`Usu ${inputs.email} contra ${inputs.contraseña}`);
+    if (inputs.email && inputs.password) {
+      dispatch(login(inputs));
+
       handleClose();
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
     } else {
       setInputs({
         email: "",
-        contraseña: "",
+        password: "",
       });
-      alert("se tiene q rellenar los espacios en blanco");
     }
   };
   const handleInputs = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
+    setInputs((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
     });
   };
 
-  //Testeo de inicio sesion ---- provicional
-  function ValidateRequest(e) {
-    //verificamos
-    if (getCookie("Email") === "") {
-      //añadimos data a las cokkies
-      document.cookie = "Email=" + inputs.email;
-
-      document.cookie = "Password=" + inputs.contraseña;
-
-      //refrest windoms
-      window.location.reload(false);
-    }
-    e.preventDefault();
-  }
-
   return (
     <>
-      <Button variant="btn btn-light" id="header--button" onClick={handleShow}>
+      <Button
+        variant="btn btn-light"
+        id={`header-button--${isScroll ? "on-scroll" : ""}`}
+        onClick={handleShow}
+      >
         Login
       </Button>
 
@@ -85,9 +74,9 @@ export default function Login() {
               <Form.Control
                 type="password"
                 placeholder="Contraseña"
-                name="contraseña"
+                name="password"
                 onChange={handleInputs}
-                value={inputs.contraseña}
+                value={inputs.password}
               />
             </Form.Group>
 
@@ -95,7 +84,7 @@ export default function Login() {
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>
-              <Button variant="primary" type="submit" onClick={ValidateRequest}>
+              <Button variant="primary" type="submit">
                 Iniciar
               </Button>
             </Modal.Footer>
@@ -103,7 +92,7 @@ export default function Login() {
         </Modal.Body>
 
         <Link
-          to="/registro"
+          to="/register"
           onClick={handleClose}
           style={{
             textDecoration: "none",

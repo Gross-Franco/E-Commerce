@@ -6,6 +6,7 @@ import {
 } from "@paypal/react-paypal-js";
 import StripeButton from "../components/StripeButton";
 
+
 // This values are the props in the UI
 const amount = "10";
 const currency = "USD";
@@ -75,9 +76,11 @@ const ButtonWrapper = ({ currency, showSpinner }) => {
     );
 }
 
+
 //changed to stripe since paypal was causing errors
 export default function Checkout() {
 	return (
 		<StripeButton />
+
 	);
 }

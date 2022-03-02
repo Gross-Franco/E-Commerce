@@ -1,46 +1,37 @@
-import React, { useState, useEffect }from "react";
-import { AppBar, Toolbar } from "@mui/material";
-import { Cart, Nav } from "../components";
+import React, { useState } from "react";
 import { Login, Dropdowns } from "./";
-import useStyles from "../helpers/stylesNavBar";
-import { getCookie } from "./Utilitis/getCookie";
+import { Link } from "react-router-dom";
+import { Nav, CartButton } from "../components";
+import { useSelector } from "react-redux";
+import { Cart } from "../pages";
+import { Modal } from "../containers";
+import { setOverflowY } from "../services";
 
-const NavBar = () => {
-  const [load, LoadSet] = useState(getCookie("email") !== "");
-  const [isScroll, setIsScroll] = useState(false);
+const NavBar = ({ isScroll = false }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  let { login } = useSelector((state) => state.userSession);
 
-  useEffect(() => {
-    
-    LoadSet(getCookie("Email") === "");
-   
-  });
-  const classes = useStyles();
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setIsScroll(true);
-    } else {
-      setIsScroll(false);
-    }
-  };
+  setOverflowY(isOpen);
+  
   return (
-    <>
-      <AppBar
-        className={isScroll ? "nav-bar--scroll" : ""}
-        color="inherit"
-        style={{ zIndex: 1000 }}
-        onScroll={handleScroll}
-      >
-        <Toolbar>
-          <Nav />
-          <div className={classes.grow} />
-          <div className={classes.button}>
-            {load ? <Login /> : <Dropdowns />}
-            <Cart />
-          </div>
-        </Toolbar>
-      </AppBar>
-    </>
+    <header className="header" >
+      <div className={`header--container ${isScroll ? "on-scroll" : ""}`}>
+        <Nav isScroll={isScroll} />
+        <Link to="/" className={`header-logo ${isScroll ? "scroll" : ""}`}>
+          commerce
+        </Link>
+        {/* <SearchBar /> */}
+        <div className={`header-cart--container ${isScroll ? "scroll" : ""}`}>
+          {!login ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          <CartButton openModal={isOpen} setOpenModal={setIsOpen} />
+        </div>
+        {!!isOpen && (
+          <Modal>
+            <Cart openModal={isOpen} setOpenModal={setIsOpen} />
+          </Modal>
+        )}
+      </div>
+    </header>
   );
 };
-
 export default NavBar;

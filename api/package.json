@@ -37,6 +37,8 @@
     "sequelize": "^6.16.1",
     "stripe": "^8.207.0",
     "uuidv4": "^6.2.12",
+    "paypal-rest-sdk": "^1.8.1",
+
     "xoauth2": "^1.2.0"
   },
   "devDependencies": {

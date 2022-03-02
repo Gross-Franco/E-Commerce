@@ -17,7 +17,6 @@ const reducer = (state = initialState, {type, payload}) => {
             ...state,
             reset: payload
         }
-
         default: return state;
     }
 }
