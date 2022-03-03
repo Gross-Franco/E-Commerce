@@ -15,12 +15,9 @@ module.exports = (sequelize) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false,
-        // Este validate no funciona por alguna razon nidea
-        // validate: {
-        //     is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-        //     notEmpty: true
-        //     // Minnumum 8 characters, 1 uppercase, 1 lowercase, 1 number. Can contain special characters
-        // },
+        validate: {
+          is: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
+        },
         set(value) {
           const salt = bcrypt.genSaltSync(10);
           const hash = bcrypt.hashSync(value, salt);
@@ -63,6 +60,10 @@ module.exports = (sequelize) => {
       resetPasswordExpires: {
         type: DataTypes.DATE,
         allowNull: true,
+      },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {
