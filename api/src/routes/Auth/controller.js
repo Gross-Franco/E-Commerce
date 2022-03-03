@@ -51,7 +51,7 @@ const signin = (req, res, next) => {
     })
         .then((user) => {
             if (bcrypt.compare(password, user.password)) {//Los usuarios creados con bulkcreate no estan hasheados
-                setCookie(res, { name: TOKEN_COOKIE, value: token, maxAge: 10000 });
+                setCookie(res, TOKEN_COOKIE, token, 10000);
                 return res.status(200).json({ message: "Ususario logeado correctamente", isUser: true, isAdmin: permits.isAdmin });
             } else {
                 // si la contraseña comparada no son validas, reporto un error de validacion de password
@@ -77,7 +77,7 @@ const checkSession = async (req, res) => {
         if (req.permits) return res.status(200).json({ message: "open session" });
         else {
             let token = await createSession();
-            setCookie(res, { name: TOKEN_COOKIE, value: token, maxAge: 60000 })
+            setCookie(res, TOKEN_COOKIE, token, 60000)
             return res.status(201).json({ message: "session created" })
         }
     } catch (error) {

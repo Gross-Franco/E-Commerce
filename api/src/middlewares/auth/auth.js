@@ -6,7 +6,7 @@ let { FIRM } = process.env
 
 module.exports = {
     authent: (req, res, next) => {
-        console.log(req.headers)
+        // console.log(req.headers)
         let Token = req.headers['authorization']?.split(' ')[1]
         if (Token) {
             jwt.verify(Token, FIRM, (err, decode) => {

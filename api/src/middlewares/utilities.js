@@ -92,7 +92,7 @@ const sendVerificationEmail = (token, email, first_name) => {
     })
 }
 
-const setCookie = (res, { name, value, maxAge }) => {
+const setCookie = (res, name, value, maxAge) => {
     return res.cookie(name, value, { maxAge, httpOnly: true });
 }
 

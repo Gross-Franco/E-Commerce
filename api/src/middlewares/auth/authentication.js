@@ -1,11 +1,10 @@
-const { createSession } = require("../utilities");
+const { createSession, setCookie } = require("../utilities");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { FIRM, TOKEN_COOKIE } = process.env;
 
 const authenticate = (req, res, next) => {
     let { [TOKEN_COOKIE]: Token } = req.cookies;
-    console.log(Token);
 
     if (Token) {
         jwt.verify(Token, FIRM, (err, decode) => {
@@ -13,8 +12,8 @@ const authenticate = (req, res, next) => {
                 req.permits = decode
                 next();
             } else {
-                console.error(err);
-                return res.status(401).json({ message: "Invalid Token recieved" })
+                setCookie(res, TOKEN_COOKIE, "", 0)
+                return res.status(403).json({ message: "Invalid Token recieved" })
             }
         })
     } else {
