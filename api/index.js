@@ -24,11 +24,7 @@ const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
-<<<<<<< HEAD
-const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")
-=======
 const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails");
->>>>>>> Development
 
 const {
   conn,
