@@ -2,8 +2,8 @@ export const setOverflowY = (isOpen) => {
   document.body.style.overflow = isOpen ? "hidden" : "unset";
 };
 
-export const isFullfilled = (form) => {
-  return Object.keys(form).some((key) => form[key] !== "");
+export const isFullfilled = (form, errors) => {
+  return Object.keys(form).some((key) => form[key] !== "") && Object.keys(errors).some((key) => errors[key] !== false);
 };
 
 export const saveLocalStorage = (product) => {

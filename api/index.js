@@ -18,13 +18,13 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
-/* const { mockorders } = require("./src/mockData/mockorders");
+const { mockorders } = require("./src/mockData/mockorders");
 const { mockorderItems } = require("./src/mockData/mockorderItems")
 const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
-const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")*/
+const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")
 
 const {
   conn,
@@ -41,23 +41,28 @@ const { PORT } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: true }).then(() => {
 
 server.listen(PORT || 3001, () => {
-    /* ProductInventory.bulkCreate(mockinventory).then(() => {
-    Product.bulkCreate(mockproducts).then(() => {
-      ProductCategory.bulkCreate(mockcategories).then(()=>{
-        Product.findAll().then(products => {
-          products.forEach(product => {
-            product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1);
+    ProductInventory.bulkCreate(mockinventory).then(() => {
+      Product.bulkCreate(mockproducts).then(() => {
+        ProductCategory.bulkCreate(mockcategories).then(() => {
+          Product.findAll().then(products => {
+            products.forEach(product => {
+              product.addProductCategory(1);
+            })
           })
         })
       })
-    })}).then(() => {
+    }).then(() => {
       User.bulkCreate(mockusers);
-
+      PaymentDetails.bulkCreate(mockpaymentdetails)
+    }).then(() => {
+      OrderDetails.bulkCreate(mockorders).then(() => {
+        OrderItems.bulkCreate(mockorderItems)
+      });
     })
-    .catch(error => console.log(error)); */
+    .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 
   });

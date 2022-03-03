@@ -1,10 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import { createUser } from "../Redux/Actions/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { connectAdvanced, useDispatch, useSelector } from "react-redux";
 import { BsArrowLeftShort } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { isFullfilled } from "../services";
+import { useEffect } from "react";
+import { validator } from "../helpers/formValidation/register";
+
+
 
 export default function Registro() {
   const [form, setForm] = useState({
@@ -14,7 +18,28 @@ export default function Registro() {
     password: "",
     username: "",
   });
+ 
+  const [errors, setErrors] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    username: false,
+  })
 
+  useEffect(() => {
+    console.log(errors)
+  }, [errors])
+
+  const validate = async (e) => {
+    console.log('value: ', e.target.value)
+    console.log('name: ', e.target.name)
+    setErrors({
+      ...errors,
+      [e.target.name]: await validator(e.target.name, e.target.value)
+    })
+  }
+ 
   let flag = false;
 
   const { response } = useSelector((state) => state.users);
@@ -23,13 +48,14 @@ export default function Registro() {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(flag);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createUser(form));
-    console.log('submitted');
+    if(isFullfilled(form, errors)) {
+      dispatch(createUser(form));
+      console.log('submitted');
+    } else console.log('not submitted')
   };
 
   return (
@@ -62,36 +88,56 @@ export default function Registro() {
             name="firstName"
             placeholder="Nombre"
             onChange={handleChange}
+            onBlur={validate}
             className="register--main--form-input"
           />
+          {
+            errors.firstName && <span>{errors.firstName}</span>
+          }
           <input
             type="text"
             name="lastName"
             placeholder="Apellido"
             onChange={handleChange}
+            onBlur={validate}
             className="register--main--form-input"
           />
+          {
+            errors.lastName && <span>{errors.lastName}</span>
+          }
           <input
             type="text"
             name="username"
             placeholder="Nombre de usuario"
             onChange={handleChange}
+            onBlur={validate}
             className="register--main--form-input"
           />
+          {
+            errors.username && <span>{errors.username}</span>
+          }
           <input
             type="text"
             name="email"
             placeholder="Email"
             onChange={handleChange}
+            onBlur={validate}
             className="register--main--form-input"
           />
+          {
+            errors.email && <span>{errors.email}</span>
+          }
           <input
             type="password"
             name="password"
             placeholder="Contraseña"
             onChange={handleChange}
+            onBlur={validate}
             className="register--main--form-input"
           />
+          {
+            errors.password && <span>{errors.password}</span>
+          }
           <span className="register--main--form-span tyc">
             Al crear una cuenta aceptas nuestros{" "}
             <Link to="/terminos-y-condiciones" className="register--main--form-link">
@@ -100,7 +146,7 @@ export default function Registro() {
           </span>
           <button
             onClick={handleSubmit}
-            className="register--main--form-submit"
+            disabled={isFullfilled(form, errors)}
           >
             Crear cuenta
           </button>

@@ -474,6 +474,21 @@ const passwordResetToken = async (req, res) => {
   }
 };
 
+const validate = async (req, res) => {
+  const {email, username} = req.query;
+  if(email) {
+    const exists = await User.findOne({where: {email: email}})
+    if(exists) return res.send(true);
+    else return res.send(false)
+  }
+  if(username) {
+    const exists = await User.findOne({where: {username: username}})
+    if(exists) return res.send(true);
+    else return res.send(false)
+  }
+  res.send('error: invalid query')
+}
+
 module.exports = {
   getUsers,
   OrdersUser,
@@ -485,4 +500,5 @@ module.exports = {
   forgotPassword,
   passwordResetToken,
   confirm,
+  validate,
 };
