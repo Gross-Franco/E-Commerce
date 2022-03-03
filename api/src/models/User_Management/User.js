@@ -43,11 +43,16 @@ module.exports = (sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           isEmail: true,
         },
       },
       isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      verificate: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
@@ -58,10 +63,6 @@ module.exports = (sequelize) => {
       resetPasswordExpires: {
         type: DataTypes.DATE,
         allowNull: true,
-      },
-      verificate: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
       },
     },
     {
