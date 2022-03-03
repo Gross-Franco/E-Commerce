@@ -79,36 +79,6 @@ const createUser = async (req, res) => {
   let { username, password, first_name, last_name, email } = req.body;
 
   try {
-    let user = await User.findOne({ where: { username } });
-    if (user) {
-      return res
-        .status(302)
-        .json({ sucess: false, message: "Username already exists" });
-    }
-
-    user = await User.findOne({ where: { email } });
-    if (user) {
-      return res
-        .status(302)
-        .json({ sucess: false, message: "Email already exists" });
-    }
-
-    if (first_name.length < 2 || last_name.length < 2) {
-      return res
-        .status(403)
-        .json({
-          sucess: false,
-          message: "First Name or Last name must be at least 2 characters",
-        });
-    }
-    if (password.length < 6) {
-      return res
-        .status(403)
-        .json({
-          sucess: false,
-          message: "Password must be at least 6 characters",
-        });
-    }
 
     let createdUser = await User.create({
       username,
@@ -172,7 +142,7 @@ const createUser = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(422).json({ sucess: false, message: "Email is not valid" });
+    res.status(422).json({ sucess: false, message: "Something wrong happen" });
   }
 };
 

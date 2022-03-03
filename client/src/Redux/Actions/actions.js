@@ -221,11 +221,12 @@ export const createUser = ({
         email,
       })
       .then(response => {
-        dispatch({ type: CREATE_USER, payload: response.data });
+        console.log(response.data)
+        /* dispatch({ type: CREATE_USER, payload: response.data }); */
       })
-      .catch(({ response }) => {
-        console.log(response.data);
-        dispatch({ type: CREATE_USER, payload: response.data });
+      .catch((error) => {
+        console.log(error);
+        /* dispatch({ type: CREATE_USER, payload: error.response }); */
       });
   };
 };
