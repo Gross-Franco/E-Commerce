@@ -4,7 +4,7 @@ import axios from "axios";
 // require("dotenv").config();
 
 export const axiosWithCredentials = axios.create({
-    baseURL: process.env.REACT_APP_API,
+    baseURL: process.env.REACT_APP_API,// change this to "https://pghenry.herokuapp.com/" to work with deplyed DB
     withCredentials: true,
 })
 
