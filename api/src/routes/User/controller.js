@@ -78,24 +78,52 @@ const addPayment = async (req, res) => {
 const createUser = async (req, res) => {
   let { username, password, first_name, last_name, email } = req.body;
 
-  if (!username || !first_name || !last_name || !email || !password) {
-    res
-      .status(400)
-      .json({ success: false, message: "Fields are missing in the form" });
-  } else {
-    let [user, created]= await User.findOrCreate({
-      where: { email: email, username: username },
-      defaults: { username, password, first_name, last_name, email },
+  try {
+    let user = await User.findOne({ where: { username } });
+    if (user) {
+      return res
+        .status(302)
+        .json({ sucess: false, message: "Username already exists" });
+    }
+
+    user = await User.findOne({ where: { email } });
+    if (user) {
+      return res
+        .status(302)
+        .json({ sucess: false, message: "Email already exists" });
+    }
+
+    if (first_name.length < 2 || last_name.length < 2) {
+      return res
+        .status(403)
+        .json({
+          sucess: false,
+          message: "First Name or Last name must be at least 2 characters",
+        });
+    }
+    if (password.length < 6) {
+      return res
+        .status(403)
+        .json({
+          sucess: false,
+          message: "Password must be at least 6 characters",
+        });
+    }
+
+    let createdUser = await User.create({
+      username,
+      password,
+      first_name,
+      last_name,
+      email,
     });
-    if(!created) {
-      res.status(400).json({ success: false, message: "Email already exists" });
-    } else {
-      //generar token 
+    if (createdUser) {
+      //generar token
       const userForToken = {
         username,
         email,
-        userId: user.dataValues.id,
-      }
+        userId: createdUser.dataValues.id,
+      };
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
       //enviar mail
       // set up nodemailer configs
@@ -115,49 +143,37 @@ const createUser = async (req, res) => {
       const options = {
         from: "'HENRY e-COMMERCE' <welcome@hcommerce.store>",
         to: email,
-        subject: "Welcome to EC, Confirm your sign up",
+        subject: "Welcome to Henry Commerce, Confirm your sign up",
         //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
         // <a href="${process.env.CLIENT_URL}/user/resetpassword/${token}">${token}</a>
-        html: `<h1>CORTESIA DE JOSE:</h1>
-           
+        html: `
             <p> Hi ${first_name},</p>
+        
+            <h1>Thanks for signing up!  </h1>
 
-            <p> We just need to verify your email address before you can access [customer portal].</p>
+            <p> To get started, please confirm your email address by clicking the link below. If you didn't do this, ignore this message</p>
             
-            <p> Verify your email address :</p>
             <a href="http://localhost:3001/user/confirm/${token}">Verify your account!</a>
-            <p> Thanks! &#8211; The [company] team</p>`,
+            <p> Thanks! &#8211;  The HCommerce team</p>`,
       };
 
       // this function sends the email using the information for options
       transporter.sendMail(options, function (err, info) {
         if (err) {
-          console.log('un poco antes')
           console.log(err);
           return;
         }
         console.log("email sent " + info.response);
-        res.status(201).json({
-          message: `Verificate reset request sent to ${email} reset link: http://localhost:3001/user/resetpassword/${token}`,
-        });
       });
-      //--------------------------------------I--------------------------------------
 
-      res
-        .status(201)
-        .json({
-          success: true,
-          message: "account created succesfully, please confirm your email!",
-        });
-    } 
-  }
-/*   try {
+      res.status(201).json({
+        success: true,
+        message: "Account created succesfully, please confirm your email!",
+      });
+    }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Failed in the process to register: " + error,
-    });
-  } */
+    res.status(422).json({ sucess: false, message: "Email is not valid" });
+  }
 };
 
 const confirm = async (req, res) => {
@@ -193,10 +209,7 @@ const confirm = async (req, res) => {
     //
     //  const user = await User.findOne({ email }) || null;
 
-    const user =
-      (await User.findOne({
-        where: { email: email },
-      })) || null;
+    const user = await User.findOne({where: { email: email }}) || null;
 
     if (user === null) {
       return res.json({
@@ -212,11 +225,11 @@ const confirm = async (req, res) => {
 
     // Actualizar usuario
     //  user.set('verificate', true);
-    user.verificate = true;
+    user.verified = true;
     await user.save();
 
     // Redireccionar a la confirmación
-    res.redirect("http://localhost:3000/verificate/" + username);
+    return res.status(202).redirect("http://localhost:3000/verification/" + username + "?token=" + token);
   } catch (error) {
     console.log(error);
     // window.location.href = `/verificate/No_Verficate`;
@@ -234,10 +247,13 @@ const postLogin = (req, res) => {
     !email ||
       (!password &&
         res
-          .status(401)
+          .status(400)
           .json({ success: false, error: "Incomplete data form" }));
 
-    User.findOne({ where: { email: email } })
+    User.findOne({
+      attributes: ["password", "id", "isAdmin", "username"],
+      where: { email: email }
+    })
       .then((result) => {
         // si existe el usuario registrado comparo la contraseña tipeada con la que esta en la base de datos
         const verify = bcrypt.compareSync(password, result.password);
@@ -245,9 +261,9 @@ const postLogin = (req, res) => {
           // si la contraseña es correcta
           // extraigo los datos necesarios para el front-end y el token
           // y devuelvo el token y datos necesarios del usuario
-          let { username, email, first_name, last_name, isAdmin } = result;
+          let { id, isAdmin, username } = result;
           let Token = jwt.sign(
-            { username, email, first_name, last_name, isAdmin },
+            { id, isAdmin },
             FIRM,
             { expiresIn: "5d" }
           );
@@ -255,16 +271,17 @@ const postLogin = (req, res) => {
             success: true,
             data: {
               Token,
-              user: { username, email, first_name, last_name, isAdmin },
+              user: { username, id, isAdmin },
             },
           });
         } else {
           // si la contraseña comparada no son validas, reporto un error de validacion de password
-          res.status(400).json({ success: false, error: "Invalid Password" });
+          res.status(402).json({ success: false, error: "Invalid Password" });
         }
       })
       .catch((err) => {
         // en caso de que el usuario no exista
+        console.log(err);
         res
           .status(401)
           .json({ success: false, error: "User not found: " + err });

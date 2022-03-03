@@ -13,3 +13,4 @@ export { default as CategoriesTable } from './CategoriesTable';
 export { default as OrdersTable } from './OrdersTable';
 export { default as CreateCategory } from './CreateCategory';
 export { default as UsersTable } from './UsersTable';
+export { default as Notification } from './Notification';

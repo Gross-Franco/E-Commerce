@@ -7,7 +7,9 @@ import { saveLocalStorage } from "../services";
 
 const Product = ({ product }) => {
   const { session, cartStorage } = useSelector((state) => state.shopping);
+  
   const dispatch = useDispatch();
+
   const handleClick = () => {
     if (session.length > 0) {
       dispatch(addCartItem(session.id, product.id));

@@ -1,58 +1,72 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { getCategories, filterProducts, getProductsPublic } from "../Redux/Actions/actions";
 import { useEffect } from "react";
+import { Form } from "react-bootstrap";
+
+import './styles/estilos.css'
+
+
 
 const FiltersContainer = () => {
   const { categories, loadCategories } = useSelector((state) => state.categories);
-  const [openDropdown, setOpenDropdown] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    if (e.target.name === "category") {
-      if (e.target.checked) {
-        setFilteredCategories([...filteredCategories, e.target.value]);
-      } else {
-        setFilteredCategories(
-          filteredCategories.filter((item) => item !== e.target.value)
-        );
-      }
+
+    if (!filteredCategories.includes(e.target.value)) {
+      setFilteredCategories([...filteredCategories, e.target.value])
     }
   };
 
   useEffect(() => {
     filteredCategories.length > 0 ? dispatch(filterProducts(filteredCategories)) :
-    dispatch(getProductsPublic());
-  },[filteredCategories])
+      dispatch(getProductsPublic());
+  }, [filteredCategories])
 
-  if(loadCategories) dispatch(getCategories());
-
+  if (loadCategories) dispatch(getCategories());
   return (
     <div>
-      <div
-        className="catalog--filters"
-        onClick={() => setOpenDropdown(!openDropdown)}
-      >
-        {" "}
-        Elige categoria <RiArrowDropDownLine />{" "}
+      <div>
+        <span>categorias:
+          {
+            filteredCategories ?
+              filteredCategories.map((c, i) => {
+                return (
+                  <label
+                    className="catego"
+                    key={i}>
+                    {c}
+                    <button
+                      name={c}
+                      onClick={e => {
+                        setFilteredCategories(filteredCategories.filter(ca => ca !== e.target.name));
+                      }}>x
+                    </button>
+                  </label>
+                )
+              })
+              : ""
+          }
+        </span>
       </div>
-      {openDropdown && (
-        <div className="catalog--filter">
-          {categories.map((category) => (
-            <div key={category.id}>
-              <label>{category.name}</label>
-              <input
-                type="checkbox"
-                name="category"
-                value={category.name}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <Form.Select size="sm" onChange={e => (handleChange(e))}>
+        <option disabled >{categories === [] ?
+          categories[1].name
+          : "elige una categoria"
+        }</option>
+        {categories.map(c => {
+          return (
+            <option
+              key={c.id}
+            >{c.name}</option>
+
+          )
+        })}
+
+
+      </Form.Select>
     </div>
   );
 };
