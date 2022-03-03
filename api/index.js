@@ -56,12 +56,11 @@ conn.sync({ force: Testing || false }).then(() => {
       })
       .then(products => {
         products.forEach(product => {
-          product.addProductCategory(1)
+          product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1)
         })
       })
       .then(() => {
         return User.bulkCreate(mockusers);
-
       })
       .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
