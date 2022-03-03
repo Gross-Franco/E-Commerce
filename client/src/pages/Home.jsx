@@ -6,9 +6,8 @@ import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
 import ProducsTest from "./Utilitis/producsTest.json"; */
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic, checkSession } from "../Redux/Actions/actions"; 
+import { getProductsPublic, checkSession } from "../Redux/Actions/actions"; /*
 import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
-/*
 import products from "../helpers/mockProducts"; */
 
 export default function Home() {
@@ -58,12 +57,7 @@ export default function Home() {
         // ------------------------------
       }
 
-      <br />
-      <br />
-      
-      <br />
-      <br />
-      {products?.length > 0 && <DisplayItemsHome items={products}/>}
+      {/* {products?.length > 0 && <DisplayItemsHome items={products}/>} */}
 
       <br />
       <Container>

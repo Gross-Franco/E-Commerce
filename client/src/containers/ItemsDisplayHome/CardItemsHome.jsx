@@ -69,7 +69,7 @@ export default function CardItemsHome({ name, image, price, id, section, descrip
 
 
     return (
-      <Link to={`/product/${id}`} style={{ textDecoration: 'none' }}>
+      <Link to={`/productDetail/${id}`} style={{ textDecoration: 'none' }}>
         <Card sx={{ width: 300, }}>
           <CardActionArea>
             <CardMedia

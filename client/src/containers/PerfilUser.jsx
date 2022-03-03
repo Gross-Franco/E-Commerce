@@ -1,56 +1,19 @@
 import React from "react";
-import {Row, Col, Card, Container, Border, FormControl, Form} from "react-bootstrap";
+import {Row, Col, Card, Container, Border} from "react-bootstrap";
 import Holder from "react-holder";
 import { useState, useEffect } from "react";
 import { Pages } from "@mui/icons-material";
-import { useSelector ,useDispatch} from "react-redux";
-import { useLayoutEffect } from "react";
-import { NavBar } from ".";
-
-
-import { getProductsPublic, createShoppingSession, checkSession } from "../Redux/Actions/actions"; 
 
 export default function PerfilUser(){
 
-  //Desplazamiento
     const [link, setLink] = useState();
     const [text_1, setText_1] = useState("nav-link active");
     const [text_2, setText_2] = useState("nav-link ");
     const [text_3, setText_3] = useState("nav-link ");
     const [text_4, setText_4] = useState("nav-link ");
-
-    const [Editar, setEditar] = useState(false);
-
-    const [changeValues, setChangeValues] = useState({
-      "first_name":"",
-      "last_name":"",
-      "email":"",
-      "username":""
-    });
-
-//traer informacion del usuario.
-let { user } = useSelector((state) => state.userSession);
-
-let dispatch = useDispatch();
-
-//editar informascion y guardarla.
-//parcialmente hecho dejar para despues
-
-// agregar funcionalidades de guardar foto.
-
-const [selectedFile, setSelectedFile] = useState();
-
-
-const changeHandler = (event) => {
-  if (event.target.files && event.target.files[0]) {
-    setSelectedFile(URL.createObjectURL(event.target.files[0]));
-  }
-  event.preventDefault()
-};
-
-// traser se las ordenes 
-
-// agrgar cards  para 
+// let text_1 ="nav-link active";
+// let text_2 ="nav-link ";
+// let text_3 ="nav-link ";
 
 function ChoiseDir()
 {
@@ -59,9 +22,7 @@ function ChoiseDir()
     setText_3("nav-link")
     setText_4("nav-link")
 
-
-
-    if(link === "Account" )
+    if(link === "Acount" )
     setText_1("nav-link active")
     else if(link === "Purchase history")
     setText_2("nav-link active")
@@ -71,44 +32,27 @@ function ChoiseDir()
     setText_4("nav-link active")
 } 
 
-
-useLayoutEffect(()=>{
-    
-  if(JSON.parse(localStorage.getItem('eCUs'))){
-    let {Token}=JSON.parse(localStorage.getItem('eCUs'))
-    if(Token!==''){
-      dispatch(checkSession(Token))
-    }
-  }
-},[])
-
 useEffect(() => {
 
-  ChoiseDir()
-  
-  if(!user.perilImg)
-  setSelectedFile("https://publicidaddigital.ucentral.edu.co/wp-content/uploads/sites/6/2021/08/Sin-perfil.jpg")
-  
-  }, [link, user]);
+    ChoiseDir()
+
+  }, [link]);
 
   
-function  handleSubmit(e)
-  {
-      console.log(changeValues)
-      setEditar(!Editar)   
-      e.preventDefault()
-  }
+function C(e){
+    
+    console.log("hola mundo");
+    e.preventDefault();
+
+}
 
 
 // rutas nav user history
 const Pages = () => {
     
-  if(link === "Account")
+  if(link === "Acount")
   {
-     return <p style={{
-       position:"relative",
-       right:"-20px"
-     }}>
+     return <p>
 preferencia    <br />
 metodo de pago <br />
 cambiar contraseña <br />
@@ -164,9 +108,9 @@ borrar cuenta  <br />
     }}>
     <div class="card-header">6 personas  aprueban tu reviwer</div>
     <div class="card-body">
-      <h5 class="card-title">Ropa deportiva nike {<h6 style={{
+      <h5 class="card-title">Ropa deportiva nike {<h7 style={{
           fontSize: "12px"
-      }}> 5 days ago</h6>}</h5>
+      }}> 5 days ago</h7>}</h5>
       <p class="card-text">Ropa de  excelente  calidad, muy recomendable.</p>
     </div>
   
@@ -181,9 +125,9 @@ borrar cuenta  <br />
     }}>
     <div class="card-header">20 personas  aprueban tu reviwer</div>
     <div class="card-body">
-      <h5 class="card-title">Zapatos  {<h6 style={{
+      <h5 class="card-title">Zapatos  {<h7 style={{
           fontSize: "12px"
-      }}> 5 days ago</h6>}</h5>
+      }}> 5 days ago</h7>}</h5>
       <p class="card-text">Muy buena marca de zapatos, inmejorable calidad precio</p>
     </div>
   
@@ -196,8 +140,6 @@ borrar cuenta  <br />
 }else 
 {
     return <div>
-
-
     <div class="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
        // maxWidth:"100rem",
        margin: "auto",
@@ -219,9 +161,9 @@ borrar cuenta  <br />
             padding: "5px",     
         }} />
 
-     <h5 class="card-title">Ropa deportiva Adidas {<h6 style={{
+     <h5 class="card-title">Ropa deportiva Adidas {<h7 style={{
          fontSize: "12px"
-     }}> Add 5 days ago</h6>}</h5>
+     }}> Add 5 days ago</h7>}</h5>
      <p class="card-text">Ropa negra Adidas de tele de seda humedad.</p>
    </div>
  
@@ -248,9 +190,9 @@ borrar cuenta  <br />
             padding: "5px",     
         }} />
 
-     <h5 class="card-title">Ropa deportiva Adidas {<h6 style={{
+     <h5 class="card-title">Ropa deportiva Adidas {<h7 style={{
          fontSize: "12px"
-     }}> Add 7 days ago</h6>}</h5>
+     }}> Add 7 days ago</h7>}</h5>
      <p class="card-text">Conjunto de sudaderas roja con tela hidrofobica</p>
    </div>
  
@@ -264,10 +206,8 @@ borrar cuenta  <br />
 // Main Render
 
 return(
-  <div  >
-          <NavBar isScroll={true} />
-            <br /> <br />
-            <br /> <br />
+        <div  >
+            <br />
           <Container>
   <Row>
 
@@ -292,137 +232,54 @@ return(
 
 
 <br/>
-<br/>      
-{    Editar?<div>
-  
-    <Card.Img variant="top" src={selectedFile} 
+<br/>            
+
+
+
+
+
+     <Card.Img variant="top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwr_zZjgvmu4BccwDNIHic8K5dyehw7cSYA&usqp=CAU" 
         style={{
-          margin: "auto",
-          // width: "100%",
-          position:"relative",
-          right:"30px",
-          border:"4px solid #666",
-          width:"200px",
-          height:"200px",
-          borderRadius:"200px",
-          padding: "5px",      
-        }}        
-        />
-        <input type="file" onChange={changeHandler} className="filetype" />
-  </div>
-:<div>
-  
-<Card.Img variant="top" src={selectedFile} 
-    style={{
-      margin: "auto",
-      // width: "100%",
-      position:"relative",
-      right:"30px",
-      border:"4px solid #666",
-      width:"200px",
-      height:"200px",
-      borderRadius:"200px",
-      padding: "5px",      
-    }}        
-    />   
-</div>}
- 
+            margin: "auto",
+            // width: "100%",
+            border:"4px solid #666",
+            width:"200px",
+            height:"200px",
+            borderRadius:"200px",
+            padding: "5px",
+            
+
+      
+        }} />
+
+
               <br />
-    <h6 >   Profile photo.
+    <h6 >   cambiar foto 
               </h6>
               <br />
 
-    <h6 >   Name: {user.first_name +" "+ user.last_name} 
+    <h6 >   Nombre: First name + Last name 
               </h6>
-    <h6 >   Use-name: {user.username} 
+    <h6 >   Usuario: Username  
               </h6>
             <br/>
-      {    Editar? <div> 
-        <Form  onSubmit={handleSubmit} > 
-         <p  style={{
+            <p  style={{
         textAlign: 'left'
       
         }}>
                 informacion de Contacto
-           <br/> Cellphone: <FormControl
-          type="search"          
-          className="me-1"
-          aria-label="Search"        
-          style={{width:"50%"}} 
-        />
-            <br/> Address1: <FormControl
-          type="search"          
-          className="me-1"
-          aria-label="Search"
-          style={{width:"50%"}} 
-        />
-           <br/> Address2:
-           <FormControl
-          type="search"           
-          className="me-1"
-          aria-label="Search"
-          style={{width:"50%"}} 
-        />
-           <br/> Country:
-           <FormControl
-          type="search"          
-          className="me-1"
-          aria-label="Search"
-          style={{width:"50%"}} 
-        />
-           <br/> Postal:
-           <FormControl
-          type="search"          
-          className="me-1"
-          aria-label="Search"
-          style={{width:"50%"}} 
-        />
-           <br/> Email: 
-           <FormControl
-          type="search"           
-          className="me-1"
-          aria-label="Search"
-          style={{width:"50%"}}  
-
-          value={changeValues.email}
-          onChange={e=>{  setChangeValues(prevState => ({
-            ...prevState,
-            ["email"]: e.target.value
-          }));
-        }}
-        />
-            </p> 
-     <h6> About me. </h6>
-     <textarea name="" id="" cols="30" rows="10"></textarea>
-     <br />
-     <button type="submit"  class="btn btn-secondary">Save</button>        
-            
-     </Form>
-            </div>
-            : <div>
- <Form   onSubmit={handleSubmit}> 
-<p  style={{
-  textAlign: 'left'
-
-  }}>
-          informacion de Contacto
-         
-     <br/> Cellphone: 
-     <br/> Address1: 
-     <br/> Address2:
-     <br/> Country:
-     <br/> Postal:
-     <br/> Email: {user.email}
-      </p>
-               
-      <h6> About me. </h6>
- <p> Without information  about user.</p>
- <button type="submit" class="btn btn-secondary">Edit</button>
- </Form>
-      </div>
-}            
- 
-<br/>
+           <br/> Cellphone: 
+           <br/> address1: 
+           <br/> address2:
+           <br/> pais:
+           <br/> codigopostal:
+           <br/> Email:
+            </p>
+            <br/>
+                
+ <h6> About me. </h6>
+ <textarea name="" id="" cols="30" rows="10"></textarea>
+ <button type="button" class="btn btn-secondary">Guardar</button>
               </div>
               <br />
               
@@ -437,19 +294,19 @@ top:"20px"
     <div class="card-header">
     <ul class="nav nav-tabs card-header-tabs">
       <li class="nav-item">
-        <h6 class={text_1} 
+        <h7 class={text_1} 
          type="submit"
          onClick={
              (e)=>{
-                 setLink("Account")
+                 setLink("Acount")
                  e.preventDefault();
              }
 
-         }>Account</h6>
+         }>Acount</h7>
       </li>
       
       <li class="nav-item">
-        <h6 type="button" class={text_2} 
+        <h7 type="button" class={text_2} 
            type="submit"
            onClick={
                (e)=>{
@@ -459,10 +316,10 @@ top:"20px"
                }
             }
            
-        >Purchase history </h6>
+        >Purchase history </h7>
       </li>
       <li class="nav-item">
-        <h6 class={text_3} 
+        <h7 class={text_3} 
          type="submit"
          onClick={
              (e)=>{
@@ -474,11 +331,11 @@ top:"20px"
              }
           }
             
-        >Reviewer</h6>
+        >Reviewer</h7>
       </li>
 
       <li class="nav-item">
-        <h6 class={text_4} 
+        <h7 class={text_4} 
          type="submit"
          onClick={
              (e)=>{
@@ -490,7 +347,7 @@ top:"20px"
              }
           }
             
-        >Wishes</h6>
+        >Wishes</h7>
       </li>
     </ul>
   </div>
