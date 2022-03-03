@@ -3,7 +3,7 @@ export const setOverflowY = (isOpen) => {
 };
 
 export const isFullfilled = (form) => {
-  return Object.keys(form).some((key) => form[key] !== "");
+  return Object.keys(form).some((key) => form[key] === "");
 };
 
 export const saveLocalStorage = (product) => {
