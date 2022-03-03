@@ -21,7 +21,7 @@ axiosWithCredentials.interceptors.response.use((response) => {
 }, (error) => {
     let url = error.response.config.url.split("/")[1];
     if (url === "api") {
-        window.location.href = "/";
+        // window.location.href = "/";
     }
     return error;
 })
