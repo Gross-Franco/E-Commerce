@@ -36,8 +36,7 @@ const Rutas = () => {
         />
         <Route path="/checkout" element={<Checkout />} />
 
-
-        <Route path="/verificate/:ap" element={<Verificate />} />
+        <Route path="/verification/:ap" element={<Verificate />} />
 
       </Routes>
     </Router>

@@ -9,7 +9,7 @@ export const axiosWithCredentials = axios.create({
 })
 
 axiosWithCredentials.interceptors.response.use((response) => {
-    console.log(response.headers);
+    console.log(response.data);
     // if (response.data.isAdmin) {
     //     store.dispatch(setAuthLevel(3));
     // } else if (response.data.isUser) {
@@ -19,7 +19,10 @@ axiosWithCredentials.interceptors.response.use((response) => {
     // }
     return response;
 }, (error) => {
-    console.log(error);
+    let url = error.response.config.url.split("/")[1];
+    if (url === "api") {
+        window.location.href = "/";
+    }
     return error;
 })
 

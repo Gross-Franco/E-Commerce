@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const routes = require("./routes/index.js");
 var flash = require('express-flash');
 require("dotenv").config();
+const { DOMAIN } = process.env
 
 require("./db.js");
 
@@ -12,9 +13,8 @@ const cors = require('cors');
 const { setCookie } = require("./middlewares/utilities.js");
 
 server.name = "API";
-server.use(cors())
+server.use(cors({ origin: DOMAIN, credentials: true }))
 
-const { DOMAIN } = process.env
 
 server.use(express.urlencoded({ extended: true, limit: "50mb" }));
 server.use(express.json({ limit: "50mb" }));
@@ -29,7 +29,6 @@ server.use((req, res, next) => {
 	next();
 });
 
-server.use(setCookie);
 server.use("/", routes);
 server.use(flash())
 
