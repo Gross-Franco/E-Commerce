@@ -1,25 +1,56 @@
-import React, { useEffect } from "react"; /* 
+import React, { useEffect, useState } from "react"; /* 
 import Carousel from "react-bootstrap/"; */
 import { NavBar, Footer } from "./";
-import { Card, Button, Col, Row, Container, Badge } from "react-bootstrap";
+import { Card, Button, Col, Row, Container, Badge ,Form} from "react-bootstrap";
 /* import Holder from "react-holder";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
 import { searchProductId } from "../Redux/Actions/actions";
 import { useParams } from "react-router-dom";
+import { BsHeart,BsHeartFill } from "react-icons/bs";
+
 
 export default function ProductDetail() {
+
+  const [isScroll, setIsScroll] = useState(false);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
+
+
   const { productDetail } = useSelector((state) => state.products);
+
+  let [heart, setHeart] = useState(true);
   const dispatch = useDispatch();
   const { id } = useParams();
 
   useEffect(() => {
+    
     dispatch(searchProductId(id));
   }, []);
 
+  function Favorite(e)
+  {
+    if(heart === false) 
+return <div>
+    <BsHeartFill/>
+</div> 
+else  
+return <div>
+<BsHeart/>
+ </div>
+    e.preventDefault()
+  }
+
+
   return (
     <div>
-      <NavBar />
+    <NavBar isScroll={true} />
       <br />
       <br />
       <br />
@@ -41,8 +72,15 @@ export default function ProductDetail() {
                 style={{
                   width: "auto",
                   textAlign: "left",
+                  position:"relative",
+                  top:"20px"
                 }}
               >
+                <div style={{
+                  position:"relative",
+                  right:"-20px"
+
+                            }}>
                 <br />
                 Descripcion {productDetail?.description}
                 <br />
@@ -58,8 +96,19 @@ export default function ProductDetail() {
                   ) : (
                     <p>no se encontraron categorias</p>
                   )}
+            
                 </Row>
+                </div>
               </Card>
+              <br />
+                <br />
+              <Form>
+              <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                <Form.Label>Reviewers</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+              <h6 type="input" style={{ cursor: "pointer" }}> Response</h6>
+            </Form>
             </Col>
 
             <Col
@@ -74,7 +123,7 @@ export default function ProductDetail() {
                   textAlign: "left",
                 }}
               >
-                {/* <Card.Img variant="top"  src="holder.js/100px180" /> */}
+              
                 <p
                   style={{
                     position: "relative",
@@ -83,7 +132,7 @@ export default function ProductDetail() {
                   }}
                 >
                   {" "}
-                  Nuevo | 10 vendidos
+                 
                 </p>
 
                 <Card.Body>
@@ -94,22 +143,32 @@ export default function ProductDetail() {
                           width: "200px",
                         }}
                       >
-                        {productDetail?.name}
+                        {productDetail?.name }
                       </Card.Title>
                     </Col>
                     <Col>
-                      <Card.Title> {"<3"}</Card.Title>
+                    
+                    <div  onMouseEnter={(e)=>{
+                        setHeart(false)
+                      e.preventDefault()
+                    }}
+                    onClick={(e)=>{
+                      console.log("add-to-favorite")
+                    e.preventDefault()
+                  }}
+                    onMouseLeave={(e)=>{
+                      setHeart(true)
+                    e.preventDefault()
+                  }}
+                    >
+                     <Favorite />
+                     </div>
+ 
                     </Col>
                   </Row>
                   <br />
                   <Badge bg="success">Mas vendido</Badge>
-                  <h6
-                    style={{
-                      textDecorationLine: "underline line-through",
-                    }}
-                  >
-                    1500$
-                  </h6>
+               
 
                   <br />
                   <Row>
@@ -126,11 +185,11 @@ export default function ProductDetail() {
                           color: "green",
                         }}
                       >
-                        off 10%{" "}
+                        
                       </h6>{" "}
                     </Col>
                   </Row>
-                  <h6>en 12x 9369 pesos sin interés</h6>
+                  
 
                   <Card.Title>
                     {
@@ -148,47 +207,7 @@ export default function ProductDetail() {
                 </Card.Body>
               </Card>
               <br />
-              <Card
-                style={{
-                  width: "20rem",
-                  textAlign: "left",
-                }}
-              >
-                <br />
-                informacion del vendedor
-                <br />
-                <br />
-                Ubicación
-                <br />
-                <br />
-                <Row style={{ textAlign: "center" }}>
-                  <Col>
-                    300
-                    <br />
-                    <p> ventas en los ultimos xx dias</p>
-                  </Col>
-                  <Col>
-                    <p> brinda X atención</p>
-                  </Col>
-
-                  <Col>
-                    <p>Entrega sus productos a tiempo</p>
-                  </Col>
-                </Row>
-                <br />
-                <a
-                  href=""
-                  className="stretched-link"
-                  style={{
-                    color: "blue",
-                    cursor: "pointer",
-                  }}
-                >
-                  <h6> Ver mas datos de venderos </h6>
-                </a>
-                <br />
-                <br />
-              </Card>
+              
             </Col>
           </Row>
           <br />

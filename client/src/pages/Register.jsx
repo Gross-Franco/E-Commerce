@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createUser } from "../Redux/Actions/actions";
 import { connectAdvanced, useDispatch, useSelector } from "react-redux";
 import { BsArrowLeftShort } from "react-icons/bs";
@@ -7,8 +6,7 @@ import { Link } from "react-router-dom";
 import { isFullfilled } from "../services";
 import { useEffect } from "react";
 import { validator } from "../helpers/formValidation/register";
-
-
+import { Notification } from "../components";
 
 export default function Registro() {
   const [form, setForm] = useState({
@@ -41,11 +39,11 @@ export default function Registro() {
   }
  
   let flag = false;
+  const [show, setShow] = useState(false);
 
   const { response } = useSelector((state) => state.users);
 
   let dispatch = useDispatch();
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -56,8 +54,20 @@ export default function Registro() {
       dispatch(createUser(form));
       console.log('submitted');
     } else console.log('not submitted')
-  };
-
+    setForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      username: "",
+    });
+  };  
+  
+  useEffect(() => {
+    if (response) {
+      setShow(true);
+    }
+  }, [response]);
   return (
     <div className="register--container">
       <header className="register--header">
@@ -71,8 +81,7 @@ export default function Registro() {
           </Link>
         </nav>
       </header>
-      {response && response.success && <p>{response.message}</p>}
-      {response && !response.success && <p>{response.message}</p>}
+      {response && <Notification success={response.success} message={response.message} show={show} setShow={setShow} />}
       <div className="register--main--container">
         <div className="register--main--hero">
           <h1 className="register--main--hero-title">Crea tu cuenta</h1>
@@ -87,6 +96,7 @@ export default function Registro() {
             type="text"
             name="firstName"
             placeholder="Nombre"
+            value={form.firstName}
             onChange={handleChange}
             onBlur={validate}
             className="register--main--form-input"
@@ -97,6 +107,7 @@ export default function Registro() {
           <input
             type="text"
             name="lastName"
+            value={form.lastName}
             placeholder="Apellido"
             onChange={handleChange}
             onBlur={validate}
@@ -108,6 +119,7 @@ export default function Registro() {
           <input
             type="text"
             name="username"
+            value={form.username}
             placeholder="Nombre de usuario"
             onChange={handleChange}
             onBlur={validate}
@@ -119,6 +131,7 @@ export default function Registro() {
           <input
             type="text"
             name="email"
+            value={form.email}
             placeholder="Email"
             onChange={handleChange}
             onBlur={validate}
@@ -130,6 +143,7 @@ export default function Registro() {
           <input
             type="password"
             name="password"
+            value={form.password}
             placeholder="Contraseña"
             onChange={handleChange}
             onBlur={validate}
@@ -147,6 +161,7 @@ export default function Registro() {
           <button
             onClick={handleSubmit}
             disabled={isFullfilled(form, errors)}
+            className={`register--main--form-submit ${disable ? "disabled" : ""}`}
           >
             Crear cuenta
           </button>

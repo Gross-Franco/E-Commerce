@@ -24,7 +24,11 @@ const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
+<<<<<<< HEAD
 const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")
+=======
+const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails");
+>>>>>>> Development
 
 const {
   conn,
@@ -37,32 +41,32 @@ const {
   PaymentDetails
 } = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
-const { PORT } = process.env;
+const { PORT, TESTING } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: TESTING || false }).then(() => {
 
-server.listen(PORT || 3001, () => {
-    ProductInventory.bulkCreate(mockinventory).then(() => {
-      Product.bulkCreate(mockproducts).then(() => {
-        ProductCategory.bulkCreate(mockcategories).then(() => {
-          Product.findAll().then(products => {
-            products.forEach(product => {
-              product.addProductCategory(1);
-            })
-          })
+  server.listen(PORT || 3001, () => {
+    ProductInventory.bulkCreate(mockinventory)
+      .then(() => {
+        return Product.bulkCreate(mockproducts)
+      })
+      .then(() => {
+        return ProductCategory.bulkCreate(mockcategories)
+      })
+      .then(() => {
+        return Product.findAll()
+      })
+      .then(products => {
+        products.forEach(product => {
+          product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1)
         })
       })
-    }).then(() => {
-      User.bulkCreate(mockusers);
-      PaymentDetails.bulkCreate(mockpaymentdetails)
-    }).then(() => {
-      OrderDetails.bulkCreate(mockorders).then(() => {
-        OrderItems.bulkCreate(mockorderItems)
-      });
-    })
-    .catch(error => console.log(error));
+      .then(() => {
+        return User.bulkCreate(mockusers);
+      })
+      .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 
   });

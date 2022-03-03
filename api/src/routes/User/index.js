@@ -9,7 +9,7 @@ const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, a
 const userRouter = Router();
 
 // Configurar los routers
-// Ejemplo: router.use('/auth', authRouter);
+// Son llamadas ejemplo: baseUrl + '/user' + these routes
 userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.get('/getUsers', getUsers)
 userRouter.post('/addAddress', addAdress)

@@ -15,10 +15,13 @@ export default function Login({ isScroll }) {
     email: "",
     password: "",
   });
+
   let dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputs.email && inputs.password) {
+
       dispatch(login(inputs));
 
       handleClose();
@@ -26,6 +29,7 @@ export default function Login({ isScroll }) {
         email: "",
         password: "",
       });
+      
     } else {
       setInputs({
         email: "",
@@ -33,6 +37,7 @@ export default function Login({ isScroll }) {
       });
     }
   };
+
   const handleInputs = (e) => {
     setInputs((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
