@@ -9,7 +9,7 @@ export const axiosWithCredentials = axios.create({
 })
 
 axiosWithCredentials.interceptors.response.use((response) => {
-    console.log(response.headers);
+    console.log(response);
     // if (response.data.isAdmin) {
     //     store.dispatch(setAuthLevel(3));
     // } else if (response.data.isUser) {
@@ -19,7 +19,8 @@ axiosWithCredentials.interceptors.response.use((response) => {
     // }
     return response;
 }, (error) => {
-    console.log(error);
+    console.error();
+    console.log("patata")
     return error;
 })
 
