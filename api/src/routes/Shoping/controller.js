@@ -265,7 +265,17 @@ const deleteCartItem = async (req, res, next) => {
   }
 };
 
+const loadCart = async (req, res) => {
+  const {cartStorage} = req.body;
+  const {session_id} = req.permits; // Que franco diga como traigo el session_id
+  const dbcart = await Promise.all(cartStorage.map(async item => {
+    return await CartItems.create({quantity: item.quantity, product_id: item.id, session_id:session_id});
+  }))                                                   // Capaz hay que usar uno de los metodos de sequelize aca
+  return dbcart
+}
+
 module.exports = {
+  loadCart,
   getCartItems,
   deleteCart,
   addCartItem,

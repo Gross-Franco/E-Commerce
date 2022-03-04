@@ -6,17 +6,12 @@ import { addCartItem, saveLocal } from "../Redux/Actions/actions";
 import { saveLocalStorage } from "../services";
 
 const Product = ({ product }) => {
-  const { session, cartStorage } = useSelector((state) => state.shopping);
   
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    if (session.length > 0) {
-      dispatch(addCartItem(session.id, product.id));
-    } else {
-      saveLocalStorage({...product, quantity: 1});
-      dispatch(saveLocal());
-    }
+    saveLocalStorage({product});
+    dispatch(saveLocal());
   };
 
   return (

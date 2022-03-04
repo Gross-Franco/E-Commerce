@@ -22,7 +22,7 @@ const getProducts = async (req, res, next) => {
 				SKU: productData.SKU,
 				price: productData.price,
 				category: productData.productCategories.map(x => x.name),
-				quantity: productinv.quantity
+				inventory: productinv.quantity
 			}
 		}))
 		let response = allProducts.filter(product => product != null)
