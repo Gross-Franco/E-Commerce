@@ -21,7 +21,7 @@ export const CREATE_USER = "CREATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
 export const RESET_PASSWORD = "RESET_PASSWORD";
-export const ADD_USER_PUBLIC = "ADD_USER_PUBLIC";
+export const SIGN_IN = "SIGN_IN";
 export const LOGOUT="LOGOUT"
 
 // Orders / Shopping
