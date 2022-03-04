@@ -42,7 +42,6 @@ export default function DisplayItemsHome({items}) {
                          description={e.description}
                          />)}
                     </Box>
-                    {console.log(itemsUsed)}
                 </Container>
                
             </React.Fragment>
