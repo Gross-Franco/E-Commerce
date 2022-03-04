@@ -4,7 +4,6 @@ import { axiosWithCredentials as axios } from "./utilities/axios";
 import store from "./Redux/store";
 import Routes from "./routes/Routes";
 
-
 function App() {
 
   useEffect(() => {

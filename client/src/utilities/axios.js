@@ -9,7 +9,8 @@ const baseUrl = NODE_ENV === 'development' ?  REACT_APP_DEV : REACT_APP_PRO;
 // pd: it should starts with REACT_APP_
 
 export const axiosWithCredentials = axios.create({
-    baseURL: baseUrl || process.env.REACT_APP_API,
+    baseURL: baseUrl || process.env.REACT_APP_API,// change this to "https://pghenry.herokuapp.com/" to work with deplyed DB
+
     withCredentials: true,
 })
 
@@ -25,7 +26,7 @@ axiosWithCredentials.interceptors.response.use((response) => {
 }, (error) => {
     let url = error.response.config.url.split("/")[1];
     if (url === "api") {
-        window.location.href = "/";
+        // window.location.href = "/";
     }
     return error;
 })
