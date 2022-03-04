@@ -9,7 +9,7 @@ import { setOverflowY } from "../services";
 
 const NavBar = ({ isScroll = false }) => {
   const [isOpen, setIsOpen] = useState(false);
-  let { login } = useSelector((state) => state.userSession);
+  let { login } = useSelector((state) => state.session);
 
   setOverflowY(isOpen);
   
