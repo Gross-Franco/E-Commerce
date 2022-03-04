@@ -6,6 +6,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+*::selection {
+  background: black;
+  color: white;
+}
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -198,7 +202,6 @@ code {
   line-height: 4.5rem;
   text-align: center;
   color: white;
-  text-shadow: 2px 2px 3px rgb(33 33 33 / 50%);
 }
 .carrousel-hero--subheader {
   text-transform: uppercase;
@@ -206,14 +209,14 @@ code {
   line-height: 2rem;
   font-family: "Poppins", cursive;
   font-weight: 400;
-  text-shadow: 2px 2px 3px rgb(33 33 33 / 50%);
   color: white;
 }
 .carrousel-hero--btn {
   display: flex;
   height: 3.5rem;
-  text-shadow: 1px 1px 3px rgb(33 33 33 / 50%);
   border: 1px solid #fff;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
   background-color: transparent;
   align-items: center;
   color: #fff;
