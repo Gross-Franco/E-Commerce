@@ -1,12 +1,11 @@
-import axios from "axios"
-const nameRe = /[a-zA-Z]+/;
+import {axiosWithCredentials as axios} from "../../utilities/axios" 
+const hasNumber = /\d/
+const hasSpeChar = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
 const emailRe = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 const passwordRe = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/m;
-const { REACT_APP_DEV, REACT_APP_PRO, NODE_ENV } = process.env;
-axios.defaults.baseURL = NODE_ENV === 'development' ?  REACT_APP_DEV : REACT_APP_PRO;
 
 const validateUsername = async (username) => {
-    if(username.length === 0) return 'Please insert a valid username'
+    if(username.length === 0) return 'Please insert a username'
     const response = await axios.get(`/user/validate?username=${username}`);
     if(response.data) return 'Username is taken';
     return false;
@@ -25,13 +24,15 @@ const validatePassword = async (password) => {
 }
 
 const validateFirstName = (firstName) => {
-    if(nameRe.test(firstName)) return false
-    return 'Please insert a name' 
+    if(firstName.length === 0) return 'Please insert a name'
+    if(hasNumber.test(firstName) || hasSpeChar.test(firstName)) return 'Please insert a valid name'
+    return false
 }
 
 const validateLastName = (lastName) => {
-    if(!nameRe.test(lastName)) return 'Please insert a last name'
-    return false;
+    if(lastName.length === 0) return 'Please insert a last name'
+    if(hasNumber.test(lastName) || hasSpeChar.test(lastName)) return 'Please insert a valid last name'
+    return false
 }
 
 export const validator = async (input, value) => {

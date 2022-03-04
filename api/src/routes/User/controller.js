@@ -176,9 +176,6 @@ const confirm = async (req, res) => {
     const { username, email, userId } = data;
 
     // Verificar existencia del usuario
-    //
-    //  const user = await User.findOne({ email }) || null;
-
     const user = await User.findOne({where: { email: email }}) || null;
 
     if (user === null) {
@@ -227,6 +224,7 @@ const postLogin = (req, res) => {
       .then((result) => {
         // si existe el usuario registrado comparo la contraseña tipeada con la que esta en la base de datos
         const verify = bcrypt.compareSync(password, result.password);
+        console.log('Verify: ', verify)
         if (verify) {
           // si la contraseña es correcta
           // extraigo los datos necesarios para el front-end y el token
