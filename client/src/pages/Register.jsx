@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { createUser } from "../Redux/Actions/actions";
-import { connectAdvanced, useDispatch, useSelector } from "react-redux";
-import { BsArrowLeftShort } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { isFullfilled } from "../services";
-import { useEffect } from "react";
 import { validator } from "../helpers/formValidation/register";
-import { Notification } from "../components";
+import { Button, FormHandler, Header, Hero, Notification } from "../components";
 
 export default function Registro() {
+  const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -16,44 +15,32 @@ export default function Registro() {
     password: "",
     username: "",
   });
- 
   const [errors, setErrors] = useState({
     firstName: false,
     lastName: false,
     email: false,
     password: false,
     username: false,
-  })
-
-  useEffect(() => {
-    console.log(errors)
-  }, [errors])
+  });
+  const { response } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
 
   const validate = async (e) => {
-    console.log('value: ', e.target.value)
-    console.log('name: ', e.target.name)
     setErrors({
       ...errors,
-      [e.target.name]: await validator(e.target.name, e.target.value)
-    })
-  }
- 
-  let flag = false;
-  const [show, setShow] = useState(false);
+      [e.target.name]: await validator(e.target.name, e.target.value),
+    });
+  };
 
-  const { response } = useSelector((state) => state.users);
-
-  let dispatch = useDispatch();
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(isFullfilled(form, errors)) {
+    if (!isFullfilled(form, errors)) {
       dispatch(createUser(form));
-      console.log('submitted');
-    } else console.log('not submitted')
+    }
     setForm({
       firstName: "",
       lastName: "",
@@ -61,36 +48,32 @@ export default function Registro() {
       password: "",
       username: "",
     });
-  };  
-  
+  };
+
   useEffect(() => {
     if (response) {
       setShow(true);
     }
   }, [response]);
+
+  let disable = isFullfilled(form, errors);
   return (
     <div className="register--container">
-      <header className="register--header">
-        <nav className="register--header-nav">
-          <Link to="/" className="register--header-nav--back">
-            <BsArrowLeftShort className="register--header-nav--back-icon" />
-            <p className="register--header-nav--back-span">Volver</p>
-          </Link>
-          <Link to="/" className="register--header-nav--logo">
-            commerce
-          </Link>
-        </nav>
-      </header>
-      {response && <Notification success={response.success} message={response.message} show={show} setShow={setShow} />}
+      <Header />
+      {response && (
+        <Notification
+          success={response.success}
+          message={response.message}
+          show={show}
+          setShow={setShow}
+        />
+      )}
       <div className="register--main--container">
-        <div className="register--main--hero">
-          <h1 className="register--main--hero-title">Crea tu cuenta</h1>
-          <p className="register--main--hero-subtitle">
-            {" "}
-            Y empieza a comprar productos, con envío a toda Latinoamérica!
-            Encontrá miles de marcas y productos.
-          </p>
-        </div>
+        <Hero
+          title="Crea tu cuenta"
+          subtitle="Y empieza a comprar productos, con envío a toda Latinoamérica!
+            Encontrá miles de marcas y productos."
+        />
         <form className="register--main--form">
           <input
             type="text"
@@ -101,9 +84,7 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
-          {
-            errors.firstName && <span>{errors.firstName}</span>
-          }
+          {errors.firstName && <FormHandler error={errors.firstName} />}
           <input
             type="text"
             name="lastName"
@@ -113,9 +94,7 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
-          {
-            errors.lastName && <span>{errors.lastName}</span>
-          }
+          {errors.lastName && <FormHandler error={errors.lastName} />}
           <input
             type="text"
             name="username"
@@ -125,9 +104,7 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
-          {
-            errors.username && <span>{errors.username}</span>
-          }
+          {errors.username && <FormHandler error={errors.username} />}
           <input
             type="text"
             name="email"
@@ -137,9 +114,7 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
-          {
-            errors.email && <span>{errors.email}</span>
-          }
+          {errors.email && <FormHandler error={errors.email} />}
           <input
             type="password"
             name="password"
@@ -149,22 +124,21 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
-          {
-            errors.password && <span>{errors.password}</span>
-          }
+          {errors.password && <FormHandler error={errors.password} />}
           <span className="register--main--form-span tyc">
             Al crear una cuenta aceptas nuestros{" "}
-            <Link to="/terminos-y-condiciones" className="register--main--form-link">
+            <Link
+              to="/terminos-y-condiciones"
+              className="register--main--form-link"
+            >
               términos y condiciones
             </Link>
           </span>
-          <button
-            onClick={handleSubmit}
-            disabled={isFullfilled(form, errors)}
-            className={`register--main--form-submit ${disable ? "disabled" : ""}`}
-          >
-            Crear cuenta
-          </button>
+          <Button
+            placeholder="Crear cuenta"
+            action={handleSubmit}
+            disable={disable}
+          />
           <span className="register--main--form-span">
             Ya tienes una cuenta?{" "}
             <Link to="/login" className="register--main--form-link">
