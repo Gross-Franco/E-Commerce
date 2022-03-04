@@ -1,54 +1,61 @@
-import React from "react";
-import { useState } from "react";
-import { login } from "../Redux/Actions/actions";
+import React, { useEffect, useState } from "react";
+import { signIn } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { BsArrowLeftShort } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Header, Hero, Notification } from "../components";
+import { isFullfilled } from "../services";
 
 const Login = () => {
-  const [form, setForm] = useState();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
 
-  let flag = false;
-
-  const { response } = useSelector((state) => state.users);
+  const { login, response } = useSelector((state) => state.session);
+  const [show, setShow] = useState(false);
 
   let dispatch = useDispatch();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    console.log(flag);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(form));
-    console.log('submitted');
+    dispatch(signIn(form));
   };
 
+  if (response?.message === "Login succesfully") {
+    setTimeout(() => {
+      navigate("/");
+    }, 2500);
+  }
+
+  useEffect(() => {
+    if (response) {
+      setShow(true);
+    }
+  }, [response]);
+
+  let disable = isFullfilled(form);
   return (
     <div className="register--container">
-      <header className="register--header">
-        <nav className="register--header-nav">
-          <Link to="/" className="register--header-nav--back">
-            <BsArrowLeftShort className="register--header-nav--back-icon" />
-            <p className="register--header-nav--back-span">Volver</p>
-          </Link>
-          <Link to="/" className="register--header-nav--logo">
-            commerce
-          </Link>
-        </nav>
-      </header>
-      {response && response.success && <p>{response.message}</p>}
-      {response && !response.success && <p>{response.message}</p>}
+      <Header />
+      {response && (
+        <Notification
+          show={show}
+          setShow={setShow}
+          success={response.success}
+          message={response.message}
+        />
+      )}
+
       <div className="register--main--container">
-        <div className="register--main--hero">
-          <h1 className="register--main--hero-title">Lorem ipsum doler sit.</h1>
-          <p className="register--main--hero-subtitle">
-            {" "}
-            Y empieza a comprar productos, con envío a toda Latinoamérica!
-            Encontrá miles de marcas y productos.
-          </p>
-        </div>
+        <Hero
+          title="Login"
+          subtitle="Please enter your credentials to login"
+        />
         <form className="register--main--form">
           <input
             type="text"
@@ -64,16 +71,15 @@ const Login = () => {
             onChange={handleChange}
             className="register--main--form-input"
           />
-          <button
-            onClick={handleSubmit}
-            className="register--main--form-submit"
-          >
-            Inicia Sesion
-          </button>
+          <Button
+            action={handleSubmit}
+            placeholder="Iniciar sesión"
+            disable={disable}
+          />
           <span className="register--main--form-span">
             No tienes una cuenta?{" "}
             <Link to="/register" className="register--main--form-link">
-                Regístrate
+              Regístrate
             </Link>
           </span>
         </form>
