@@ -11,7 +11,7 @@ import {
   ProductDetail,
   Verificate,
 } from "../containers";
-import { Home, Admin, PassReset, Cart, Register, Login } from "../pages";
+import { Home, Admin, PassReset, Cart, Registro, Login } from "../pages";
 
 import Checkout from "../pages/Checkout";
 
@@ -32,7 +32,7 @@ const Rutas = () => {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route
           path="/register"
-          element={<Register />}
+          element={<Registro />}
         />
         <Route path="/checkout" element={<Checkout />} />
 

@@ -41,7 +41,7 @@ export default function ProductDetail() {
   const { id } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
-  let { login } = useSelector((state) => state.userSession);
+  let { login } = useSelector((state) => state.session);
 
   useEffect(() => {
 
