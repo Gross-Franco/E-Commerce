@@ -18,6 +18,13 @@ input:hover {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    box-shadow: 0 0 0 30px white inset !important;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -1090,6 +1097,22 @@ code {
   color: #797979;
   padding: 0 3rem;
 }
+/* FORM HANDLER */
+.form-handler {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem; 
+  color: rgb(189, 39, 39);
+}
+.form-handler--icon {
+  font-size: 16px;
+}
+.form-handler--text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0;
+}
 /* NOTIFICATION */
 @keyframes notification-slide-in {
   0% {
@@ -1163,7 +1186,14 @@ code {
   text-decoration: none;
   text-transform: none;
   align-items: center;
-  padding: 0 3rem;
+  padding: 0 5rem;
+  font-family: 'Poppins', sans-serif;
+}
+.verification--btn:hover {
+  color: white;
+}
+.verification--btn:focus {
+  outline: none;
 }
 .verification--icon {
   font-size: 6rem;
