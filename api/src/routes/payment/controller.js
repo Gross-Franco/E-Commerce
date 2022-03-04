@@ -4,6 +4,7 @@ require('dotenv').config()
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 var nodemailer = require('nodemailer');
 const { uuid } = require('uuidv4');
+const { MAIL_USER, MAIL_PASS, MAIL_HOST, MAIL_PORT } = process.env
 
 // const storeItems = new Map([
 //     [1, { price: 100, name: 'Best TV 4000'}],
@@ -94,19 +95,19 @@ const payment = async(req, res) =>{
     }).then(result => {
         console.log("RESULT", result)
         var transporter = nodemailer.createTransport({
-          host: "smtp.hostinger.com",
-          port: 465,
+          host: MAIL_HOST,
+          port: MAIL_PORT,
           secure: true, // true for 465, false for other ports
           tls: {
             rejectUnauthorized: false,
           },
           auth: {
-            user: "welcome@hcommerce.store", //email created to send the emails from
-            pass: "1-Nunca-pares-de-aprender-!",
+            user: MAIL_USER, 
+            pass: MAIL_PASS,
           },
         });
         const options = {
-          from: "HENRY e-Commerce <welcome@hcommerce.store>",
+          from: "HENRY e-Commerce <" + MAIL_USER + ">",
           to: result.receipt_email,
           subject: "Your purchase at HENRY e-Commerce",
           html: `<h2>Thank you for your purchase<h2>

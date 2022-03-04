@@ -23,7 +23,7 @@ import {
   DELETE_USER,
   PROMOTE_USER,
   RESET_PASSWORD,
-  ADD_USER_PUBLIC,
+  SIGN_IN,
 
   // Orders
   GET_ORDERS,
@@ -211,22 +211,20 @@ export const createUser = ({
   lastName,
   email,
 }) => {
-  return (dispatch) => {
-    axios
-      .post(`/user/createUser`, {
-        username,
-        password,
-        first_name: firstName,
-        last_name: lastName,
-        email,
-      })
-      .then(response => {
-        dispatch({ type: CREATE_USER, payload: response.data });
-      })
-      .catch(({ response }) => {
-        console.log(response.data);
-        dispatch({ type: CREATE_USER, payload: response.data });
-      });
+  return async (dispatch) => {
+    const response = await axios.post(`/user/createUser`, {
+      username,
+      password,
+      first_name: firstName,
+      last_name: lastName,
+      email,
+    });
+    if (response?.data?.success) {
+      console.log(response);
+      dispatch({ type: CREATE_USER, payload: response.data });
+    } else {
+      dispatch({ type: CREATE_USER, payload: response.response.data });
+    }
   };
 };
 
@@ -346,18 +344,15 @@ export const deleteCart = (sessionId) => {
     }
   };
 };
-export const login = (data) => {
-  return (dispatch) => {
-    axios.post(`/user/login`, data).then(
-      (resp) => {
-        let { user, Token } = resp.data.data;
-        localStorage.setItem("eCUs", JSON.stringify({ Token, session: "" }));
-        dispatch({ type: ADD_USER_PUBLIC, payload: user });
-      },
-      (err) => {
-        alert("Error: " + err);
-      }
-    );
+export const signIn = (data) => {
+  return async (dispatch) => {
+    const response = await axios.post(`/user/login`, data);
+    if (response?.data?.success) {
+      dispatch({ type: SIGN_IN, payload: response.data });
+    } else {
+      dispatch({ type: SIGN_IN, payload: response.response.data });
+    }
+   
   };
 };
 export const checkSession = (token) => {
@@ -369,7 +364,7 @@ export const checkSession = (token) => {
       .then(
         (resp) => {
           let { user } = resp.data.data;
-          dispatch({ type: ADD_USER_PUBLIC, payload: user });
+          dispatch({ type: SIGN_IN, payload: user });
         },
         (err) => {
           console.log(err);
@@ -393,7 +388,6 @@ export const saveLocal = () => {
 export const getLocalStorage = () => {
   return (dispatch) => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems"));
-    console.log(cartItems);
     dispatch({ type: GET_LOCAL_STORAGE, payload: cartItems });
   };
 }

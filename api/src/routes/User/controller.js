@@ -11,7 +11,7 @@ const {
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { FIRM } = process.env;
+const { FIRM, MAIL_HOST, MAIL_USER, MAIL_PASS, MAIL_PORT } = process.env;
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 var xoauth2 = require("xoauth2");
@@ -79,36 +79,6 @@ const createUser = async (req, res) => {
   let { username, password, first_name, last_name, email } = req.body;
 
   try {
-    let user = await User.findOne({ where: { username } });
-    if (user) {
-      return res
-        .status(302)
-        .json({ sucess: false, message: "Username already exists" });
-    }
-
-    user = await User.findOne({ where: { email } });
-    if (user) {
-      return res
-        .status(302)
-        .json({ sucess: false, message: "Email already exists" });
-    }
-
-    if (first_name.length < 2 || last_name.length < 2) {
-      return res
-        .status(403)
-        .json({
-          sucess: false,
-          message: "First Name or Last name must be at least 2 characters",
-        });
-    }
-    if (password.length < 6) {
-      return res
-        .status(403)
-        .json({
-          sucess: false,
-          message: "Password must be at least 6 characters",
-        });
-    }
 
     let createdUser = await User.create({
       username,
@@ -128,20 +98,20 @@ const createUser = async (req, res) => {
       //enviar mail
       // set up nodemailer configs
       var transporter = nodemailer.createTransport({
-        host: "smtp.hostinger.com",
-        port: 465,
+        host: MAIL_HOST,
+        port: MAIL_PORT,
         secure: true, // use SSL
         tls: {
           rejectUnauthorized: false,
         },
         auth: {
-          user: "welcome@hcommerce.store", //email created to send the emails from
-          pass: "1-Nunca-pares-de-aprender-!",
+          user: MAIL_USER, //email created to send the emails from
+          pass: MAIL_PASS,
         },
       });
 
       const options = {
-        from: "'HENRY e-COMMERCE' <welcome@hcommerce.store>",
+        from: "'HENRY e-COMMERCE' <" + MAIL_USER + ">",
         to: email,
         subject: "Welcome to Henry Commerce, Confirm your sign up",
         //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
@@ -166,13 +136,13 @@ const createUser = async (req, res) => {
         console.log("email sent " + info.response);
       });
 
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
         message: "Account created succesfully, please confirm your email!",
       });
     }
   } catch (error) {
-    res.status(422).json({ sucess: false, message: "Email is not valid" });
+    return res.status(422).json({ success: false, message: "Something wrong happened" });
   }
 };
 
@@ -248,7 +218,7 @@ const postLogin = (req, res) => {
       (!password &&
         res
           .status(400)
-          .json({ success: false, error: "Incomplete data form" }));
+          .json({ success: false, message: "Incomplete data form" }));
 
     User.findOne({
       attributes: ["password", "id", "isAdmin", "username"],
@@ -267,8 +237,9 @@ const postLogin = (req, res) => {
             FIRM,
             { expiresIn: "5d" }
           );
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
+            message: "Login succesfully",
             data: {
               Token,
               user: { username, id, isAdmin },
@@ -276,18 +247,18 @@ const postLogin = (req, res) => {
           });
         } else {
           // si la contraseña comparada no son validas, reporto un error de validacion de password
-          res.status(402).json({ success: false, error: "Invalid Password" });
+          return res.status(401).json({ success: false, message: "Invalid Email or Password" });
         }
       })
       .catch((err) => {
         // en caso de que el usuario no exista
         console.log(err);
-        res
-          .status(401)
-          .json({ success: false, error: "User not found: " + err });
+        return res
+          .status(403)
+          .json({ success: false, message: "Type an email " });
       });
   } catch (e) {
-    res.status(500).json({ success: false, error: e });
+    return res.status(500).json({ success: false, message: e });
   }
 };
 
@@ -386,19 +357,19 @@ const forgotPassword = async (req, res) => {
     // console.log(user)
     // set up nodemailer configs
     var transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 465,
+      host: MAIL_HOST,
+      port: MAIL_PORT,
       secure: true, // true for 465, false for other ports
       tls: {
         rejectUnauthorized: false,
       },
       auth: {
-        user: "welcome@hcommerce.store", //email created to send the emails from
-        pass: "1-Nunca-pares-de-aprender-!",
+        user: MAIL_USER, //email created to send the emails from
+        pass: MAIL_PASS,
       },
     });
     const options = {
-      from: "HENRY e-Commerce <welcome@hcommerce.store>",
+      from: "HENRY e-Commerce <" + MAIL_USER + ">",
       to: email,
       subject: "Password Reset for the ecommerce platform",
       //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
@@ -455,19 +426,19 @@ const passwordResetToken = async (req, res) => {
     // console.log(user)
     //same email code as before
     var transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 465,
+      host: MAIL_HOST,
+      port: MAIL_PORT,
       secure: true, // true for 465, false for other ports
       tls: {
         rejectUnauthorized: false,
       },
       auth: {
-        user: "welcome@hcommerce.store", //email created to send the emails from
-        pass: "1-Nunca-pares-de-aprender-!",
+        user: MAIL_USER, //email created to send the emails from
+        pass: MAIL_PASS,
       },
     });
     const options = {
-      from: "HENRY e-Commerce <welcome@hcommerce.store>",
+      from: "HENRY e-Commerce <" + MAIL_USER + ">",
       to: user.email,
       subject: "your password has been changed",
       html: `<h2>Password reset<h2>
@@ -491,6 +462,21 @@ const passwordResetToken = async (req, res) => {
   }
 };
 
+const validate = async (req, res) => {
+  const {email, username} = req.query;
+  if(email) {
+    const exists = await User.findOne({where: {email: email}})
+    if(exists) return res.send(true);
+    else return res.send(false)
+  }
+  if(username) {
+    const exists = await User.findOne({where: {username: username}})
+    if(exists) return res.send(true);
+    else return res.send(false)
+  }
+  res.send('error: invalid query')
+}
+
 module.exports = {
   getUsers,
   OrdersUser,
@@ -502,4 +488,5 @@ module.exports = {
   forgotPassword,
   passwordResetToken,
   confirm,
+  validate,
 };

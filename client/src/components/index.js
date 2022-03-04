@@ -14,3 +14,7 @@ export { default as OrdersTable } from './OrdersTable';
 export { default as CreateCategory } from './CreateCategory';
 export { default as UsersTable } from './UsersTable';
 export { default as Notification } from './Notification';
+export { default as Header } from './Header';
+export { default as FormHandler } from './FormHandler';
+export { default as Button } from './Button';
+export { default as Hero } from './Hero';

@@ -2,8 +2,12 @@ export const setOverflowY = (isOpen) => {
   document.body.style.overflow = isOpen ? "hidden" : "unset";
 };
 
-export const isFullfilled = (form) => {
-  return Object.keys(form).some((key) => form[key] === "");
+export const isFullfilled = (form, errors) => {
+  if (form && errors) {
+    return Object.keys(form).some((key) => form[key] === "") && Object.keys(errors).every((key) => errors[key] === false);
+  } else {
+    return Object.keys(form).some((key) => form[key] === "");
+  }
 };
 
 export const saveLocalStorage = (product) => {
@@ -27,5 +31,6 @@ export const saveLocalStorage = (product) => {
       newCart.reduce((acc, item) => acc + item.price * item.quantity, 0) + "e2"
     ) + "e-2"
   );
+  window.localStorage.setItem("subTotal", JSON.stringify(subTotal));
   window.localStorage.setItem("cartItems", JSON.stringify(newCart));
 };
