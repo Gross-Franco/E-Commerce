@@ -25,6 +25,7 @@ export const saveLocalStorage = ({product}) => {
           } else {
             return item;
           }
+          return item;
         });
   }
   let subTotal = Number(
