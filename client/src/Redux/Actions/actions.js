@@ -205,20 +205,32 @@ export const getOrderId = (orderId) => {
 
 
 export const createUser = ({
-  username,
-  password,
-  firstName,
-  lastName,
+  first_name,
+  last_name,
   email,
+  password,
+  // verificatePassword,
+  paymentMethod, 
+  username,
+  address,
+  phoneNumber,
+  postalNumber
 }) => {
   return async (dispatch) => {
     const response = await axios.post(`/user/createUser`, {
-      username,
-      password,
-      first_name: firstName,
-      last_name: lastName,
+      first_name,
+      last_name,
       email,
+      password,
+      // verificatePassword,
+      paymentMethod, 
+      username,
+      address,
+      phoneNumber,
+      postalNumber
     });
+
+    
     if (response?.data?.success) {
       console.log(response);
       dispatch({ type: CREATE_USER, payload: response.data });
