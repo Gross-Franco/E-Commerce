@@ -27,5 +27,6 @@ export const saveLocalStorage = (product) => {
       newCart.reduce((acc, item) => acc + item.price * item.quantity, 0) + "e2"
     ) + "e-2"
   );
+  window.localStorage.setItem("subTotal", subTotal);
   window.localStorage.setItem("cartItems", JSON.stringify(newCart));
 };
