@@ -1,20 +1,10 @@
-import React, { useState, useEffect,useLayoutEffect} from "react";
-import Image from "react-bootstrap/Image";
-import Container from "react-bootstrap/Container";
-import { Footer, NavBar, Carrousel, HomeCategories } from "../containers";
-/* 
-import ProducsTest from "./Utilitis/producsTest.json"; */
+import React, { useState, useEffect } from "react";
+import { Footer, NavBar, Carrousel, HomeCategories, HomeProducts } from "../containers";
+
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsPublic, checkSession } from "../Redux/Actions/actions"; 
-import DisplayItemsHome from '../containers/ItemsDisplayHome/ProductsPresentHome'
-/*
-import products from "../helpers/mockProducts"; */
-
-export default function Home() {
-  /* const [producs, SetProducts] = useState(Object.values(ProducsTest));
-
-  const [ValueRandom, SetValueRandom] = useState([]); */
+import { getProductsPublic } from "../Redux/Actions/actions"; 
+export const Home = () => {
   const [isScroll, setIsScroll] = useState(false);
 
   const handleScroll = () => {
@@ -27,17 +17,6 @@ export default function Home() {
 
   let { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
-
-  useLayoutEffect(()=>{
-    
-    if(JSON.parse(localStorage.getItem('eCUs'))){
-      let {Token}=JSON.parse(localStorage.getItem('eCUs'))
-      if(Token!==''){
-        dispatch(checkSession(Token))
-      }
-    }
-  },[])
-
 
   useEffect(() => {
     dispatch(getProductsPublic());
@@ -54,33 +33,9 @@ export default function Home() {
       <NavBar isScroll={isScroll} handleScroll={handleScroll} />
       <Carrousel />
       <HomeCategories />
-      {
-        // ------------------------------
-      }
-
-      <br />
-      <br />
-      
-      <br />
-      <br />
-      {products?.length > 0 && <DisplayItemsHome items={products}/>}
-
-      <br />
-      <Container>
-        <Image
-          variant="top"
-          src={"https://i.ibb.co/gDTGrKc/airport-g048af3c6f-1280.jpg"}
-          style={{
-            position: "relative",
-            right: "75px",
-            top: "15px",
-            transform: "scale(1, 0.8)",
-          }}
-        />
-
-        <br />
-      </Container>
+      {products?.length > 0 && <HomeProducts products={products} />}
       <Footer />
     </div>
   );
 }
+export default Home;

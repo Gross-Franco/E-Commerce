@@ -11,6 +11,7 @@ const getCategory = async (req, res) => {
       name: x.name,
       description: x.description,
       id: x.id,
+      image: x.image,
     }));
   
     res.status(200).send(categories);
@@ -33,6 +34,7 @@ const searchCategoryName = async function (req, res) {
         name: x.name,
         description: x.description,
         id: x.id,
+        image: x.image,
       }));
       res.json(finalres);
     } catch (err) {
@@ -47,6 +49,7 @@ const createCategory = async (req, res) => {
     let createdCategory = await ProductCategory.create({
       name,
       description,
+      image,
     });
     res.json(createdCategory);
 };
