@@ -4,6 +4,7 @@ import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { CreateCategory } from "../components";
 import { OrderDetails } from "./";
+import { validator } from "../helpers/formValidation/createproduct";
 
 import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
 
@@ -22,8 +23,22 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const [form, setForm] = useState(initialState);
+  const [errors, setErrors] = useState({
+    price: false,
+    SKU: false,
+    quantity: false,
+    image: false
+  })
   const [openDropdown, setOpenDropdown] = useState(false);
   const dispatch = useDispatch();
+
+  const validate = async (e) => {
+    setErrors({
+      ...errors,
+      [e.target.name]: await validator(e.target.name, e.target.value),
+    });
+  };
+
 
   const handleChange = (e) => {
     if (e.target.name === "category") {
@@ -113,7 +128,11 @@ const AddContainer = ({ option, setIsOpen }) => {
                     name="SKU"
                     className="add-form--input"
                     onChange={handleChange}
+                    onBlur={validate}
                   />
+                  {
+                    errors.SKU && <span>{errors.SKU}</span>
+                  }
                 </div>
                 <div className="add-form--input-wrapper_column">
                   <label>Cantidad</label>
@@ -124,7 +143,11 @@ const AddContainer = ({ option, setIsOpen }) => {
                     name="quantity"
                     className="add-form--input"
                     onChange={handleChange}
+                    onBlur={validate}
                   />
+                  {
+                    errors.quantity && <span>{errors.quantity}</span>
+                  }
                 </div>
               </div>
               <div className="add-form--input-wrapper_column">
@@ -152,7 +175,11 @@ const AddContainer = ({ option, setIsOpen }) => {
                   name="price"
                   className="add-form--input"
                   onChange={handleChange}
+                  onBlur={validate}
                 />
+                {
+                  errors.price && <span>{errors.price}</span>
+                }
               </div>
             </div>
             <div className="add-form--input-wrapper">
@@ -169,7 +196,11 @@ const AddContainer = ({ option, setIsOpen }) => {
                   className="add-form--input"
                   placeholder="https://ipsum/200/300"
                   onChange={handleChange}
+                  onBlur={validate}
                 />
+                {
+                  errors.image && <span>{errors.image}</span>
+                }
               </div>
             </div>
           </div>
