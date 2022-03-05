@@ -392,7 +392,7 @@ code {
   gap: 3rem;
 }
 .footer--content-link {
-  color: black;
+  color: #797979;
   text-decoration: none;
   text-transform: none;
 }
@@ -411,6 +411,9 @@ code {
   width: 100%;
   border: none;
   height: 3rem;
+}
+.footer--content-input::placeholder {
+  color: #d6d6d6;
 }
 .footer--content-input:focus {
   outline: none;
