@@ -76,17 +76,44 @@ const addPayment = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  let { username, password, first_name, last_name, email } = req.body;
-
+  
+ 
+  let { 
+     first_name,
+    last_name,
+    email,
+    password,
+    // verificatePassword,
+    paymentMethod, 
+    username,
+    address,
+    phoneNumber,
+    postalNumber } = req.body;
+    // res.send( {first_name,
+    //   last_name,
+    //   email,
+    //   password,     
+    //   paymentMethod, 
+    //   username,
+    //   address,
+    //   phoneNumber,
+    //   postalNumber});
   try {
 
     let createdUser = await User.create({
-      username,
-      password,
       first_name,
       last_name,
       email,
+      password,   
+      paymentMethod, 
+      username,
+      address,
+      phoneNumber,
+      postalNumber
     });
+    // res.send(createdUser)
+
+    // res.send(createdUser)
     if (createdUser) {
       //generar token
       const userForToken = {
@@ -94,8 +121,12 @@ const createUser = async (req, res) => {
         email,
         userId: createdUser.dataValues.id,
       };
+
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
+     
       //enviar mail
+      let testAccount = await nodemailer.createTestAccount();
+
       // set up nodemailer configs
       var transporter = nodemailer.createTransport({
         host: MAIL_HOST,
@@ -105,8 +136,8 @@ const createUser = async (req, res) => {
           rejectUnauthorized: false,
         },
         auth: {
-          user: MAIL_USER, //email created to send the emails from
-          pass: MAIL_PASS,
+          user: testAccount.user, //email created to send the emails from
+          pass: testAccount.pass,
         },
       });
 

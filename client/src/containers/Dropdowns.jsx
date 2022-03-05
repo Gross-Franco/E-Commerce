@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Dropdowns() {
 let dispatch= useDispatch()
-
+let { user } = useSelector((state) => state.session);
 
 function Salir(e)
 {
@@ -17,7 +17,7 @@ return<div>
    
 <Dropdown>
 <Dropdown.Toggle variant="primary" id="dropdown-basic">
-  User
+     {user.username}
 </Dropdown.Toggle>
 
 <Dropdown.Menu>

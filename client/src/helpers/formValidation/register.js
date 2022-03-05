@@ -19,10 +19,52 @@ const validateEmail = async (email) => {
     return false;
 }
 
+// const VerificatePass = new String();
 const validatePassword = async (password) => {
     if(!passwordRe.exec(password)) return 'Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number';
+    // VerificatePass = password; 
     return false;
 }
+
+
+
+//sin validacion
+// const VerificatePassword = async (password) => {
+//     if(VerificatePass !== password) return 'Password does not match verification';  
+   
+//     return false;
+// }
+
+
+// metodo de pago
+const paymentMethod = (paymentMethod) => {
+
+    if(paymentMethod === "Metodo de pago") return 'Please Select a pay method' 
+    
+    return false
+}// Dreccion 
+const validateAddress = (address) => {
+
+    if(address === "")   return 'Please insert a address' 
+    
+    
+    return false
+}
+
+const phoneNumber = (phoneNum) => {
+
+    if(phoneNum.length < 9)   return 'Please insert a complete number'     
+    
+    return false
+}
+
+const postalNumber = (postalNumber) => {
+    
+        if(postalNumber.length > 4)   return 'Please insert a correct postal number'     
+        
+        return false
+    }
+
 
 const validateFirstName = (firstName) => {
     if(nameRe.test(firstName)) return false
@@ -35,6 +77,7 @@ const validateLastName = (lastName) => {
 }
 
 export const validator = async (input, value) => {
+    console.log(input)
     switch(input) {
         case "username":
             return await validateUsername(value)
@@ -46,6 +89,16 @@ export const validator = async (input, value) => {
             return validateLastName(value)
         case "firstName":
             return validateFirstName(value)
+        // case "verificatePassword":
+        //     return VerificatePassword(value)
+        case "paymentMethod":
+             return paymentMethod(value)
+        case "address":
+             return validateAddress(value)
+        case "phoneNumber":
+             return phoneNumber(value)
+        case "postalNumber":
+             return postalNumber(value)
         default: return false    
     }
 }   
