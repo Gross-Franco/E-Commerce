@@ -29,7 +29,7 @@ export default function PerfilUser(){
     });
 
 //traer informacion del usuario.
-let { user } = useSelector((state) => state.userSession);
+let { user } = useSelector((state) => state.session);
 
 let dispatch = useDispatch();
 
@@ -450,7 +450,7 @@ top:"20px"
       
       <li class="nav-item">
         <h6 type="button" class={text_2} 
-           type="submit"
+          //  type="submit"
            onClick={
                (e)=>{
                  

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { BackButton, CreateCategory, Input } from "../components";
 import { OrderDetails, InputRow } from "./";
+import { validator } from "../helpers/formValidation/createproduct";
 
 import {
   createProduct,
@@ -26,8 +27,21 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const [form, setForm] = useState(initialState);
+  const [errors, setErrors] = useState({
+    price: false,
+    SKU: false,
+    quantity: false,
+    image: false,
+  });
   const [openDropdown, setOpenDropdown] = useState(false);
   const dispatch = useDispatch();
+
+  const validate = async (e) => {
+    setErrors({
+      ...errors,
+      [e.target.name]: await validator(e.target.name, e.target.value),
+    });
+  };
 
   const handleChange = (e) => {
     if (e.target.name === "category") {
@@ -106,7 +120,9 @@ const AddContainer = ({ option, setIsOpen }) => {
                   handleChange={handleChange}
                   label="SKU"
                   name="SKU"
+                  handleBlur={validate}
                 />
+                {errors.SKU && <span>{errors.SKU}</span>}
                 <Input
                   value={form.quantity}
                   handleChange={handleChange}
@@ -114,7 +130,10 @@ const AddContainer = ({ option, setIsOpen }) => {
                   name="quantity"
                   type="number"
                   min="0"
+                  onBlur={validate}
                 />
+
+                {errors.quantity && <span>{errors.quantity}</span>}
               </InputRow>
               <Input
                 value={form.description}
@@ -138,7 +157,9 @@ const AddContainer = ({ option, setIsOpen }) => {
                 type="number"
                 step="0.01"
                 min="0"
+                onBlur={validate}
               />
+              {errors.price && <span>{errors.price}</span>}
             </div>
             <div className="add-form--input-wrapper">
               <div>
@@ -151,7 +172,9 @@ const AddContainer = ({ option, setIsOpen }) => {
                 handleChange={handleChange}
                 label="Imagen"
                 name="image"
+                onBlur={validate}
               />
+              {errors.image && <span>{errors.image}</span>}
             </div>
           </div>
           <div className="add-form--side-space">

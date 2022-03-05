@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react"; /* 
 import Carousel from "react-bootstrap/"; */
 import { NavBar, Footer } from "./";
-import { Card, Button, Col, Row, Container, Badge ,Form} from "react-bootstrap";
+
+import { Card, Button, Col, Row, Container, Badge, Form } from "react-bootstrap";
+
+
 /* import Holder from "react-holder";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
 import { searchProductId } from "../Redux/Actions/actions";
 import { useParams } from "react-router-dom";
-import { BsHeart,BsHeartFill } from "react-icons/bs";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 
+
+import { BsArrowLeftShort } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import Login from "./Login";
+import Dropdowns from "./Dropdowns";
+import { CartButton } from "../components";
+import { Cart } from "../pages";
+import { setOverflowY } from "../services";
 
 export default function ProductDetail() {
 
@@ -29,28 +40,57 @@ export default function ProductDetail() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const [isOpen, setIsOpen] = useState(false);
+  let { login } = useSelector((state) => state.session);
+
   useEffect(() => {
-    
+
     dispatch(searchProductId(id));
   }, []);
 
-  function Favorite(e)
-  {
-    if(heart === false) 
-return <div>
-    <BsHeartFill/>
-</div> 
-else  
-return <div>
-<BsHeart/>
- </div>
+
+  function Favorite(e) {
+    if (heart === false)
+      return <div>
+        <BsHeartFill />
+      </div>
+    else
+      return <div>
+        <BsHeart />
+      </div>
     e.preventDefault()
   }
 
 
+
+
+
+
   return (
     <div>
-    <NavBar isScroll={true} />
+      <header className="register--header">
+        <nav className="header--container">
+          <Link to="/catalogo" className="register--header-nav--back">
+            <BsArrowLeftShort className="register--header-nav--back-icon" />
+            <p className="register--header-nav--back-span">Volver</p>
+          </Link>
+          <Link to="/" className="register--header-nav--logo">
+            commerce
+          </Link>
+
+          {/* <div className={`header-cart--container ${true ? "scroll" : ""}`}>
+          {!login ? <Login isScroll={true} /> : <Dropdowns />}
+          <CartButton openModal={isOpen} setOpenModal={setIsOpen} />
+        </div>
+        {!isOpen && (
+          <Modal>
+            <Cart openModal={isOpen} setOpenModal={setIsOpen} />
+          </Modal>
+        )} */}
+
+        </nav>
+      </header>
+
       <br />
       <br />
       <br />
@@ -66,49 +106,49 @@ return <div>
             }}
           >
             <Col>
-              <Card.Img variant="top" src={productDetail?.image} />
+              <Card.Img variant="top" src={productDetail?.image} height='600px' />
 
               <Card
                 style={{
                   width: "auto",
                   textAlign: "left",
-                  position:"relative",
-                  top:"20px"
+                  position: "relative",
+                  top: "20px"
                 }}
               >
                 <div style={{
-                  position:"relative",
-                  right:"-20px"
+                  position: "relative",
+                  right: "-20px"
 
-                            }}>
-                <br />
-                Descripcion {productDetail?.description}
-                <br />
-                <br />
-                Categorias
-                <br />
-                <br />
-                <Row style={{ textAlign: "center" }}>
-                  {productDetail?.category?.length > 0 ? (
-                    productDetail?.category?.map((c) => {
-                      return <p>{c}</p>;
-                    })
-                  ) : (
-                    <p>no se encontraron categorias</p>
-                  )}
-            
-                </Row>
+                }}>
+                  <br />
+                  Descripcion {productDetail?.description}
+                  <br />
+                  <br />
+                  Categorias
+                  <br />
+                  <br />
+                  <Row style={{ textAlign: "center" }}>
+                    {productDetail?.category?.length > 0 ? (
+                      productDetail?.category?.map((c, i) => {
+                        return <span key={i}>{c}</span>;
+                      })
+                    ) : (
+                      <p>no se encontraron categorias</p>
+                    )}
+
+                  </Row>
                 </div>
               </Card>
               <br />
-                <br />
+              <br />
               <Form>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                <Form.Label>Reviewers</Form.Label>
-                <Form.Control as="textarea" rows={3} />
-              </Form.Group>
-              <h6 type="input" style={{ cursor: "pointer" }}> Response</h6>
-            </Form>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                  <Form.Label>Reviewers</Form.Label>
+                  <Form.Control as="textarea" rows={3} />
+                </Form.Group>
+                <h6 type="input" style={{ cursor: "pointer" }}> Response</h6>
+              </Form>
             </Col>
 
             <Col
@@ -123,7 +163,7 @@ return <div>
                   textAlign: "left",
                 }}
               >
-              
+
                 <p
                   style={{
                     position: "relative",
@@ -132,7 +172,7 @@ return <div>
                   }}
                 >
                   {" "}
-                 
+
                 </p>
 
                 <Card.Body>
@@ -143,32 +183,32 @@ return <div>
                           width: "200px",
                         }}
                       >
-                        {productDetail?.name }
+                        {productDetail?.name}
                       </Card.Title>
                     </Col>
                     <Col>
-                    
-                    <div  onMouseEnter={(e)=>{
+
+                      <div onMouseEnter={(e) => {
                         setHeart(false)
-                      e.preventDefault()
-                    }}
-                    onClick={(e)=>{
-                      console.log("add-to-favorite")
-                    e.preventDefault()
-                  }}
-                    onMouseLeave={(e)=>{
-                      setHeart(true)
-                    e.preventDefault()
-                  }}
-                    >
-                     <Favorite />
-                     </div>
- 
+                        e.preventDefault()
+                      }}
+                        onClick={(e) => {
+                          console.log("add-to-favorite")
+                          e.preventDefault()
+                        }}
+                        onMouseLeave={(e) => {
+                          setHeart(true)
+                          e.preventDefault()
+                        }}
+                      >
+                        <Favorite />
+                      </div>
+
                     </Col>
                   </Row>
                   <br />
                   <Badge bg="success">Mas vendido</Badge>
-               
+
 
                   <br />
                   <Row>
@@ -185,18 +225,18 @@ return <div>
                           color: "green",
                         }}
                       >
-                        
+
                       </h6>{" "}
                     </Col>
                   </Row>
-                  
+
 
                   <Card.Title>
                     {
-                      productDetail?.quantity > 0 ? `Stock disponible: ${productDetail?.quantity}`:
-                      'Producto no disponible'
+                      productDetail?.quantity > 0 ? `Stock disponible: ${productDetail?.quantity}` :
+                        'Producto no disponible'
                     }
-                    
+
                   </Card.Title>
 
                   <br />
@@ -207,7 +247,7 @@ return <div>
                 </Card.Body>
               </Card>
               <br />
-              
+
             </Col>
           </Row>
           <br />

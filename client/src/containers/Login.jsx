@@ -3,7 +3,7 @@ import { Form, Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "./../Redux/Actions/actions";
+import { signIn } from "./../Redux/Actions/actions";
 
 export default function Login({ isScroll }) {
   const [show, setShow] = React.useState(false);
@@ -22,7 +22,7 @@ export default function Login({ isScroll }) {
     e.preventDefault();
     if (inputs.email && inputs.password) {
 
-      dispatch(login(inputs));
+      dispatch(signIn(inputs));
 
       handleClose();
       setInputs({

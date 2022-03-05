@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
     {
       username: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false, 
         unique: true,
       },
 
@@ -69,11 +69,11 @@ module.exports = (sequelize) => {
     {
       timestamps: false,
       hooks: {
-        beforeCreate: (user) => {
-          if (user.password) {
-            user.password = bcrypt.hashSync(user.password, 10);
-          }
-        },
+        // beforeCreate: (user) => {
+        //   if (user.password) {
+        //     user.password = bcrypt.hashSync(user.password, 10);
+        //   }
+        // },
         beforeUpdate: (user) => {
           if (user.password) {
             user.password = bcrypt.hashSync(user.password, 10);

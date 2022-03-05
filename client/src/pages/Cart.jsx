@@ -1,35 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CartItem from "../components/CartItem";
-import { getCartItems, getLocalStorage } from "../Redux/Actions/actions";
+import { getLocalStorage } from "../Redux/Actions/actions";
 import { IoMdClose } from "react-icons/io";
 import { BsBag } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const Cart = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch();
-  const { cartItems, cartStorage, session, subTotal } = useSelector(
+  const { cartStorage, session, subTotal } = useSelector(
     (state) => state.shopping
   );
 
-  let cart = cartItems?.length > 0 ? cartItems : cartStorage;
   let qty =
-    cart?.length > 0
+    cartStorage?.length > 0
       ? cartStorage.reduce((acc, item) => {
           return acc + item.quantity;
         }, 0)
       : 0;
 
   useEffect(() => {
-    if (session.length > 0) {
-      dispatch(getCartItems(session.id));
-      return;
-    }
     dispatch(getLocalStorage());
   }, []);
 
   const handleCompra = (items) => {
     // dispatch(createOrder(items)) // falta la action de createOrder en redux
+    // dispatch(loadCartOnDB(cartStorage)) // falta crear en back
   };
 
   const handleClick = () => {
@@ -42,7 +38,7 @@ const Cart = ({ openModal, setOpenModal }) => {
         <p className="modal-cart--header-title">Carrito de compras</p>
         <IoMdClose className="modal-cart--close" onClick={handleClick} />
       </div>
-      {!cart?.length > 0 && (
+      {!cartStorage?.length > 0 && (
         <div className="modal-cart--empty-container">
           <div className="modal-cart--empty-container-items">
             <BsBag className="modal-cart--empty-container-items-icon" />
@@ -53,10 +49,10 @@ const Cart = ({ openModal, setOpenModal }) => {
           </p>
         </div>
       )}
-      {cart?.length > 0 && (
+      {cartStorage?.length > 0 && (
         <div>
           <div className="modal-cart--body">
-            {cart.map((item) => (
+            {cartStorage.map((item) => (
               <CartItem key={item.id} item={item} session={session} />
             ))}
           </div>
