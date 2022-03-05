@@ -29,11 +29,13 @@ module.exports = (sequelize) => {
       },
       first_name: {
         type: DataTypes.STRING,
+        defaultValue: "",
         allowNull: false,
       },
 
       last_name: {
         type: DataTypes.STRING,
+        defaultValue: "",
         allowNull: false,
       },
 
@@ -64,7 +66,36 @@ module.exports = (sequelize) => {
       verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },      
+      perfilImg: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+        allowNull: true,
       },
+      paymentMethod: {
+        type: DataTypes.ENUM,
+        values: [
+            'debito',
+            'credito',
+            'PayPal',
+        ],
+        defaultValue: 'debito'
+      },
+      address: {
+        type: DataTypes.STRING,
+        defaultValue: null,     
+      },
+      phoneNumber: {
+        type: DataTypes.BIGINT ,
+        defaultValue: 0,       
+        allowNull: true,   
+      },
+      postalNumber: {
+        type: DataTypes.INTEGER,       
+        allowNull: true,   
+      },
+    
+    
     },
     {
       timestamps: false,

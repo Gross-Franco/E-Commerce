@@ -106,7 +106,9 @@ export default function ProductDetail() {
             }}
           >
             <Col>
-              <Card.Img variant="top" src={productDetail?.image} height='600px' />
+              <Card.Img variant="top" src={productDetail?.image} style={{
+                transform: "scale(1.2, 1)"
+              }} />
 
               <Card
                 style={{
