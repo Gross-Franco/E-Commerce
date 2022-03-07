@@ -24,6 +24,7 @@ const AddContainer = ({ option, setIsOpen }) => {
     SKU: addOrUpdate?.SKU || "",
     quantity: addOrUpdate?.quantity || "",
     image: addOrUpdate?.image || "",
+    inactive: addOrUpdate?.inactive || ""
   };
 
   const [form, setForm] = useState(initialState);
@@ -46,6 +47,7 @@ const AddContainer = ({ option, setIsOpen }) => {
   const handleChange = (e) => {
     if (e.target.name === "category") {
       if (e.target.checked) {
+       console.log(form)
         setForm({
           ...form,
           category: [...form.category, e.target.value],
@@ -62,6 +64,14 @@ const AddContainer = ({ option, setIsOpen }) => {
         [e.target.name]: e.target.value,
       });
     }
+    if(e.target.name === "inactive") {
+      setForm({
+        ...form,
+        inactive: !form.inactive
+        
+      });
+    }
+    console.log(form)
   };
 
   const handleSubmit = (e) => {
@@ -92,6 +102,7 @@ const AddContainer = ({ option, setIsOpen }) => {
 
   if (option === "Pedidos")
     return <OrderDetails option={option} setIsOpen={setIsOpen} />;
+
 
   return (
     <div className="add--container">
@@ -187,8 +198,9 @@ const AddContainer = ({ option, setIsOpen }) => {
                 Guardar cambios
               </button>
               <div className="add-form--input-wrapper_row">
-                <input type="checkbox" />
-                <label>Inactivo </label>
+                <label>
+                <input type="checkbox" onChange={handleChange} name="inactive" />
+                  Inactivo </label>
               </div>
             </div>
             <div className="add-form--input-wrapper">
