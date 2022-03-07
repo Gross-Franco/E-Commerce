@@ -210,7 +210,7 @@ export const createUser = ({
   email,
   password,
   // verificatePassword,
-  paymentMethod, 
+  paymentMethod,
   username,
   address,
   phoneNumber,
@@ -223,14 +223,14 @@ export const createUser = ({
       email,
       password,
       // verificatePassword,
-      paymentMethod, 
+      paymentMethod,
       username,
       address,
       phoneNumber,
       postalNumber
     });
 
-    
+
     if (response?.data?.success) {
       console.log(response);
       dispatch({ type: CREATE_USER, payload: response.data });
@@ -358,13 +358,13 @@ export const deleteCart = (sessionId) => {
 };
 export const signIn = (data) => {
   return async (dispatch) => {
-    const response = await axios.post(`/user/login`, data);
+    const response = await axios.post(`/api/signin`, data);
     if (response?.data?.success) {
       dispatch({ type: SIGN_IN, payload: response.data });
     } else {
       dispatch({ type: SIGN_IN, payload: response.response.data });
     }
-   
+
   };
 };
 export const checkSession = (token) => {

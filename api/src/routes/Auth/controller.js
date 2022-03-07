@@ -52,7 +52,7 @@ const signin = (req, res, next) => {
     })
         .then((user) => {
             if (bcrypt.compareSync(password, user.password)) {//Los usuarios creados con bulkcreate no estan hasheados
-                let token = createSession(user);
+                let token = createSession({ user_id: user.id, isAdmin: user.isAdmin });
                 setCookie(res, TOKEN_COOKIE, token, 1000 * 60 * 5);
                 return res.status(200).json({ message: "Ususario logeado correctamente", user });
             } else {
