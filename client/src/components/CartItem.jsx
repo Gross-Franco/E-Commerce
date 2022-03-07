@@ -79,7 +79,7 @@ const CartItem = ({ item, session }) => {
           </div>
           <p
             className="item-info--footer-delete"
-            onClick={() => handleDeleteItem(session, item.id)}
+            onClick={() => handleDeleteItem(item.id)}
           >
             Eliminar
           </p>
