@@ -5,7 +5,7 @@ const {
   UserAddress,
   UserPayment,
   Product,
-  Review,
+  UserReviews,
   OrderDetails,
 } = require("../../db.js");
 
@@ -300,38 +300,61 @@ const postReviewProduct = async (req, res) => {
   // o si se usar cookie-session
   // let {usAuth}= req.session
   // let {id} = jwt.decode(usAuth)
+
+    // return res.send(req.body)
+    // return res.send("")
   try {
     let { idProduct } = req.params;
+    
+    // return res.send(req.body.hasOwnProperty("description"))
     if (req.body) {
       if (
-        req.body.hasOneProperty("description") &&
+        req.body.hasOwnProperty("description") &&
         typeof req.body["description"] !== "string"
       ) {
         throw Error("Data types error ");
       }
+      
       if (
-        req.body.hasOneProperty("starsPoint") &&
+        req.body.hasOwnProperty("starsPoint") &&
         typeof req.body["starsPoint"] !== "number"
-      ) {
-        throw Error("Data types error ");
-      }
-    }
+        ) {
+          throw Error("Data types error ");
+        }
+        //provisional
+        if (
+          req.body.hasOwnProperty("userid") &&
+          typeof req.body["userid"] !== "number"
+          ) {
+            throw Error("Data types error");
+          }
+          
+        }
+        
+        let {
+          description,
+          starsPoints,
+          userid
+            } = req.body
+       
     let product = await Product.findOne({ where: { id: idProduct } });
-    !product && new Error("Product no found");
-    let review = await Review.create(req.body);
-    // dara un error si no hay una id de un usuario
-    User.findOne({ where: { id: id } }).then(
-      (result) => {
-        review.addUser(result);
-        product.setReview(review);
-        res.status(201).json({ success: true, inf: "Review add to Product" });
-      },
-      (error) => {
-        res
-          .status(400)
-          .json({ success: false, inf: "user nof found: " + error });
-      }
-    );
+     !product && new Error("Product no found");
+    
+   let user = await User.findOne({ where: { id: userid } });
+     !user && new Error("User no found");
+    
+    
+    // return res.send(product)
+  
+    let review = await UserReviews.create({
+      description,
+      starsPoints,
+      user_id:userid,
+      product_id: idProduct
+    });
+    
+    res.status(201).json({ success: true, inf: "Review add to Product" });
+  
   } catch (e) {
     res.status(400).json({ success: false, inf: e });
   }
