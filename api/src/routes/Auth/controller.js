@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { User } = require("../../db.js");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { setCookie, createSession } = require("../../middlewares/utilities.js");
 const { TOKEN_COOKIE } = process.env
 
@@ -47,12 +48,13 @@ const signin = (req, res, next) => {
         where: {
             email
         },
-        atributes: ["id", "isAdmin", "password"],
+        attributes: ["id", "isAdmin", "password"]
     })
         .then((user) => {
-            if (bcrypt.compare(password, user.password)) {//Los usuarios creados con bulkcreate no estan hasheados
-                setCookie(res, TOKEN_COOKIE, token, 10000);
-                return res.status(200).json({ message: "Ususario logeado correctamente", isUser: true, isAdmin: permits.isAdmin });
+            if (bcrypt.compareSync(password, user.password)) {//Los usuarios creados con bulkcreate no estan hasheados
+                let token = createSession(user);
+                setCookie(res, TOKEN_COOKIE, token, 1000 * 60 * 5);
+                return res.status(200).json({ message: "Ususario logeado correctamente", user });
             } else {
                 // si la contraseña comparada no son validas, reporto un error de validacion de password
                 return res.status(401).json({ msg: 'Invalid Password or Email' });
@@ -74,6 +76,7 @@ const signout = (req, res) => {
 
 const checkSession = async (req, res) => {
     try {
+        console.log(req.permits);
         if (req.permits) return res.status(200).json({ message: "open session" });
         else {
             let token = await createSession();
