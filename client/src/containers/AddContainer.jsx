@@ -47,7 +47,6 @@ const AddContainer = ({ option, setIsOpen }) => {
   const handleChange = (e) => {
     if (e.target.name === "category") {
       if (e.target.checked) {
-       console.log(form)
         setForm({
           ...form,
           category: [...form.category, e.target.value],
@@ -64,14 +63,13 @@ const AddContainer = ({ option, setIsOpen }) => {
         [e.target.name]: e.target.value,
       });
     }
-    if(e.target.name === "inactive") {
+    if (e.target.name === "inactive") {
       setForm({
         ...form,
         inactive: !form.inactive
-        
+
       });
     }
-    console.log(form)
   };
 
   const handleSubmit = (e) => {
@@ -197,10 +195,11 @@ const AddContainer = ({ option, setIsOpen }) => {
               >
                 Guardar cambios
               </button>
-              <div className="add-form--input-wrapper_row">
+              <div>
                 <label>
-                <input type="checkbox" onChange={handleChange} name="inactive" />
-                  Inactivo </label>
+                  Inactivo
+                  <input type="checkbox" onChange={handleChange} name="inactive" checked={form.inactive}/>
+                </label>
               </div>
             </div>
             <div className="add-form--input-wrapper">
@@ -209,16 +208,14 @@ const AddContainer = ({ option, setIsOpen }) => {
               </header>
               <div>
                 <div
-                  className={`add-form--input add-form--input-dropdown ${
-                    openDropdown ? "selected" : ""
-                  }`}
+                  className={`add-form--input add-form--input-dropdown ${openDropdown ? "selected" : ""
+                    }`}
                   onClick={() => setOpenDropdown(!openDropdown)}
                 >
                   <span>Elige categoria</span>
                   <RiArrowDropDownLine
-                    className={`add-form--arrow-dropdown ${
-                      openDropdown ? "open" : ""
-                    }`}
+                    className={`add-form--arrow-dropdown ${openDropdown ? "open" : ""
+                      }`}
                   />
                 </div>
               </div>
@@ -227,14 +224,15 @@ const AddContainer = ({ option, setIsOpen }) => {
               <div className="add-form--input-wrapper">
                 {categories.map((category) => (
                   <div key={category.id} className="add-form--dropdown-option">
-                    <label>{category.name}</label>
-                    <input
-                      type="checkbox"
-                      checked={form.category.includes(category.name)}
-                      name="category"
-                      value={category.name}
-                      onChange={handleChange}
-                    />
+                    <label>{category.name}
+                      <input
+                        type="checkbox"
+                        checked={form.category.includes(category.name)}
+                        name="category"
+                        value={category.name}
+                        onChange={handleChange}
+                      />
+                    </label>
                   </div>
                 ))}
               </div>
