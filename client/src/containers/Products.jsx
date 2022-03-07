@@ -7,6 +7,7 @@ const Products = () => {
 
   const {products} = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  console.log(products)
   
   useEffect(() => {
     if(products.length === 0) dispatch(getProductsPublic());
@@ -15,7 +16,9 @@ const Products = () => {
   return (
     <div className="products--list">
       {products?.map((product) => (
+        !product.inactive?
         <Product key={product.SKU} product={product} />
+        : console.log()
       ))}
     </div>
   );

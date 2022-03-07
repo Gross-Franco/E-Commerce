@@ -21,6 +21,7 @@ const getProducts = async (req, res, next) => {
 				image:productData.image,
 				SKU: productData.SKU,
 				price: productData.price,
+				inactive: productData.inactive,
 				category: productData.productCategories.map(x => x.name),
 				inventory: productinv.quantity
 			}
