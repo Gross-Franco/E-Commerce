@@ -100,10 +100,6 @@ function  handleSubmit(e)
       e.preventDefault()
   }
 
-
-// rutas nav user history
-
-
 // Main Render
 
 return(
@@ -117,7 +113,7 @@ return(
 
       
     <Col><Card
-    class="shadow p-3 mb-5 bg-body rounded"
+    className="shadow p-3 mb-5 bg-body rounded"
     style={{ 
         width: '20rem',
         position :"relative",
@@ -238,7 +234,7 @@ return(
      <h6> About me. </h6>
      <textarea name="" id="" cols="30" rows="10"></textarea>
      <br />
-     <button type="submit"  class="btn btn-secondary">Save</button>        
+     <button type="submit"  className="btn btn-secondary">Save</button>        
             
      </Form>
             </div>
@@ -260,7 +256,7 @@ return(
                
       <h6> About me. </h6>
  <p> Without information  about user.</p>
- <button type="submit" class="btn btn-secondary">Edit</button>
+ <button type="submit" className="btn btn-secondary">Edit</button>
  </Form>
       </div>
 }            
@@ -276,11 +272,11 @@ return(
     <Col xs={8}  style={{ 
 position:"relative",
 top:"20px"
-}}><Card class="shadow p-3 mb-5 bg-body rounded">
-    <div class="card-header">
-    <ul class="nav nav-tabs card-header-tabs">
-      <li class="nav-item">
-        <h6 class={text_1} 
+}}><Card className="shadow p-3 mb-5 bg-body rounded">
+    <div className="card-header">
+    <ul className="nav nav-tabs card-header-tabs">
+      <li className="nav-item">
+        <h6 className={text_1} 
          type="submit"
          onClick={
              (e)=>{
@@ -291,8 +287,8 @@ top:"20px"
          }>Account</h6>
       </li>
       
-      <li class="nav-item">
-        <h6 type="button" class={text_2} 
+      <li className="nav-item">
+        <h6 type="button" className={text_2} 
           //  type="submit"
            onClick={
                (e)=>{
@@ -304,8 +300,8 @@ top:"20px"
            
         >Purchase history </h6>
       </li>
-      <li class="nav-item">
-        <h6 class={text_3} 
+      <li className="nav-item">
+        <h6 className={text_3} 
          type="submit"
          onClick={
              (e)=>{
@@ -320,8 +316,8 @@ top:"20px"
         >Reviewer</h6>
       </li>
 
-      <li class="nav-item">
-        <h6 class={text_4} 
+      <li className="nav-item">
+        <h6 className={text_4} 
          type="submit"
          onClick={
              (e)=>{

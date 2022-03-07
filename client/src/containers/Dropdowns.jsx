@@ -3,33 +3,33 @@ import Dropdown from  "react-bootstrap/Dropdown";
 import {logout} from './../Redux/Actions/actions'
 import {useDispatch,useSelector} from 'react-redux';
 import { NavLink } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 export default function Dropdowns() {
-let dispatch= useDispatch()
-let { user } = useSelector((state) => state.session);
+  let dispatch= useDispatch()
+  let { user } = useSelector((state) => state.session);
+  const navigate = useNavigate()
 
-function Salir(e)
-{
-  dispatch(logout())
-}
+  function Salir(e) {
+    dispatch(logout())
+  }
 
-return<div>
-   
-<Dropdown>
-<Dropdown.Toggle variant="primary" id="dropdown-basic">
-     {user.username}
-</Dropdown.Toggle>
+  const redirect = () => {
+    navigate('/perfilUser')
+  }
 
-<Dropdown.Menu>
-  <Dropdown.Item >
-    <NavLink to="/perfilUser">Perfil</NavLink>
-    </Dropdown.Item>
-  <Dropdown.Item href="#/action-2">Historia</Dropdown.Item>
-  <Dropdown.Item href="#/action-3">configuracion</Dropdown.Item>
-  <Dropdown.Item  onClick={Salir} >Salir</Dropdown.Item>
-</Dropdown.Menu>
-</Dropdown>
+  return ( 
+    <Dropdown>
+      <Dropdown.Toggle variant="primary" id="dropdown-basic">
+          {user.username}
+      </Dropdown.Toggle>
 
-</div>
 
+
+      <Dropdown.Menu>
+        <Dropdown.Item onClick={redirect}> Perfil </Dropdown.Item>
+        <Dropdown.Item onClick={Salir} > Salir </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  )
 }

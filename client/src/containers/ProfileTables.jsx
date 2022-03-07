@@ -41,72 +41,60 @@ export default function ProfileTables({link, userid}) {
     }
     else if(link === "Purchase history")
     {
-      return <p>
+      return <div>
            Historial de compras
-           <table class="table table-hover">
+           <table className="table table-hover">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Product</th>
+        <th scope="col">Total</th>
         <th scope="col">Date</th>
-        <th scope="col">Value</th>
+        <th scope="col">Estado</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Zapatos</td>
-        <td>10/10/22</td>
-        <td>30$</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Camisas</td>
-        <td>10/04/10</td>
-        <td>70$</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Hugo voz</td>
-        <td>11/06/11</td>
-        <td>140$</td>
-      </tr>
+      {
+        orders?.length > 0 && orders.map(order => {
+          <tr>
+            <th scope="row">{order.id}</th>
+            <td>{order.total}</td>
+            <td>{order.createdAt}</td>
+            <td>{order.status}</td>
+          </tr>
+        })
+      }
     </tbody>
   </table>
-           </p>
+           </div>
     }else if(link === "Reviews")
     {
       return <div>
-       <div class="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
+       <div className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
           // maxFdth:"100rem",
           margin: "auto",
           width: "90%",
           border: "3px solid green",
           padding: "10px"
       }}>
-      <div class="card-header">6 personas  aprueban tu reviwer</div>
-      <div class="card-body">
-        <h5 class="card-title">Ropa deportiva nike {<h6 style={{
-            fontSize: "12px"
-        }}> 5 days ago</h6>}</h5>
-        <p class="card-text">Ropa de  excelente  calidad, muy recomendable.</p>
+      <div className="card-header">6 personas  aprueban tu reviwer</div>
+      <div className="card-body">
+        <h5 className="card-title">Ropa deportiva nike</h5>
+        <p className="card-text">Ropa de  excelente  calidad, muy recomendable.</p>
       </div>
     
     </div>
       
-      <div class="card border-light mb-3 shadow p-3 mb-5 bg-body rounded"   style={{
+      <div className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded"   style={{
           // maxWidth:"100rem",
           margin: "auto",
           width: "90%",
           border: "3px solid green",
           padding: "10px"
       }}>
-      <div class="card-header">20 personas  aprueban tu reviwer</div>
-      <div class="card-body">
-        <h5 class="card-title">Zapatos  {<h6 style={{
-            fontSize: "12px"
-        }}> 5 days ago</h6>}</h5>
-        <p class="card-text">Muy buena marca de zapatos, inmejorable calidad precio</p>
+      <div className="card-header">20 personas  aprueban tu reviwer</div>
+      <div className="card-body">
+        <h5 className="card-title">Zapatos</h5>
+        <p className="card-text">Muy buena marca de zapatos, inmejorable calidad precio</p>
       </div>
     
     </div>
@@ -120,15 +108,15 @@ export default function ProfileTables({link, userid}) {
       return <div>
   
   
-      <div class="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
+      <div className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
          // maxWidth:"100rem",
          margin: "auto",
          width: "70%",
          border: "3px solid green",
          padding: "10px"
      }}>
-     <div class="card-header">Precio actual : 30$</div>
-     <div class="card-body">
+     <div className="card-header">Precio actual : 30$</div>
+     <div className="card-body">
   
      <Card.Img variant="top" src="https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto:sensitive,fl_lossy,c_fill,g_auto/4ba44497e9484b268bc0ac4700ee0b8a_9366/buzo-corto-con-capucha-essentials-3-tiras.jpg" 
           style={{
@@ -141,23 +129,21 @@ export default function ProfileTables({link, userid}) {
               padding: "5px",     
           }} />
   
-       <h5 class="card-title">Ropa deportiva Adidas {<h6 style={{
-           fontSize: "12px"
-       }}> Add 5 days ago</h6>}</h5>
-       <p class="card-text">Ropa negra Adidas de tele de seda humedad.</p>
+       <h5 className="card-title">Ropa deportiva Adidas</h5>
+       <p className="card-text">Ropa negra Adidas de tele de seda humedad.</p>
      </div>
    
    </div>
   
-   <div class="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
+   <div className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded" style={{
          // maxWidth:"100rem",
          margin: "auto",
          width: "70%",
          border: "3px solid green",
          padding: "10px"
      }}>
-     <div class="card-header">Precio actual : 35$</div>
-     <div class="card-body">
+     <div className="card-header">Precio actual : 35$</div>
+     <div className="card-body">
   
      <Card.Img variant="top" src="https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto,fl_lossy,c_fill,g_auto/dafce863061a4f63b041ad2600716dcb_9366/sudadera-essentials-3-rayas.jpg" 
           style={{
@@ -170,10 +156,8 @@ export default function ProfileTables({link, userid}) {
               padding: "5px",     
           }} />
   
-       <h5 class="card-title">Ropa deportiva Adidas {<h6 style={{
-           fontSize: "12px"
-       }}> Add 7 days ago</h6>}</h5>
-       <p class="card-text">Conjunto de sudaderas roja con tela hidrofobica</p>
+       <h5 className="card-title">Ropa deportiva Adidas</h5>
+       <p className="card-text">Conjunto de sudaderas roja con tela hidrofobica</p>
      </div>
    
    </div>
