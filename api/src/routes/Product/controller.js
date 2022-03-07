@@ -132,6 +132,7 @@ const searchProductName = async (req, res) => {
 				description: product.description,
 				SKU: product.SKU,
 				price: product.price,
+				inactive: product.inactive,
 				category: product.productCategories.map((x) => x.name),
 				quantity: inventory.quantity,
 			});
