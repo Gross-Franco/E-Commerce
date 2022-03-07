@@ -12,7 +12,6 @@ const ProductTable = ({ setIsOpen }) => {
     dispatch(setAddOrUpdate(product))
     setIsOpen(prev => !prev);
   };
-   console.log(products)
   return (
     <table>
       <thead className="panel-table--head">
