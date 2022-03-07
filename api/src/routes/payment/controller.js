@@ -5,6 +5,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 var nodemailer = require('nodemailer');
 const { uuid } = require('uuidv4');
 const { MAIL_USER, MAIL_PASS, MAIL_HOST, MAIL_PORT } = process.env
+const {
+  ProductInventory,
+  Product
+} = require("../../db.js");
 
 // const storeItems = new Map([
 //     [1, { price: 100, name: 'Best TV 4000'}],
@@ -66,8 +70,8 @@ const { MAIL_USER, MAIL_PASS, MAIL_HOST, MAIL_PORT } = process.env
 const payment = async(req, res) =>{
     const {product, token} = req.body;
     console.log("PRODUCT", product);
-    console.log("PRICE", product.price);
-    console.log("TOKEN", token);
+    // console.log("PRICE", product.price);
+    // console.log("TOKEN", token);
 
     idempotencyKey = uuid()
     //we create a customer
@@ -76,7 +80,7 @@ const payment = async(req, res) =>{
         source: token.id
         //if its successfull we create the charge
     }).then(customer =>{
-      console.log(customer)
+      // console.log(customer)
         return stripe.charges.create({
             //multiply by 100 because everything goes using cents
             amount: product.price *100,
@@ -93,7 +97,7 @@ const payment = async(req, res) =>{
             }
         },{idempotencyKey} )
     }).then(result => {
-        console.log("RESULT", result)
+        // console.log("RESULT", result)
         var transporter = nodemailer.createTransport({
           host: MAIL_HOST,
           port: MAIL_PORT,
@@ -111,7 +115,7 @@ const payment = async(req, res) =>{
           to: result.receipt_email,
           subject: "Your purchase at HENRY e-Commerce",
           html: `<h2>Thank you for your purchase<h2>
-                <p>This is a confirmation for your purchase today your items will arrive in the following days for any questions send us a questions at welcome@hcommerce.store.<p>
+                <p>This is a confirmation for your purchase today of ${product.name} your items will arrive in the following days for any questions send us a questions at welcome@hcommerce.store.<p>
               `,
         };
           // this function sends the email using the information for options
@@ -122,7 +126,32 @@ const payment = async(req, res) =>{
             }
             console.log('email sent ' + info.response)
             res.json({ message: `sent user purhcase confirmation at: ${result.receipt_email}` })
+
+
+            
           })
+          //we search for the products that were bought, and decrease their inventory by the quantity
+          //need to define the quantities as its own variable
+          let quantities = product.quantity
+          product.id.forEach(async (product, i) =>{
+            const productochange = await Product.findOne({
+              where: {
+                id: product
+              }
+            })
+          const productToDecrease = await ProductInventory.findOne({
+            where:{
+              id: productochange.inventory_id
+            }
+          })
+          // console.log(productToDecrease.quantity)
+          // console.log(i)
+          await productToDecrease.decrement("quantity", { by: quantities[i] });
+          productToDecrease.changed('quantity', true);
+          // console.log(productToDecrease.changed());
+          // console.log(productToDecrease.quantity)
+          await productToDecrease.save()
+        })
         res.status(200).json(result)})
         .catch(err => console.log(err))
 

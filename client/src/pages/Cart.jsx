@@ -24,6 +24,7 @@ const Cart = ({ openModal, setOpenModal }) => {
     dispatch(getLocalStorage());
   }, []);
 
+
   const handleCompra = (items) => {
     // dispatch(createOrder(items)) // falta la action de createOrder en redux
     // dispatch(loadCartOnDB(cartStorage)) // falta crear en back
@@ -72,7 +73,7 @@ const Cart = ({ openModal, setOpenModal }) => {
               >
                 Continuar Comprando
               </Link>
-              <StripeButton subtotal={subTotal}/>
+              <StripeButton subTotal={subTotal} products={cartStorage} />
             </div>
           </div>
         </div>

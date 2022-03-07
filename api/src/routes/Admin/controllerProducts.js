@@ -108,7 +108,7 @@ const editProduct = async (req, res, next) => {
         await productInventory.set({
           quantity: quantity
         })
-
+        productInventory.changed('quantity', true);
         productInventory.save()
 
         const users = await User.findAll();
@@ -157,6 +157,7 @@ const editProduct = async (req, res, next) => {
         })      
         // res.json({ msg: "increased inventory", product });
       }
+      productInventory.changed('quantity', true);
       await productInventory.save()
 
       
