@@ -23,6 +23,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         user: "",
+        login: false
       };
     default:
       return state;
