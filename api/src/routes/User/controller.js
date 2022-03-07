@@ -5,8 +5,10 @@ const {
   UserAddress,
   UserPayment,
   Product,
-  Review,
+  UserReviews,
   OrderDetails,
+  OrderItems,
+  PaymentDetails,
 } = require("../../db.js");
 
 const bcrypt = require("bcrypt");
@@ -300,65 +302,63 @@ const postReviewProduct = async (req, res) => {
   // o si se usar cookie-session
   // let {usAuth}= req.session
   // let {id} = jwt.decode(usAuth)
+
+    // return res.send(req.body)
+    // return res.send("")
   try {
     let { idProduct } = req.params;
+    
+    // return res.send(req.body.hasOwnProperty("description"))
     if (req.body) {
       if (
-        req.body.hasOneProperty("description") &&
+        req.body.hasOwnProperty("description") &&
         typeof req.body["description"] !== "string"
       ) {
         throw Error("Data types error ");
       }
+      
       if (
-        req.body.hasOneProperty("starsPoint") &&
+        req.body.hasOwnProperty("starsPoint") &&
         typeof req.body["starsPoint"] !== "number"
-      ) {
-        throw Error("Data types error ");
-      }
-    }
+        ) {
+          throw Error("Data types error ");
+        }
+        //provisional
+        if (
+          req.body.hasOwnProperty("userid") &&
+          typeof req.body["userid"] !== "number"
+          ) {
+            throw Error("Data types error");
+          }
+          
+        }
+        
+        let {
+          description,
+          starsPoints,
+          userid
+            } = req.body
+       
     let product = await Product.findOne({ where: { id: idProduct } });
-    !product && new Error("Product no found");
-    let review = await Review.create(req.body);
-    // dara un error si no hay una id de un usuario
-    User.findOne({ where: { id: id } }).then(
-      (result) => {
-        review.addUser(result);
-        product.setReview(review);
-        res.status(201).json({ success: true, inf: "Review add to Product" });
-      },
-      (error) => {
-        res
-          .status(400)
-          .json({ success: false, inf: "user nof found: " + error });
-      }
-    );
+     !product && new Error("Product no found");
+    
+   let user = await User.findOne({ where: { id: userid } });
+     !user && new Error("User no found");
+    
+    
+    // return res.send(product)
+  
+    let review = await UserReviews.create({
+      description,
+      starsPoints,
+      user_id:userid,
+      product_id: idProduct
+    });
+    
+    res.status(201).json({ success: true, inf: "Review add to Product" });
+  
   } catch (e) {
     res.status(400).json({ success: false, inf: e });
-  }
-};
-
-const OrdersUser = async (req, res) => {
-  const { first_name, last_name } = req.body;
-  try {
-    const Myorders = await User.findAll({
-      include: {
-        model: OrderDetails,
-        as: "PurchaseOrder",
-      },
-    });
-
-    if (first_name && last_name) {
-      const map = Myorders.map((e) => e.dataValues);
-      const myOrder = map.filter(
-        (e) =>
-          e.first_name.toLowerCase() === first_name.toLowerCase() &&
-          e.last_name.toLowerCase() === last_name.toLowerCase()
-      );
-      res.status(200).send(myOrder);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(error);
   }
 };
 
@@ -506,23 +506,65 @@ const validate = async (req, res) => {
   res.send('error: invalid query')
 }
 
-async function addToWhishlist(req, res) {
-  const { userId, productId } = req.body;
-  console.log(userId, "prueba");
-  try {
-    // const user = await User.findOne({where: { id: userId }})
-    console.log(userId, "prueba");
-    res.send("hola");
 
+const getUserDetails = async (req, res) => {
+
+}
+const orderHistory = async (req, res) => {
+  const { userid } = req.params;
+  console.log(userid)
+
+  try {
+    let userOrders = await OrderDetails.findAll({
+      where: {user_id: userid},
+      include: { model: OrderItems, }
+    });
+    const response = await Promise.all(userOrders.map(async order => {
+      let payment = {}
+      if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
+      return {
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        payment: {
+          amount: payment.amount,
+          provider: payment.provider,
+          status: payment.status
+        },
+        orderItems: await Promise.all(order.orderItems.map(async item => {
+          let product = await Product.findByPk(item.product_id)
+          return {product: product.name, quantity: item.quantity}
+        })),
+      }
+    })) 
+    res.status(200).send(response);
   } catch (err) {
-    console.log(err, "prueba");
-    res.json({ message: err });
+    console.log(err);
+    res.status(404).send(err);
   }
+
+};
+
+const userReviews = async (req, res) => {
+  const {userid} = req.params;
+  
+  try {
+    let reviews = await UserReviews.findAll({
+      where: {user_id: userid}
+    })
+    res.json(reviews)
+  } catch(err) {
+    console.log(err)
+  }
+
 }
 
 module.exports = {
   getUsers,
-  OrdersUser,
+  getUserDetails,
+  orderHistory,
+  userReviews,
   addAdress,
   postReviewProduct,
   createUser,
