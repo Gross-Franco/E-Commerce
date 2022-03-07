@@ -1,10 +1,12 @@
 require("dotenv").config();
 const { Op } = require("sequelize");
+var nodemailer = require("nodemailer");
 
 const {
   ProductCategory,
   ProductInventory,
   Product,
+  User,
 } = require("../../db.js");
 
 const getAllProducts = async (req, res) => {
@@ -89,9 +91,76 @@ const removeCategoryFromProduct = async (productid, category) => {
 const editProduct = async (req, res, next) => {
     const { id, name, image, description, price, SKU, category, quantity } = req.body;
     try {
-      const newInventory = await ProductInventory.create({
-        quantity,
-      });
+      const product = await Product.findOne({
+        where: {
+          id: id
+        },
+        include: {model: ProductCategory}
+      })
+      //we are going to send an email to users that had a product on wishlist that had 0 inventory
+      const productInventory = await ProductInventory.findOne({
+        where:{
+          id: product.inventory_id
+        }
+      })
+      if(productInventory.quantity === 0 && quantity >= 1){
+
+        await productInventory.set({
+          quantity: quantity
+        })
+        productInventory.changed('quantity', true);
+        productInventory.save()
+
+        const users = await User.findAll();
+
+        const usersMap = users.map(user => user.dataValues)
+        // console.log(usersMap[0])
+  
+        usersMap.forEach(user => {
+        if(user.wishlist){
+          // console.log(user)
+          var transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            secure: true, // true for 465, false for other ports
+            tls: {
+              rejectUnauthorized: false,
+            },
+            auth: {
+              user: process.env.MAIL_USER, 
+              pass: process.env.MAIL_PASS,
+            },
+          });
+          const options = {
+            from: "HENRY e-Commerce <" + process.env.MAIL_USER + ">",
+            to: user.email,
+            subject: "Your desired item is in stock",
+            html: `<h2>Come buy ${product.name}<h2>
+                  <p>This email is to let you know we have your desired item in stock<p>
+                `,
+          };
+            // this function sends the email using the information for options
+            transporter.sendMail(options, function (err, info) {
+              if (err) {
+                console.log(err)
+                return;
+              }
+              console.log('email sent ' + info.response)
+              // res.json({ message: `sent user wishlist : ${result.receipt_email}` })
+            })
+            }
+      })
+      }else {
+  
+      await productInventory.set({
+          quantity: quantity
+        })      
+        // res.json({ msg: "increased inventory", product });
+      }
+      productInventory.changed('quantity', true);
+      await productInventory.save()
+
+      
       const productToUpdate = await Product.findOne({
         where: {
           id: id
@@ -104,7 +173,6 @@ const editProduct = async (req, res, next) => {
         description: description,
         price: price,
         SKU: SKU,
-        inventory_id: newInventory.id
       })
       await productToUpdate.save();
       
@@ -175,13 +243,59 @@ const searchProductName = async (req, res) => {
 const addToInvetory = async (req, res) => {
     let { quantity, id } = req.body;
   
-    let product = await ProductInventory.findOne({
-      where: { id: id },
+    //we are goin to send an email to user when a product on their whislist gets an incremnet if it was a 0 inventory
+    let productat0 = await ProductInventory.findOne({
+      where: { id: id, quantity: 0 },
     });
-  
-    await product.increment("quantity", { by: quantity });
-  
-    res.json({ msg: "increased inventory", product });
+    if(!productat0){
+
+    await productat0.increment("quantity", { by: quantity });
+
+    User.ForEach(user => {
+      if(user.wishlist){
+        console.log("test", result)
+        var transporter = nodemailer.createTransport({
+          host: MAIL_HOST,
+          port: MAIL_PORT,
+          secure: true, // true for 465, false for other ports
+          tls: {
+            rejectUnauthorized: false,
+          },
+          auth: {
+            user: MAIL_USER, 
+            pass: MAIL_PASS,
+          },
+        });
+        const options = {
+          from: "HENRY e-Commerce <" + MAIL_USER + ">",
+          to: result.receipt_email,
+          subject: "Your desired item is in stock",
+          html: `<h2>Come buy ${productat0.name}<h2>
+                <p>This email is to let you know we have your desired item in stock<p>
+              `,
+        };
+          // this function sends the email using the information for options
+          transporter.sendMail(options, function (err, info) {
+            if (err) {
+              console.log(err)
+              return;
+            }
+            console.log('email sent ' + info.response)
+            res.json({ message: `sent user wishlist : ${result.receipt_email}` })
+          })
+          res.json({ msg: "increased inventory", productat0 });}
+    })
+    }else {
+
+      let product = await ProductInventory.findOne({
+        where: { id: id, quantity: 0 },
+      });
+      await product.increment("quantity", { by: quantity });
+      
+      
+      
+      res.json({ msg: "increased inventory", product });
+    }
 };
   
 const removeFromInvetory = async (req, res) => {

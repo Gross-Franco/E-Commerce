@@ -506,6 +506,7 @@ const validate = async (req, res) => {
   res.send('error: invalid query')
 }
 
+
 const getUserDetails = async (req, res) => {
 
 }
@@ -573,4 +574,5 @@ module.exports = {
   passwordResetToken,
   confirm,
   validate,
+  // addToWhishlist
 };
