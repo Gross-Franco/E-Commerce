@@ -25,6 +25,7 @@ const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
 const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails");
+const { mockreviews } = require("./src/mockData/mockreviews")
 
 const {
   conn,
@@ -34,7 +35,8 @@ const {
   Product,
   ProductCategory,
   ProductInventory,
-  PaymentDetails
+  PaymentDetails,
+  UserReviews
 } = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
 const { PORT, TESTING } = process.env;
@@ -70,6 +72,9 @@ conn.sync({ force: TESTING || false }).then(() => {
       })
       .then(() => {
         return OrderItems.bulkCreate(mockorderitems)
+      })
+      .then(() => {
+        return UserReviews.bulkCreate(mockreviews)
       })
       .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console

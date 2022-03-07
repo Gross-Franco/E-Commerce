@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getProductId, searchProductName, getProducts, filterByCategory } = require('./controller');
+const { getProductId, searchProductName, getProducts, filterByCategory, getProductReviews } = require('./controller');
 
 
 // Importar todos los routers;

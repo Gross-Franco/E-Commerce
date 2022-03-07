@@ -5,8 +5,10 @@ const {
   UserAddress,
   UserPayment,
   Product,
-  Review,
+  UserReviews,
   OrderDetails,
+  OrderItems,
+  PaymentDetails,
 } = require("../../db.js");
 
 const bcrypt = require("bcrypt");
@@ -337,31 +339,6 @@ const postReviewProduct = async (req, res) => {
   }
 };
 
-const OrdersUser = async (req, res) => {
-  const { first_name, last_name } = req.body;
-  try {
-    const Myorders = await User.findAll({
-      include: {
-        model: OrderDetails,
-        as: "PurchaseOrder",
-      },
-    });
-
-    if (first_name && last_name) {
-      const map = Myorders.map((e) => e.dataValues);
-      const myOrder = map.filter(
-        (e) =>
-          e.first_name.toLowerCase() === first_name.toLowerCase() &&
-          e.last_name.toLowerCase() === last_name.toLowerCase()
-      );
-      res.status(200).send(myOrder);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(error);
-  }
-};
-
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -506,9 +483,64 @@ const validate = async (req, res) => {
   res.send('error: invalid query')
 }
 
+const getUserDetails = async (req, res) => {
+
+}
+const orderHistory = async (req, res) => {
+  const { userid } = req.params;
+  console.log(userid)
+
+  try {
+    let userOrders = await OrderDetails.findAll({
+      where: {user_id: userid},
+      include: { model: OrderItems, }
+    });
+    const response = await Promise.all(userOrders.map(async order => {
+      let payment = {}
+      if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
+      return {
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        payment: {
+          amount: payment.amount,
+          provider: payment.provider,
+          status: payment.status
+        },
+        orderItems: await Promise.all(order.orderItems.map(async item => {
+          let product = await Product.findByPk(item.product_id)
+          return {product: product.name, quantity: item.quantity}
+        })),
+      }
+    })) 
+    res.status(200).send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send(err);
+  }
+
+};
+
+const userReviews = async (req, res) => {
+  const {userid} = req.params;
+  
+  try {
+    let reviews = await UserReviews.findAll({
+      where: {user_id: userid}
+    })
+    res.json(reviews)
+  } catch(err) {
+    console.log(err)
+  }
+
+}
+
 module.exports = {
   getUsers,
-  OrdersUser,
+  getUserDetails,
+  orderHistory,
+  userReviews,
   addAdress,
   postReviewProduct,
   createUser,

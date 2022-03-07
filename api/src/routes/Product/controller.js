@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { Op } = require("sequelize");
-const { Discount, ProductCategory, ProductInventory, Product } = require("../../db.js");
+const { Discount, ProductCategory, ProductInventory, Product, UserReviews, User } = require("../../db.js");
 
 const getProducts = async (req, res, next) => {
 	try {
@@ -81,13 +81,22 @@ const getProductId = async (req, res) => {
 			where: {
 				id:id
 			},
-			include: {
-				model: ProductCategory
-			}
+			include: [
+				{
+					model: ProductCategory
+				},
+			]
 		})
 		let inventory = await ProductInventory.findOne({
 			where: { id: productDetail.inventory_id },
 		});
+		let reviews = await UserReviews.findAll({
+			where: { product_id: id },
+			include: {
+				model: User,
+				attributes: ['username']
+			}
+		})
 		let response = {
 			id: productDetail.id,
 			name: productDetail.name,
@@ -95,8 +104,15 @@ const getProductId = async (req, res) => {
 			description: productDetail.description,
 			SKU: productDetail.SKU,
 			price: productDetail.price,
-			category: productDetail.productCategories.map((x) => x.name),
 			quantity: inventory.quantity,
+			category: productDetail.productCategories.map((x) => x.name),
+			reviews: reviews.map(r => {
+				return {
+					id: r.dataValues.id, 
+					description: r.dataValues.description,
+					starsPoints: r.dataValues.starsPoints,
+					user: r.dataValues.user.dataValues.username}
+			})
 		};
 		res.json(response);
 	} catch (err) {
@@ -141,6 +157,19 @@ const searchProductName = async (req, res) => {
 		res.status(404).send(err);
 	}
 };
+
+// const getProductReviews = async (req, res) => {
+// 	const {productid} = req.params;
+
+// 	try {
+// 		const reviews = await UserReviews.findAll({
+// 			where: {product_id: productid}
+// 		})
+// 		res.json(reviews)
+// 	} catch(err) { 
+// 		console.log(err)
+// 	}
+// }
 
 module.exports = {
 	getProducts,
