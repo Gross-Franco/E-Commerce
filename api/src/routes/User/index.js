@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const { authent } = require("../../middlewares/auth/auth");
 
-const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, OrdersUser, forgotPassword, passwordResetToken, validate } = require("./controller");
+const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, OrdersUser, forgotPassword, passwordResetToken, validate} = require("./controller");
+const { removeFromWishlist, addToWishlist } = require("./controllerWishlist");
 
 
 // Importar todos los routers;
@@ -19,7 +20,13 @@ userRouter.get('/confirm/:token', confirm);
 userRouter.post('/addPayment', addPayment)
 userRouter.get('/ordersuser', OrdersUser)
 userRouter.post('/resetpassword', forgotPassword);
-userRouter.post('/:token', passwordResetToken)
-userRouter.get('/validate', validate)
+userRouter.get('/validate', validate);
+
+userRouter.post('/removeFromWishlist', removeFromWishlist);
+userRouter.post('/addToWishlist', addToWishlist);
+
+
+//esta ruta debe ir al final 
+userRouter.post('/:token', passwordResetToken);
 
 module.exports = userRouter;

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { Op } = require("sequelize");
+var nodemailer = require("nodemailer");
 
 const {
   ProductCategory,
@@ -175,11 +176,22 @@ const searchProductName = async (req, res) => {
 const addToInvetory = async (req, res) => {
     let { quantity, id } = req.body;
   
-    let product = await ProductInventory.findOne({
-      where: { id: id },
-    });
+    //we are goin to send an email to user when a product on their whislist gets an incremnet if it was a 0 inventory
+    // let productat0 = await ProductInventory.findOne({
+    //   where: { id: id, quantity: 0 },
+    // });
+    // if(!productat0){
+
+    // await productat0.increment("quantity", { by: quantity });
   
+    // res.json({ msg: "increased inventory", productat0 });
+    // }
+    let product = await ProductInventory.findOne({
+      where: { id: id, quantity: 0 },
+    });
     await product.increment("quantity", { by: quantity });
+
+
   
     res.json({ msg: "increased inventory", product });
 };

@@ -477,6 +477,20 @@ const validate = async (req, res) => {
   res.send('error: invalid query')
 }
 
+async function addToWhishlist(req, res) {
+  const { userId, productId } = req.body;
+  console.log(userId, "prueba");
+  try {
+    // const user = await User.findOne({where: { id: userId }})
+    console.log(userId, "prueba");
+    res.send("hola");
+
+  } catch (err) {
+    console.log(err, "prueba");
+    res.json({ message: err });
+  }
+}
+
 module.exports = {
   getUsers,
   OrdersUser,
@@ -489,4 +503,5 @@ module.exports = {
   passwordResetToken,
   confirm,
   validate,
+  // addToWhishlist
 };
