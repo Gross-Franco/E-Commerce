@@ -71,12 +71,7 @@ const Cart = ({ openModal, setOpenModal }) => {
               >
                 Continuar Comprando
               </Link>
-              <Link
-                to={"/checkout"}
-                className="modal-cart--footer-button checkout"
-              >
-                Checkout
-              </Link>
+              <StripeButton subtotal={subTotal}/>
             </div>
           </div>
         </div>
