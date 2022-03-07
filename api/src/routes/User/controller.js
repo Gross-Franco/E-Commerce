@@ -120,6 +120,7 @@ const createUser = async (req, res) => {
         username,
         email,
         userId: createdUser.dataValues.id,
+        isAdmin: false,
       };
 
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });

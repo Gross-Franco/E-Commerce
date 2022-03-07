@@ -53,11 +53,15 @@ const signin = (req, res, next) => {
         .then((user) => {
             if (bcrypt.compareSync(password, user.password)) {//Los usuarios creados con bulkcreate no estan hasheados
                 let token = createSession({ user_id: user.id, isAdmin: user.isAdmin });
-                setCookie(res, TOKEN_COOKIE, token, 1000 * 60 * 5);
-                return res.status(200).json({ message: "Ususario logeado correctamente", user });
+                User.findOne({
+                    where: {
+                        id: user.id
+                    }}).then(u => {
+                        return res.status(200).json({ success: true, message: "Sign in succesfully", user: u, token });
+                    })
             } else {
                 // si la contraseña comparada no son validas, reporto un error de validacion de password
-                return res.status(401).json({ msg: 'Invalid Password or Email' });
+                return res.status(401).json({ success: false, message: 'Invalid Password or Email' });
             }
         })
         .catch(err => {
@@ -76,12 +80,23 @@ const signout = (req, res) => {
 
 const checkSession = async (req, res) => {
     try {
-        console.log(req.permits);
-        if (req.permits) return res.status(200).json({ message: "open session" });
-        else {
-            let token = await createSession();
-            setCookie(res, TOKEN_COOKIE, token, 60000)
-            return res.status(201).json({ message: "session created" })
+        if (req.permits) {
+            let user = await User.findOne({
+                where: {
+                    id: req.permits.user_id
+                }})
+          return res
+            .status(200)
+            .json({
+              message: "Open session",
+              isAdmin: req.permits.isAdmin,
+              success: true,
+              user
+            });
+        } else {
+          let token = createSession();
+          setCookie(res, TOKEN_COOKIE, token, 1000 * 60 * 5);
+          return res.status(201).json({ message: "session created" });
         }
     } catch (error) {
         console.error(error);
