@@ -5,6 +5,7 @@ import { getLocalStorage } from "../Redux/Actions/actions";
 import { IoMdClose } from "react-icons/io";
 import { BsBag } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import StripeButton from "../components/StripeButton";
 
 const Cart = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch();
