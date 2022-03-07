@@ -12,7 +12,7 @@ const reducer = (state = initialState, { type, payload }) => {
       console.log(payload)
       return {
         ...state,
-        user: payload,
+        user: payload.data.user,
         response: {
           success: payload.success,
           message: payload.message,

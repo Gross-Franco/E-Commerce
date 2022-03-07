@@ -1,4 +1,4 @@
-const mockorderItems = [
+const mockorderitems = [
     {
         "quantity": 1000,
         "product_id": 1,
@@ -42,5 +42,5 @@ const mockorderItems = [
 ]
 
 module.exports = {
-mockorderItems
+    mockorderitems
 }

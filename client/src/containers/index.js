@@ -17,5 +17,7 @@ export { default as Verificate } from './Verificate';
 export { default as Carrousel } from './Carrousel';
 export { default as OrderDetails } from './orderDetails';
 export { default as HomeCategories } from './HomeCategories';
+export { default as HomeProducts } from './HomeProducts';
 export { default as ProductDetail } from './ProductDetail';
 export { default as Modal } from './Modal';
+export { default as InputRow } from './InputRow';

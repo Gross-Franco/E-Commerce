@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { CreateCategory } from "../components";
-import { OrderDetails } from "./";
+import { BackButton, CreateCategory, Input } from "../components";
+import { OrderDetails, InputRow } from "./";
+import { validator } from "../helpers/formValidation/createproduct";
 
-import { createProduct, getCategories, updateProduct, setAddOrUpdate } from "../Redux/Actions/actions";
+import {
+  createProduct,
+  getCategories,
+  updateProduct,
+  setAddOrUpdate,
+} from "../Redux/Actions/actions";
 
 const AddContainer = ({ option, setIsOpen }) => {
   const { categories } = useSelector((state) => state.categories);
@@ -22,8 +27,21 @@ const AddContainer = ({ option, setIsOpen }) => {
   };
 
   const [form, setForm] = useState(initialState);
+  const [errors, setErrors] = useState({
+    price: false,
+    SKU: false,
+    quantity: false,
+    image: false,
+  });
   const [openDropdown, setOpenDropdown] = useState(false);
   const dispatch = useDispatch();
+
+  const validate = async (e) => {
+    setErrors({
+      ...errors,
+      [e.target.name]: await validator(e.target.name, e.target.value),
+    });
+  };
 
   const handleChange = (e) => {
     if (e.target.name === "category") {
@@ -53,7 +71,7 @@ const AddContainer = ({ option, setIsOpen }) => {
       setForm(initialState);
       setIsOpen(false);
     } else {
-      dispatch(updateProduct({...form, id: addOrUpdate.id}));
+      dispatch(updateProduct({ ...form, id: addOrUpdate.id }));
       dispatch(setAddOrUpdate("add"));
       setForm(initialState);
       setIsOpen(false);
@@ -71,20 +89,16 @@ const AddContainer = ({ option, setIsOpen }) => {
 
   if (option === "Categorias")
     return <CreateCategory option={option} setIsOpen={setIsOpen} />;
-    
+
   if (option === "Pedidos")
     return <OrderDetails option={option} setIsOpen={setIsOpen} />;
 
   return (
     <div className="add--container">
-      <div className="add--back">
-        <button onClick={handleClick} className="add--back-btn">
-          <BsArrowLeftShort /> {option}
-        </button>
-      </div>
+      <BackButton option={option} handleClick={handleClick} />
       <form className="add-form--container" onSubmit={handleSubmit}>
         <header>
-          <h2> {`${addOrUpdate === 'add' ? 'Añadir' : 'Editar'} ` + option}</h2>
+          <h2> {`${addOrUpdate === "add" ? "Añadir" : "Editar"} ` + option}</h2>
         </header>
         <div className="add-form--inputs">
           <div className="add-form--main-space">
@@ -94,48 +108,40 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <h3>Detalles</h3>
                 </header>
               </div>
-              <div className="add-form--input-wrapper_column">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  value={form.name}
-                  name="name"
-                  className="add-form--input"
-                  onChange={handleChange}
+              <Input
+                value={form.name}
+                handleChange={handleChange}
+                label="Nombre"
+                name="name"
+              />
+              <InputRow>
+                <Input
+                  value={form.SKU}
+                  handleChange={handleChange}
+                  label="SKU"
+                  name="SKU"
+                  handleBlur={validate}
                 />
-              </div>
-              <div className="add-form--input-wrapper_row">
-                <div className="add-form--input-wrapper_column">
-                  <label>SKU</label>
-                  <input
-                    type="text"
-                    value={form.SKU}
-                    name="SKU"
-                    className="add-form--input"
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="add-form--input-wrapper_column">
-                  <label>Cantidad</label>
-                  <input
-                    type="number"
-                    value={form.quantity}
-                    min="0"
-                    name="quantity"
-                    className="add-form--input"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div className="add-form--input-wrapper_column">
-                <label>Descripción</label>
-                <textarea
-                  name="description"
-                  value={form.description}
-                  className="add-form--input"
-                  onChange={handleChange}
+                {errors.SKU && <span>{errors.SKU}</span>}
+                <Input
+                  value={form.quantity}
+                  handleChange={handleChange}
+                  label="Cantidad"
+                  name="quantity"
+                  type="number"
+                  min="0"
+                  onBlur={validate}
                 />
-              </div>
+
+                {errors.quantity && <span>{errors.quantity}</span>}
+              </InputRow>
+              <Input
+                value={form.description}
+                handleChange={handleChange}
+                label="Descripción"
+                name="description"
+                type="textarea"
+              />
             </div>
             <div className="add-form--input-wrapper">
               <div>
@@ -143,17 +149,17 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <h3>Precio</h3>
                 </header>
               </div>
-              <div className="add-form--input-wrapper_column">
-                <label>Precio</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={form.price}
-                  name="price"
-                  className="add-form--input"
-                  onChange={handleChange}
-                />
-              </div>
+              <Input
+                value={form.price}
+                handleChange={handleChange}
+                label="Precio"
+                name="price"
+                type="number"
+                step="0.01"
+                min="0"
+                onBlur={validate}
+              />
+              {errors.price && <span>{errors.price}</span>}
             </div>
             <div className="add-form--input-wrapper">
               <div>
@@ -161,16 +167,14 @@ const AddContainer = ({ option, setIsOpen }) => {
                   <h3>Galeria de imagenes</h3>
                 </header>
               </div>
-              <div>
-                <input
-                  type="text"
-                  name="image"
-                  value={form.image}
-                  className="add-form--input"
-                  placeholder="https://ipsum/200/300"
-                  onChange={handleChange}
-                />
-              </div>
+              <Input
+                value={form.image}
+                handleChange={handleChange}
+                label="Imagen"
+                name="image"
+                onBlur={validate}
+              />
+              {errors.image && <span>{errors.image}</span>}
             </div>
           </div>
           <div className="add-form--side-space">
@@ -182,7 +186,6 @@ const AddContainer = ({ option, setIsOpen }) => {
               >
                 Guardar cambios
               </button>
-              <hr />
               <div className="add-form--input-wrapper_row">
                 <input type="checkbox" />
                 <label>Inactivo </label>

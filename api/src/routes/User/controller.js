@@ -76,17 +76,44 @@ const addPayment = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  let { username, password, first_name, last_name, email } = req.body;
-
+  
+ 
+  let { 
+     first_name,
+    last_name,
+    email,
+    password,
+    // verificatePassword,
+    paymentMethod, 
+    username,
+    address,
+    phoneNumber,
+    postalNumber } = req.body;
+    // res.send( {first_name,
+    //   last_name,
+    //   email,
+    //   password,     
+    //   paymentMethod, 
+    //   username,
+    //   address,
+    //   phoneNumber,
+    //   postalNumber});
   try {
 
     let createdUser = await User.create({
-      username,
-      password,
       first_name,
       last_name,
       email,
+      password,   
+      paymentMethod, 
+      username,
+      address,
+      phoneNumber,
+      postalNumber
     });
+    // res.send(createdUser)
+
+    // res.send(createdUser)
     if (createdUser) {
       //generar token
       const userForToken = {
@@ -94,8 +121,12 @@ const createUser = async (req, res) => {
         email,
         userId: createdUser.dataValues.id,
       };
+
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
+     
       //enviar mail
+      let testAccount = await nodemailer.createTestAccount();
+
       // set up nodemailer configs
       var transporter = nodemailer.createTransport({
         host: MAIL_HOST,
@@ -105,8 +136,8 @@ const createUser = async (req, res) => {
           rejectUnauthorized: false,
         },
         auth: {
-          user: MAIL_USER, //email created to send the emails from
-          pass: MAIL_PASS,
+          user: testAccount.user, //email created to send the emails from
+          pass: testAccount.pass,
         },
       });
 
@@ -176,9 +207,6 @@ const confirm = async (req, res) => {
     const { username, email, userId } = data;
 
     // Verificar existencia del usuario
-    //
-    //  const user = await User.findOne({ email }) || null;
-
     const user = await User.findOne({where: { email: email }}) || null;
 
     if (user === null) {
@@ -227,6 +255,7 @@ const postLogin = (req, res) => {
       .then((result) => {
         // si existe el usuario registrado comparo la contraseña tipeada con la que esta en la base de datos
         const verify = bcrypt.compareSync(password, result.password);
+        console.log('Verify: ', verify)
         if (verify) {
           // si la contraseña es correcta
           // extraigo los datos necesarios para el front-end y el token

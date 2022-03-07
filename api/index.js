@@ -19,7 +19,7 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { mockorders } = require("./src/mockData/mockorders");
-const { mockorderItems } = require("./src/mockData/mockorderItems")
+const { mockorderitems } = require("./src/mockData/mockorderItems")
 const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
@@ -61,6 +61,15 @@ conn.sync({ force: TESTING || false }).then(() => {
       })
       .then(() => {
         return User.bulkCreate(mockusers);
+      })
+      .then(() => {
+        return PaymentDetails.bulkCreate(mockpaymentdetails)
+      })
+      .then(() => {
+        return OrderDetails.bulkCreate(mockorders)
+      })
+      .then(() => {
+        return OrderItems.bulkCreate(mockorderitems)
       })
       .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console

@@ -3,11 +3,13 @@ import { BsArrowLeftShort } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { createCategory } from "../Redux/Actions/actions";
+import Input from "./Input";
 
 const CreateCategory = ({ option, setIsOpen }) => {
   const [form, setForm] = useState({
     name: "",
     description: "",
+    image: "",
   });
   const dispatch = useDispatch();
 
@@ -25,6 +27,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
     setForm({
       name: "",
       description: "",
+      image: "",
     });
     setIsOpen(false);
   };
@@ -48,15 +51,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
                   <h3>Detalles</h3>
                 </header>
               </div>
-              <div className="add-form--input-wrapper_column">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  name="name"
-                  className="add-form--input"
-                  onChange={handleChange}
-                />
-              </div>
+              <Input value={form.name} handleChange={handleChange} label="Nombre" name="name" />
               <div className="add-form--input-wrapper_column">
                 <label>Descripción</label>
                 <textarea name="description" className="add-form--input" onChange={handleChange} />
@@ -69,7 +64,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
                 </header>
               </div>
               <div>
-                <input type="file" className="add-form--input" />
+                <input type="text" className="add-form--input" />
               </div>
             </div>
           </div>
@@ -83,7 +78,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
                 Guardar cambios
               </button>
             </div>
-            <div className="add-form--input-wrapper">
+            {/* <div className="add-form--input-wrapper">
               <header>
                 <h3>Categoria Padre</h3>
               </header>
@@ -93,7 +88,7 @@ const CreateCategory = ({ option, setIsOpen }) => {
                   Elige categoria <RiArrowDropDownLine />{" "}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </form>

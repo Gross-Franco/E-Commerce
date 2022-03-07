@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
     {
       username: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false, 
         unique: true,
       },
 
@@ -29,11 +29,13 @@ module.exports = (sequelize) => {
       },
       first_name: {
         type: DataTypes.STRING,
+        defaultValue: "",
         allowNull: false,
       },
 
       last_name: {
         type: DataTypes.STRING,
+        defaultValue: "",
         allowNull: false,
       },
 
@@ -64,20 +66,48 @@ module.exports = (sequelize) => {
       verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+      },      
+      perfilImg: {
+        type: DataTypes.STRING,
+        defaultValue: "",
+        allowNull: true,
+      },
+      paymentMethod: {
+        type: DataTypes.ENUM,
+        values: [
+            'debito',
+            'credito',
+            'PayPal',
+        ],
+        defaultValue: 'debito'
+      },
+      address: {
+        type: DataTypes.STRING,
+        defaultValue: null,     
       },
       wishlist:{
         type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: true,
       },
+      phoneNumber: {
+        type: DataTypes.BIGINT ,
+        defaultValue: 0,       
+        allowNull: true,   
+      },
+      postalNumber: {
+        type: DataTypes.INTEGER,       
+        allowNull: true,   
+      },
+  
     },
     {
       timestamps: false,
       hooks: {
-        beforeCreate: (user) => {
-          if (user.password) {
-            user.password = bcrypt.hashSync(user.password, 10);
-          }
-        },
+        // beforeCreate: (user) => {
+        //   if (user.password) {
+        //     user.password = bcrypt.hashSync(user.password, 10);
+        //   }
+        // },
         beforeUpdate: (user) => {
           if (user.password) {
             user.password = bcrypt.hashSync(user.password, 10);

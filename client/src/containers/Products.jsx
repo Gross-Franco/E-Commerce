@@ -7,7 +7,7 @@ const Products = () => {
 
   const {products} = useSelector((state) => state.products);
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     if(products.length === 0) dispatch(getProductsPublic());
   }, [])
