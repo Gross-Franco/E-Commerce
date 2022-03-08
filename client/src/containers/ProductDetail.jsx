@@ -44,10 +44,10 @@ export default function ProductDetail() {
   let { login } = useSelector((state) => state.session);
 
   useEffect(() => {
-
     dispatch(searchProductId(id));
   }, []);
 
+  productDetail.reviews = ['TODAS LAS REVIEWS']
 
   function Favorite(e) {
     if (heart === false)
@@ -146,13 +146,13 @@ export default function ProductDetail() {
               <br />
               <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Reviewers</Form.Label>
+                  <Form.Label>Reviews</Form.Label>
                   <Form.Control as="textarea" rows={3} />
                 </Form.Group>
-                <h6 type="input" style={{ cursor: "pointer" }}> Response</h6>
+                <h6 type="input" style={{ cursor: "pointer" }}>Post</h6>
               </Form>
             </Col>
-
+            
             <Col
               style={{
                 position: "relative",

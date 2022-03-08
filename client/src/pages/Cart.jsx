@@ -5,6 +5,7 @@ import { getLocalStorage } from "../Redux/Actions/actions";
 import { IoMdClose } from "react-icons/io";
 import { BsBag } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import StripeButton from "../components/StripeButton";
 
 const Cart = ({ openModal, setOpenModal }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Cart = ({ openModal, setOpenModal }) => {
   useEffect(() => {
     dispatch(getLocalStorage());
   }, []);
+
 
   const handleCompra = (items) => {
     // dispatch(createOrder(items)) // falta la action de createOrder en redux
@@ -71,12 +73,7 @@ const Cart = ({ openModal, setOpenModal }) => {
               >
                 Continuar Comprando
               </Link>
-              <Link
-                to={"/checkout"}
-                className="modal-cart--footer-button checkout"
-              >
-                Checkout
-              </Link>
+              <StripeButton subTotal={subTotal} products={cartStorage} />
             </div>
           </div>
         </div>

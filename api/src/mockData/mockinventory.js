@@ -3,7 +3,7 @@ const mockinventory = [
     quantity: "12",
   },
   {
-    quantity: "10",
+    quantity: "0",
   },
   {
     quantity: "34",

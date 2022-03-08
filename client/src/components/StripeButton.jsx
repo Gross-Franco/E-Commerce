@@ -3,13 +3,22 @@ import StripeCheckout from 'react-stripe-checkout';
 
 //the test card to use on stripe is # 4242424242424242 expiration date needs to be in the future las number any 3
 
-const StripeButton = () =>{
+const StripeButton = (subtotal) =>{
     //set up products, below is just example, at the moment we can only take 1 product at a time for the back end to function properly, so the price in the state needs to be final
+
+
     const[product, setProduct] = useState({
-        id: 1,
-        name: 'Product 1',
-        price: 10,
-        description: 'test product description'
+        id: subtotal.products.map((product) =>{
+            return product.id
+        }),
+        quantity: subtotal.products.map((product) =>{
+            return product.quantity
+        }),
+        name: subtotal.products.map((product) =>{
+            return product.name
+        }).toString(),
+        price: Math.floor(subtotal.subTotal),
+        description: 'All cart items'
     });
     //the token is automatically created by stripe we just need to call it
     const makePayment = token =>{
