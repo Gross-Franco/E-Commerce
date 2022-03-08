@@ -6,6 +6,7 @@ const productRouter = require("./Product/index.js");
 const shoppingRouter = require("./Shoping/index.js");
 const checkoutRouter = require("./payment/index.js");
 const authRouter = require("./Auth/index.js");
+const { authenticate } = require("../middlewares/auth/authentication.js");
 
 const router = Router();
 

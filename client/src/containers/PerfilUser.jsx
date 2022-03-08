@@ -86,7 +86,6 @@ useLayoutEffect(()=>{
 useEffect(() => {
 
   ChoiseDir()
-  console.log(user)
   // if(!user.perilImg)
   // setSelectedFile("https://publicidaddigital.ucentral.edu.co/wp-content/uploads/sites/6/2021/08/Sin-perfil.jpg")
   

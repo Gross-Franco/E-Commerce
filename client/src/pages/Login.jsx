@@ -26,11 +26,11 @@ const Login = () => {
     dispatch(signIn(form));
   };
 
-  if (response?.message === "Login succesfully") {
-    setTimeout(() => {
-      navigate("/");
-    }, 2500);
-  }
+  useEffect(() => {
+    if(login) {
+      navigate("/perfilUser");
+    }
+  }, [response]);
 
   useEffect(() => {
     if (response) {
@@ -52,10 +52,7 @@ const Login = () => {
       )}
 
       <div className="register--main--container">
-        <Hero
-          title="Login"
-          subtitle="Please enter your credentials to login"
-        />
+        <Hero title="Login" subtitle="Please enter your credentials to login" />
         <form className="register--main--form">
           <input
             type="text"
