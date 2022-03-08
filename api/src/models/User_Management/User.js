@@ -85,6 +85,10 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         defaultValue: null,     
       },
+      wishlist:{
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: true,
+      },
       phoneNumber: {
         type: DataTypes.BIGINT ,
         defaultValue: 0,       
@@ -94,8 +98,7 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,       
         allowNull: true,   
       },
-    
-    
+  
     },
     {
       timestamps: false,

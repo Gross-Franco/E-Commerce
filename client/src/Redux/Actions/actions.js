@@ -11,6 +11,7 @@ import {
   GET_PRODUCTS_PUBLIC,
   UPDATE_PRODUCT,
   SEARCH_PRODUCT_NAME_PUBLIC,
+  PRODUCT_REVIEWS,
 
   // Categories
   GET_CATEGORIES,
@@ -24,6 +25,8 @@ import {
   PROMOTE_USER,
   RESET_PASSWORD,
   SIGN_IN,
+  USER_ORDERS,
+  USER_REVIEWS,
 
   // Orders
   GET_ORDERS,
@@ -51,8 +54,6 @@ import {
   SUCCESS_SESSION,
   FAIL_SESSION
 } from "./actionTypes";
-
-const URL = "http://localhost:3001";
 
 export const getProducts = () => {
   return async (dispatch) => {
@@ -416,4 +417,18 @@ export const updateSubtotal = () => {
   return (dispatch) => {
     dispatch({ type: UPDATE_SUBTOTAL });
   };
+}
+
+export const userOrders = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/history/${userid}`); 
+    dispatch({ type: USER_ORDERS, payload: response.data });
+  }
+}
+
+export const userReviews = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/reviews/${userid}`); 
+    dispatch({ type: USER_REVIEWS, payload: response.data });
+  }
 }

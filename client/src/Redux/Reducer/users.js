@@ -2,13 +2,17 @@ import {
   CREATE_USER,
   GET_USERS,
   DELETE_USER,
-  PROMOTE_USER
+  PROMOTE_USER,
+  USER_REVIEWS,
+  USER_ORDERS
 } from "../Actions/actionTypes";
 
 const initialState = {
   users: [],
   response: null,
   loadUsers: true,
+  orders: [],
+  reviews: [],
 };
 
 const reducer = (state = initialState, {type, payload}) => {
@@ -41,6 +45,18 @@ const reducer = (state = initialState, {type, payload}) => {
       return {
         ...state,
         loadUsers: true
+      }
+
+    case USER_ORDERS:
+      return {
+        ...state,
+        orders: payload
+      }
+
+     case USER_REVIEWS:
+      return {
+        ...state,
+        reviews: payload
       }
 
     default:
