@@ -51,12 +51,12 @@ export default function Registro() {
   };
 
   const handleChange = (e) => {
-  console.log( e)
+  
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
-   console.log(errors)
+   
     e.preventDefault();
     if (!isFullfilled(form, errors)) {
       console.log("Hola mundo")

@@ -50,7 +50,10 @@ import {
   GET_LOCAL_STORAGE,
   DELETE_ITEM_LOCAL_STORAGE,
   EDIT_LOCAL_STORAGE_QTY,
-  UPDATE_SUBTOTAL
+  UPDATE_SUBTOTAL,
+
+  //reviwer
+  POST_REVIWER
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -203,6 +206,16 @@ export const getOrderId = (orderId) => {
     dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data });
   }
 }
+
+ 
+export const PostReviwer = (Reviwer) => {
+  return async (dispatch) => {
+    const response = await axios.post(`/user/post/postReview`, Reviwer);
+    // console.log(response)
+    // dispatch({ type: POST_REVIWER, payload: response.data});
+  }
+}
+
 
 
 export const createUser = ({
@@ -424,15 +437,21 @@ export const updateSubtotal = () => {
 }
 
 export const userOrders = (userid) => {
+  console.log(userid)
   return async (dispatch) => {
     const response = await axios.get(`/user/history/${userid}`); 
     dispatch({ type: USER_ORDERS, payload: response.data });
   }
 }
 
-export const userReviews = (userid) => {
+export const userReviews =  (userid) => {
+  // console.log(userid.id)
   return async (dispatch) => {
+    
     const response = await axios.get(`/user/reviews/${userid}`); 
+    
+    console.log("hola mundo K")
+
     dispatch({ type: USER_REVIEWS, payload: response.data });
   }
 }
