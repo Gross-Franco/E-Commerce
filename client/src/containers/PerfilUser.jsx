@@ -20,48 +20,39 @@ import {
   getProductsPublic,
   createShoppingSession,
   checkSession,
+  userDetails,
 } from "../Redux/Actions/actions";
 
 export default function PerfilUser() {
   //Desplazamiento
-  const [link, setLink] = useState();
+  const [link, setLink] = useState('Payments');
   const [text_1, setText_1] = useState("nav-link active");
   const [text_2, setText_2] = useState("nav-link ");
   const [text_3, setText_3] = useState("nav-link ");
   const [text_4, setText_4] = useState("nav-link ");
   const [text_5, setText_5] = useState("nav-link ");
 
-  const [Editar, setEditar] = useState(false);
+  // const [Editar, setEditar] = useState(false);
 
-  const [changeValues, setChangeValues] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    username: "",
-  });
+  // const [changeValues, setChangeValues] = useState({
+  //   first_name: "",
+  //   last_name: "",
+  //   email: "",
+  //   username: "",
+  // });
 
   //traer informacion del usuario.
-  let { user } = useSelector((state) => state.session);
-
+  const { user } = useSelector((state) => state.session);
+  const { details } = useSelector(state => state.users)
   let dispatch = useDispatch();
-
-  //editar informascion y guardarla.
-  //parcialmente hecho dejar para despues
-
-  // agregar funcionalidades de guardar foto.
-
-  const [selectedFile, setSelectedFile] = useState();
-
-
-
-  const changeHandler = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setSelectedFile(URL.createObjectURL(event.target.files[0]));
-    }
-    event.preventDefault();
-  };
-
-  // traser se las ordenes
+  
+  // const [selectedFile, setSelectedFile] = useState();
+  // const changeHandler = (event) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     setSelectedFile(URL.createObjectURL(event.target.files[0]));
+  //   }
+  //   event.preventDefault();
+  // };
 
   // agrgar cards  para
 
@@ -79,27 +70,19 @@ export default function PerfilUser() {
     else setText_5("nav-link active");
   }
 
-  useLayoutEffect(() => {
-    if (JSON.parse(localStorage.getItem("eCUs"))) {
-      let { Token } = JSON.parse(localStorage.getItem("eCUs"));
-      if (Token !== "") {
-        dispatch(checkSession(Token));
-      }
-    }
-  }, []);
-
   useEffect(() => {
     ChoiseDir();
-    console.log(user);
-    // if(!user.perilImg)
-    // setSelectedFile("https://publicidaddigital.ucentral.edu.co/wp-content/uploads/sites/6/2021/08/Sin-perfil.jpg")
   }, [link, user]);
 
-  function handleSubmit(e) {
-    console.log(changeValues);
-    setEditar(!Editar);
-    e.preventDefault();
-  }
+  useEffect(() => {
+    dispatch(userDetails(user.id))
+  },[])
+
+  // function handleSubmit(e) {
+  //   console.log(changeValues);
+  //   setEditar(!Editar);
+  //   e.preventDefault();
+  // }
 
   // Main Render
 
@@ -128,11 +111,11 @@ export default function PerfilUser() {
               >
                 <br />
                 <br />
-                {Editar ? (
+                {/* {Editar ? (
                   <div>
                     <Card.Img
                       variant="top"
-                      src={selectedFile}
+                      src={details.image}
                       style={{
                         margin: "auto",
                         // width: "100%",
@@ -151,11 +134,11 @@ export default function PerfilUser() {
                       className="filetype"
                     />
                   </div>
-                ) : (
+                ) : ( */}
                   <div>
                     <Card.Img
                       variant="top"
-                      src={selectedFile}
+                      src={details.image}
                       style={{
                         margin: "auto",
                         // width: "100%",
@@ -169,111 +152,11 @@ export default function PerfilUser() {
                       }}
                     />
                   </div>
-                )}
-
                 <br />
-                <h6> Profile photo.</h6>
-                <br />
-
-                <h6> Name: {user.first_name + " " + user.last_name}</h6>
-                <h6> Use-name: {user.username}</h6>
-                <br />
-                {Editar ? (
-                  <div>
-                    <Form onSubmit={handleSubmit}>
-                      <p
-                        style={{
-                          textAlign: "left",
-                        }}
-                      >
-                        informacion de Contacto
-                        <br /> Cellphone:{" "}
-                        <FormControl
-                          type="search"
-                          className="me-1"
-                          aria-label="Search"
-                          style={{ width: "50%" }}
-                        />
-                        <br /> Address1:{" "}
-                        <FormControl
-                          type="search"
-                          className="me-1"
-                          aria-label="Search"
-                          style={{ width: "50%" }}
-                        />
-                        <br /> Address2:
-                        <FormControl
-                          type="search"
-                          className="me-1"
-                          aria-label="Search"
-                          style={{ width: "50%" }}
-                        />
-                        <br /> Country:
-                        <FormControl
-                          type="search"
-                          className="me-1"
-                          aria-label="Search"
-                          style={{ width: "50%" }}
-                        />
-                        <br /> Postal:
-                        <FormControl
-                          type="search"
-                          className="me-1"
-                          aria-label="Search"
-                          style={{ width: "50%" }}
-                        />
-                        <br /> Email:
-                        <FormControl
-                          type="search"
-                          className="me-1"
-                          aria-label="Search"
-                          style={{ width: "50%" }}
-                          value={changeValues.email}
-                          onChange={(e) => {
-                            setChangeValues((prevState) => ({
-                              ...prevState,
-                              ["email"]: e.target.value,
-                            }));
-                          }}
-                        />
-                      </p>
-                      <h6> About me. </h6>
-                      <textarea name="" id="" cols="30" rows="10"></textarea>
-                      <br />
-                      <button type="submit" className="btn btn-secondary">
-                        Save
-                      </button>
-                    </Form>
-                  </div>
-                ) : (
-                  <div>
-                    <Form onSubmit={handleSubmit}>
-                      <p
-                        style={{
-                          textAlign: "left",
-                        }}
-                      >
-                        informacion de Contacto
-                        <br /> Cellphone:
-                        <br /> Address1:
-                        <br /> Address2:
-                        <br /> Country:
-                        <br /> Postal:
-                        <br /> Email: {user.email}
-                      </p>
-
-                      <h6> About me. </h6>
-                      <p> Without information about user.</p>
-                      <button type="submit" className="btn btn-secondary">
-                        Edit
-                      </button>
-                    </Form>
-                  </div>
-                )}
-
-                <br />
+                <h6> Name: {details.first_name + ' ' + details.last_name}</h6>
+                <h6> Username: {details.username}</h6>
+                <h6> Email: {details.email}</h6>
               </div>
-              <br />
             </Card>
           </Col>
 

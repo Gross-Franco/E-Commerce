@@ -20,6 +20,9 @@ import {
 
   // Users
   GET_USERS,
+  USER_DETAILS,
+  USER_ADDRESS,
+  USER_PAYMENTS,
   CREATE_USER,
   DELETE_USER,
   PROMOTE_USER,
@@ -420,6 +423,7 @@ export const editLocalQty = (id, qty) => {
     dispatch({ type: EDIT_LOCAL_STORAGE_QTY, payload: { id, qty } });
   };
 }
+
 export const updateSubtotal = () => {
   return (dispatch) => {
     dispatch({ type: UPDATE_SUBTOTAL });
@@ -458,5 +462,26 @@ export const removeFromWishlist = (userId, productId) => {
   return async (dispatch) => {
     const post = await axios.post(`/user/removeFromWishlist`, {userId, productId});
     dispatch({ type: REMOVE_WISHLIST, payload: post.data })
+  }
+}
+
+export const userDetails = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/details/${userid}`); 
+    dispatch({ type: USER_DETAILS, payload: response.data });
+  }
+}
+
+export const userAddress = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/address/${userid}`); 
+    dispatch({ type: USER_ADDRESS, payload: response.data });
+  }
+}
+
+export const userPayments = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/payments/${userid}`); 
+    dispatch({ type: USER_PAYMENTS, payload: response.data });
   }
 }

@@ -430,18 +430,31 @@ const forgotPassword = async (req, res) => {
 const getUserDetails = async (req, res ) => {
   // const { user_id } = req.permits;   // Real 
   const { userid } = req.params;       // Testing
-
   try {
-    const user = await User.findOne({
-      where:{id: userid},
-      include: [
-        {model: UserAddress},
-        {model: UserPayment},
-      ]
-    })
-    console.log(user.dataValues);
+    const user = await User.findByPk(userid)
     res.json(user)
+  } catch (err) {
+    console.log(err)
+  }
+}
 
+const getUserAddresses = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const addresses = await UserAddress.findAll({where: {user_id: userid}})
+    res.json(addresses)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getUserPayments = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const payments = await UserPayment.findAll({where: {user_id: userid}})
+    res.json(payments)
   } catch (err) {
     console.log(err)
   }
@@ -579,6 +592,8 @@ const userReviews = async (req, res) => {
 module.exports = {
   getUsers,
   getUserDetails,
+  getUserAddresses,
+  getUserPayments,
   orderHistory,
   userReviews,
   addAdress,

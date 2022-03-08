@@ -1,59 +1,107 @@
 import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishlist, userOrders, userReviews } from "../Redux/Actions/actions";
+import { useNavigate } from "react-router-dom";
+import { getWishlist, removeFromWishlist, userAddress, userOrders, userPayments, userReviews } from "../Redux/Actions/actions";
 
 export default function ProfileTables({ link, userid }) {
-  const { orders, reviews, wishlist, loadWishlist } = useSelector(
+  const { payments, address, orders, reviews, wishlist, loadWishlist } = useSelector(
     (state) => state.users
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (link === "Purchase history") {
+    console.log('Payments: ', payments)
+    console.log('Address: ', address)
+    console.log('Orders: ', orders)
+    console.log('Reviews: ', reviews)
+    console.log('Wishlist: ', wishlist)
+  },[link])
+  
+  useEffect(() => {
+    if (link === "Order history") {
       dispatch(userOrders(userid));
     }
     if (link === "Reviews") {
       dispatch(userReviews(userid));
     }
-    if (link === "Whishlist" && loadWishlist) {
+    if (link === "Wishlist" && loadWishlist) {
       dispatch(getWishlist(userid));
     }
     if (link === "Payments") {
-      // dispatch(userPayments(userid)); // falta
+      dispatch(userPayments(userid)); 
     }
     if (link === "Addresses") {
-      // dispatch(userAddresses(userid));  // falta
+      dispatch(userAddress(userid));
     }
-  }, []);
+  }, [link, loadWishlist]);
+
+  const handleRemove = (productid) => {
+    dispatch(removeFromWishlist(userid, productid))
+  }
+
+  const handleNavigate = (productid) => {
+    
+  }
 
   if (link === "Payments") {
     return (
-      <p
-        style={{
-          position: "relative",
-          right: "-20px",
-        }}
-      >
-        preferencia <br />
-        metodo de pago <br />
-        cambiar contraseña <br />
-        borrar cuenta <br />
-      </p>
+      <div>
+        Metodos de pago
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Tipo</th>
+              <th scope="col">Provedor</th>
+              <th scope="col"># de cuenta</th>
+              <th scope="col">Expira</th>
+            </tr>
+          </thead>
+          <tbody>
+            {payments?.map(payment => {
+                return <tr key={payment.id}>
+                  <th scope="row">{payment.paymentType}</th>
+                  <td>{payment.provider}</td>
+                  <td>{payment.accountNo}</td>
+                  <td>{payment.expiry}</td>
+                </tr>;
+              })}
+          </tbody>
+        </table>
+      </div>
     );
   } else if (link === "Addresses") {
     return (
-      <p
-        style={{
-          position: "relative",
-          right: "-20px",
-        }}
-      >
-        preferencia <br />
-        metodo de pago <br />
-        cambiar contraseña <br />
-        borrar cuenta <br />
-      </p>
+      <div>
+        Direcciones
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Linea 1</th>
+              <th scope="col">Linea 2</th>
+              <th scope="col">Ciudad</th>
+              <th scope="col">Codigo Postal</th>
+              <th scope="col">Pais</th>
+              <th scope="col">Telefono</th>
+              <th scope="col">Movil</th>
+            </tr>
+          </thead>
+          <tbody>
+            {address?.map((ad) => {
+                return <tr key={ad.id}>
+                  <th scope="row">{ad.addressLine1}</th>
+                  <td>{ad.addressLine2}</td>
+                  <td>{ad.city}</td>
+                  <td>{ad.postalCode}</td>
+                  <td>{ad.country}</td>
+                  <td>{ad.telephone}</td>
+                  <td>{ad.mobile}</td>
+                </tr>;
+              })}
+          </tbody>
+        </table>
+      </div>
     );
   } else if (link === "Order history") {
     return (
@@ -69,9 +117,8 @@ export default function ProfileTables({ link, userid }) {
             </tr>
           </thead>
           <tbody>
-            {orders?.length > 0 &&
-              orders.map((order) => {
-                <tr>
+            {orders?.map((order) => {
+                return <tr key={order.id}>
                   <th scope="row">{order.id}</th>
                   <td>{order.total}</td>
                   <td>{order.createdAt}</td>
@@ -85,113 +132,50 @@ export default function ProfileTables({ link, userid }) {
   } else if (link === "Reviews") {
     return (
       <div>
-        <div
-          className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded"
-          style={{
-            // maxFdth:"100rem",
-            margin: "auto",
-            width: "90%",
-            border: "3px solid green",
-            padding: "10px",
-          }}
-        >
-          <div className="card-header">6 personas aprueban tu reviwer</div>
-          <div className="card-body">
-            <h5 className="card-title">Ropa deportiva nike</h5>
-            <p className="card-text">
-              Ropa de excelente calidad, muy recomendable.
-            </p>
-          </div>
-        </div>
-
-        <div
-          className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded"
-          style={{
-            // maxWidth:"100rem",
-            margin: "auto",
-            width: "90%",
-            border: "3px solid green",
-            padding: "10px",
-          }}
-        >
-          <div className="card-header">20 personas aprueban tu reviwer</div>
-          <div className="card-body">
-            <h5 className="card-title">Zapatos</h5>
-            <p className="card-text">
-              Muy buena marca de zapatos, inmejorable calidad precio
-            </p>
-          </div>
-        </div>
+        Reviews
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Description</th>
+              <th scope="col">Score</th>
+              <th scope="col">Product</th>
+            </tr> 
+          </thead>
+          <tbody>
+            {reviews?.map(review => {
+                return <tr key={review.id} onClick={() => navigate(`/product/${review.product_id}`)}>
+                  <th scope="row">{review.description}</th>
+                  <td>{review.starsPoints}</td>
+                  <td>{review.product_id}</td>
+                </tr>;
+              })}
+          </tbody>
+        </table>
       </div>
     );
   } else {
     return (
       <div>
-        <div
-          className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded"
-          style={{
-            // maxWidth:"100rem",
-            margin: "auto",
-            width: "70%",
-            border: "3px solid green",
-            padding: "10px",
-          }}
-        >
-          <div className="card-header">Precio actual : 30$</div>
-          <div className="card-body">
-            <Card.Img
-              variant="top"
-              src="https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto:sensitive,fl_lossy,c_fill,g_auto/4ba44497e9484b268bc0ac4700ee0b8a_9366/buzo-corto-con-capucha-essentials-3-tiras.jpg"
-              style={{
-                margin: "auto",
-                // width: "100%",
-                border: "4px solid green",
-                width: "200px",
-                height: "200px",
-                borderRadius: "50px",
-                padding: "5px",
-              }}
-            />
-
-            <h5 className="card-title">Ropa deportiva Adidas</h5>
-            <p className="card-text">
-              Ropa negra Adidas de tele de seda humedad.
-            </p>
-          </div>
-        </div>
-
-        <div
-          className="card border-light mb-3 shadow p-3 mb-5 bg-body rounded"
-          style={{
-            // maxWidth:"100rem",
-            margin: "auto",
-            width: "70%",
-            border: "3px solid green",
-            padding: "10px",
-          }}
-        >
-          <div className="card-header">Precio actual : 35$</div>
-          <div className="card-body">
-            <Card.Img
-              variant="top"
-              src="https://assets.adidas.com/images/w_383,h_383,f_auto,q_auto,fl_lossy,c_fill,g_auto/dafce863061a4f63b041ad2600716dcb_9366/sudadera-essentials-3-rayas.jpg"
-              style={{
-                margin: "auto",
-                // width: "100%",
-                border: "4px solid green",
-                width: "200px",
-                height: "200px",
-                borderRadius: "50px",
-                padding: "5px",
-              }}
-            />
-
-            <h5 className="card-title">Ropa deportiva Adidas</h5>
-            <p className="card-text">
-              Conjunto de sudaderas roja con tela hidrofobica
-            </p>
-          </div>
-        </div>
+        Wishlist
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Image</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Precio</th>
+            </tr> 
+          </thead>
+          <tbody>
+            {wishlist?.map(item => {
+                return <tr key={item.id} onClick={() => navigate(`/product/${item.id}`)}>
+                  <th scope="row"><img src={item.image} alt="Product Picture"  width="25%" height="25%"/></th>
+                  <td>{item.name}</td>
+                  <td>{item.price}</td>
+                  <td><button onClick={() => handleRemove(item.id)}>Remove</button></td>
+                </tr>;
+              })}
+          </tbody>
+        </table>
       </div>
     );
   }

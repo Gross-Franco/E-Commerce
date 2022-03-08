@@ -7,17 +7,23 @@ import {
   USER_ORDERS,
   GET_WISHLIST,
   ADD_WISHLIST,
-  REMOVE_WISHLIST
+  REMOVE_WISHLIST,
+  USER_ADDRESS,
+  USER_DETAILS,
+  USER_PAYMENTS
 } from "../Actions/actionTypes";
 
 const initialState = {
   users: [],
-  response: null,
   loadUsers: true,
+  details: {},
+  address: [],
+  payments: [],
+  response: null,
   orders: [],
   reviews: [],
   wishlist: [],
-  loadWishlist: true,
+  loadWishlist: true
 };
 
 const reducer = (state = initialState, {type, payload}) => {
@@ -30,6 +36,24 @@ const reducer = (state = initialState, {type, payload}) => {
         loadUsers: false,
       };
     
+    case USER_DETAILS:
+      return {
+        ...state,
+        details: payload
+      } 
+    
+    case USER_ADDRESS:
+      return {
+        ...state,
+        address: payload
+      } 
+    
+      case USER_PAYMENTS:
+      return {
+        ...state,
+        payments: payload
+      } 
+      
     case CREATE_USER:
       return {
         ...state,

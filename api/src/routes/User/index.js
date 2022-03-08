@@ -3,7 +3,7 @@ const { Router } = require("express");
 const {authent} = require('../../middlewares/auth/auth')
 const { authenticate } = require("../../middlewares/auth/authentication");
 
-const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews } = require("./controller");
+const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews, getUserAddresses, getUserPayments } = require("./controller");
 const { removeFromWishlist, addToWishlist, getWishlist } = require("./controllerWishlist");
 
 
@@ -33,7 +33,8 @@ userRouter.post('/addToWishlist', addToWishlist);
 
 // userRouter.get('/details', authenticate, getUserDetails)  // Real function
 userRouter.get('/details/:userid', getUserDetails)      // For testing
-
+userRouter.get('/address/:userid', getUserAddresses)
+userRouter.get('/payments/:userid', getUserPayments)
 
 
 //esta ruta debe ir al final 
