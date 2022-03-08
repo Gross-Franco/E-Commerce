@@ -2,11 +2,18 @@ import React, { useEffect, useState } from "react"; /*
 import Carousel from "react-bootstrap/"; */
 import { NavBar, Footer } from "./";
 
-import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar } from "react-bootstrap";
+
+import { saveLocalStorage } from "../services";
+import { MdAddShoppingCart } from "react-icons/md";
+
+import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar} from "react-bootstrap";
+
+
 /* import Holder from "react-holder";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
-import { searchProductId , PostReviwer } from "../Redux/Actions/actions";
+import { saveLocal, searchProductId, PostReviwer } from "../Redux/Actions/actions";
+
 import { useParams } from "react-router-dom";
 import { BsHeart, BsHeartFill ,BsArrowLeftShort} from "react-icons/bs";
 import {AiOutlineStar, AiFillStar} from "react-icons/ai";
@@ -18,6 +25,8 @@ import { CartButton } from "../components";
 import { Cart } from "../pages";
 import { setOverflowY } from "../services";
 
+
+import StripeSingleItem from "../components/StripeSingleItem";
 
 export default function ProductDetail() {
 
@@ -59,6 +68,7 @@ export default function ProductDetail() {
     // console.log(productDetail) 
   }, []);
 
+
   useEffect(() => {    
     console.log(productDetail.reviews)
   }, [productDetail]);
@@ -81,6 +91,7 @@ export default function ProductDetail() {
   }
 
 
+
   function Favorite(e) {
     if (heart === false)
       return <div>
@@ -94,10 +105,14 @@ export default function ProductDetail() {
   }
 
 
+  let product = productDetail;
 
-
-
-
+  const handleClick = () => {
+    saveLocalStorage({ product });
+    dispatch(saveLocal());
+  };
+  // console.log("PRODUCT IN PAGE", productDetail)
+  // console.log("PRODUCT IN STRIPE", product)
   return (
     <div>
       <header className="register--header">
@@ -330,7 +345,7 @@ export default function ProductDetail() {
               })
               }
             </Col>
-            
+
             <Col
               style={{
                 position: "relative",
@@ -420,10 +435,14 @@ export default function ProductDetail() {
                   </Card.Title>
 
                   <br />
-                  <Button variant="primary">Compra ahora</Button>
+                  <StripeSingleItem subtotal={productDetail}/>
                   <br />
                   <br />
-                  <Button variant="secondary">Agregar al carrito</Button>
+                  <Button variant="secondary" onClick={handleClick}>Agregar al carrito
+                    <MdAddShoppingCart
+                      className="product--cart-icon"
+                    />
+                  </Button>
                 </Card.Body>
               </Card>
               <br />

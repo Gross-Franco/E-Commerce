@@ -15,7 +15,9 @@ const Products = () => {
   return (
     <div className="products--list">
       {products?.map((product) => (
+        !product.inactive?
         <Product key={product.SKU} product={product} />
+        : console.log()
       ))}
     </div>
   );

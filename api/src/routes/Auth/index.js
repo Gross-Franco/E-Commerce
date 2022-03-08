@@ -13,7 +13,7 @@ const router = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 // router.post('/signup', signup);
-// router.post("/signin", signin);
+router.post("/signin", signin);
 // router.delete("/signout", signout);
 // router.post("/signout", signout);
 // router.get('/createAdmin/:id', createAdmin);

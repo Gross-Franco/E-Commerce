@@ -20,6 +20,9 @@ import {
 
   // Users
   GET_USERS,
+  USER_DETAILS,
+  USER_ADDRESS,
+  USER_PAYMENTS,
   CREATE_USER,
   DELETE_USER,
   PROMOTE_USER,
@@ -27,6 +30,9 @@ import {
   SIGN_IN,
   USER_ORDERS,
   USER_REVIEWS,
+  GET_WISHLIST,
+  ADD_WISHLIST,
+  REMOVE_WISHLIST,
 
   // Orders
   GET_ORDERS,
@@ -51,9 +57,12 @@ import {
   DELETE_ITEM_LOCAL_STORAGE,
   EDIT_LOCAL_STORAGE_QTY,
   UPDATE_SUBTOTAL,
+  
+  POST_REVIWER,
 
-  //reviwer
-  POST_REVIWER
+  SUCCESS_SESSION,
+  FAIL_SESSION
+
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -224,7 +233,7 @@ export const createUser = ({
   email,
   password,
   // verificatePassword,
-  paymentMethod, 
+  paymentMethod,
   username,
   address,
   phoneNumber,
@@ -237,14 +246,14 @@ export const createUser = ({
       email,
       password,
       // verificatePassword,
-      paymentMethod, 
+      paymentMethod,
       username,
       address,
       phoneNumber,
       postalNumber
     });
 
-    
+
     if (response?.data?.success) {
       console.log(response);
       dispatch({ type: CREATE_USER, payload: response.data });
@@ -372,35 +381,29 @@ export const deleteCart = (sessionId) => {
 };
 export const signIn = (data) => {
   return async (dispatch) => {
-    const response = await axios.post(`/user/login`, data);
+    const response = await axios.post(`/api/signin`, data);
     if (response?.data?.success) {
+      localStorage.setItem("token", response.data.token);
       dispatch({ type: SIGN_IN, payload: response.data });
     } else {
       dispatch({ type: SIGN_IN, payload: response.response.data });
     }
-   
+
   };
 };
 export const checkSession = (token) => {
-  return (dispatch) => {
-    axios
-      .post(`/user/login`, null, {
-        headers: { Authorization: "Bearer " + token },
-      })
-      .then(
-        (resp) => {
-          let { user } = resp.data.data;
-          dispatch({ type: SIGN_IN, payload: user });
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+  return async (dispatch) => {
+    const response = await axios.post('/api/session', {}, { headers: { Authorization: `Bearer ${token}` } });
+    if (response?.data?.success) {
+      dispatch({ type: SUCCESS_SESSION, payload: response.data });
+    } else {
+      dispatch({ type: FAIL_SESSION, payload: response.response.data });
+    }
   };
 };
 export const logout = () => {
   return (dispatch) => {
-    localStorage.removeItem("eCUs");
+    localStorage.removeItem("token"); // hace falta un variable de entorno para esto es inseguro teenerlo asi
     dispatch({ type: LOGOUT });
   };
 };
@@ -430,6 +433,7 @@ export const editLocalQty = (id, qty) => {
     dispatch({ type: EDIT_LOCAL_STORAGE_QTY, payload: { id, qty } });
   };
 }
+
 export const updateSubtotal = () => {
   return (dispatch) => {
     dispatch({ type: UPDATE_SUBTOTAL });
@@ -453,5 +457,47 @@ export const userReviews =  (userid) => {
     console.log("hola mundo K")
 
     dispatch({ type: USER_REVIEWS, payload: response.data });
+  }
+}
+
+export const getWishlist = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/wishlist/${userid}`); 
+    dispatch({ type: GET_WISHLIST, payload: response.data });
+  }
+}
+
+export const addToWishlist = (userId, productId) => {
+  return async (dispatch) => {
+    const post = await axios.post(`/user/addToWishlist`, {userId, productId});
+    dispatch({ type: ADD_WISHLIST, payload: post.data })
+  }
+}
+
+export const removeFromWishlist = (userId, productId) => {
+  return async (dispatch) => {
+    const post = await axios.post(`/user/removeFromWishlist`, {userId, productId});
+    dispatch({ type: REMOVE_WISHLIST, payload: post.data })
+  }
+}
+
+export const userDetails = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/details/${userid}`); 
+    dispatch({ type: USER_DETAILS, payload: response.data });
+  }
+}
+
+export const userAddress = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/address/${userid}`); 
+    dispatch({ type: USER_ADDRESS, payload: response.data });
+  }
+}
+
+export const userPayments = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/payments/${userid}`); 
+    dispatch({ type: USER_PAYMENTS, payload: response.data });
   }
 }

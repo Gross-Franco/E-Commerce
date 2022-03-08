@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signIn } from "./../Redux/Actions/actions";
+import { GoogleLogin } from "react-google-login";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login({ isScroll }) {
   const [show, setShow] = React.useState(false);
@@ -43,7 +45,10 @@ export default function Login({ isScroll }) {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
-
+  
+  const responseGoogle = (response) => {
+    console.log(response);
+  }
   return (
     <>
       <Button
@@ -86,6 +91,23 @@ export default function Login({ isScroll }) {
             </Form.Group>
 
             <Modal.Footer>
+              <GoogleLogin 
+                clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
+                render={(renderProps) => (
+                  <button 
+                    type="button"
+                    className="login--google-btn"
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+
+                  >
+                    <FcGoogle className="login--google-btn--icon" /> Sign in with Google
+                  </button>
+                )}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={"single_host_origin"}
+              />
               <Button variant="secondary" onClick={handleClose}>
                 cerrar
               </Button>

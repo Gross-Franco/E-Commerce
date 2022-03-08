@@ -13,14 +13,15 @@ const getProducts = async (req, res, next) => {
 		let allProducts = await Promise.all(productSearch.map(async product => {
 			let productData = product.dataValues;
 			let productinv = await ProductInventory.findOne({where: {id:productData.inventory_id}});
-			if(productinv.dataValues.quantity > 0) return {
+			if(productinv.dataValues.quantity > 0 && !product.inactive) return {
 				id: productData.id,
 				name: productData.name,
 				image: productData.image,
 				description: productData.description,
-				image:productData.image,
+				image: productData.image,
 				SKU: productData.SKU,
 				price: productData.price,
+				inactive: productData.inactive,
 				category: productData.productCategories.map(x => x.name),
 				inventory: productinv.quantity
 			}
@@ -147,6 +148,7 @@ const searchProductName = async (req, res) => {
 				description: product.description,
 				SKU: product.SKU,
 				price: product.price,
+				inactive: product.inactive,
 				category: product.productCategories.map((x) => x.name),
 				quantity: inventory.quantity,
 			});
