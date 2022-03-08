@@ -27,6 +27,9 @@ import {
   SIGN_IN,
   USER_ORDERS,
   USER_REVIEWS,
+  GET_WISHLIST,
+  ADD_WISHLIST,
+  REMOVE_WISHLIST,
 
   // Orders
   GET_ORDERS,
@@ -434,5 +437,26 @@ export const userReviews = (userid) => {
   return async (dispatch) => {
     const response = await axios.get(`/user/reviews/${userid}`); 
     dispatch({ type: USER_REVIEWS, payload: response.data });
+  }
+}
+
+export const getWishlist = (userid) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/user/wishlist/${userid}`); 
+    dispatch({ type: GET_WISHLIST, payload: response.data });
+  }
+}
+
+export const addToWishlist = (userId, productId) => {
+  return async (dispatch) => {
+    const post = await axios.post(`/user/addToWishlist`, {userId, productId});
+    dispatch({ type: ADD_WISHLIST, payload: post.data })
+  }
+}
+
+export const removeFromWishlist = (userId, productId) => {
+  return async (dispatch) => {
+    const post = await axios.post(`/user/removeFromWishlist`, {userId, productId});
+    dispatch({ type: REMOVE_WISHLIST, payload: post.data })
   }
 }

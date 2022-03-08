@@ -4,7 +4,10 @@ import {
   DELETE_USER,
   PROMOTE_USER,
   USER_REVIEWS,
-  USER_ORDERS
+  USER_ORDERS,
+  GET_WISHLIST,
+  ADD_WISHLIST,
+  REMOVE_WISHLIST
 } from "../Actions/actionTypes";
 
 const initialState = {
@@ -13,6 +16,8 @@ const initialState = {
   loadUsers: true,
   orders: [],
   reviews: [],
+  wishlist: [],
+  loadWishlist: true,
 };
 
 const reducer = (state = initialState, {type, payload}) => {
@@ -53,12 +58,31 @@ const reducer = (state = initialState, {type, payload}) => {
         orders: payload
       }
 
-     case USER_REVIEWS:
+    case USER_REVIEWS:
       return {
         ...state,
         reviews: payload
       }
+    
+    case GET_WISHLIST:
+      return {
+        ...state,
+        wishlist: payload,
+        loadWishlist: false
+      }
+     
+    case ADD_WISHLIST:
+      return {
+        ...state,
+        loadWishlist: true
+      }  
 
+    case REMOVE_WISHLIST:
+      return {
+        ...state,
+        loadWishlist: true
+      }  
+      
     default:
       return state;
   }

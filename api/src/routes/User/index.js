@@ -4,7 +4,7 @@ const {authent} = require('../../middlewares/auth/auth')
 const { authenticate } = require("../../middlewares/auth/authentication");
 
 const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews } = require("./controller");
-const { removeFromWishlist, addToWishlist } = require("./controllerWishlist");
+const { removeFromWishlist, addToWishlist, getWishlist } = require("./controllerWishlist");
 
 
 
@@ -27,6 +27,7 @@ userRouter.post('/addPayment', addPayment)
 userRouter.post('/resetpassword', forgotPassword);
 userRouter.get('/validate', validate);
 
+userRouter.get('/wishlist/:userid', getWishlist)
 userRouter.post('/removeFromWishlist', removeFromWishlist);
 userRouter.post('/addToWishlist', addToWishlist);
 

@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import {Card,} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { userOrders, userReviews } from "../Redux/Actions/actions";
+import { getWishlist, userOrders, userReviews } from "../Redux/Actions/actions";
 
 
 export default function ProfileTables({link, userid}) {
     
-  const {orders, reviews, whishlist} = useSelector(state => state.users)
+  const {orders, reviews, wishlist, loadWishlist} = useSelector(state => state.users)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function ProfileTables({link, userid}) {
     }
 
     if(link === "Whishlist") {
-      // dispatch(whishlist(userid))
+      dispatch(getWishlist(userid))
     }
 
   }, [])

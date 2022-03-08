@@ -25,6 +25,9 @@ export const SIGN_IN = "SIGN_IN";
 export const LOGOUT="LOGOUT"
 export const USER_ORDERS = 'USER_ORDERS'
 export const USER_REVIEWS = 'USER_REVIEWS'
+export const GET_WISHLIST = 'GET_WISHLIST'
+export const ADD_WISHLIST = 'ADD_WISHLIST'
+export const REMOVE_WISHLIST = 'REMOVE_WISHLIST'
 
 
 // Orders / Shopping

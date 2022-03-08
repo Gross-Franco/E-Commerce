@@ -47,7 +47,6 @@ export default function ProductDetail() {
     dispatch(searchProductId(id));
   }, []);
 
-  productDetail.reviews = ['TODAS LAS REVIEWS']
 
   function Favorite(e) {
     if (heart === false)
