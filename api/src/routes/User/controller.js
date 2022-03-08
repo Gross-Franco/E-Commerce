@@ -428,16 +428,38 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-const getUserDetails = (req, res, next) => {
-  const { user_id, isAdmin } = req.permits;
-  // const { user_id } = req.body;
-  console.log(user_id)
 
-  User.findByPk(user_id)
-    .then((user) => {
-      return res.status(200).json(user)
-    })
-    .catch(error => res.sendStatus(404))
+const getUserDetails = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const user = await User.findByPk(userid)
+    res.json(user)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getUserAddresses = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const addresses = await UserAddress.findAll({where: {user_id: userid}})
+    res.json(addresses)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getUserPayments = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const payments = await UserPayment.findAll({where: {user_id: userid}})
+    res.json(payments)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const passwordResetToken = async (req, res) => {
@@ -557,12 +579,25 @@ const orderHistory = async (req, res) => {
 
 const userReviews = async (req, res) => {
   const {userid} = req.params;
-  
   try {
     let reviews = await UserReviews.findAll({
       where: {user_id: userid}
-    })
-    res.json(reviews)
+    });
+  let reviewsProduct = await Promise.all(reviews.map(async e => {
+    let productoRW = {};
+    if(e.product_id) productoRW = await Product.findOne({where: {id:e.product_id}})
+    return {
+      id : e.id,
+      description: e.description,
+      user_id: e.user_id,
+      product_id: e.product_id,
+      productoRW: {
+        name: productoRW.name,
+        image: productoRW.image
+      }
+    }
+  }))
+    res.json(reviewsProduct)
   } catch(err) {
     console.log(err)
   }
@@ -572,6 +607,8 @@ const userReviews = async (req, res) => {
 module.exports = {
   getUsers,
   getUserDetails,
+  getUserAddresses,
+  getUserPayments,
   orderHistory,
   userReviews,
   addAdress,

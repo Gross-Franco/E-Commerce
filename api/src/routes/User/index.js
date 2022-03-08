@@ -3,8 +3,8 @@ const { Router } = require("express");
 const {authent} = require('../../middlewares/auth/auth')
 const { authenticate } = require("../../middlewares/auth/authentication");
 
-const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews } = require("./controller");
-const { removeFromWishlist, addToWishlist } = require("./controllerWishlist");
+const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews, getUserAddresses, getUserPayments } = require("./controller");
+const { removeFromWishlist, addToWishlist, getWishlist } = require("./controllerWishlist");
 
 
 
@@ -16,7 +16,6 @@ const userRouter = Router();
 // Son llamadas ejemplo: baseUrl + '/user' + these routes
 userRouter.post('/post/product/:idProduct', postReviewProduct)
 userRouter.get('/getUsers', getUsers)
-userRouter.get('/details', authenticate, getUserDetails)
 userRouter.get('/history/:userid', orderHistory)
 userRouter.get('/reviews/:userid', userReviews)
 userRouter.post('/addAddress', addAdress)
@@ -26,8 +25,16 @@ userRouter.get('/confirm/:token', confirm);
 userRouter.post('/addPayment', addPayment)
 userRouter.post('/resetpassword', forgotPassword);
 userRouter.get('/validate', validate);
+
+userRouter.get('/wishlist/:userid', getWishlist)
 userRouter.post('/removeFromWishlist', removeFromWishlist);
 userRouter.post('/addToWishlist', addToWishlist);
+
+
+// userRouter.get('/details', authenticate, getUserDetails)  // Real function
+userRouter.get('/details/:userid', getUserDetails)      // For testing
+userRouter.get('/address/:userid', getUserAddresses)
+userRouter.get('/payments/:userid', getUserPayments)
 
 
 //esta ruta debe ir al final 

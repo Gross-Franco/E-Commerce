@@ -38,7 +38,7 @@ const getAllProducts = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-    let { name, description, SKU, price, image, category, quantity } = req.body;
+    let { name, description, SKU, price, image, category, quantity, inactive } = req.body;
     try {
       let createdInventory = await ProductInventory.create({
         quantity,
@@ -51,6 +51,7 @@ const createProduct = async (req, res) => {
         price,
         image,
         inventory_id: createdInventory.id,
+        inactive,
       });
   
       Promise.all(category.map( async (item) => {
@@ -91,6 +92,7 @@ const removeCategoryFromProduct = async (productid, category) => {
 
 const editProduct = async (req, res, next) => {
     const { id, name, image, description, price, SKU, category, quantity, inactive } = req.body;
+    console.log(inactive)
     try {
       const product = await Product.findOne({
         where: {
@@ -175,7 +177,6 @@ const editProduct = async (req, res, next) => {
         price: price,
         SKU: SKU,
         inactive: inactive,
-        inventory_id: newInventory.id
       })
       await productToUpdate.save();
       

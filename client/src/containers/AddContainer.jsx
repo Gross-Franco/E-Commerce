@@ -24,7 +24,7 @@ const AddContainer = ({ option, setIsOpen }) => {
     SKU: addOrUpdate?.SKU || "",
     quantity: addOrUpdate?.quantity || "",
     image: addOrUpdate?.image || "",
-    inactive: addOrUpdate?.inactive || ""
+    inactive: addOrUpdate?.inactive || false
   };
 
   const [form, setForm] = useState(initialState);
@@ -57,17 +57,15 @@ const AddContainer = ({ option, setIsOpen }) => {
           category: form.category.filter((item) => item !== e.target.value),
         });
       }
+    } else if (e.target.name === "inactive") {
+      setForm({
+        ...form,
+        inactive: e.target.checked
+      });
     } else {
       setForm({
         ...form,
         [e.target.name]: e.target.value,
-      });
-    }
-    if (e.target.name === "inactive") {
-      setForm({
-        ...form,
-        inactive: !form.inactive
-
       });
     }
   };
