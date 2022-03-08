@@ -22,7 +22,12 @@ export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
 export const RESET_PASSWORD = "RESET_PASSWORD";
 export const SIGN_IN = "SIGN_IN";
+export const SUCCESS_SESSION = "CHECK_SESSION";
+export const FAIL_SESSION = "SET_SESSION";
 export const LOGOUT="LOGOUT"
+export const USER_ORDERS = 'USER_ORDERS'
+export const USER_REVIEWS = 'USER_REVIEWS'
+
 
 // Orders / Shopping
 export const GET_ORDERS = "GET_ORDERS";

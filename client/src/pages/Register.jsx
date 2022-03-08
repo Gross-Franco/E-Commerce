@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createUser } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { isFullfilled } from "../services";
 import { validator } from "../helpers/formValidation/register";
 import { Button, FormHandler, Header, Hero, Notification } from "../components";
@@ -40,6 +40,8 @@ export default function Registro() {
     postalNumber:false
   });
   const { response } = useSelector((state) => state.users);
+  const { login } = useSelector((state) => state.session);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const validate = async (e) => {
@@ -78,6 +80,9 @@ export default function Registro() {
   };
 
   useEffect(() => {
+    if(login) {
+      navigate("/perfilUser");
+    }
     if (response) {
       setShow(true);
     }

@@ -135,8 +135,8 @@ User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
 OrderDetails.belongsTo(User, { foreignKey: "user_id" })
 
 //Reviews
-Product.hasMany(UserReviews, { foreignKey: "review_id" });
-UserReviews.belongsTo(Product, { foreignKey: "review_id" })
+Product.hasMany(UserReviews, { foreignKey: "product_id" });
+UserReviews.belongsTo(Product, { foreignKey: "product_id" })
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

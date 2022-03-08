@@ -10,7 +10,6 @@ const baseUrl = NODE_ENV === 'development' ? REACT_APP_DEV : REACT_APP_PRO;
 
 export const axiosWithCredentials = axios.create({
     baseURL: baseUrl || process.env.REACT_APP_API,// change this to "https://pghenry.herokuapp.com/" to work with deplyed DB
-
     withCredentials: true,
 })
 
