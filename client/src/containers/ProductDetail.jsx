@@ -24,6 +24,8 @@ import { CartButton } from "../components";
 import { Cart } from "../pages";
 import { setOverflowY } from "../services";
 
+import StripeSingleItem from "../components/StripeSingleItem";
+
 export default function ProductDetail() {
 
   const [isScroll, setIsScroll] = useState(false);
@@ -71,7 +73,8 @@ export default function ProductDetail() {
     saveLocalStorage({ product });
     dispatch(saveLocal());
   };
-
+  // console.log("PRODUCT IN PAGE", productDetail)
+  // console.log("PRODUCT IN STRIPE", product)
   return (
     <div>
       <header className="register--header">
@@ -248,7 +251,7 @@ export default function ProductDetail() {
                   </Card.Title>
 
                   <br />
-                  <Button variant="primary">Compra ahora</Button>
+                  <StripeSingleItem subtotal={productDetail}/>
                   <br />
                   <br />
                   <Button variant="secondary" onClick={handleClick}>Agregar al carrito

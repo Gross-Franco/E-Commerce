@@ -1,7 +1,7 @@
 const { Router } = require("express");
 
 // const { createOrder } = require("./controller");
-const { payment } = require("./controller");
+const { payment, payments1item } = require("./controller");
 
 
 
@@ -15,6 +15,7 @@ const checkoutRouter = Router();
 
 // checkoutRouter.post('/create-order', createOrder)
 checkoutRouter.post('/payments', payment)
+checkoutRouter.post('/detail/payments1item', payments1item)
 
 
 
