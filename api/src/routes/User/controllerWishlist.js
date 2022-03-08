@@ -1,11 +1,28 @@
 const {
   User,
-
+  Product
 } = require("../../db.js");
 const { Sequelize } = require("sequelize");
 
 
-//todavia no se han probado estos metodos
+const getWishlist = async (req, res) => {
+  const {userid} = req.params;
+  const user = await User.findByPk(userid);
+  if(!!user.wishlist) {
+    const products = await Promise.all( user.wishlist.map( async productid => {
+      const product = await Product.findByPk(productid);
+      return {
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+      }
+    }));
+    return res.json(products);
+  }
+  res.json([]); 
+}
+
 async function addToWishlist(req, res) {
   const { userId, productId } = req.body;
   //find user we want to change their wishlist
@@ -15,7 +32,7 @@ async function addToWishlist(req, res) {
     if(user.wishlist) {
       //we look for their wishlist first
       const newArray = user.wishlist
-      // console.log(newArray)
+      if(newArray.includes(productId)) return res.send('Product already on wishlist');
       // we add the id of the new product
       newArray.push(productId)
       // console.log(newArray)
@@ -28,9 +45,10 @@ async function addToWishlist(req, res) {
       console.log(user.changed());
       await user.save()
       res.json(user)
-    }
-    //if the list is empty
-    if(!user.wishlist){
+
+    } else {
+      //if the list is empty
+      
       const newArray = []
       // console.log(newArray)
       newArray.push(productId)
@@ -41,7 +59,8 @@ async function addToWishlist(req, res) {
   
       await user.save()
       res.json(user)
-    } 
+    }
+
   } catch (err) {
     console.log(err, "prueba");
     res.json({ message: err });
@@ -55,7 +74,7 @@ const removeFromWishlist = async(req, res)=>{
   const user = await User.findByPk(userId);
   try {
       const newArray = user.wishlist
-      console.log(newArray)
+      // console.log(newArray)
       //we look for the product in the array
       const index = newArray.indexOf(productId);
       // we remove the imtem from the array
@@ -77,8 +96,11 @@ const removeFromWishlist = async(req, res)=>{
 }
 
 
+
+
 module.exports = {
-    addToWishlist,
-    removeFromWishlist,
-  };
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
+};
   

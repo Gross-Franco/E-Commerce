@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react"; /*
 import Carousel from "react-bootstrap/"; */
 import { NavBar, Footer } from "./";
 
+import { saveLocalStorage } from "../services";
+import { MdAddShoppingCart } from "react-icons/md";
+
 import { Card, Button, Col, Row, Container, Badge, Form } from "react-bootstrap";
 
 
 /* import Holder from "react-holder";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
-import { searchProductId } from "../Redux/Actions/actions";
+import { saveLocal, searchProductId } from "../Redux/Actions/actions";
 import { useParams } from "react-router-dom";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 
@@ -47,7 +50,6 @@ export default function ProductDetail() {
     dispatch(searchProductId(id));
   }, []);
 
-  productDetail.reviews = ['TODAS LAS REVIEWS']
 
   function Favorite(e) {
     if (heart === false)
@@ -62,9 +64,12 @@ export default function ProductDetail() {
   }
 
 
+  let product = productDetail;
 
-
-
+  const handleClick = () => {
+    saveLocalStorage({ product });
+    dispatch(saveLocal());
+  };
 
   return (
     <div>
@@ -152,7 +157,7 @@ export default function ProductDetail() {
                 <h6 type="input" style={{ cursor: "pointer" }}>Post</h6>
               </Form>
             </Col>
-            
+
             <Col
               style={{
                 position: "relative",
@@ -245,7 +250,11 @@ export default function ProductDetail() {
                   <Button variant="primary">Compra ahora</Button>
                   <br />
                   <br />
-                  <Button variant="secondary">Agregar al carrito</Button>
+                  <Button variant="secondary" onClick={handleClick}>Agregar al carrito
+                    <MdAddShoppingCart
+                      className="product--cart-icon"
+                    />
+                  </Button>
                 </Card.Body>
               </Card>
               <br />
