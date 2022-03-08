@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
@@ -17,7 +16,6 @@ import Checkout from "../pages/Checkout";
 
 const Rutas = () => {
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
@@ -39,7 +37,6 @@ const Rutas = () => {
         <Route path="/verification/:ap" element={<Verificate />} />
 
       </Routes>
-    </Router>
   );
 };
 

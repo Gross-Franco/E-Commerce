@@ -14,12 +14,12 @@ const userRouter = Router();
 
 // Configurar los routers
 // Son llamadas ejemplo: baseUrl + '/user' + these routes
-userRouter.post('/post/product/:idProduct',postReviewProduct)
+userRouter.post('/post/product/:idProduct', postReviewProduct)
 userRouter.get('/getUsers', getUsers)
 userRouter.get('/history/:userid', orderHistory)
 userRouter.get('/reviews/:userid', userReviews)
 userRouter.post('/addAddress', addAdress)
-userRouter.post('/login',authent, postLogin)
+// userRouter.post('/login', postLogin)
 userRouter.post('/createUser', createUser);
 userRouter.get('/confirm/:token', confirm);
 userRouter.post('/addPayment', addPayment)

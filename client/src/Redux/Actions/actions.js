@@ -56,7 +56,9 @@ import {
   GET_LOCAL_STORAGE,
   DELETE_ITEM_LOCAL_STORAGE,
   EDIT_LOCAL_STORAGE_QTY,
-  UPDATE_SUBTOTAL
+  UPDATE_SUBTOTAL,
+  SUCCESS_SESSION,
+  FAIL_SESSION
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -217,7 +219,7 @@ export const createUser = ({
   email,
   password,
   // verificatePassword,
-  paymentMethod, 
+  paymentMethod,
   username,
   address,
   phoneNumber,
@@ -230,14 +232,14 @@ export const createUser = ({
       email,
       password,
       // verificatePassword,
-      paymentMethod, 
+      paymentMethod,
       username,
       address,
       phoneNumber,
       postalNumber
     });
 
-    
+
     if (response?.data?.success) {
       console.log(response);
       dispatch({ type: CREATE_USER, payload: response.data });
@@ -365,35 +367,29 @@ export const deleteCart = (sessionId) => {
 };
 export const signIn = (data) => {
   return async (dispatch) => {
-    const response = await axios.post(`/user/login`, data);
+    const response = await axios.post(`/api/signin`, data);
     if (response?.data?.success) {
+      localStorage.setItem("token", response.data.token);
       dispatch({ type: SIGN_IN, payload: response.data });
     } else {
       dispatch({ type: SIGN_IN, payload: response.response.data });
     }
-   
+
   };
 };
 export const checkSession = (token) => {
-  return (dispatch) => {
-    axios
-      .post(`/user/login`, null, {
-        headers: { Authorization: "Bearer " + token },
-      })
-      .then(
-        (resp) => {
-          let { user } = resp.data.data;
-          dispatch({ type: SIGN_IN, payload: user });
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+  return async (dispatch) => {
+    const response = await axios.post('/api/session', {}, { headers: { Authorization: `Bearer ${token}` } });
+    if (response?.data?.success) {
+      dispatch({ type: SUCCESS_SESSION, payload: response.data });
+    } else {
+      dispatch({ type: FAIL_SESSION, payload: response.response.data });
+    }
   };
 };
 export const logout = () => {
   return (dispatch) => {
-    localStorage.removeItem("eCUs");
+    localStorage.removeItem("token"); // hace falta un variable de entorno para esto es inseguro teenerlo asi
     dispatch({ type: LOGOUT });
   };
 };

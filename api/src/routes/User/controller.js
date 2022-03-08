@@ -78,36 +78,36 @@ const addPayment = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  
- 
-  let { 
-     first_name,
+
+
+  let {
+    first_name,
     last_name,
     email,
     password,
     // verificatePassword,
-    paymentMethod, 
+    paymentMethod,
     username,
     address,
     phoneNumber,
     postalNumber } = req.body;
-    // res.send( {first_name,
-    //   last_name,
-    //   email,
-    //   password,     
-    //   paymentMethod, 
-    //   username,
-    //   address,
-    //   phoneNumber,
-    //   postalNumber});
+  // res.send( {first_name,
+  //   last_name,
+  //   email,
+  //   password,     
+  //   paymentMethod, 
+  //   username,
+  //   address,
+  //   phoneNumber,
+  //   postalNumber});
   try {
 
     let createdUser = await User.create({
       first_name,
       last_name,
       email,
-      password,   
-      paymentMethod, 
+      password,
+      paymentMethod,
       username,
       address,
       phoneNumber,
@@ -122,10 +122,11 @@ const createUser = async (req, res) => {
         username,
         email,
         userId: createdUser.dataValues.id,
+        isAdmin: false,
       };
 
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
-     
+
       //enviar mail
       let testAccount = await nodemailer.createTestAccount();
 
@@ -209,7 +210,7 @@ const confirm = async (req, res) => {
     const { username, email, userId } = data;
 
     // Verificar existencia del usuario
-    const user = await User.findOne({where: { email: email }}) || null;
+    const user = await User.findOne({ where: { email: email } }) || null;
 
     if (user === null) {
       return res.json({
@@ -427,6 +428,7 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+
 const getUserDetails = async (req, res ) => {
   // const { user_id } = req.permits;   // Real 
   const { userid } = req.params;       // Testing
@@ -525,15 +527,15 @@ const passwordResetToken = async (req, res) => {
 };
 
 const validate = async (req, res) => {
-  const {email, username} = req.query;
-  if(email) {
-    const exists = await User.findOne({where: {email: email}})
-    if(exists) return res.send(true);
+  const { email, username } = req.query;
+  if (email) {
+    const exists = await User.findOne({ where: { email: email } })
+    if (exists) return res.send(true);
     else return res.send(false)
   }
-  if(username) {
-    const exists = await User.findOne({where: {username: username}})
-    if(exists) return res.send(true);
+  if (username) {
+    const exists = await User.findOne({ where: { username: username } })
+    if (exists) return res.send(true);
     else return res.send(false)
   }
   res.send('error: invalid query')

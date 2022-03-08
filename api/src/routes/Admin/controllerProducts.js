@@ -28,6 +28,7 @@ const getAllProducts = async (req, res) => {
         SKU: product.SKU,
         price: product.price,
         image: product.image,
+        inactive: product.inactive,
         category: product.productCategories.map((x) => x.name),
         quantity: inventory.quantity,
       });
@@ -89,7 +90,7 @@ const removeCategoryFromProduct = async (productid, category) => {
 };
 
 const editProduct = async (req, res, next) => {
-    const { id, name, image, description, price, SKU, category, quantity } = req.body;
+    const { id, name, image, description, price, SKU, category, quantity, inactive } = req.body;
     try {
       const product = await Product.findOne({
         where: {
@@ -173,6 +174,8 @@ const editProduct = async (req, res, next) => {
         description: description,
         price: price,
         SKU: SKU,
+        inactive: inactive,
+        inventory_id: newInventory.id
       })
       await productToUpdate.save();
       
@@ -229,6 +232,7 @@ const searchProductName = async (req, res) => {
           description: product.description,
           SKU: product.SKU,
           price: product.price,
+          inactive: product.inactive,
           category: product.productCategories.map((x) => x.name),
           quantity: inventory.quantity,
         });

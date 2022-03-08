@@ -24,6 +24,7 @@ const AddContainer = ({ option, setIsOpen }) => {
     SKU: addOrUpdate?.SKU || "",
     quantity: addOrUpdate?.quantity || "",
     image: addOrUpdate?.image || "",
+    inactive: addOrUpdate?.inactive || ""
   };
 
   const [form, setForm] = useState(initialState);
@@ -62,6 +63,13 @@ const AddContainer = ({ option, setIsOpen }) => {
         [e.target.name]: e.target.value,
       });
     }
+    if (e.target.name === "inactive") {
+      setForm({
+        ...form,
+        inactive: !form.inactive
+
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -92,6 +100,7 @@ const AddContainer = ({ option, setIsOpen }) => {
 
   if (option === "Pedidos")
     return <OrderDetails option={option} setIsOpen={setIsOpen} />;
+
 
   return (
     <div className="add--container">
@@ -186,9 +195,11 @@ const AddContainer = ({ option, setIsOpen }) => {
               >
                 Guardar cambios
               </button>
-              <div className="add-form--input-wrapper_row">
-                <input type="checkbox" />
-                <label>Inactivo </label>
+              <div>
+                <label>
+                  Inactivo
+                  <input type="checkbox" onChange={handleChange} name="inactive" checked={form.inactive}/>
+                </label>
               </div>
             </div>
             <div className="add-form--input-wrapper">
@@ -197,16 +208,14 @@ const AddContainer = ({ option, setIsOpen }) => {
               </header>
               <div>
                 <div
-                  className={`add-form--input add-form--input-dropdown ${
-                    openDropdown ? "selected" : ""
-                  }`}
+                  className={`add-form--input add-form--input-dropdown ${openDropdown ? "selected" : ""
+                    }`}
                   onClick={() => setOpenDropdown(!openDropdown)}
                 >
                   <span>Elige categoria</span>
                   <RiArrowDropDownLine
-                    className={`add-form--arrow-dropdown ${
-                      openDropdown ? "open" : ""
-                    }`}
+                    className={`add-form--arrow-dropdown ${openDropdown ? "open" : ""
+                      }`}
                   />
                 </div>
               </div>
@@ -215,14 +224,15 @@ const AddContainer = ({ option, setIsOpen }) => {
               <div className="add-form--input-wrapper">
                 {categories.map((category) => (
                   <div key={category.id} className="add-form--dropdown-option">
-                    <label>{category.name}</label>
-                    <input
-                      type="checkbox"
-                      checked={form.category.includes(category.name)}
-                      name="category"
-                      value={category.name}
-                      onChange={handleChange}
-                    />
+                    <label>{category.name}
+                      <input
+                        type="checkbox"
+                        checked={form.category.includes(category.name)}
+                        name="category"
+                        value={category.name}
+                        onChange={handleChange}
+                      />
+                    </label>
                   </div>
                 ))}
               </div>

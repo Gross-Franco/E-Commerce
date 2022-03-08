@@ -25,6 +25,7 @@ import {
 
 export default function PerfilUser() {
   //Desplazamiento
+
   const [link, setLink] = useState('Payments');
   const [text_1, setText_1] = useState("nav-link active");
   const [text_2, setText_2] = useState("nav-link ");
