@@ -579,12 +579,25 @@ const orderHistory = async (req, res) => {
 
 const userReviews = async (req, res) => {
   const {userid} = req.params;
-  
   try {
     let reviews = await UserReviews.findAll({
       where: {user_id: userid}
-    })
-    res.json(reviews)
+    });
+  let reviewsProduct = await Promise.all(reviews.map(async e => {
+    let productoRW = {};
+    if(e.product_id) productoRW = await Product.findOne({where: {id:e.product_id}})
+    return {
+      id : e.id,
+      description: e.description,
+      user_id: e.user_id,
+      product_id: e.product_id,
+      productoRW: {
+        name: productoRW.name,
+        image: productoRW.image
+      }
+    }
+  }))
+    res.json(reviewsProduct)
   } catch(err) {
     console.log(err)
   }

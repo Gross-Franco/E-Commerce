@@ -11,13 +11,6 @@ export default function ProfileTables({ link, userid }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log('Payments: ', payments)
-    console.log('Address: ', address)
-    console.log('Orders: ', orders)
-    console.log('Reviews: ', reviews)
-    console.log('Wishlist: ', wishlist)
-  },[link])
   
   useEffect(() => {
     if (link === "Order history") {
@@ -39,10 +32,6 @@ export default function ProfileTables({ link, userid }) {
 
   const handleRemove = (productid) => {
     dispatch(removeFromWishlist(userid, productid))
-  }
-
-  const handleNavigate = (productid) => {
-    
   }
 
   if (link === "Payments") {
@@ -146,7 +135,8 @@ export default function ProfileTables({ link, userid }) {
                 return <tr key={review.id} onClick={() => navigate(`/product/${review.product_id}`)}>
                   <th scope="row">{review.description}</th>
                   <td>{review.starsPoints}</td>
-                  <td>{review.product_id}</td>
+                  <td>{review.productoRW.name}</td>
+                  <td><img src={review.productoRW.image} width="25%" height="25%" /></td>
                 </tr>;
               })}
           </tbody>
