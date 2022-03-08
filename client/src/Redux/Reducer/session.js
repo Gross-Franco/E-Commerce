@@ -25,7 +25,6 @@ const reducer = (state = initialState, { type, payload }) => {
     case LOGOUT:
       return {
         ...state,
-
         user: null,
         login: false,
         isAdmin: false, 
