@@ -1,22 +1,27 @@
 import React, { useEffect } from "react";
-import { Provider } from "react-redux";
-import { axiosWithCredentials as axios } from "./utilities/axios";
-import store from "./Redux/store";
 import Routes from "./routes/Routes";
+import { useLocation, useNavigate } from "react-router-dom";
+import { checkSession } from "./Redux/Actions/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+  const { isAdmin, loading } = useSelector((state) => state.session);
 
   useEffect(() => {
-    axios.post("/api/session");
-  }, [])
+    const token = localStorage.getItem("token");
+    dispatch(checkSession(token));
+  }, [location.pathname, loading]);
 
-  return (
-    <Provider store={store}>
-      <React.StrictMode>
-        <Routes />
-      </React.StrictMode>
-    </Provider>
-  );
+  useEffect(() => {
+      if(location.pathname === "/admin" && !isAdmin) {
+      navigation("/login");
+    }
+  }, [isAdmin]);
+
+  return loading ? <h1>Loading...</h1> : <Routes />;
 }
 
 export default App;

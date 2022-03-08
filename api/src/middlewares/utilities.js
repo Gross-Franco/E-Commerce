@@ -3,9 +3,10 @@ const { ShoppingSession, User } = require("../db");
 const jwt = require("jsonwebtoken");
 const { FIRM, TOKEN_COOKIE, AUTH_EXPIRES } = process.env;
 
-const createSession = async (info = undefined) => {
+const createSession = (info = undefined) => {
     let body = {
         ...info,
+        // user_id: 1,
     }
     // try {
     //     if (!body.hasOwnProperty('session_id')) {
