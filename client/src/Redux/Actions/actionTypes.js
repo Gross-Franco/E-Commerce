@@ -17,6 +17,9 @@ export const SEARCH_CATEGORY_NAME = 'SEARCH_CATEGORY_NAME';
 
 // Users
 export const GET_USERS = "GET_USERS";
+export const USER_DETAILS = "USER_DETAILS"
+export const USER_ADDRESS = "USER_ADDRESS"
+export const USER_PAYMENTS = "USER_PAYMENTS"
 export const CREATE_USER = "CREATE_USER";
 export const DELETE_USER = "DELETE_USER";
 export const PROMOTE_USER = "PROMOTE_USER";
@@ -27,6 +30,9 @@ export const FAIL_SESSION = "SET_SESSION";
 export const LOGOUT="LOGOUT"
 export const USER_ORDERS = 'USER_ORDERS'
 export const USER_REVIEWS = 'USER_REVIEWS'
+export const GET_WISHLIST = 'GET_WISHLIST'
+export const ADD_WISHLIST = 'ADD_WISHLIST'
+export const REMOVE_WISHLIST = 'REMOVE_WISHLIST'
 
 
 // Orders / Shopping
