@@ -427,8 +427,6 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-<<<<<<< Updated upstream
-=======
 const getUserDetails = async (req, res ) => {
   // const { user_id } = req.permits;   // Real 
   const { userid } = req.params;       // Testing
@@ -447,11 +445,8 @@ const getUserDetails = async (req, res ) => {
   } catch (err) {
     console.log(err)
   }
-
-
 }
 
->>>>>>> Stashed changes
 const passwordResetToken = async (req, res) => {
   try {
     // Get the token from params
@@ -531,10 +526,6 @@ const validate = async (req, res) => {
   res.send('error: invalid query')
 }
 
-
-const getUserDetails = async (req, res) => {
-
-}
 const orderHistory = async (req, res) => {
   const { userid } = req.params;
   console.log(userid)
