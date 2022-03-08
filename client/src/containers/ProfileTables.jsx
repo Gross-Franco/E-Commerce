@@ -13,15 +13,17 @@ export default function ProfileTables({link, userid}) {
     if(link === "Purchase history") {
       dispatch(userOrders(userid))
     }
-
     if(link === "Reviews") {
       dispatch(userReviews(userid))
     }
+<<<<<<< Updated upstream
 
     if(link === "Whishlist") {
+=======
+    if(link === "Whishlist" && loadWishlist) {
+>>>>>>> Stashed changes
       dispatch(getWishlist(userid))
     }
-
   }, [])
 
 

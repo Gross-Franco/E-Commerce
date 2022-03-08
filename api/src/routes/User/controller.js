@@ -427,6 +427,31 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+<<<<<<< Updated upstream
+=======
+const getUserDetails = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+
+  try {
+    const user = await User.findOne({
+      where:{id: userid},
+      include: [
+        {model: UserAddress},
+        {model: UserPayment},
+      ]
+    })
+    console.log(user.dataValues);
+    res.json(user)
+
+  } catch (err) {
+    console.log(err)
+  }
+
+
+}
+
+>>>>>>> Stashed changes
 const passwordResetToken = async (req, res) => {
   try {
     // Get the token from params

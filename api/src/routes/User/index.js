@@ -16,7 +16,6 @@ const userRouter = Router();
 // Son llamadas ejemplo: baseUrl + '/user' + these routes
 userRouter.post('/post/product/:idProduct',postReviewProduct)
 userRouter.get('/getUsers', getUsers)
-userRouter.get('/details', authenticate, getUserDetails)
 userRouter.get('/history/:userid', orderHistory)
 userRouter.get('/reviews/:userid', userReviews)
 userRouter.post('/addAddress', addAdress)
@@ -30,6 +29,11 @@ userRouter.get('/validate', validate);
 userRouter.get('/wishlist/:userid', getWishlist)
 userRouter.post('/removeFromWishlist', removeFromWishlist);
 userRouter.post('/addToWishlist', addToWishlist);
+
+
+// userRouter.get('/details', authenticate, getUserDetails)  // Real function
+userRouter.get('/details/:userid', getUserDetails)      // For testing
+
 
 
 //esta ruta debe ir al final 
