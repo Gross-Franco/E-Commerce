@@ -132,6 +132,7 @@ const thirdpartySignin = async (req, res) => {
     let { first_name, last_name, email, username, id} = req.body;
     if(!first_name || !last_name || !email || !username || !id) return res.status(400).json({ success: false, message: 'Error no auth' });
     email = email.toLowerCase();
+
     const [user, created] = await User.findOrCreate({
         where: {
             email
@@ -142,11 +143,9 @@ const thirdpartySignin = async (req, res) => {
             email,
             username,
             password: id + " " + username,
+            verified: true,
         }
     })
-    if(created) {
-        user.dataValues.verified = true;
-    }
     const formatedUser = User.findOne({
         where: {
         id: user.id,
@@ -161,7 +160,6 @@ const thirdpartySignin = async (req, res) => {
         .json({
         success: true,
         message: "Successfully signed in",
-        isAdmin: false,
         user: formatedUser,
         token,
         });

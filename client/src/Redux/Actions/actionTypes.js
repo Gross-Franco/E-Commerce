@@ -50,6 +50,7 @@ export const ADD_CART_ITEM = "ADD_CART_ITEM";
 export const EDIT_CART_ITEM_QTY = "EDIT_CART_ITEM_QUANTITY";
 export const DELETE_CART_ITEM = "DELETE_CART_ITEM";
 export const DELETE_CART = "DELETE_CART";
+
 // Misc
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
 
