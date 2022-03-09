@@ -502,23 +502,21 @@ const validate = async (req, res) => {
 
 const orderHistory = async (req, res) => {
   const { userid } = req.params;
-  
 
   try {
     let userOrders = await OrderDetails.findAll({
       where: {user_id: userid},
-      include: { model: OrderItems, }
+      include: { model: OrderItems, },     
     });
     const response = await Promise.all(userOrders.map(async order => {
       let payment = {}
-      if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
+      if (order.payment_id) payment = await PaymentDetails.findOne({where: {id: order.payment_id}})
       return {
         id: order.id,
         total: order.total,
         status: order.status,
         createdAt: order.createdAt,
         payment: {
-          type: payment.paymentType,
           amount: payment.amount,
           provider: payment.provider,
           status: payment.status
