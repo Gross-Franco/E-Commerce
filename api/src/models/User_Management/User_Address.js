@@ -30,11 +30,11 @@ module.exports = (sequelize) => {
     },
 
     telephone: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT                      ,
     },
 
     mobile: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT                      ,
         allowNull: false,
         unique: true
     }

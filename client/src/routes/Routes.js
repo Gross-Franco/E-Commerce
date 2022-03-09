@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
@@ -12,13 +11,11 @@ import {
   Verificate,
 } from "../containers";
 import { Home, Admin, PassReset, Cart, Register, Login } from "../pages";
+
 import Checkout from "../pages/Checkout";
 
 const Rutas = () => {
-
-
   return (
-    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
@@ -37,9 +34,9 @@ const Rutas = () => {
         />
         <Route path="/checkout" element={<Checkout />} />
 
-        <Route path="/verificate/:ap" element={<Verificate />} />
+        <Route path="/verification/:ap" element={<Verificate />} />
+
       </Routes>
-    </Router>
   );
 };
 

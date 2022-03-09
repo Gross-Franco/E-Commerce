@@ -31,7 +31,7 @@ export default function DisplayItemsHome({items}) {
             <React.Fragment>
                 <CssBaseline />
                 
-                <Container maxWidth='100vw'  sx={{display:'flex',justifyContent:'center',marginTop:'-100px'}}>
+                <Container maxWidth='100vw'  sx={{display:'flex',justifyContent:'center'}}>
                     <Box sx={{ bgcolor: 'transparent', height: 'auto',width:'90%',display:'flex',flexWrap:'wrap',gap:'1em',padding:'1em',justifyContent:'space-around'}}>
                         {itemsUsed.map((e,i)=><CardItemsHome
                          key={i} 
@@ -42,7 +42,6 @@ export default function DisplayItemsHome({items}) {
                          description={e.description}
                          />)}
                     </Box>
-                    {console.log(itemsUsed)}
                 </Container>
                
             </React.Fragment>

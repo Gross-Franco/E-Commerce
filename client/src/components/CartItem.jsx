@@ -8,70 +8,44 @@ import {
   updateSubtotal,
 } from "../Redux/Actions/actions";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { editQuantity } from "../services";
 
 const CartItem = ({ item, session }) => {
   const dispatch = useDispatch();
   const [qty, setQty] = useState(item.quantity);
-
-  const handleEditQuantity = (session, id, e) => {
-    // if (e.target.value === "0" || e.target.value === "") {
-    //   if (session.length > 0) {
-    //     // dispatch(deleteCartItem(session.id, id));  
-    //   } else {
-    //     dispatch(deleteItemLocalStorage(id));
-    //     dispatch(updateSubtotal());
-    //     return;
-    //   }
-    // }
-    // if (session.length > 0) {
-    //   dispatch(
-    //     editCartItemQty({
-    //       sessionId: session,
-    //       productId: id,
-    //       quantity: e.target.value,
-    //     })
-    //   );
-    // } else {
-    //   dispatch(
-    //     editLocalQty(
-    //       id,
-    //       e.target.value,
-    //     )
-    //   );
-    //   dispatch(updateSubtotal());
-    // }
-    setQty(e.target.value);
+  
+  const handleEditQuantity = (e) => {
+    let ammount = Number(e.target.value)
+    if(ammount > item.inventory) {
+      alert('Not enogh stock')
+    } else if(ammount < 1) {
+      setQty(1);
+    } else {
+      setQty(ammount)
+      dispatch(editLocalQty(item.id, ammount));
+    }
   };
 
   const handleAdd = () => {
-    if (session.length > 0) {
-      // dispatch(addCartItem(session.id, product.id));
-    } else {
+    if(item.quantity < item.inventory) {
       setQty(qty + 1);
       dispatch(editLocalQty(item.id, qty + 1));
       dispatch(updateSubtotal());
-    }
+    } else alert('Not enough stock')
   };
   const handleSubstract = () => {
-    if (session.length) {
-      // dispatch(editCartItemQty(session.id, item.id, qty - 1));
+    if (qty-1 < 1) {
+      handleDeleteItem(item.id);
     } else {
-      if (qty - 1 === 0) {
-        dispatch(deleteItemLocalStorage(item.id));
-        dispatch(updateSubtotal());
-      }
       setQty(qty - 1);
       dispatch(editLocalQty(item.id, qty - 1));
       dispatch(updateSubtotal());
     }
   };
-  const handleDeleteItem = (session, id) => {
-    if (session.length > 0) {
-      dispatch(deleteCartItem(session, id));
-    } else {
-      dispatch(deleteItemLocalStorage(id));
-      dispatch(updateSubtotal());
-    }
+
+  const handleDeleteItem = (id) => {
+    dispatch(deleteItemLocalStorage(id));
+    dispatch(updateSubtotal());
   };
 
   return (
@@ -97,15 +71,15 @@ const CartItem = ({ item, session }) => {
               className="item-info--footer-qty-input"
               type="number"
               min={0}
-              max={100} // item.stock o item.inventory (en tabla de products no esta deberia traerlo de tal forma que pueda hacer item.inventory)
+              max={item.inventory} // item.stock o item.inventory (en tabla de products no esta deberia traerlo de tal forma que pueda hacer item.inventory)
               value={qty}
-              onChange={(e) => handleEditQuantity(session, item.id, e)}
+              onChange={handleEditQuantity}
             />
             <FiPlus className="item--icon" onClick={handleAdd} />
           </div>
           <p
             className="item-info--footer-delete"
-            onClick={() => handleDeleteItem(session, item.id)}
+            onClick={() => handleDeleteItem(item.id)}
           >
             Eliminar
           </p>

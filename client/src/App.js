@@ -1,21 +1,26 @@
-import React from "react";
-import { Provider } from "react-redux";
-import store from "./Redux/store";
+import React, { useEffect } from "react";
 import Routes from "./routes/Routes";
-import axios from 'axios';
+import { useLocation, useNavigate } from "react-router-dom";
+import { checkSession } from "./Redux/Actions/actions";
+import { useDispatch, useSelector } from "react-redux";
 
-axios.defaults.baseURL = process.env.REACT_APP_API || "https://pghenry.herokuapp.com";
 function App() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAdmin, loading } = useSelector((state) => state.session);
 
+  useEffect(() => {
+    if(loading) {
+      const token = localStorage.getItem("token");
+      dispatch(checkSession(token));
+    }
+      if(location.pathname === "/admin" && !isAdmin) {
+      navigate("/login");
+    }
+  }, [loading]);
 
-
-  return (
-    <Provider store={store}>
-      <React.StrictMode>
-        <Routes />
-      </React.StrictMode>
-    </Provider>
-  );
+  return loading ? <h1>Loading...</h1> : <Routes />;
 }
 
 export default App;

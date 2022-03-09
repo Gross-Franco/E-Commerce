@@ -18,13 +18,16 @@
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
-/* const { mockorders } = require("./src/mockData/mockorders");
-const { mockorderItems } = require("./src/mockData/mockorderItems")
+const { mockorders } = require("./src/mockData/mockorders");
+const { mockorderitems } = require("./src/mockData/mockorderItems")
 const { mockproducts } = require("./src/mockData/mockproducts");
 const { mockusers } = require("./src/mockData/mockusers");
 const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
-const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails")*/
+const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails");
+const { mockreviews } = require("./src/mockData/mockreviews")
+const { mockuserpayment } = require('./src/mockData/mockuserpayment')
+const { mockaddress } = require('./src/mockData/mockaddress')
 
 const {
   conn,
@@ -34,30 +37,53 @@ const {
   Product,
   ProductCategory,
   ProductInventory,
-  PaymentDetails
+  PaymentDetails,
+  UserReviews,
+  UserAddress,
+  UserPayment,
 } = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
-const { PORT } = process.env;
+const { PORT, TESTING } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: TESTING || false }).then(() => {
 
-server.listen(PORT || 3001, () => {
-    /* ProductInventory.bulkCreate(mockinventory).then(() => {
-    Product.bulkCreate(mockproducts).then(() => {
-      ProductCategory.bulkCreate(mockcategories).then(()=>{
-        Product.findAll().then(products => {
-          products.forEach(product => {
-            product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1);
-          })
+  server.listen(PORT || 3001, () => {
+    ProductInventory.bulkCreate(mockinventory)
+      .then(() => {
+        return Product.bulkCreate(mockproducts)
+      })
+      .then(() => {
+        return ProductCategory.bulkCreate(mockcategories)
+      })
+      .then(() => {
+        return Product.findAll()
+      })
+      .then(products => {
+        products.forEach(product => {
+          product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1)
         })
       })
-    })}).then(() => {
-      User.bulkCreate(mockusers);
-
-    })
-    .catch(error => console.log(error)); */
+      .then(() => {
+        return User.bulkCreate(mockusers).then(() => {
+          UserAddress.bulkCreate(mockaddress);
+          UserPayment.bulkCreate(mockuserpayment);
+        });
+      })
+      .then(() => {
+        return PaymentDetails.bulkCreate(mockpaymentdetails)
+      })
+      .then(() => {
+        return OrderDetails.bulkCreate(mockorders)
+      })
+      .then(() => {
+        return OrderItems.bulkCreate(mockorderitems)
+      })
+      .then(() => {
+        return UserReviews.bulkCreate(mockreviews)
+      })
+      .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 
   });

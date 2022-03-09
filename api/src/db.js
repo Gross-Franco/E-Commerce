@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { PassThrough } = require("stream");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+// const RefreshTokens = require("./models/Authentication/RefreshTokens.js")
 
 let sequelize = process.env.NODE_ENV === 'production'
 	? new Sequelize({
@@ -88,32 +89,54 @@ const {
 	OrderDetails,
 	OrderItems,
 	PaymentDetails,
-	ShoppingSession
+	ShoppingSession,
 } = sequelize.models;
 
 //User relations
 User.hasMany(UserAddress, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+UserAddress.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(UserPayment, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+UserPayment.belongsTo(User, { foreignKey: "user_id" });
 User.hasMany(UserReviews, { foreignKey: "user_id", onDelete: 'cascade', hooks: true });
+UserReviews.belongsTo(User, { foreignKey: "user_id" });
 
 //Product relations
-ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
+//categories
 ProductCategory.belongsToMany(Product, { through: "product_Categories", foreignKey: "category_id" });
 Product.belongsToMany(ProductCategory, { through: "product_Categories", foreignKey: "product_id" });
+//inventory
+ProductInventory.hasOne(Product, { foreignKey: "inventory_id" });
+Product.belongsTo(ProductInventory, { foreignKey: "inventory_id", onDelete: "cascade" })
+//discounts
 Discount.hasMany(Product, { foreignKey: "discount_id" });
+Product.belongsTo(Discount, { foreignKey: "discount_id", onDelete: "cascade" });
+
+//Purchase order relations
+PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
+OrderDetails.belongsTo(PaymentDetails, { foreignKey: "payment_id" });
+OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
+OrderItems.belongsTo(OrderDetails, { foreignKey: "order_id" });
 
 //Shopping relations
-PaymentDetails.hasOne(OrderDetails, { as: "OrderPayment", foreignKey: "payment_id" });
-OrderDetails.hasMany(OrderItems, { foreignKey: "order_id" });
-ShoppingSession.hasMany(CartItems, { foreignKey: "session_id" });
+ShoppingSession.hasMany(CartItems, { foreignKey: "session_id", onDelete: "cascade" });
+CartItems.belongsTo(ShoppingSession, { foreignKey: "session_id" });
 
 //Mixed relations
-Product.hasMany(OrderItems, {  foreignKey: "product_id" });
-User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
-User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id" });
-ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
-Product.hasMany(UserReviews, { foreignKey: "review_id" });
+//Cart management
 Product.hasMany(CartItems, { foreignKey: "product_id" })
+CartItems.belongsTo(Product, { foreignKey: "product_id" })
+User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id", onDelete: "cascade" });
+ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
+
+//Purchase order management
+Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
+OrderItems.belongsTo(Product, { foreignKey: "product_id" })
+User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
+OrderDetails.belongsTo(User, { foreignKey: "user_id" })
+
+//Reviews
+Product.hasMany(UserReviews, { foreignKey: "product_id" });
+UserReviews.belongsTo(Product, { foreignKey: "product_id" })
 
 module.exports = {
 	...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');

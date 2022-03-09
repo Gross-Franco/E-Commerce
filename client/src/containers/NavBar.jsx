@@ -9,12 +9,12 @@ import { setOverflowY } from "../services";
 
 const NavBar = ({ isScroll = false }) => {
   const [isOpen, setIsOpen] = useState(false);
-  let { login } = useSelector((state) => state.userSession);
+  let { login } = useSelector((state) => state.session);
 
   setOverflowY(isOpen);
-  
+
   return (
-    <header className="header" >
+    <header className="header">
       <div className={`header--container ${isScroll ? "on-scroll" : ""}`}>
         <Nav isScroll={isScroll} />
         <Link to="/" className={`header-logo ${isScroll ? "scroll" : ""}`}>
@@ -22,7 +22,16 @@ const NavBar = ({ isScroll = false }) => {
         </Link>
         {/* <SearchBar /> */}
         <div className={`header-cart--container ${isScroll ? "scroll" : ""}`}>
-          {!login ? <Login isScroll={isScroll} /> : <Dropdowns />}
+          {!login ? (
+            <Link
+              to="/login"
+              className={`header-nav--link ${isScroll ? "scroll-link" : ""}`}
+            >
+              Login
+            </Link>
+          ) : (
+            <Dropdowns />
+          )}
           <CartButton openModal={isOpen} setOpenModal={setIsOpen} />
         </div>
         {!!isOpen && (

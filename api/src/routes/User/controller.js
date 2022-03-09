@@ -5,13 +5,15 @@ const {
   UserAddress,
   UserPayment,
   Product,
-  Review,
+  UserReviews,
   OrderDetails,
+  OrderItems,
+  PaymentDetails,
 } = require("../../db.js");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { FIRM } = process.env;
+const { FIRM, MAIL_HOST, MAIL_USER, MAIL_PASS, MAIL_PORT } = process.env;
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 var xoauth2 = require("xoauth2");
@@ -76,88 +78,106 @@ const addPayment = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  let { username, password, first_name, last_name, email } = req.body;
 
-  if (!username || !first_name || !last_name || !email || !password) {
-    res
-      .status(400)
-      .json({ success: false, message: "Fields are missing in the form" });
-  } else {
-    let [user, created]= await User.findOrCreate({
-      where: { email: email, username: username },
-      defaults: { username, password, first_name, last_name, email },
+
+  let {
+    first_name,
+    last_name,
+    email,
+    password,
+    // verificatePassword,
+    paymentMethod,
+    username,
+    address,
+    phoneNumber,
+    postalNumber } = req.body;
+  // res.send( {first_name,
+  //   last_name,
+  //   email,
+  //   password,     
+  //   paymentMethod, 
+  //   username,
+  //   address,
+  //   phoneNumber,
+  //   postalNumber});
+  try {
+    email = email.toLowerCase();
+    let createdUser = await User.create({
+      first_name,
+      last_name,
+      email,
+      password,
+      paymentMethod,
+      username,
+      address,
+      phoneNumber,
+      postalNumber
     });
-    if(!created) {
-      res.status(400).json({ success: false, message: "Email already exists" });
-    } else {
-      //generar token 
+    // res.send(createdUser)
+
+    // res.send(createdUser)
+    if (createdUser) {
+      //generar token
       const userForToken = {
         username,
         email,
-        userId: user.dataValues.id,
-      }
+        userId: createdUser.dataValues.id,
+        isAdmin: false,
+      };
+
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
+
       //enviar mail
+      let testAccount = await nodemailer.createTestAccount();
+
       // set up nodemailer configs
       var transporter = nodemailer.createTransport({
-        host: "smtp.hostinger.com",
-        port: 465,
+        host: MAIL_HOST,
+        port: MAIL_PORT,
         secure: true, // use SSL
         tls: {
           rejectUnauthorized: false,
         },
         auth: {
-          user: "welcome@hcommerce.store", //email created to send the emails from
-          pass: "1-Nunca-pares-de-aprender-!",
+          user: testAccount.user, //email created to send the emails from
+          pass: testAccount.pass,
         },
       });
 
       const options = {
-        from: "'HENRY e-COMMERCE' <welcome@hcommerce.store>",
+        from: "'HENRY e-COMMERCE' <" + MAIL_USER + ">",
         to: email,
-        subject: "Welcome to EC, Confirm your sign up",
+        subject: "Welcome to Henry Commerce, Confirm your sign up",
         //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
         // <a href="${process.env.CLIENT_URL}/user/resetpassword/${token}">${token}</a>
-        html: `<h1>CORTESIA DE JOSE:</h1>
-           
+        html: `
             <p> Hi ${first_name},</p>
+        
+            <h1>Thanks for signing up!  </h1>
 
-            <p> We just need to verify your email address before you can access [customer portal].</p>
+            <p> To get started, please confirm your email address by clicking the link below. If you didn't do this, ignore this message</p>
             
-            <p> Verify your email address :</p>
             <a href="http://localhost:3001/user/confirm/${token}">Verify your account!</a>
-            <p> Thanks! &#8211; The [company] team</p>`,
+            <p> Thanks! &#8211;  The HCommerce team</p>`,
       };
 
       // this function sends the email using the information for options
       transporter.sendMail(options, function (err, info) {
         if (err) {
-          console.log('un poco antes')
           console.log(err);
           return;
         }
         console.log("email sent " + info.response);
-        res.status(201).json({
-          message: `Verificate reset request sent to ${email} reset link: http://localhost:3001/user/resetpassword/${token}`,
-        });
       });
-      //--------------------------------------I--------------------------------------
 
-      res
-        .status(201)
-        .json({
-          success: true,
-          message: "account created succesfully, please confirm your email!",
-        });
-    } 
-  }
-/*   try {
+      return res.status(201).json({
+        success: true,
+        message: "Account created succesfully, please confirm your email!",
+      });
+    }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: "Failed in the process to register: " + error,
-    });
-  } */
+    return res.status(422).json({ success: false, message: "Something wrong happened" });
+  }
 };
 
 const confirm = async (req, res) => {
@@ -190,13 +210,7 @@ const confirm = async (req, res) => {
     const { username, email, userId } = data;
 
     // Verificar existencia del usuario
-    //
-    //  const user = await User.findOne({ email }) || null;
-
-    const user =
-      (await User.findOne({
-        where: { email: email },
-      })) || null;
+    const user = await User.findOne({ where: { email: email } }) || null;
 
     if (user === null) {
       return res.json({
@@ -212,11 +226,11 @@ const confirm = async (req, res) => {
 
     // Actualizar usuario
     //  user.set('verificate', true);
-    user.verificate = true;
+    user.verified = true;
     await user.save();
 
     // Redireccionar a la confirmación
-    res.redirect("http://localhost:3000/verificate/" + username);
+    return res.status(202).redirect("http://localhost:3000/verification/" + username + "?token=" + token);
   } catch (error) {
     console.log(error);
     // window.location.href = `/verificate/No_Verficate`;
@@ -234,43 +248,49 @@ const postLogin = (req, res) => {
     !email ||
       (!password &&
         res
-          .status(401)
-          .json({ success: false, error: "Incomplete data form" }));
+          .status(400)
+          .json({ success: false, message: "Incomplete data form" }));
 
-    User.findOne({ where: { email: email } })
+    User.findOne({
+      attributes: ["password", "id", "isAdmin", "username"],
+      where: { email: email }
+    })
       .then((result) => {
         // si existe el usuario registrado comparo la contraseña tipeada con la que esta en la base de datos
         const verify = bcrypt.compareSync(password, result.password);
+        console.log('Verify: ', verify)
         if (verify) {
           // si la contraseña es correcta
           // extraigo los datos necesarios para el front-end y el token
           // y devuelvo el token y datos necesarios del usuario
-          let { username, email, first_name, last_name, isAdmin } = result;
+          let { id, isAdmin, username } = result;
           let Token = jwt.sign(
-            { username, email, first_name, last_name, isAdmin },
+            { id, isAdmin },
             FIRM,
             { expiresIn: "5d" }
           );
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
+            message: "Login succesfully",
             data: {
               Token,
-              user: { username, email, first_name, last_name, isAdmin },
+              user: { username, id, isAdmin },
             },
           });
         } else {
           // si la contraseña comparada no son validas, reporto un error de validacion de password
-          res.status(400).json({ success: false, error: "Invalid Password" });
+          return res.status(401).json({ success: false, message: "Invalid Email or Password" });
         }
       })
       .catch((err) => {
         // en caso de que el usuario no exista
-        res
-          .status(401)
-          .json({ success: false, error: "User not found: " + err });
+        console.log(err);
+        return res
+          .status(403)
+          .json({ success: false, message: "Type an email " });
       });
   } catch (e) {
-    res.status(500).json({ success: false, error: e });
+    return res.status(500).json({ success: false, message: e });
   }
 };
 
@@ -283,67 +303,74 @@ const postReviewProduct = async (req, res) => {
   // o si se usar cookie-session
   // let {usAuth}= req.session
   // let {id} = jwt.decode(usAuth)
-  try {
-    let { idProduct } = req.params;
+
+    // return res.send(req.body)
+    try {
+      let { idProduct } = req.body;
+     
+    
+    // return res.send(req.body.hasOwnProperty("description"))
     if (req.body) {
       if (
-        req.body.hasOneProperty("description") &&
+        req.body.hasOwnProperty("description") &&
         typeof req.body["description"] !== "string"
       ) {
         throw Error("Data types error ");
       }
       if (
-        req.body.hasOneProperty("starsPoint") &&
+        req.body.hasOwnProperty("starsPoint") &&
         typeof req.body["starsPoint"] !== "number"
-      ) {
-        throw Error("Data types error ");
-      }
-    }
+        ) {
+          throw Error("Data types error ");
+        }
+        //provisional
+        if (
+          req.body.hasOwnProperty("userid") &&
+          typeof req.body["userid"] !== "number"
+          ) {
+            throw Error("Data types error");
+          }
+          
+        if (
+            req.body.hasOwnProperty("idProduct") &&
+            typeof req.body["idProduct"] !== "number"
+            ) {
+              throw Error("Data types error");
+            }
+            // return res.send("hola mundo X")
+            
+        }
+        
+        let {
+          description,
+          starsPoints,
+          userid
+            } = req.body
+       
     let product = await Product.findOne({ where: { id: idProduct } });
-    !product && new Error("Product no found");
-    let review = await Review.create(req.body);
-    // dara un error si no hay una id de un usuario
-    User.findOne({ where: { id: id } }).then(
-      (result) => {
-        review.addUser(result);
-        product.setReview(review);
-        res.status(201).json({ success: true, inf: "Review add to Product" });
-      },
-      (error) => {
-        res
-          .status(400)
-          .json({ success: false, inf: "user nof found: " + error });
-      }
-    );
+     !product && new Error("Product no found");
+    
+   let user = await User.findOne({ where: { id: userid } });
+     !user && new Error("User no found");
+    
+    
+    // return res.send(product)
+  
+    let review = await UserReviews.create({
+      description,
+      starsPoints,
+      user_id:userid,
+      product_id: idProduct
+    });
+    
+    res.status(201).json({ success: true, inf: "Review add to Product" });
+  
   } catch (e) {
     res.status(400).json({ success: false, inf: e });
   }
 };
 
-const OrdersUser = async (req, res) => {
-  const { first_name, last_name } = req.body;
-  try {
-    const Myorders = await User.findAll({
-      include: {
-        model: OrderDetails,
-        as: "PurchaseOrder",
-      },
-    });
 
-    if (first_name && last_name) {
-      const map = Myorders.map((e) => e.dataValues);
-      const myOrder = map.filter(
-        (e) =>
-          e.first_name.toLowerCase() === first_name.toLowerCase() &&
-          e.last_name.toLowerCase() === last_name.toLowerCase()
-      );
-      res.status(200).send(myOrder);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(error);
-  }
-};
 
 const forgotPassword = async (req, res) => {
   try {
@@ -369,19 +396,19 @@ const forgotPassword = async (req, res) => {
     // console.log(user)
     // set up nodemailer configs
     var transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 465,
+      host: MAIL_HOST,
+      port: MAIL_PORT,
       secure: true, // true for 465, false for other ports
       tls: {
         rejectUnauthorized: false,
       },
       auth: {
-        user: "welcome@hcommerce.store", //email created to send the emails from
-        pass: "1-Nunca-pares-de-aprender-!",
+        user: MAIL_USER, //email created to send the emails from
+        pass: MAIL_PASS,
       },
     });
     const options = {
-      from: "HENRY e-Commerce <welcome@hcommerce.store>",
+      from: "HENRY e-Commerce <" + MAIL_USER + ">",
       to: email,
       subject: "Password Reset for the ecommerce platform",
       //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
@@ -409,6 +436,40 @@ const forgotPassword = async (req, res) => {
     res.status(400).json({ message: "error" });
   }
 };
+
+
+const getUserDetails = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const user = await User.findByPk(userid)
+    res.json(user)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getUserAddresses = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const addresses = await UserAddress.findAll({where: {user_id: userid}})
+    res.json(addresses)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getUserPayments = async (req, res ) => {
+  // const { user_id } = req.permits;   // Real 
+  const { userid } = req.params;       // Testing
+  try {
+    const payments = await UserPayment.findAll({where: {user_id: userid}})
+    res.json(payments)
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 const passwordResetToken = async (req, res) => {
   try {
@@ -438,19 +499,19 @@ const passwordResetToken = async (req, res) => {
     // console.log(user)
     //same email code as before
     var transporter = nodemailer.createTransport({
-      host: "smtp.hostinger.com",
-      port: 465,
+      host: MAIL_HOST,
+      port: MAIL_PORT,
       secure: true, // true for 465, false for other ports
       tls: {
         rejectUnauthorized: false,
       },
       auth: {
-        user: "welcome@hcommerce.store", //email created to send the emails from
-        pass: "1-Nunca-pares-de-aprender-!",
+        user: MAIL_USER, //email created to send the emails from
+        pass: MAIL_PASS,
       },
     });
     const options = {
-      from: "HENRY e-Commerce <welcome@hcommerce.store>",
+      from: "HENRY e-Commerce <" + MAIL_USER + ">",
       to: user.email,
       subject: "your password has been changed",
       html: `<h2>Password reset<h2>
@@ -474,15 +535,102 @@ const passwordResetToken = async (req, res) => {
   }
 };
 
+const validate = async (req, res) => {
+  const { email, username } = req.query;
+  if (email) {
+    const exists = await User.findOne({ where: { email: email } })
+    if (exists) return res.send(true);
+    else return res.send(false)
+  }
+  if (username) {
+    const exists = await User.findOne({ where: { username: username } })
+    if (exists) return res.send(true);
+    else return res.send(false)
+  }
+  res.send('error: invalid query')
+}
+
+const orderHistory = async (req, res) => {
+  const { userid } = req.params;
+  console.log(userid)
+
+  try {
+    let userOrders = await OrderDetails.findAll({
+      where: {user_id: userid},
+      include: { model: OrderItems, }
+    });
+    const response = await Promise.all(userOrders.map(async order => {
+      let payment = {}
+      if (order.payment_id) payment = await PaymentDetails.findOne({where: {id:order.payment_id}})
+      return {
+        id: order.id,
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        payment: {
+          amount: payment.amount,
+          provider: payment.provider,
+          status: payment.status
+        },
+        orderItems: await Promise.all(order.orderItems.map(async item => {
+          let product = await Product.findByPk(item.product_id)
+          return {product: product.name, quantity: item.quantity}
+        })),
+      }
+    })) 
+    res.status(200).send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send(err);
+  }
+
+};
+
+const userReviews = async (req, res) => {
+  
+  const {userid} = req.params;
+  try {
+    let reviews = await UserReviews.findAll({
+      where: {user_id: userid}
+    });
+  let reviewsProduct = await Promise.all(reviews.map(async e => {
+    let productoRW = {};
+    if(e.product_id) productoRW = await Product.findOne({where: {id:e.product_id}})
+    return {
+      id : e.id,
+      description: e.description,
+      user_id: e.user_id,
+      product_id: e.product_id,
+      productoRW: {
+        name: productoRW.name,
+        image: productoRW.image
+      }
+    }
+  }))
+    res.json(reviewsProduct)
+    
+  } catch(err) {
+    console.log(err)
+  }
+
+}
+
 module.exports = {
   getUsers,
-  OrdersUser,
+  getUserDetails,
+  getUserAddresses,
+  getUserPayments,
+  orderHistory,
+  userReviews,
   addAdress,
   postReviewProduct,
+
   createUser,
   postLogin,
   addPayment,
   forgotPassword,
   passwordResetToken,
   confirm,
+  validate,
+  // addToWhishlist
 };

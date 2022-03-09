@@ -1,5 +1,8 @@
 const { Router } = require("express");
-const { createOrder } = require("../Shoping/controller");
+
+// const { createOrder } = require("./controller");
+const { payment, payments1item } = require("./controller");
+
 
 
 // Importar todos los routers;
@@ -10,7 +13,10 @@ const checkoutRouter = Router();
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-checkoutRouter.get('/create-order', createOrder)
+// checkoutRouter.post('/create-order', createOrder)
+checkoutRouter.post('/payments', payment)
+checkoutRouter.post('/detail/payments1item', payments1item)
+
 
 
 

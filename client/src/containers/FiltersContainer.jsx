@@ -1,58 +1,36 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { getCategories, filterProducts, getProductsPublic } from "../Redux/Actions/actions";
 import { useEffect } from "react";
+import Select from 'react-select'
+
+import './styles/estilos.css'
+
+
 
 const FiltersContainer = () => {
   const { categories, loadCategories } = useSelector((state) => state.categories);
-  const [openDropdown, setOpenDropdown] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const dispatch = useDispatch();
-
-  const handleChange = (e) => {
-    if (e.target.name === "category") {
-      if (e.target.checked) {
-        setFilteredCategories([...filteredCategories, e.target.value]);
-      } else {
-        setFilteredCategories(
-          filteredCategories.filter((item) => item !== e.target.value)
-        );
-      }
-    }
+  const options = categories.map(c => {
+    return {value: c.name, label: c.name}
+  })
+  const handleChange = (filter) => {
+    setFilteredCategories(filter)
+    console.log(filter)
   };
 
   useEffect(() => {
-    filteredCategories.length > 0 ? dispatch(filterProducts(filteredCategories)) :
-    dispatch(getProductsPublic());
-  },[filteredCategories])
+    const fordispatch = filteredCategories.map(c => c.value)
+    fordispatch.length > 0 ? dispatch(filterProducts(fordispatch)) :
+      dispatch(getProductsPublic());
+  }, [filteredCategories])
 
-  if(loadCategories) dispatch(getCategories());
+  if (loadCategories) dispatch(getCategories());
 
   return (
     <div>
-      <div
-        className="catalog--filters"
-        onClick={() => setOpenDropdown(!openDropdown)}
-      >
-        {" "}
-        Elige categoria <RiArrowDropDownLine />{" "}
-      </div>
-      {openDropdown && (
-        <div className="catalog--filter">
-          {categories.map((category) => (
-            <div key={category.id}>
-              <label>{category.name}</label>
-              <input
-                type="checkbox"
-                name="category"
-                value={category.name}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <Select isMulti options={options} value={filteredCategories} onChange={handleChange} />      
     </div>
   );
 };
