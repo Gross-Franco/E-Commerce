@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Op } = require("sequelize");
+const { Op, col } = require("sequelize");
 const { Discount, ProductCategory, ProductInventory, Product, UserReviews, User } = require("../../db.js");
 
 const getProducts = async (req, res, next) => {
@@ -27,7 +27,6 @@ const getProducts = async (req, res, next) => {
 			}
 		}))
 		let response = allProducts.filter(product => product != null)
-		// console.log(allProducts)
 		return res.status(200).json(response);
 	} catch (error) {
 		next(error);
@@ -35,41 +34,70 @@ const getProducts = async (req, res, next) => {
 };
 
 const filterByCategory = async (req, res) => {
-	
-	console.log(req.body)
-
-	const categories  = req.body;
+	const {categories}  = req.body;
+	console.log(categories)
 	try {
-		const filtered = await Product.findAll({
+		let productSearch = await Product.findAll({
 			include: {
 				model: ProductCategory,
 				where: {
 					name: categories
-				}
-			},
+				},
+			}
 		});
-		let response = [];
-		for (let product of filtered) {
-			let inventory = await ProductInventory.findOne({
-				where: { id: product.inventory_id },
-			});
-			inventory.quantity > 0 && response.push({
-				id: product.id,
-				name: product.name,
-				image: product.image,
-				description: product.description,
-				SKU: product.SKU,
-				price: product.price,
-				category: product.productCategories.map((x) => x.name),
-				quantity: inventory.quantity,
-			});
-		}
-
-		res.json(response);
-	} catch (err) {
-		console.log(err);
-		res.status(404).send(err);
+		let filteredProducts = await Promise.all(productSearch.map(async product => {
+			let productData = product.dataValues;
+			let productinv = await ProductInventory.findOne({where: {id:productData.inventory_id}});
+			if(productinv.dataValues.quantity > 0 && !product.inactive) return {
+				id: productData.id,
+				name: productData.name,
+				image: productData.image,
+				description: productData.description,
+				image: productData.image,
+				SKU: productData.SKU,
+				price: productData.price,
+				inactive: productData.inactive,
+				category: productData.productCategories.map(x => x.name),
+				inventory: productinv.quantity
+			}
+		}))
+		let response = filteredProducts.filter(product => product != null)
+		return res.status(200).json(response);
+	} catch (error) {
+		console.log(error);
 	}
+
+	// try {
+	// 	const filtered = await Product.findAll({
+	// 		include: {
+	// 			model: ProductCategory,
+	// 			where: {
+	// 				name: categories
+	// 			}
+	// 		},
+	// 	});
+	// 	let response = [];
+	// 	for (let product of filtered) {
+	// 		let inventory = await ProductInventory.findOne({
+	// 			where: { id: product.inventory_id },
+	// 		});
+	// 		inventory.quantity > 0 && response.push({
+	// 			id: product.id,
+	// 			name: product.name,
+	// 			image: product.image,
+	// 			description: product.description,
+	// 			SKU: product.SKU,
+	// 			price: product.price,
+	// 			category: product.productCategories.map((x) => x.name),
+	// 			quantity: inventory.quantity,
+	// 		});
+	// 	}
+
+	// 	res.json(response);
+	// } catch (err) {
+	// 	console.log(err);
+	// 	res.status(404).send(err);
+	// }
 };
 
 const getProductId = async (req, res) => {
@@ -160,22 +188,49 @@ const searchProductName = async (req, res) => {
 	}
 };
 
-// const getProductReviews = async (req, res) => {
-// 	const {productid} = req.params;
+const orderProducts = async (req, res) => {
+	const {column, order} = req.body;
+	console.log(column, order)
+	try {
+		let productSearch = await Product.findAll({
+			order: [
+				[column, order]
+			],
+			include: {
+				model: ProductCategory,
+				attributes: ['name']
+			},
+		});
+		let orderedProducts = await Promise.all(productSearch.map(async product => {
+			let productData = product.dataValues;
+			let productinv = await ProductInventory.findOne({where: {id:productData.inventory_id}});
+			if(productinv.dataValues.quantity > 0 && !product.inactive) return {
+				id: productData.id,
+				name: productData.name,
+				image: productData.image,
+				description: productData.description,
+				image: productData.image,
+				SKU: productData.SKU,
+				price: productData.price,
+				inactive: productData.inactive,
+				category: productData.productCategories.map(x => x.name),
+				inventory: productinv.quantity
+			}
+		}))
+		let response = orderedProducts.filter(product => product != null)
+		return res.status(200).json(response);
+	} catch (error) {
+		console.log(error);
+	}
 
-// 	try {
-// 		const reviews = await UserReviews.findAll({
-// 			where: {product_id: productid}
-// 		})
-// 		res.json(reviews)
-// 	} catch(err) { 
-// 		console.log(err)
-// 	}
-// }
+
+}
+
 
 module.exports = {
 	getProducts,
 	getProductId,
 	searchProductName,
 	filterByCategory,
+	orderProducts,
 };

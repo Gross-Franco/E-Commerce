@@ -9,6 +9,7 @@ export const SEARCH_PRODUCT_ID = 'SEARCH_PRODUCT_ID';
 export const FILTER_PRODUCTS = "FILTER_PRODUCTS";
 export const ORDER_PRODCTS = "ORDER_PRODCTS";
 export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
+export const LOAD_DETAILS = "LOAD_DETAILS"
 
 // Categories
 export const GET_CATEGORIES = 'GET_CATEGORIES';
@@ -34,6 +35,7 @@ export const USER_REVIEWS = 'USER_REVIEWS'
 export const GET_WISHLIST = 'GET_WISHLIST'
 export const ADD_WISHLIST = 'ADD_WISHLIST'
 export const REMOVE_WISHLIST = 'REMOVE_WISHLIST'
+export const POST_REVIEW = " POST_REVIEW";
 
 
 // Orders / Shopping
@@ -48,6 +50,7 @@ export const ADD_CART_ITEM = "ADD_CART_ITEM";
 export const EDIT_CART_ITEM_QTY = "EDIT_CART_ITEM_QUANTITY";
 export const DELETE_CART_ITEM = "DELETE_CART_ITEM";
 export const DELETE_CART = "DELETE_CART";
+
 // Misc
 export const ADD_OR_UPDATE = "ADD_OR_UPDATE";
 
@@ -57,7 +60,3 @@ export const GET_LOCAL_STORAGE = "GET_LOCAL_STORAGE";
 export const DELETE_ITEM_LOCAL_STORAGE = "DELETE_ITEM_LOCAL_STORAGE";
 export const EDIT_LOCAL_STORAGE_QTY = "EDIT_LOCAL_STORAGE_QTY";
 export const UPDATE_SUBTOTAL = "UPDATE_SUBTOTAL";
-
-//reviwer 
-
-export const POST_REVIWER = " POST_REVIWER";
