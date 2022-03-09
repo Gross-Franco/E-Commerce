@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { signIn } from "../Redux/Actions/actions";
+import { ghSession, signIn } from "../Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Header, Hero, Notification } from "../components";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Button,
+  GithubButton,
+  GoogleButton,
+  Header,
+  Hero,
+  Notification,
+} from "../components";
 import { isFullfilled } from "../services";
 
 const Login = () => {
@@ -11,8 +18,11 @@ const Login = () => {
     password: "",
   });
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { login, response } = useSelector((state) => state.session);
+  const { login, response, done } = useSelector(
+    (state) => state.session
+  );
   const [show, setShow] = useState(false);
 
   let dispatch = useDispatch();
@@ -26,15 +36,17 @@ const Login = () => {
     dispatch(signIn(form));
   };
 
-  useEffect(() => {
-    if(login) {
-      navigate("/perfilUser");
-    }
-  }, [response]);
 
   useEffect(() => {
+    if (login) {
+      navigate("/perfilUser");
+    }
     if (response) {
       setShow(true);
+    }
+    let code = location.search.split("=")[1];
+    if (code && !done) {
+      dispatch(ghSession(code));
     }
   }, [response]);
 
@@ -73,6 +85,9 @@ const Login = () => {
             placeholder="Iniciar sesión"
             disable={disable}
           />
+          <span className="register--main--form-span">O continua con</span>
+          <GoogleButton />
+          <GithubButton />
           <span className="register--main--form-span">
             No tienes una cuenta?{" "}
             <Link to="/register" className="register--main--form-link">

@@ -101,7 +101,7 @@ const createUser = async (req, res) => {
   //   phoneNumber,
   //   postalNumber});
   try {
-
+    email = email.toLowerCase();
     let createdUser = await User.create({
       first_name,
       last_name,

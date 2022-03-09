@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { isFullfilled } from "../services";
 import { validator } from "../helpers/formValidation/register";
-import { Button, FormHandler, Header, Hero, Notification } from "../components";
+import { Button, FormHandler, GithubButton, GoogleButton, Header, Hero, Notification } from "../components";
 import PhoneInput from 'react-phone-input-2';
 
 
@@ -51,7 +51,7 @@ export default function Registro() {
       [e.target.name]: await validator(e.target.name, e.target.value),
     });
   };
-
+  
   const handleChange = (e) => {
   console.log( e)
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -246,6 +246,11 @@ export default function Registro() {
             action={handleSubmit}
             disable={disable}
           />
+          <span className="register--main--form-span">
+            O continúa con
+          </span>
+          <GoogleButton />
+          <GithubButton />
           <span className="register--main--form-span">
             Ya tienes una cuenta?{" "}
             <Link to="/login" className="register--main--form-link">

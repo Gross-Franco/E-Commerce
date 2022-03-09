@@ -1,4 +1,5 @@
 import { axiosWithCredentials as axios } from "../../utilities/axios";
+/* import axios from "axios"; */
 import {
   // Products
   GET_PRODUCTS,
@@ -52,7 +53,8 @@ import {
   EDIT_LOCAL_STORAGE_QTY,
   UPDATE_SUBTOTAL,
   SUCCESS_SESSION,
-  FAIL_SESSION
+  FAIL_SESSION,
+  GH_SESSION
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -430,5 +432,52 @@ export const userReviews = (userid) => {
   return async (dispatch) => {
     const response = await axios.get(`/user/reviews/${userid}`); 
     dispatch({ type: USER_REVIEWS, payload: response.data });
+  }
+}
+export const ghSession = (code) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/api/github?code=${code}`);
+    if (response?.data?.success) {
+      let { access_token } = response.data.client;
+      let { data } = await axios.get(
+        `https://api.github.com/user/emails?scope=user`,
+        {
+          headers: {
+            Authorization: `token ${access_token}`,
+        }
+      });
+      let { data: user } = await axios.get(`https://api.github.com/user`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        }
+      });
+      dispatch({ type: GH_SESSION });
+      if(data && user) {
+        let r = await axios.post(`/api/thirdparty/login`, {
+          email: data[0].email,
+          first_name: user.name.split(" ")[0],
+          last_name: user.name.split(" ")[1],
+          id: user.id,
+          username: user.login,
+        });
+        if(r?.data?.success) {
+          localStorage.setItem("token", r.data.token);
+          dispatch({ type: SIGN_IN, payload: r.data });
+        } else {
+          dispatch({ type: SIGN_IN, payload: r?.response?.data });
+        }
+      }
+    }
+  };
+};
+export const googleSession = (data) => {
+  return async (dispatch) => {
+    const response = await axios.post(`/api/thirdparty/login`, data);
+    if (response?.data?.success) {
+      localStorage.setItem("token", response.data.token);
+      dispatch({ type: SIGN_IN, payload: response.data });
+    } else {
+      dispatch({ type: SIGN_IN, payload: response.response.data });
+    }
   }
 }
