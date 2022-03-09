@@ -12,7 +12,7 @@ const StripeButton = (subtotal) =>{
     const { user } = useSelector((state) => state.session);
     const dispatch = useDispatch()
 
-    const product= {
+    const product = {
         id: subtotal.products.map((product) =>{
             return product.id
         }),
