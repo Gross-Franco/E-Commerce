@@ -69,10 +69,10 @@ export default function ProductDetail() {
   }, []);
 
 
-  useEffect(() => {    
-    console.log(productDetail.reviews)
-  }, [productDetail]);
-  // productDetail.reviews = ['TODAS LAS REVIEWS']
+  useEffect(() => {
+    setIsOpen(productDetail)
+  }, []);
+
 
   const  handleSubmit = async (e) => {
   
@@ -111,8 +111,7 @@ export default function ProductDetail() {
     saveLocalStorage({ product });
     dispatch(saveLocal());
   };
-  // console.log("PRODUCT IN PAGE", productDetail)
-  // console.log("PRODUCT IN STRIPE", product)
+
   return (
     <div>
       <header className="register--header">
@@ -191,6 +190,23 @@ export default function ProductDetail() {
               </Card>
               <br />
               <br />
+
+              
+              <div>
+                {
+                productDetail?.reviews?.map((e, i) => {
+                  return <div key={i}>
+                    <p> {e.description} </p>
+                    <p> {e.starsPoints} </p>
+                    <p> {e.user} </p>
+                  </div>})
+                  }
+               
+              </div>
+
+
+              <Form>
+
    
             {/*Start info */}
               <Card style={{ 
@@ -288,6 +304,7 @@ export default function ProductDetail() {
 
                     {/* Mensaje star  */}
               <Form  >
+                
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
 
 
