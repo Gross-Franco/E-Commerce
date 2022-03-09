@@ -6,7 +6,7 @@ import { NavBar, Footer } from "./";
 import { saveLocalStorage } from "../services";
 import { MdAddShoppingCart } from "react-icons/md";
 
-import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar} from "react-bootstrap";
+import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar } from "react-bootstrap";
 
 
 /* import Holder from "react-holder";
@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveLocal, searchProductId, postReview, loadDetails, addToWishlist, removeFromWishlist, getWishlist } from "../Redux/Actions/actions";
 
 import { useParams } from "react-router-dom";
-import { BsHeart, BsHeartFill ,BsArrowLeftShort} from "react-icons/bs";
-import {AiOutlineStar, AiFillStar} from "react-icons/ai";
+import { BsHeart, BsHeartFill, BsArrowLeftShort } from "react-icons/bs";
+import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 import { Link } from "react-router-dom";
 import Login from "./Login";
@@ -29,12 +29,12 @@ import { setOverflowY } from "../services";
 import StripeSingleItem from "../components/StripeSingleItem";
 
 export default function ProductDetail() {
- 
+
   const { id } = useParams();
   const { productDetail, loadReviews } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.session);
   const { wishlist } = useSelector((state) => state.users);
-  const [newReview, setNewReview ] = useState({
+  const [newReview, setNewReview] = useState({
     description: "",
     starsPoints: 5
   });
@@ -48,9 +48,9 @@ export default function ProductDetail() {
       setIsScroll(false);
     }
   };
-  
+
   const [ContStar, setContStar] = useState();
-  const [Arry, ArrayStar] = useState([<AiOutlineStar/>, <AiOutlineStar/>, <AiOutlineStar/>,<AiOutlineStar/>,<AiOutlineStar/>]);
+  const [Arry, ArrayStar] = useState([<AiOutlineStar />, <AiOutlineStar />, <AiOutlineStar />, <AiOutlineStar />, <AiOutlineStar />]);
   const [heart, setHeart] = useState(wishlist.some(item => item.id === Number(id)));
   const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ export default function ProductDetail() {
   }, []);
 
 
-  const  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     dispatch(postReview({
       ...newReview,
@@ -81,9 +81,9 @@ export default function ProductDetail() {
     })
   }
 
-  if(loadReviews) dispatch(searchProductId(id))
-  
- useEffect(() => {
+  if (loadReviews) dispatch(searchProductId(id))
+
+  useEffect(() => {
     user?.id && dispatch(getWishlist(user.id))
   }, [])
 
@@ -98,11 +98,11 @@ export default function ProductDetail() {
     else {
       dispatch(removeFromWishlist(user.id, id))
     }
-    setHeart(!heart)  
+    setHeart(!heart)
   }
 
   const handleClick = () => {
-    saveLocalStorage({product:{...productDetail, inventory: productDetail.quantity}});
+    saveLocalStorage({ ...productDetail, inventory: productDetail.quantity });
     dispatch(saveLocal());
   };
 
@@ -126,7 +126,7 @@ export default function ProductDetail() {
           >
             <Col>
               <Card.Img variant="top" src={productDetail?.image} style={{
-               transform: "scale(1.2, 1)"
+                transform: "scale(1.2, 1)"
               }} />
 
               <Card
@@ -163,113 +163,114 @@ export default function ProductDetail() {
               </Card>
               <br />
 
-            {/*Start info */}
-              <Card style={{ 
-              width: '30rem', 
-              height: '13rem'  
-                }}>
-  
-           <Row>
-            <Col >
-            <br/>           
-             <h1 style={{              
-               fontSize:"450%",
-               
-               textAlign: "right"
-}             }>5
-             </h1>
-             <Row style={
-               { position:"relative",
-               right:" -180px",
-               transform: "scale(2, 2)"
-                 }
-             }>
-             <li style={{
-              listStyleType:"none"
-
+              {/*Start info */}
+              <Card style={{
+                width: '30rem',
+                height: '13rem'
               }}>
-              <AiOutlineStar/> 
-              <AiOutlineStar />
-              <AiOutlineStar/>
-              <AiOutlineStar/>
-              <AiOutlineStar/>
 
-             </li>     
-             </Row>
-             <br />
-             <h6 style={{
-                textAlign: "right",
-                fontSize:"80%"
-             }} >promedio entre xxx personas</h6>
-            </Col>
-           {/* segunda parte */}
-            <Col>
-            <br />
-            <br />
-            <Row>
-              <Col xs={3} md={4}>
-            <h6 style={{               
-                fontSize:"70%"
-             }}> X estrellas</h6>
-            
-             </Col>
-             <Col xs={6} md={20} style={
-               {
-                 position:"relative",
-                  right:"25px"
-                                    }}>
-             <ProgressBar now={10} />
-             </Col>
-             <Col xs={2} md={2}  style={
-               {
-                 position:"relative",
-                  right:"35px",
-                  top:"-5px"
-                                    }}>xx</Col>
+                <Row>
+                  <Col >
+                    <br />
+                    <h1 style={{
+                      fontSize: "450%",
 
-             </Row>
-             <Row>
-              <Col xs={3} md={4}>
-            <h6 style={{               
-                fontSize:"70%"
-             }}> X estrellas</h6>
-            
-             </Col>
-             <Col xs={6} md={20} style={
-               {
-                 position:"relative",
-                  right:"25px"
-                                    }}>
-             <ProgressBar now={10} />
-             </Col>
-             <Col xs={2} md={2}  style={
-               {
-                 position:"relative",
-                  right:"35px",
-                  top:"-5px"
-                                    }}>xx</Col>
+                      textAlign: "right"
+                    }}>5
+                    </h1>
+                    <Row style={
+                      {
+                        position: "relative",
+                        right: " -180px",
+                        transform: "scale(2, 2)"
+                      }
+                    }>
+                      <li style={{
+                        listStyleType: "none"
 
-             </Row>
-             
-             
-            </Col>
-          </Row>
-          </Card>
- 
+                      }}>
+                        <AiOutlineStar />
+                        <AiOutlineStar />
+                        <AiOutlineStar />
+                        <AiOutlineStar />
+                        <AiOutlineStar />
 
-                    {/* Mensaje star  */}
-              { user?.id &&
+                      </li>
+                    </Row>
+                    <br />
+                    <h6 style={{
+                      textAlign: "right",
+                      fontSize: "80%"
+                    }} >promedio entre xxx personas</h6>
+                  </Col>
+                  {/* segunda parte */}
+                  <Col>
+                    <br />
+                    <br />
+                    <Row>
+                      <Col xs={3} md={4}>
+                        <h6 style={{
+                          fontSize: "70%"
+                        }}> X estrellas</h6>
 
-              <form onSubmit={handleSubmit}>
+                      </Col>
+                      <Col xs={6} md={20} style={
+                        {
+                          position: "relative",
+                          right: "25px"
+                        }}>
+                        <ProgressBar now={10} />
+                      </Col>
+                      <Col xs={2} md={2} style={
+                        {
+                          position: "relative",
+                          right: "35px",
+                          top: "-5px"
+                        }}>xx</Col>
 
-                <label>Review:</label>
-                <textarea value={newReview.description} name="description" onChange={handleChange}/>
+                    </Row>
+                    <Row>
+                      <Col xs={3} md={4}>
+                        <h6 style={{
+                          fontSize: "70%"
+                        }}> X estrellas</h6>
 
-                <label>Score:</label>
-                <input className="aaaa" type='number' min='1' max='5' value={newReview.starsPoints} name="starsPoints" onChange={handleChange}/>
+                      </Col>
+                      <Col xs={6} md={20} style={
+                        {
+                          position: "relative",
+                          right: "25px"
+                        }}>
+                        <ProgressBar now={10} />
+                      </Col>
+                      <Col xs={2} md={2} style={
+                        {
+                          position: "relative",
+                          right: "35px",
+                          top: "-5px"
+                        }}>xx</Col>
 
-                <button type="submit"> POST </button>
-              </form>
+                    </Row>
+
+
+                  </Col>
+                </Row>
+              </Card>
+
+
+              {/* Mensaje star  */}
+              {user?.id &&
+
+                <form onSubmit={handleSubmit}>
+
+                  <label>Review:</label>
+                  <textarea value={newReview.description} name="description" onChange={handleChange} />
+
+                  <label>Score:</label>
+                  <input className="aaaa" type='number' min='1' max='5' value={newReview.starsPoints} name="starsPoints" onChange={handleChange} />
+
+                  <button type="submit"> POST </button>
+                </form>
 
               }
               {/* <Form  >
@@ -298,44 +299,45 @@ export default function ProductDetail() {
                 <h6 type="input" onClick={handleSubmit} style={{ cursor: "pointer" }}> Response</h6>               
 
               </Form> */}
-               {/* estrellas  */}
-               <Row style={
-                 {
-                      width: '8rem'
-                    }
-                  }>
-        
-        <li style={{
-         listStyleType:"none",
-         transform: "scale(2, 2)",
-         position:"relative",
-         right:"-450px",
-         top:"-30px"
-        }}>
-        {
-
-        }
-        
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-
-        </li>          
-                    </Row>                         
-        {/* Reviwer gets */}
-
-                <div>
+              {/* estrellas  */}
+              <Row style={
                 {
-                productDetail?.reviews?.map((e, i) => {
-                  return <div key={i}>
-                    <p> {e.description} </p>
-                    <p> {e.starsPoints} </p>
-                    <p> {e.user} </p>
-                  </div>})
+                  width: '8rem'
+                }
+              }>
+
+                <li style={{
+                  listStyleType: "none",
+                  transform: "scale(2, 2)",
+                  position: "relative",
+                  right: "-450px",
+                  top: "-30px"
+                }}>
+                  {
+
                   }
-               
+
+                  <AiOutlineStar />
+                  <AiOutlineStar />
+                  <AiOutlineStar />
+                  <AiOutlineStar />
+                  <AiOutlineStar />
+
+                </li>
+              </Row>
+              {/* Reviwer gets */}
+
+              <div>
+                {
+                  productDetail?.reviews?.map((e, i) => {
+                    return <div key={i}>
+                      <p> {e.description} </p>
+                      <p> {e.starsPoints} </p>
+                      <p> {e.user} </p>
+                    </div>
+                  })
+                }
+
               </div>
             </Col>
 
@@ -375,13 +377,13 @@ export default function ProductDetail() {
                       </Card.Title>
                     </Col>
                     <Col>
-                       {
-                          heart ? (
-                            user?.id && <BsHeartFill onClick={() => handleWish()}/>
-                          ) : (
-                            user?.id && <BsHeart onClick={() => handleWish()}/>
-                          )
-                        }
+                      {
+                        heart ? (
+                          user?.id && <BsHeartFill onClick={() => handleWish()} />
+                        ) : (
+                          user?.id && <BsHeart onClick={() => handleWish()} />
+                        )
+                      }
 
                     </Col>
                   </Row>
@@ -419,7 +421,7 @@ export default function ProductDetail() {
                   </Card.Title>
 
                   <br />
-                  <StripeSingleItem subtotal={productDetail}/>
+                  <StripeSingleItem subtotal={productDetail} />
                   <br />
                   <br />
                   <Button variant="secondary" onClick={handleClick}>Agregar al carrito

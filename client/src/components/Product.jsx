@@ -6,12 +6,12 @@ import { addCartItem, saveLocal } from "../Redux/Actions/actions";
 import { saveLocalStorage } from "../services";
 
 const Product = ({ product }) => {
-  
+
   const dispatch = useDispatch();
 
   const handleClick = () => {
     console.log(product)
-    saveLocalStorage({product});
+    saveLocalStorage(product);
     dispatch(saveLocal());
   };
 
