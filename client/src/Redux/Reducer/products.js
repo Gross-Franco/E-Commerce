@@ -10,16 +10,13 @@ import {
   ORDER_PRODCTS,
   ADD_OR_UPDATE,
   SEARCH_PRODUCT_NAME_PUBLIC,
-  UPDATE_PRODUCT,
-  POST_REVIEW,
-  LOAD_DETAILS,
+  UPDATE_PRODUCT
 } from "../Actions/actionTypes";
 
 const initialState = {
   products: [],
   productDetail: {},
   loadProducts: true,
-  loadReviews: true
 };
 
 const rootReducer = (state = initialState, {type, payload}) => {
@@ -46,17 +43,10 @@ const rootReducer = (state = initialState, {type, payload}) => {
     case SEARCH_PRODUCT_ID:
       return {
         ...state,
-        productDetail: payload,
-        loadReviews: false
+        productDetail: payload
       }
 
     case FILTER_PRODUCTS:
-      return {
-        ...state,
-        products: payload
-      }
-  
-    case ORDER_PRODCTS:
       return {
         ...state,
         products: payload
@@ -79,18 +69,6 @@ const rootReducer = (state = initialState, {type, payload}) => {
       return {
         ...state,
         loadProducts: true
-      }
-    
-    case LOAD_DETAILS:
-      return {
-        ...state,
-        loadReviews: true
-      } 
-      
-    case POST_REVIEW:
-      return {
-        ...state,
-        loadReviews: true
       }
 
     default:

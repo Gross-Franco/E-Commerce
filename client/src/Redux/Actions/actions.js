@@ -13,7 +13,6 @@ import {
   UPDATE_PRODUCT,
   SEARCH_PRODUCT_NAME_PUBLIC,
   PRODUCT_REVIEWS,
-  LOAD_DETAILS,
 
   // Categories
   GET_CATEGORIES,
@@ -35,8 +34,6 @@ import {
   GET_WISHLIST,
   ADD_WISHLIST,
   REMOVE_WISHLIST,
-  POST_REVIEW,
-
 
   // Orders
   GET_ORDERS,
@@ -62,11 +59,11 @@ import {
   EDIT_LOCAL_STORAGE_QTY,
   UPDATE_SUBTOTAL,
   
-  // Session
+  POST_REVIWER,
+
   SUCCESS_SESSION,
   FAIL_SESSION,
   GH_SESSION
-
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -147,18 +144,14 @@ export const deleteProduct = function () {
 
 export const filterProducts = function (categories) {
   return async (dispatch) => {
-    console.log(categories)
-    const response = await axios.post(`/product/filtercategory`, {categories}); // chequear con la ruta del server
+    const response = await axios.post(`/product/filtercategory`, categories); // chequear con la ruta del server
     dispatch({ type: FILTER_PRODUCTS, payload: response.data });
   }
 }
 
-export const orderProducts = function (column, order) {
-  return async (dispatch) => {
-    const response = await axios.post(`/product/order`, {column, order}); // chequear con la ruta del server
-    dispatch({ type: ORDER_PRODCTS, payload: response.data });
-  }
-}
+export const orderProducts = function () {
+  return { type: ORDER_PRODCTS };
+};
 
 export const setAddOrUpdate = (addOrUpdate) => {
   return { type: ADD_OR_UPDATE, payload: addOrUpdate };
@@ -226,16 +219,15 @@ export const getOrderId = (orderId) => {
 }
 
  
-export const postReview = (newReview) => {
+export const PostReviwer = (Reviwer) => {
   return async (dispatch) => {
-    await axios.post(`/user/postReview`, newReview);
-    dispatch({ type: POST_REVIEW });
+    const response = await axios.post(`/user/post/postReview`, Reviwer);
+    // console.log(response)
+    // dispatch({ type: POST_REVIWER, payload: response.data});
   }
 }
 
-export const loadDetails = () => {
-  return { type: LOAD_DETAILS }
-}
+
 
 export const createUser = ({
   first_name,
@@ -375,20 +367,20 @@ export const deleteCartItem = (sessionId, productId) => {
 //   };
 
 
-// export const deleteCart = (sessionId) => {
-//   return async (dispatch) => {
-//     try {
-//       const { data } = await axios.delete(
-//         `/shopping/cart?session_id=${sessionId}`
-//       );
-//       if (data) {
-//         dispatch({ type: DELETE_CART, payload: data });
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
+export const deleteCart = (sessionId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.delete(
+        `/shopping/cart?session_id=${sessionId}`
+      );
+      if (data) {
+        dispatch({ type: DELETE_CART, payload: data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 export const signIn = (data) => {
   return async (dispatch) => {
     const response = await axios.post(`/api/signin`, data);
@@ -437,10 +429,6 @@ export const deleteItemLocalStorage = (id) => {
   };
 }
 
-export const deleteCart = () => {
-  return {type: DELETE_CART}
-}
-
 export const editLocalQty = (id, qty) => {
   return (dispatch) => {
     console.log(id, qty);
@@ -464,8 +452,12 @@ export const userOrders = (userid) => {
 
 export const userReviews =  (userid) => {
   // console.log(userid.id)
-  return async (dispatch) => { 
+  return async (dispatch) => {
+    
     const response = await axios.get(`/user/reviews/${userid}`); 
+    
+    console.log("hola mundo K")
+
     dispatch({ type: USER_REVIEWS, payload: response.data });
   }
 }
@@ -561,4 +553,3 @@ export const userPayments = (userid) => {
     dispatch({ type: USER_PAYMENTS, payload: response.data });
   }
 }
-

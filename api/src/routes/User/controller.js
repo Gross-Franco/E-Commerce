@@ -295,27 +295,77 @@ const postLogin = (req, res) => {
 };
 
 const postReviewProduct = async (req, res) => {
-  const { product_id, description, starsPoints, user_id } = req.body;
+  // si se envia el token
+  //let {id}=jwt.decode(req.headers['authorization'].split(' ')[1])
+  // de lo contrario se envia el id del usuario de forma manual
+  //let {userID}= req.query
+  // per es necesario un identificador para buscar el usuario en la base de datos
+  // o si se usar cookie-session
+  // let {usAuth}= req.session
+  // let {id} = jwt.decode(usAuth)
+
+    // return res.send(req.body)
+    try {
+      let { idProduct } = req.body;
+     
+    
+    // return res.send(req.body.hasOwnProperty("description"))
+    if (req.body) {
+      if (
+        req.body.hasOwnProperty("description") &&
+        typeof req.body["description"] !== "string"
+      ) {
+        throw Error("Data types error ");
+      }
+      if (
+        req.body.hasOwnProperty("starsPoint") &&
+        typeof req.body["starsPoint"] !== "number"
+        ) {
+          throw Error("Data types error ");
+        }
+        //provisional
+        if (
+          req.body.hasOwnProperty("userid") &&
+          typeof req.body["userid"] !== "number"
+          ) {
+            throw Error("Data types error");
+          }
+          
+        if (
+            req.body.hasOwnProperty("idProduct") &&
+            typeof req.body["idProduct"] !== "number"
+            ) {
+              throw Error("Data types error");
+            }
+            // return res.send("hola mundo X")
+            
+        }
+        
+        let {
+          description,
+          starsPoints,
+          userid
+            } = req.body
+       
+    let product = await Product.findOne({ where: { id: idProduct } });
+     !product && new Error("Product no found");
+    
+   let user = await User.findOne({ where: { id: userid } });
+     !user && new Error("User no found");
+    
+    
+    // return res.send(product)
   
-  try {
-
-    let product = await Product.findOne({ where: { id: product_id } });
-    if(!product) throw Error("Product not found");
-
-    let user = await User.findOne({ where: { id: user_id } });
-    if(!user) throw Error("User not found");
-      
-    await UserReviews.create({
+    let review = await UserReviews.create({
       description,
       starsPoints,
-      user_id,
-      product_id, 
+      user_id:userid,
+      product_id: idProduct
     });
-
-    res.status(201).json({ success: true, inf: "Review added to Product" });
+    
+    res.status(201).json({ success: true, inf: "Review add to Product" });
   
   } catch (e) {
-    console.log(e)
     res.status(400).json({ success: false, inf: e });
   }
 };
@@ -524,7 +574,7 @@ const orderHistory = async (req, res) => {
         },
         orderItems: await Promise.all(order.orderItems.map(async item => {
           let product = await Product.findByPk(item.product_id)
-          return {product: product.name, quantity: item.quantity, image: product.image, SKU: product.SKU}
+          return {product: product.name, quantity: item.quantity}
         })),
       }
     })) 

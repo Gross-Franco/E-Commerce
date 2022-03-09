@@ -7,10 +7,7 @@ const { uuid } = require('uuidv4');
 const { MAIL_USER, MAIL_PASS, MAIL_HOST, MAIL_PORT } = process.env
 const {
   ProductInventory,
-  Product,
-  OrderDetails,
-  OrderItems,
-	PaymentDetails,
+  Product
 } = require("../../db.js");
 
 // const storeItems = new Map([
@@ -72,9 +69,9 @@ const {
 
 const payment = async(req, res) =>{
     const {product, token} = req.body;
-    // console.log("PRODUCT", product);
-    // console.log("PRICE", product.price);
-    // console.log("TOKEN", token);
+    console.log("PRODUCT", product);
+    console.log("PRICE", product.price);
+    console.log("TOKEN", token);
 
     idempotencyKey = uuid()
     //we create a customer
@@ -99,7 +96,7 @@ const payment = async(req, res) =>{
                 }
             }
         },{idempotencyKey} )
-    }).then(async result => {
+    }).then(result => {
         // console.log("RESULT", result)
         var transporter = nodemailer.createTransport({
           host: MAIL_HOST,
@@ -133,7 +130,6 @@ const payment = async(req, res) =>{
 
             
           })
-          //WE SET NEW INVENTORY VALUES
           //we search for the products that were bought, and decrease their inventory by the quantity
           //need to define the quantities as its own variable
           let quantities = product.quantity
@@ -148,44 +144,14 @@ const payment = async(req, res) =>{
               id: productochange.inventory_id
             }
           })
-          // console.log("Inventario inicial", productToDecrease.quantity)
+          console.log("Inventario inicial", productToDecrease.quantity)
           // console.log(i)
           await productToDecrease.decrement("quantity", { by: quantities[i] });
           productToDecrease.changed('quantity', true);
           // console.log(productToDecrease.changed());
-          // console.log("Inventario final", productToDecrease.quantity)
+          console.log("Inventario final", productToDecrease.quantity)
           await productToDecrease.save()
-
-          
         })
-        //SAVE ORDER AND PAYMENT INFO IN DATABASE
-        let paymentInfo = await PaymentDetails.create({
-          amount: product.price,
-          provider: token.card.brand,
-          status: "SUCCESS"
-        })
-
-        console.log("PAYMENTDETAIL", paymentInfo)
-
-        let orderInfo = await OrderDetails.create({
-          total: product.price,
-          status: 'Created',
-          user_id: product.userid,
-          payment_id: paymentInfo.id
-        })
-        
-        console.log("ORDERDETAIL", orderInfo)
-
-        for(let i = 0 ; product.id.length > i; i++){
-          let orderItems = await OrderItems.create({
-            product_id: product.id[i],
-            quantity: product.quantity[i],
-            order_id: orderInfo.id,
-          })
-          console.log(`ORDERITEMS ${i}`, orderItems)
-        }
-
-
         res.status(200).json(result)})
         .catch(err => console.log(err))
 
@@ -195,9 +161,9 @@ const payment = async(req, res) =>{
 
 const payments1item = async(req, res) =>{
   const {product, token} = req.body;
-  // console.log("PRODUCT", product);
-  // console.log("PRICE", product.price);
-  // console.log("TOKEN", token);
+  console.log("PRODUCT", product);
+  console.log("PRICE", product.price);
+  console.log("TOKEN", token);
 
   idempotencyKey = uuid()
   //we create a customer
@@ -270,40 +236,13 @@ const payments1item = async(req, res) =>{
           }
         })
       
-        // console.log("Inventario inicial", productToDecrease.quantity)
+        console.log("Inventario inicial", productToDecrease.quantity)
         // console.log(i)
         await productToDecrease.decrement("quantity", { by: 1 });
         productToDecrease.changed('quantity', true);
         // console.log(productToDecrease.changed());
-        // console.log("Inventario final", productToDecrease.quantity)
+        console.log("Inventario final", productToDecrease.quantity)
         await productToDecrease.save()
-
-
-        //GUARDAMOS LA INFORMACION DE PAGO Y DE LA ORDERN
-        let paymentInfo = await PaymentDetails.create({
-          amount: product.price,
-          provider: token.card.brand,
-          status: "SUCCESS"
-        })
-
-        console.log("PAYMENTDETAIL", paymentInfo)
-
-        let orderInfo = await OrderDetails.create({
-          total: product.price,
-          status: 'Created',
-          user_id: product.userid,
-          payment_id: paymentInfo.id
-        })
-        
-        console.log("ORDERDETAIL", orderInfo)
-
-        let orderItems = await OrderItems.create({
-          product_id: product.id,
-          quantity: product.quantity,
-          order_id: orderInfo.id,
-        })
-        console.log(`ORDERITEMS`, orderItems)
-
       res.status(200).json(result)})
       .catch(err => console.log(err))
 
