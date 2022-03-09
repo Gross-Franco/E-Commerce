@@ -44,7 +44,7 @@ const searchCategoryName = async function (req, res) {
 };
 
 const createCategory = async (req, res) => {
-    let { name, description } = req.body;
+    let { name, description, image } = req.body;
   
     let createdCategory = await ProductCategory.create({
       name,

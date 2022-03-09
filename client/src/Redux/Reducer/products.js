@@ -55,6 +55,12 @@ const rootReducer = (state = initialState, {type, payload}) => {
         ...state,
         products: payload
       }
+  
+    case ORDER_PRODCTS:
+      return {
+        ...state,
+        products: payload
+      }
 
     case SEARCH_PRODUCT_NAME:
       return {
