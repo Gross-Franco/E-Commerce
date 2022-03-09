@@ -7,19 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const { isAdmin, loading } = useSelector((state) => state.session);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    dispatch(checkSession(token));
-  }, [location.pathname, loading]);
-
-  useEffect(() => {
-      if(location.pathname === "/admin" && !isAdmin) {
-      navigation("/login");
+    if(loading) {
+      const token = localStorage.getItem("token");
+      dispatch(checkSession(token));
     }
-  }, [isAdmin]);
+      if(location.pathname === "/admin" && !isAdmin) {
+      navigate("/login");
+    }
+  }, [loading]);
 
   return loading ? <h1>Loading...</h1> : <Routes />;
 }

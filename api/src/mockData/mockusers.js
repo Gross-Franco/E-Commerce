@@ -37,10 +37,10 @@ const mockusers = [
   },
   {
     username: "Regum",
-    password: "crackDelFrontEnd",
+    password: "54321",
     first_name: "Abdias",
     last_name: "Jimenez",
-    email: "abdiasejr@gmail.com",
+    email: "rexregunm@gmail.com",
     isAdmin: true,
   },
 ];

@@ -54,6 +54,8 @@ code {
 .header-cart--container {
   display: flex;
   flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
 }
 .header-cart {
   color: white;
@@ -84,6 +86,7 @@ code {
   line-height: 1.25rem;
   text-decoration: none;
   text-transform: none;
+  font-family: 'Poppins', sans-serif;
 }
 .header-nav--link:hover {
   color: white;
@@ -106,32 +109,6 @@ code {
 .header-logo:hover {
   color: white;
 }
-#header-button-- {
-  background-color: transparent;
-  border: none;
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 500;
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 0.5px;
-}
-#header-button--:focus {
-  box-shadow: none;
-  outline: none;
-}
-#header-button--on-scroll {
-  background-color: transparent;
-  border: none;
-  color: black;
-  font-weight: 600;
-  font-size: 0.875rem;
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 0.5px;
-}
-#header-button--on-scroll:focus {
-  box-shadow: none;
-  outline: none;
-}
 .header .on-scroll {
   color: black;
   background-color: white;
@@ -140,7 +117,6 @@ code {
 }
 .scroll {
   color: black;
-  letter-spacing: -1.6px;
 }
 .scroll:hover {
   color: black;
@@ -170,8 +146,8 @@ code {
   font-size: 0.6875rem;
   line-height: 1rem;
   font-weight: 600;
-  right: 2.55rem;
-  top: 1.15rem;
+  right: 2.40rem;
+  top: .925rem;
   max-width: 10px;
   z-index: 11;
   font-family: 'Poppins', sans-serif;
@@ -1309,6 +1285,36 @@ code {
   text-align: center;
   color: #797979;
   padding: 0 3rem;
+}
+/* OAUTH LOGIN */
+.login--google-btn {
+  height: 3rem;
+  background-color: white;
+  text-align: center;
+  padding: 0 1rem;
+  border: 1px solid #d6d6d6;
+  border-radius: 0;
+}
+.login--google-btn--icon {
+  font-size: 1.5rem;
+}
+.login--github-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  background-color: black;
+  text-align: center;
+  padding: 0 1rem;
+  border-radius: 0;
+  color: white;
+}
+.login--github-btn--icon {
+  font-size: 1.5rem;
+  color: white;
+}
+.login--github-btn:hover {
+  color: white;
 }
 /* FORM HANDLER */
 .form-handler {

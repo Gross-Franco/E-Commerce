@@ -22,6 +22,7 @@ import {
   checkSession,
   userDetails,
 } from "../Redux/Actions/actions";
+import { useNavigate } from "react-router-dom";
 
 export default function PerfilUser() {
   //Desplazamiento
@@ -43,7 +44,8 @@ export default function PerfilUser() {
   // });
 
   //traer informacion del usuario.
-  const { user } = useSelector((state) => state.session);
+  const navigate = useNavigate();
+  const { user, login } = useSelector((state) => state.session);
   const { details } = useSelector(state => state.users)
   let dispatch = useDispatch();
   
@@ -72,12 +74,19 @@ export default function PerfilUser() {
   }
 
   useEffect(() => {
+    if(!login) {
+      navigate("/");
+    }
+  }, [login])
+
+  useEffect(() => {
     ChoiseDir();
   }, [link, user]);
 
   useEffect(() => {
-    dispatch(userDetails(user.id))
-  },[])
+    dispatch(userDetails(user?.id))
+  },[]);
+
 
   // function handleSubmit(e) {
   //   console.log(changeValues);
@@ -87,7 +96,7 @@ export default function PerfilUser() {
 
   // Main Render
 
-  return (
+  return ( login &&
     <div>
       <NavBar isScroll={true} />
       <br /> <br />
@@ -139,7 +148,7 @@ export default function PerfilUser() {
                   <div>
                     <Card.Img
                       variant="top"
-                      src={details.image}
+                      src={details?.image}
                       style={{
                         margin: "auto",
                         // width: "100%",
@@ -154,9 +163,9 @@ export default function PerfilUser() {
                     />
                   </div>
                 <br />
-                <h6> Name: {details.first_name + ' ' + details.last_name}</h6>
-                <h6> Username: {details.username}</h6>
-                <h6> Email: {details.email}</h6>
+                <h6> Name: {details?.first_name + ' ' + details?.last_name}</h6>
+                <h6> Username: {details?.username}</h6>
+                <h6> Email: {details?.email}</h6>
               </div>
             </Card>
           </Col>
@@ -241,7 +250,7 @@ export default function PerfilUser() {
               </div>
 
               <br />
-              <ProfileTables link={link} userid={user.id} />
+              <ProfileTables link={link} userid={user?.id} />
             </Card>
           </Col>
         </Row>
