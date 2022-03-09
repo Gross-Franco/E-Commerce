@@ -90,6 +90,8 @@ const reducer = (state = initialState, { type, payload }) => {
         loadCart: true
       };
     case DELETE_CART:
+      localStorage.removeItem("cartItems")
+      localStorage.removeItem("subTotal")
       return {
         ...state,
         loadCart: true

@@ -73,7 +73,7 @@ const Cart = ({ openModal, setOpenModal }) => {
               >
                 Continuar Comprando
               </Link>
-              <StripeButton subTotal={subTotal} products={cartStorage} >
+              <StripeButton subTotal={subTotal} products={cartStorage} setOpenModal={setOpenModal} >
               </StripeButton>
             </div>
           </div>
