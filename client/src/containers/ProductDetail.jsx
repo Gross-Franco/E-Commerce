@@ -34,8 +34,7 @@ export default function ProductDetail() {
   console.log(id)
   const { productDetail, loadReviews } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.session);
-  const { wishlist, loadWishlist } = useSelector((state) => state.users);
-  console.log(wishlist)
+  const { wishlist } = useSelector((state) => state.users);
   const [newReview, setNewReview ] = useState({
     description: "",
     starsPoints: 5
@@ -53,7 +52,6 @@ export default function ProductDetail() {
   
   const [ContStar, setContStar] = useState();
   const [Arry, ArrayStar] = useState([<AiOutlineStar/>, <AiOutlineStar/>, <AiOutlineStar/>,<AiOutlineStar/>,<AiOutlineStar/>]);
-console.log(wishlist.some(item => item.id === id))
   const [heart, setHeart] = useState(wishlist.some(item => item.id === Number(id)));
   const dispatch = useDispatch();
 
@@ -85,7 +83,9 @@ console.log(wishlist.some(item => item.id === id))
   }
 
   if(loadReviews) dispatch(searchProductId(id))
-  if(loadWishlist) dispatch(getWishlist(user.id))
+  useEffect(() => {
+    dispatch(getWishlist(user.id))
+  }, [])
 
   useEffect(() => {
     return dispatch(loadDetails())
