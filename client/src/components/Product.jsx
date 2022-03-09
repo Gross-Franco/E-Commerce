@@ -10,6 +10,7 @@ const Product = ({ product }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
+    console.log(product)
     saveLocalStorage({product});
     dispatch(saveLocal());
   };

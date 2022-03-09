@@ -31,7 +31,6 @@ import StripeSingleItem from "../components/StripeSingleItem";
 export default function ProductDetail() {
  
   const { id } = useParams();
-  console.log(id)
   const { productDetail, loadReviews } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.session);
   const { wishlist } = useSelector((state) => state.users);
@@ -103,7 +102,7 @@ export default function ProductDetail() {
   }
 
   const handleClick = () => {
-    saveLocalStorage({ productDetail });
+    saveLocalStorage({product:{...productDetail, inventory: productDetail.quantity}});
     dispatch(saveLocal());
   };
 
