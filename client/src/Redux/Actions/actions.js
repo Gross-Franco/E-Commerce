@@ -93,6 +93,7 @@ export const getProductsPublic = () => {
 export const searchProductId = (id) => {
   return async (dispatch) => {
     const response = await axios.get(`/product/productId/${id}`);
+    console.log(response.data)
     dispatch({ type: SEARCH_PRODUCT_ID, payload: response.data });
   }
 }
