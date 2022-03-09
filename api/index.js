@@ -47,7 +47,7 @@ const { PORT, TESTING } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: true }).then(() => {
 
   server.listen(PORT || 3001, () => {
 //     ProductInventory.bulkCreate(mockinventory)
