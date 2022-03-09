@@ -40,10 +40,10 @@ const Carrousel = () => {
           >
             <div className="carrousel--hero-content">
               <p className="carrousel-hero--header">
-                Lorem ipsum dolor sit amet.
+                Welcome to Henrry E-commerce.
               </p>
               <p className="carrousel-hero--subheader">
-                In nomine patris et filii et spiritus sancti
+                Devloped by group 6. ENJOY!!!
               </p>
               <Link to="/catalogo" className="carrousel-hero--btn">
                 Shop Now
