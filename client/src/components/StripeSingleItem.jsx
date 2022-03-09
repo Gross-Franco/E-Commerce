@@ -9,6 +9,7 @@ const StripeSingleItem = () =>{
     //set up products, below is just example, at the moment we can only take 1 product at a time for the back end to function properly, so the price in the state needs to be final
 
     const { productDetail } = useSelector((state) => state.products);
+    const { user } = useSelector((state) => state.session);
     // console.log("PRODUCT IN PAGE", productDetail)
 
     const productId = productDetail.id
@@ -21,7 +22,8 @@ const StripeSingleItem = () =>{
         quantity: 1,
         name: productName,
         price: Math.floor(productPrice),
-        description: 'All cart items'
+        description: 'All cart items',
+        userid: user? user.id: null
     });
 
     useEffect(() =>{
@@ -32,7 +34,7 @@ const StripeSingleItem = () =>{
             price: Math.floor(productPrice),
             description: 'All cart items'
         })
-    }, [productDetail])
+    }, [productDetail, user])
     // console.log("PRODUCT IN STRIPE", product)
     //the token is automatically created by stripe we just need to call it
     const makePayment = token =>{
