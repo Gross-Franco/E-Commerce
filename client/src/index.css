@@ -898,12 +898,22 @@ code {
   right: -10px;
   bottom: -10px;
   z-index: 12;
+  width: calc(100% + 10px);
   flex: 1;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
   color: white;
   font-family: "Poppins", sans-serif;
+}
+.modal--container.end {
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.modal--container.center {
+  justify-content: center;
+  align-items: center;
+}
+.modal--container.start {
+  justify-content: flex-start;
 }
 .modal-cart--container {
   display: flex;
@@ -1414,4 +1424,113 @@ code {
 .verification--icon {
   font-size: 6rem;
   color: white;
+}
+/* ORDER */
+.order-detail--container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+  padding: 3rem;
+  ;
+  font-family: 'Poppins', sans-serif;
+  color: black;
+  background-color: #F7FBFD;
+}
+.order-detail--header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #d6d6d6;
+}
+.order-detail--header-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+.order-detail--header-title .title-span {
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin: 0;
+}
+.order-detail--header-icon {
+  font-size: 1.5rem;
+}
+.order-detail--header-icon:hover {
+  color: #645af7;
+  cursor: pointer;
+}
+.order-detail--body {
+  display: flex;
+  flex-direction: column;
+}
+.order-detail--item {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #d6d6d6;
+}
+.order-detail--item-image {
+  background-position: 50%;
+  background-size: cover;
+  width: 80px;
+  height: 80px;
+  margin-right: 0.5rem;
+}
+.order-detail--item-description {
+  display: block;
+  font-size: 0.825rem;
+  flex-grow: 1;
+}
+.order-detail--item-description-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.order-detail--item-description-product,
+.order-detail--item-description-total {
+  font-weight: 600;
+  margin: 0;
+}
+.order-detail--item-description-quantity,
+.order-detail--item-description-sku {
+  font-weight: 400;
+  color: #a5a5a5;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+.order-detail--meta-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  gap: 0.5rem;
+  border-bottom: 1px solid black;
+}
+.order-detail--row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+.order-detail--row--item {
+  margin: 0;
+  font-weight: 400;
+}
+.order-detail--footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 500;
+}
+.order-detail--footer-total {
+  margin: 0;
 }
