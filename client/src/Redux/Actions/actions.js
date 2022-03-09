@@ -375,20 +375,20 @@ export const deleteCartItem = (sessionId, productId) => {
 //   };
 
 
-export const deleteCart = (sessionId) => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.delete(
-        `/shopping/cart?session_id=${sessionId}`
-      );
-      if (data) {
-        dispatch({ type: DELETE_CART, payload: data });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+// export const deleteCart = (sessionId) => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios.delete(
+//         `/shopping/cart?session_id=${sessionId}`
+//       );
+//       if (data) {
+//         dispatch({ type: DELETE_CART, payload: data });
+//       }
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+// };
 export const signIn = (data) => {
   return async (dispatch) => {
     const response = await axios.post(`/api/signin`, data);
@@ -435,6 +435,10 @@ export const deleteItemLocalStorage = (id) => {
   return (dispatch) => {
     dispatch({ type: DELETE_ITEM_LOCAL_STORAGE, payload: id });
   };
+}
+
+export const deleteCart = () => {
+  return {type: DELETE_CART}
 }
 
 export const editLocalQty = (id, qty) => {
