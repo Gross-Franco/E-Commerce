@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
     },
 
     accountNo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT                      ,
         allowNull: false,
     },
 

@@ -26,6 +26,8 @@ const { mockcategories } = require("./src/mockData/mockcategories");
 const { mockinventory } = require("./src/mockData/mockinventory");
 const { mockpaymentdetails } = require("./src/mockData/mockpaymentdetails");
 const { mockreviews } = require("./src/mockData/mockreviews")
+const { mockuserpayment } = require('./src/mockData/mockuserpayment')
+const { mockaddress } = require('./src/mockData/mockaddress')
 
 const {
   conn,
@@ -36,7 +38,9 @@ const {
   ProductCategory,
   ProductInventory,
   PaymentDetails,
-  UserReviews
+  UserReviews,
+  UserAddress,
+  UserPayment,
 } = require("./src/db.js");
 // const { mockorderItems } = require("./src/mockData/mockorderItems.js");
 const { PORT, TESTING } = process.env;
@@ -62,7 +66,10 @@ conn.sync({ force: TESTING || false }).then(() => {
         })
       })
       .then(() => {
-        return User.bulkCreate(mockusers);
+        return User.bulkCreate(mockusers).then(() => {
+          UserAddress.bulkCreate(mockaddress);
+          UserPayment.bulkCreate(mockuserpayment);
+        });
       })
       .then(() => {
         return PaymentDetails.bulkCreate(mockpaymentdetails)
