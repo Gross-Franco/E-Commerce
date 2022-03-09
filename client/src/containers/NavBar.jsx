@@ -35,7 +35,7 @@ const NavBar = ({ isScroll = false }) => {
           <CartButton openModal={isOpen} setOpenModal={setIsOpen} />
         </div>
         {!!isOpen && (
-          <Modal>
+          <Modal position="end">
             <Cart openModal={isOpen} setOpenModal={setIsOpen} />
           </Modal>
         )}

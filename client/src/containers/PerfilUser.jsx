@@ -163,9 +163,9 @@ export default function PerfilUser() {
                     />
                   </div>
                 <br />
-                <h6> Name: {details?.first_name + ' ' + details?.last_name}</h6>
-                <h6> Username: {details?.username}</h6>
-                <h6> Email: {details?.email}</h6>
+                <h6> {details?.first_name + ' ' + details?.last_name}</h6>
+                <h6> {details?.username}</h6>
+                <h6> {details?.email}</h6>
               </div>
             </Card>
           </Col>

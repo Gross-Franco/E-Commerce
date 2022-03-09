@@ -1,12 +1,18 @@
 import React from "react";
+import { IoMdClose } from "react-icons/io";
 
 const UserOrder = ({order, setOpenModal}) => {
 
     console.log(order)
 
     return (
-        <div>
-            <button onClick={() => setOpenModal(false)}>Close</button>
+        <div className="order-detail--container">
+           <div className="order-detail--header">
+                <p className="order-detail--header-title">
+                    Tu orden #{order.id}
+                </p>
+                <IoMdClose onClick={() => setOpenModal(false)} className="order-detail--header-icon"/>
+            </div>
             <ul>
                 <li>Order</li>
                 <li>Total: {order.total}</li>

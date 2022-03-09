@@ -127,7 +127,7 @@ export default function ProfileTables({ link, userid }) {
           </tbody>
         </table>
         { openModal &&
-        <Modal>
+        <Modal position="center" >
           <UserOrder order={orderDetail} setOpenModal={setOpenModal}/>
         </Modal>
         }

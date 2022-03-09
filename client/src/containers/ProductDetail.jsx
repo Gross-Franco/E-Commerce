@@ -108,28 +108,7 @@ export default function ProductDetail() {
 
   return (
     <div>
-      <header className="register--header">
-        <nav className="header--container">
-          <Link to="/catalogo" className="register--header-nav--back">
-            <BsArrowLeftShort className="register--header-nav--back-icon" />
-            <p className="register--header-nav--back-span">Volver</p>
-          </Link>
-          <Link to="/" className="register--header-nav--logo">
-            commerce
-          </Link>
-
-          {/* <div className={`header-cart--container ${true ? "scroll" : ""}`}>
-          {!login ? <Login isScroll={true} /> : <Dropdowns />}
-          <CartButton openModal={isOpen} setOpenModal={setIsOpen} />
-        </div>
-        {!isOpen && (
-          <Modal>
-            <Cart openModal={isOpen} setOpenModal={setIsOpen} />
-          </Modal>
-        )} */}
-
-        </nav>
-      </header>
+      <NavBar isScroll={true} />
 
       <br />
       <br />

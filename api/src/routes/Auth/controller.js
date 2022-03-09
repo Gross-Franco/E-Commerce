@@ -42,7 +42,7 @@ const signup = async (req, res) => {
 
 const signin = (req, res, next) => {
     let { email, password } = req.body;
-
+    
     if (!email || !password) return res.status(400).json({ success: false, error: 'Incomplete data form' });
     email = email.toLowerCase();
     User.findOne({
@@ -130,6 +130,7 @@ const githubSession = async (req, res) => {
 
 const thirdpartySignin = async (req, res) => {
     let { first_name, last_name, email, username, id} = req.body;
+    if(!first_name || !last_name || !email || !username || !id) return res.status(400).json({ success: false, message: 'Error no auth' });
     email = email.toLowerCase();
     const [user, created] = await User.findOrCreate({
         where: {
