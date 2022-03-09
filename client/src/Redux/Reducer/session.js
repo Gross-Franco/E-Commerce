@@ -12,7 +12,6 @@ const initialState = {
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SIGN_IN:
-      console.log(payload);
       return {
         ...state,
         user: payload.user,
@@ -33,7 +32,6 @@ const reducer = (state = initialState, { type, payload }) => {
         loading: true,
       };
     case SUCCESS_SESSION:
-      console.log(payload)
       return {
         ...state,
         user: payload.user,
