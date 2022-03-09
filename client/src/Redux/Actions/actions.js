@@ -1,4 +1,5 @@
 import { axiosWithCredentials as axios } from "../../utilities/axios";
+/* import axios from "axios"; */
 import {
   // Products
   GET_PRODUCTS,
@@ -57,8 +58,12 @@ import {
   DELETE_ITEM_LOCAL_STORAGE,
   EDIT_LOCAL_STORAGE_QTY,
   UPDATE_SUBTOTAL,
+  
+  POST_REVIWER,
+
   SUCCESS_SESSION,
-  FAIL_SESSION
+  FAIL_SESSION,
+  GH_SESSION
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -88,6 +93,7 @@ export const getProductsPublic = () => {
 export const searchProductId = (id) => {
   return async (dispatch) => {
     const response = await axios.get(`/product/productId/${id}`);
+    console.log(response.data)
     dispatch({ type: SEARCH_PRODUCT_ID, payload: response.data });
   }
 }
@@ -211,6 +217,16 @@ export const getOrderId = (orderId) => {
     dispatch({ type: CHANGE_ORDER_STATUS, payload: response.data });
   }
 }
+
+ 
+export const PostReviwer = (Reviwer) => {
+  return async (dispatch) => {
+    const response = await axios.post(`/user/post/postReview`, Reviwer);
+    // console.log(response)
+    // dispatch({ type: POST_REVIWER, payload: response.data});
+  }
+}
+
 
 
 export const createUser = ({
@@ -427,19 +443,71 @@ export const updateSubtotal = () => {
 }
 
 export const userOrders = (userid) => {
+  console.log(userid)
   return async (dispatch) => {
     const response = await axios.get(`/user/history/${userid}`); 
     dispatch({ type: USER_ORDERS, payload: response.data });
   }
 }
 
-export const userReviews = (userid) => {
+export const userReviews =  (userid) => {
+  // console.log(userid.id)
   return async (dispatch) => {
+    
     const response = await axios.get(`/user/reviews/${userid}`); 
+    
+    console.log("hola mundo K")
+
     dispatch({ type: USER_REVIEWS, payload: response.data });
   }
 }
-
+export const ghSession = (code) => {
+  return async (dispatch) => {
+    const response = await axios.get(`/api/github?code=${code}`);
+    if (response?.data?.success) {
+      let { access_token } = response.data.client;
+      let { data } = await axios.get(
+        `https://api.github.com/user/emails?scope=user`,
+        {
+          headers: {
+            Authorization: `token ${access_token}`,
+        }
+      });
+      let { data: user } = await axios.get(`https://api.github.com/user`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        }
+      });
+      dispatch({ type: GH_SESSION });
+      if(data && user) {
+        let r = await axios.post(`/api/thirdparty/login`, {
+          email: data[0].email,
+          first_name: user.name.split(" ")[0],
+          last_name: user.name.split(" ")[1],
+          id: user.id,
+          username: user.login,
+        });
+        if(r?.data?.success) {
+          localStorage.setItem("token", r.data.token);
+          dispatch({ type: SIGN_IN, payload: r.data });
+        } else {
+          dispatch({ type: SIGN_IN, payload: r?.response?.data });
+        }
+      }
+    }
+  };
+};
+export const googleSession = (data) => {
+  return async (dispatch) => {
+    const response = await axios.post(`/api/thirdparty/login`, data);
+    if (response?.data?.success) {
+      localStorage.setItem("token", response.data.token);
+      dispatch({ type: SIGN_IN, payload: response.data });
+    } else {
+      dispatch({ type: SIGN_IN, payload: response.response.data });
+    }
+  };
+};
 export const getWishlist = (userid) => {
   return async (dispatch) => {
     const response = await axios.get(`/user/wishlist/${userid}`); 

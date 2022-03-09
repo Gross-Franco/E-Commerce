@@ -13,12 +13,12 @@ const getProducts = async (req, res, next) => {
 		let allProducts = await Promise.all(productSearch.map(async product => {
 			let productData = product.dataValues;
 			let productinv = await ProductInventory.findOne({where: {id:productData.inventory_id}});
-			if(productinv.dataValues.quantity > 0) return {
+			if(productinv.dataValues.quantity > 0 && !product.inactive) return {
 				id: productData.id,
 				name: productData.name,
 				image: productData.image,
 				description: productData.description,
-				image:productData.image,
+				image: productData.image,
 				SKU: productData.SKU,
 				price: productData.price,
 				inactive: productData.inactive,

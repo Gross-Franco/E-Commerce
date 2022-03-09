@@ -2,21 +2,22 @@ import React, { useEffect, useState } from "react"; /*
 import Carousel from "react-bootstrap/"; */
 import { NavBar, Footer } from "./";
 
+
 import { saveLocalStorage } from "../services";
 import { MdAddShoppingCart } from "react-icons/md";
 
-import { Card, Button, Col, Row, Container, Badge, Form } from "react-bootstrap";
+import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar} from "react-bootstrap";
 
 
 /* import Holder from "react-holder";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
-import { saveLocal, searchProductId } from "../Redux/Actions/actions";
+import { saveLocal, searchProductId, PostReviwer } from "../Redux/Actions/actions";
+
 import { useParams } from "react-router-dom";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { BsHeart, BsHeartFill ,BsArrowLeftShort} from "react-icons/bs";
+import {AiOutlineStar, AiFillStar} from "react-icons/ai";
 
-
-import { BsArrowLeftShort } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import Dropdowns from "./Dropdowns";
@@ -24,9 +25,21 @@ import { CartButton } from "../components";
 import { Cart } from "../pages";
 import { setOverflowY } from "../services";
 
+
+import StripeSingleItem from "../components/StripeSingleItem";
+
 export default function ProductDetail() {
 
+// postear un Reviwer por card
+// Add post 
+
+// Traerse los comentarios (Card para comentario ya puestos)
+
+  const [Reviwer, SetReviwer] = useState(["comentario 1", "Comentario 2"]);
+  const [NewReviwer, SetNewReviwer ] = useState("");
   const [isScroll, setIsScroll] = useState(false);
+
+  let { user } = useSelector((state) => state.session);
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -35,6 +48,10 @@ export default function ProductDetail() {
       setIsScroll(false);
     }
   };
+
+  
+  const [ContStar, setContStar] = useState();
+  const [Arry, ArrayStar] = useState([<AiOutlineStar/>, <AiOutlineStar/>, <AiOutlineStar/>,<AiOutlineStar/>,<AiOutlineStar/>]);
 
 
   const { productDetail } = useSelector((state) => state.products);
@@ -48,12 +65,30 @@ export default function ProductDetail() {
 
   useEffect(() => {
     dispatch(searchProductId(id));
+    // console.log(productDetail) 
   }, []);
 
 
   useEffect(() => {
     setIsOpen(productDetail)
   }, []);
+
+
+  const  handleSubmit = async (e) => {
+  
+    // postear-reviwer
+   await dispatch(PostReviwer({
+      "description": NewReviwer,
+      "starsPoints":5,
+      "userid": 1,
+      "idProduct": parseInt(id)
+    }))
+
+    SetNewReviwer("")
+    dispatch(searchProductId(id));   
+
+    e.preventDefault()
+  }
 
 
 
@@ -76,7 +111,6 @@ export default function ProductDetail() {
     saveLocalStorage({ product });
     dispatch(saveLocal());
   };
-  console.log(productDetail)
 
   return (
     <div>
@@ -119,7 +153,7 @@ export default function ProductDetail() {
           >
             <Col>
               <Card.Img variant="top" src={productDetail?.image} style={{
-                transform: "scale(1.2, 1)"
+               transform: "scale(1.2, 1)"
               }} />
 
               <Card
@@ -156,6 +190,7 @@ export default function ProductDetail() {
               </Card>
               <br />
               <br />
+
               
               <div>
                 {
@@ -171,12 +206,161 @@ export default function ProductDetail() {
 
 
               <Form>
+
+   
+            {/*Start info */}
+              <Card style={{ 
+              width: '30rem', 
+              height: '13rem'  
+                }}>
+  
+           <Row>
+            <Col >
+            <br/>           
+             <h1 style={{              
+               fontSize:"450%",
+               
+               textAlign: "right"
+}             }>5
+             </h1>
+             <Row style={
+               { position:"relative",
+               right:" -180px",
+               transform: "scale(2, 2)"
+                 }
+             }>
+             <li style={{
+              listStyleType:"none"
+
+              }}>
+              <AiOutlineStar/> 
+              <AiOutlineStar />
+              <AiOutlineStar/>
+              <AiOutlineStar/>
+              <AiOutlineStar/>
+
+             </li>     
+             </Row>
+             <br />
+             <h6 style={{
+                textAlign: "right",
+                fontSize:"80%"
+             }} >promedio entre xxx personas</h6>
+            </Col>
+           {/* segunda parte */}
+            <Col>
+            <br />
+            <br />
+            <Row>
+              <Col xs={3} md={4}>
+            <h6 style={{               
+                fontSize:"70%"
+             }}> X estrellas</h6>
+            
+             </Col>
+             <Col xs={6} md={20} style={
+               {
+                 position:"relative",
+                  right:"25px"
+                                    }}>
+             <ProgressBar now={10} />
+             </Col>
+             <Col xs={2} md={2}  style={
+               {
+                 position:"relative",
+                  right:"35px",
+                  top:"-5px"
+                                    }}>xx</Col>
+
+             </Row>
+             <Row>
+              <Col xs={3} md={4}>
+            <h6 style={{               
+                fontSize:"70%"
+             }}> X estrellas</h6>
+            
+             </Col>
+             <Col xs={6} md={20} style={
+               {
+                 position:"relative",
+                  right:"25px"
+                                    }}>
+             <ProgressBar now={10} />
+             </Col>
+             <Col xs={2} md={2}  style={
+               {
+                 position:"relative",
+                  right:"35px",
+                  top:"-5px"
+                                    }}>xx</Col>
+
+             </Row>
+             
+             
+            </Col>
+          </Row>
+          </Card>
+ 
+
+                    {/* Mensaje star  */}
+              <Form  >
+                
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                  <Form.Label>Reviews</Form.Label>
-                  <Form.Control as="textarea" rows={3} />
+
+
+                  <Form.Label>Reviewers</Form.Label>
+
+                    <br/>
+                  <Form.Control as="textarea" 
+                                name="NewReviwer"
+                                value={NewReviwer}
+                                placeholder="Añade tu reviwer del producto"
+                                onChange={e=>{  SetNewReviwer(e.target.value)}}                
+                                rows={3} 
+                   />
                 </Form.Group>
-                <h6 type="input" style={{ cursor: "pointer" }}>Post</h6>
+                <h6 type="input" onClick={handleSubmit} style={{ cursor: "pointer" }}> Response</h6>               
+
               </Form>
+               {/* estrellas  */}
+               <Row style={
+                 {
+                      width: '8rem'
+                    }
+                  }>
+        
+        <li style={{
+         listStyleType:"none",
+         transform: "scale(2, 2)",
+         position:"relative",
+         right:"-450px",
+         top:"-30px"
+        }}>
+        {
+
+        }
+        
+        <AiOutlineStar/>
+        <AiOutlineStar/>
+        <AiOutlineStar/>
+        <AiOutlineStar/>
+        <AiOutlineStar/>
+
+        </li>          
+                    </Row>                         
+        {/* Reviwer gets */}
+                <br />
+                <br />
+              {
+              productDetail?.reviews?.map(e=>{               
+              
+               return (<p style={{
+               width: "400px",
+               }}>
+                { e.description}
+                </p>)           
+              })
+              }
             </Col>
 
             <Col
@@ -268,7 +452,7 @@ export default function ProductDetail() {
                   </Card.Title>
 
                   <br />
-                  <Button variant="primary">Compra ahora</Button>
+                  <StripeSingleItem subtotal={productDetail}/>
                   <br />
                   <br />
                   <Button variant="secondary" onClick={handleClick}>Agregar al carrito

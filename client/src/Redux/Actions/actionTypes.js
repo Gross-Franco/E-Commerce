@@ -27,6 +27,7 @@ export const RESET_PASSWORD = "RESET_PASSWORD";
 export const SIGN_IN = "SIGN_IN";
 export const SUCCESS_SESSION = "CHECK_SESSION";
 export const FAIL_SESSION = "SET_SESSION";
+export const GH_SESSION = "GH_SESSION";
 export const LOGOUT="LOGOUT"
 export const USER_ORDERS = 'USER_ORDERS'
 export const USER_REVIEWS = 'USER_REVIEWS'
@@ -56,3 +57,7 @@ export const GET_LOCAL_STORAGE = "GET_LOCAL_STORAGE";
 export const DELETE_ITEM_LOCAL_STORAGE = "DELETE_ITEM_LOCAL_STORAGE";
 export const EDIT_LOCAL_STORAGE_QTY = "EDIT_LOCAL_STORAGE_QTY";
 export const UPDATE_SUBTOTAL = "UPDATE_SUBTOTAL";
+
+//reviwer 
+
+export const POST_REVIWER = " POST_REVIWER";

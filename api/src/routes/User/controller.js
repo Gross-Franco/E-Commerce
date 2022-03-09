@@ -101,7 +101,7 @@ const createUser = async (req, res) => {
   //   phoneNumber,
   //   postalNumber});
   try {
-
+    email = email.toLowerCase();
     let createdUser = await User.create({
       first_name,
       last_name,
@@ -305,9 +305,9 @@ const postReviewProduct = async (req, res) => {
   // let {id} = jwt.decode(usAuth)
 
     // return res.send(req.body)
-    // return res.send("")
-  try {
-    let { idProduct } = req.params;
+    try {
+      let { idProduct } = req.body;
+     
     
     // return res.send(req.body.hasOwnProperty("description"))
     if (req.body) {
@@ -317,7 +317,6 @@ const postReviewProduct = async (req, res) => {
       ) {
         throw Error("Data types error ");
       }
-      
       if (
         req.body.hasOwnProperty("starsPoint") &&
         typeof req.body["starsPoint"] !== "number"
@@ -332,6 +331,14 @@ const postReviewProduct = async (req, res) => {
             throw Error("Data types error");
           }
           
+        if (
+            req.body.hasOwnProperty("idProduct") &&
+            typeof req.body["idProduct"] !== "number"
+            ) {
+              throw Error("Data types error");
+            }
+            // return res.send("hola mundo X")
+            
         }
         
         let {
@@ -362,6 +369,8 @@ const postReviewProduct = async (req, res) => {
     res.status(400).json({ success: false, inf: e });
   }
 };
+
+
 
 const forgotPassword = async (req, res) => {
   try {
@@ -578,6 +587,7 @@ const orderHistory = async (req, res) => {
 };
 
 const userReviews = async (req, res) => {
+  
   const {userid} = req.params;
   try {
     let reviews = await UserReviews.findAll({
@@ -598,6 +608,7 @@ const userReviews = async (req, res) => {
     }
   }))
     res.json(reviewsProduct)
+    
   } catch(err) {
     console.log(err)
   }
@@ -613,6 +624,7 @@ module.exports = {
   userReviews,
   addAdress,
   postReviewProduct,
+
   createUser,
   postLogin,
   addPayment,

@@ -21,3 +21,4 @@ export { default as HomeProducts } from './HomeProducts';
 export { default as ProductDetail } from './ProductDetail';
 export { default as Modal } from './Modal';
 export { default as InputRow } from './InputRow';
+export { default as UserOrder } from './UserOrder';

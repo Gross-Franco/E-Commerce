@@ -1,4 +1,5 @@
 require("dotenv").config();
+const axios = require('axios');
 const { User } = require("../../db.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -40,10 +41,10 @@ const signup = async (req, res) => {
 }
 
 const signin = (req, res, next) => {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
 
     if (!email || !password) return res.status(400).json({ success: false, error: 'Incomplete data form' });
-
+    email = email.toLowerCase();
     User.findOne({
         where: {
             email
@@ -105,9 +106,71 @@ const checkSession = async (req, res) => {
 
 }
 
+const githubSession = async (req, res) => {
+    const { query } = req;
+    const { code } = query;
+
+    if(!code) return res.status(400).json({ success: false, message: 'No code provided' });
+
+    const response = await axios.post(
+      "https://github.com/login/oauth/access_token",
+      {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_SECRET_KEY,
+        code: code,
+      },
+      {
+        headers: {
+          accept: "application/json",
+        },
+      }
+    );
+    return res.status(200).json({ success: true, message: 'Github session created', client: response.data });
+}
+
+const thirdpartySignin = async (req, res) => {
+    let { first_name, last_name, email, username, id} = req.body;
+    email = email.toLowerCase();
+    const [user, created] = await User.findOrCreate({
+        where: {
+            email
+        },
+        defaults: {
+            first_name,
+            last_name,
+            email,
+            username,
+            password: id + " " + username,
+        }
+    })
+    if(created) {
+        user.dataValues.verified = true;
+    }
+    const formatedUser = User.findOne({
+        where: {
+        id: user.id,
+        },
+    });
+    let token = createSession({
+        user_id: user.id,
+        isAdmin: formatedUser.isAdmin,
+    });
+    return res
+        .status(201)
+        .json({
+        success: true,
+        message: "Successfully signed in",
+        isAdmin: false,
+        user: formatedUser,
+        token,
+        });
+    
+}
 module.exports = {
     signup,
     signin,
     signout,
-    checkSession
+    checkSession,
+    githubSession,
+    thirdpartySignin
 }

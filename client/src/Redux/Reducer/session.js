@@ -1,4 +1,4 @@
-import { SIGN_IN, LOGOUT, SUCCESS_SESSION, FAIL_SESSION } from "../Actions/actionTypes";
+import { SIGN_IN, LOGOUT, SUCCESS_SESSION, FAIL_SESSION, GH_SESSION } from "../Actions/actionTypes";
 
 const initialState = {
   user: null,
@@ -6,11 +6,13 @@ const initialState = {
   loading: true,
   response: null,
   isAdmin: false,
+  done: false,
 };
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SIGN_IN:
+      console.log(payload);
       return {
         ...state,
         user: payload.user,
@@ -18,7 +20,7 @@ const reducer = (state = initialState, { type, payload }) => {
           success: payload.success,
           message: payload.message,
         },
-        isAdmin: payload.user.isAdmin,
+        isAdmin: payload.isAdmin,
         login: payload.success ? true : false,
         loading: true,
       };
@@ -43,12 +45,13 @@ const reducer = (state = initialState, { type, payload }) => {
     case FAIL_SESSION:
       return {
         ...state,
-        response: {
-          message: payload.message,
-          success: payload.success
-        },
         isAdmin: false,
         loading: false,
+      }
+    case GH_SESSION: 
+      return {
+        ...state,
+        done: true,
       }
 
     default:

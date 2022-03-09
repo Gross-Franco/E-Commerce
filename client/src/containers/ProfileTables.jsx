@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../containers";
+import { UserOrder } from "../containers"
 import { getWishlist, removeFromWishlist, userAddress, userOrders, userPayments, userReviews } from "../Redux/Actions/actions";
 
 export default function ProfileTables({ link, userid }) {
@@ -11,6 +14,8 @@ export default function ProfileTables({ link, userid }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [openModal, setOpenModal] = useState(false);
+  const [orderDetail, setOrderDetail] = useState({});
   
   useEffect(() => {
     if (link === "Order history") {
@@ -32,6 +37,11 @@ export default function ProfileTables({ link, userid }) {
 
   const handleRemove = (productid) => {
     dispatch(removeFromWishlist(userid, productid))
+  }
+
+  const handleClick = (order) => {
+    setOpenModal(true);
+    setOrderDetail(order)
   }
 
   if (link === "Payments") {
@@ -107,16 +117,21 @@ export default function ProfileTables({ link, userid }) {
           </thead>
           <tbody>
             {orders?.map((order) => {
-                return <tr key={order.id}>
+                return <tr key={order.id} onClick={() => handleClick(order)}>
                   <th scope="row">{order.id}</th>
                   <td>{order.total}</td>
-                  <td>{order.createdAt}</td>
+                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                   <td>{order.status}</td>
                 </tr>;
               })}
           </tbody>
         </table>
-      </div>
+        { openModal &&
+        <Modal>
+          <UserOrder order={orderDetail} setOpenModal={setOpenModal}/>
+        </Modal>
+        }
+      </div> 
     );
   } else if (link === "Reviews") {
     return (

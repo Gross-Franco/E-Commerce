@@ -3,7 +3,8 @@ const { Router } = require("express");
 const {authent} = require('../../middlewares/auth/auth')
 const { authenticate } = require("../../middlewares/auth/authentication");
 
-const {getUsers, addAdress, createUser,confirm,  postReviewProduct, postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews, getUserAddresses, getUserPayments } = require("./controller");
+
+const {getUsers, addAdress, createUser,confirm,  postReviewProduct,FindReviwersByIdUser,  postLogin, addPayment, forgotPassword, passwordResetToken, validate, getUserDetails, orderHistory, userReviews, getUserAddresses, getUserPayments } = require("./controller");
 const { removeFromWishlist, addToWishlist, getWishlist } = require("./controllerWishlist");
 
 
@@ -14,7 +15,9 @@ const userRouter = Router();
 
 // Configurar los routers
 // Son llamadas ejemplo: baseUrl + '/user' + these routes
-userRouter.post('/post/product/:idProduct', postReviewProduct)
+
+userRouter.post('/post/postReview',postReviewProduct)
+
 userRouter.get('/getUsers', getUsers)
 userRouter.get('/history/:userid', orderHistory)
 userRouter.get('/reviews/:userid', userReviews)

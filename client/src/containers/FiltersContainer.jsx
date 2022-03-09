@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCategories, filterProducts, getProductsPublic } from "../Redux/Actions/actions";
 import { useEffect } from "react";
-import { Form } from "react-bootstrap";
+import Select from 'react-select'
 
 import './styles/estilos.css'
 
@@ -12,61 +12,25 @@ const FiltersContainer = () => {
   const { categories, loadCategories } = useSelector((state) => state.categories);
   const [filteredCategories, setFilteredCategories] = useState([]);
   const dispatch = useDispatch();
-
-  const handleChange = (e) => {
-
-    if (!filteredCategories.includes(e.target.value)) {
-      setFilteredCategories([...filteredCategories, e.target.value])
-    }
+  const options = categories.map(c => {
+    return {value: c.name, label: c.name}
+  })
+  const handleChange = (filter) => {
+    setFilteredCategories(filter)
+    console.log(filter)
   };
 
   useEffect(() => {
-    filteredCategories.length > 0 ? dispatch(filterProducts(filteredCategories)) :
+    const fordispatch = filteredCategories.map(c => c.value)
+    fordispatch.length > 0 ? dispatch(filterProducts(fordispatch)) :
       dispatch(getProductsPublic());
   }, [filteredCategories])
 
   if (loadCategories) dispatch(getCategories());
+
   return (
     <div>
-      <div>
-        <span>categorias:
-          {
-            filteredCategories ?
-              filteredCategories.map((c, i) => {
-                return (
-                  <label
-                    className="catego"
-                    key={i}>
-                    {c}
-                    <button
-                      name={c}
-                      onClick={e => {
-                        setFilteredCategories(filteredCategories.filter(ca => ca !== e.target.name));
-                      }}>x
-                    </button>
-                  </label>
-                )
-              })
-              : ""
-          }
-        </span>
-      </div>
-      <Form.Select size="sm" onChange={e => (handleChange(e))}>
-        <option disabled >{categories === [] ?
-          categories[1].name
-          : "elige una categoria"
-        }</option>
-        {categories.map(c => {
-          return (
-            <option
-              key={c.id}
-            >{c.name}</option>
-
-          )
-        })}
-
-
-      </Form.Select>
+      <Select isMulti options={options} value={filteredCategories} onChange={handleChange} />      
     </div>
   );
 };
