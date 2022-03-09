@@ -130,7 +130,7 @@ const githubSession = async (req, res) => {
 
 const thirdpartySignin = async (req, res) => {
     let { first_name, last_name, email, username, id} = req.body;
-    email = email.toLowerCase();
+    email = email?.toLowerCase();
     const [user, created] = await User.findOrCreate({
         where: {
             email
