@@ -83,8 +83,9 @@ export default function ProductDetail() {
   }
 
   if(loadReviews) dispatch(searchProductId(id))
-  useEffect(() => {
-    dispatch(getWishlist(user.id))
+  
+ useEffect(() => {
+    user?.id && dispatch(getWishlist(user.id))
   }, [])
 
   useEffect(() => {
@@ -396,11 +397,11 @@ export default function ProductDetail() {
                       </Card.Title>
                     </Col>
                     <Col>
-                        {
+                       {
                           heart ? (
-                            <BsHeartFill onClick={() => handleWish()}/>
+                            user?.id && <BsHeartFill onClick={() => handleWish()}/>
                           ) : (
-                            <BsHeart onClick={() => handleWish()}/>
+                            user?.id && <BsHeart onClick={() => handleWish()}/>
                           )
                         }
 
