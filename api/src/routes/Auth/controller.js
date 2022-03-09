@@ -141,11 +141,9 @@ const thirdpartySignin = async (req, res) => {
             email,
             username,
             password: id + " " + username,
+            verified: true,
         }
     })
-    if(created) {
-        user.dataValues.verified = true;
-    }
     const formatedUser = User.findOne({
         where: {
         id: user.id,
