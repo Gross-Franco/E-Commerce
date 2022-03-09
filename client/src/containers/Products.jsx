@@ -11,8 +11,7 @@ const Products = () => {
   useEffect(() => {
     if(products.length === 0) dispatch(getProductsPublic());
   }, [])
-  console.log(products)
-
+  
   return (
     <div className="products--list">
       {products?.map((product) => (

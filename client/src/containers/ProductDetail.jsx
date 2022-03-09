@@ -51,6 +51,12 @@ export default function ProductDetail() {
   }, []);
 
 
+  useEffect(() => {
+    setIsOpen(productDetail)
+  }, []);
+
+
+
   function Favorite(e) {
     if (heart === false)
       return <div>
@@ -70,6 +76,7 @@ export default function ProductDetail() {
     saveLocalStorage({ product });
     dispatch(saveLocal());
   };
+  console.log(productDetail)
 
   return (
     <div>
@@ -149,6 +156,20 @@ export default function ProductDetail() {
               </Card>
               <br />
               <br />
+              
+              <div>
+                {
+                productDetail?.reviews?.map((e, i) => {
+                  return <div key={i}>
+                    <p> {e.description} </p>
+                    <p> {e.starsPoints} </p>
+                    <p> {e.user} </p>
+                  </div>})
+                  }
+               
+              </div>
+
+
               <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                   <Form.Label>Reviews</Form.Label>
