@@ -8,11 +8,11 @@ const GoogleButton = () => {
   const dispatch = useDispatch();
   const responseGoogle = (response) => {
     let user = {
-      first_name: response.profileObj.givenName,
-      last_name: response.profileObj.familyName,
-      email: response.profileObj.email,
-      username: response.profileObj.name,
-      id: response.profileObj.googleId,
+      first_name: response.profileObj?.givenName,
+      last_name: response.profileObj?.familyName,
+      email: response.profileObj?.email,
+      username: response.profileObj?.name,
+      id: response.profileObj?.googleId,
     }
     dispatch(googleSession(user));
   };

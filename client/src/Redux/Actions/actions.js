@@ -488,8 +488,12 @@ export const ghSession = (code) => {
       });
       dispatch({ type: GH_SESSION });
       if(data && user) {
+        let email;
+        for (let item of data) {
+          if (item.primary) email = item.email;
+        }
         let r = await axios.post(`/api/thirdparty/login`, {
-          email: data[0].email,
+          email,
           first_name: user.name.split(" ")[0],
           last_name: user.name.split(" ")[1],
           id: user.id,
