@@ -20,7 +20,7 @@ const reducer = (state = initialState, { type, payload }) => {
           success: payload.success,
           message: payload.message,
         },
-        isAdmin: payload.isAdmin,
+        isAdmin: payload.user.isAdmin,
         login: payload.success ? true : false,
         loading: true,
       };
@@ -38,7 +38,7 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         user: payload.user,
         response: null,
-        isAdmin: payload.isAdmin,
+        isAdmin: payload.user.isAdmin,
         login: payload.success ? true : false,
         loading: false,
       }
