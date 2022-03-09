@@ -392,7 +392,7 @@ const getUserDetails = async (req, res ) => {
   // const { user_id } = req.permits;   // Real 
   const { userid } = req.params;       // Testing
   try {
-    const user = await User.findByPk(userid)
+    const user = await User.findByPk(Number(userid));
     res.json(user)
   } catch (err) {
     console.log(err)
@@ -502,7 +502,7 @@ const validate = async (req, res) => {
 
 const orderHistory = async (req, res) => {
   const { userid } = req.params;
-  console.log(userid)
+  
 
   try {
     let userOrders = await OrderDetails.findAll({
@@ -518,13 +518,14 @@ const orderHistory = async (req, res) => {
         status: order.status,
         createdAt: order.createdAt,
         payment: {
+          type: payment.paymentType,
           amount: payment.amount,
           provider: payment.provider,
           status: payment.status
         },
         orderItems: await Promise.all(order.orderItems.map(async item => {
           let product = await Product.findByPk(item.product_id)
-          return {product: product.name, quantity: item.quantity, image: product.image, SKU: product.SKU}
+          return {product: product.name, quantity: item.quantity, image: product.image, SKU: product.SKU, price: product.price}
         })),
       }
     })) 
