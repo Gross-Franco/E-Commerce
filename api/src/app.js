@@ -13,7 +13,7 @@ const cors = require('cors');
 const { setCookie } = require("./middlewares/utilities.js");
 
 server.name = "API";
-server.use(cors())
+server.use(cors({origin:"*"}))
 
 
 server.use(express.urlencoded({ extended: true, limit: "50mb" }));
