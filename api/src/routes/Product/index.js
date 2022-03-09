@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getProductId, searchProductName, getProducts, filterByCategory, orderProducts } = require('./controller');
+const { getProductId, searchProductName, getProducts, filterByCategory, getProductReviews } = require('./controller');
 
 
 // Importar todos los routers;
@@ -13,7 +13,6 @@ const productRouter = Router();
 productRouter.get('/productId/:id', getProductId)
 productRouter.get('/', getProducts)
 productRouter.post('/filtercategory', filterByCategory)
-productRouter.post('/order', orderProducts)
 productRouter.get('/name', searchProductName) // recibe nombre por query
 
 // /product/name?name=busqueda

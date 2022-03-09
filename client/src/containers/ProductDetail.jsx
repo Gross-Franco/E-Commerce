@@ -12,7 +12,7 @@ import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar} from "reac
 /* import Holder from "react-holder";
 import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
-import { saveLocal, searchProductId, postReview, loadDetails, addToWishlist, removeFromWishlist, getWishlist } from "../Redux/Actions/actions";
+import { saveLocal, searchProductId, PostReviwer } from "../Redux/Actions/actions";
 
 import { useParams } from "react-router-dom";
 import { BsHeart, BsHeartFill ,BsArrowLeftShort} from "react-icons/bs";
@@ -29,18 +29,17 @@ import { setOverflowY } from "../services";
 import StripeSingleItem from "../components/StripeSingleItem";
 
 export default function ProductDetail() {
- 
-  const { id } = useParams();
-  console.log(id)
-  const { productDetail, loadReviews } = useSelector((state) => state.products);
-  const { user } = useSelector((state) => state.session);
-  const { wishlist } = useSelector((state) => state.users);
-  const [newReview, setNewReview ] = useState({
-    description: "",
-    starsPoints: 5
-  });
 
+// postear un Reviwer por card
+// Add post 
+
+// Traerse los comentarios (Card para comentario ya puestos)
+
+  const [Reviwer, SetReviwer] = useState(["comentario 1", "Comentario 2"]);
+  const [NewReviwer, SetNewReviwer ] = useState("");
   const [isScroll, setIsScroll] = useState(false);
+
+  let { user } = useSelector((state) => state.session);
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -49,60 +48,67 @@ export default function ProductDetail() {
       setIsScroll(false);
     }
   };
+
   
   const [ContStar, setContStar] = useState();
   const [Arry, ArrayStar] = useState([<AiOutlineStar/>, <AiOutlineStar/>, <AiOutlineStar/>,<AiOutlineStar/>,<AiOutlineStar/>]);
-  const [heart, setHeart] = useState(wishlist.some(item => item.id === Number(id)));
+
+
+  const { productDetail } = useSelector((state) => state.products);
+
+  let [heart, setHeart] = useState(true);
   const dispatch = useDispatch();
+  const { id } = useParams();
 
   const [isOpen, setIsOpen] = useState(false);
+  let { login } = useSelector((state) => state.session);
+
+  useEffect(() => {
+    dispatch(searchProductId(id));
+    // console.log(productDetail) 
+  }, []);
+
 
   useEffect(() => {
     setIsOpen(productDetail)
   }, []);
 
 
-  const  handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(postReview({
-      ...newReview,
-      user_id: user.id,
-      product_id: id,
+  const  handleSubmit = async (e) => {
+  
+    // postear-reviwer
+   await dispatch(PostReviwer({
+      "description": NewReviwer,
+      "starsPoints":5,
+      "userid": 1,
+      "idProduct": parseInt(id)
     }))
-    setNewReview({
-      description: "",
-      starsPoints: 5
-    })
+
+    SetNewReviwer("")
+    dispatch(searchProductId(id));   
+
+    e.preventDefault()
   }
 
-  const handleChange = (e) => {
-    setNewReview({
-      ...newReview,
-      [e.target.name]: e.target.value
-    })
+
+
+  function Favorite(e) {
+    if (heart === false)
+      return <div>
+        <BsHeartFill />
+      </div>
+    else
+      return <div>
+        <BsHeart />
+      </div>
+    e.preventDefault()
   }
 
-  if(loadReviews) dispatch(searchProductId(id))
-  useEffect(() => {
-    dispatch(getWishlist(user.id))
-  }, [])
 
-  useEffect(() => {
-    return dispatch(loadDetails())
-  }, [])
-
-  const handleWish = () => {
-    if (!heart) {
-      dispatch(addToWishlist(user.id, id))
-    }
-    else {
-      dispatch(removeFromWishlist(user.id, id))
-    }
-    setHeart(!heart)  
-  }
+  let product = productDetail;
 
   const handleClick = () => {
-    saveLocalStorage({ productDetail });
+    saveLocalStorage({ product });
     dispatch(saveLocal());
   };
 
@@ -183,7 +189,25 @@ export default function ProductDetail() {
                 </div>
               </Card>
               <br />
+              <br />
 
+              
+              <div>
+                {
+                productDetail?.reviews?.map((e, i) => {
+                  return <div key={i}>
+                    <p> {e.description} </p>
+                    <p> {e.starsPoints} </p>
+                    <p> {e.user} </p>
+                  </div>})
+                  }
+               
+              </div>
+
+
+
+
+   
             {/*Start info */}
               <Card style={{ 
               width: '30rem', 
@@ -279,46 +303,25 @@ export default function ProductDetail() {
  
 
                     {/* Mensaje star  */}
-              { user?.id &&
-
-              <form onSubmit={handleSubmit}>
-
-                <label>Review:</label>
-                <textarea value={newReview.description} name="description" onChange={handleChange}/>
-
-                <label>Score:</label>
-                <input className="aaaa" type='number' min='1' max='5' value={newReview.starsPoints} name="starsPoints" onChange={handleChange}/>
-
-                <button type="submit"> POST </button>
-              </form>
-
-              }
-              {/* <Form  >
+              <Form  >
                 
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
 
 
-                  <Form.Label>Write a review!</Form.Label>
+                  <Form.Label>Reviewers</Form.Label>
 
                     <br/>
                   <Form.Control as="textarea" 
-                                 name="NewReviwer"
-                                value={NewReviwer}
-                                placeholder="Añade tu reviwer del producto"
-                                onChange={e=>{  SetNewReviwer(e.target.value)} }                
-                                rows={3} 
-                   />
-                   <Form.Control 
                                 name="NewReviwer"
                                 value={NewReviwer}
                                 placeholder="Añade tu reviwer del producto"
                                 onChange={e=>{  SetNewReviwer(e.target.value)}}                
+                                rows={3} 
                    />
-
                 </Form.Group>
                 <h6 type="input" onClick={handleSubmit} style={{ cursor: "pointer" }}> Response</h6>               
 
-              </Form> */}
+              </Form>
                {/* estrellas  */}
                <Row style={
                  {
@@ -346,18 +349,18 @@ export default function ProductDetail() {
         </li>          
                     </Row>                         
         {/* Reviwer gets */}
-
-                <div>
-                {
-                productDetail?.reviews?.map((e, i) => {
-                  return <div key={i}>
-                    <p> {e.description} </p>
-                    <p> {e.starsPoints} </p>
-                    <p> {e.user} </p>
-                  </div>})
-                  }
-               
-              </div>
+                <br />
+                <br />
+              {
+              productDetail?.reviews?.map(e=>{               
+              
+               return (<p style={{
+               width: "400px",
+               }}>
+                { e.description}
+                </p>)           
+              })
+              }
             </Col>
 
             <Col
@@ -396,13 +399,22 @@ export default function ProductDetail() {
                       </Card.Title>
                     </Col>
                     <Col>
-                        {
-                          heart ? (
-                            <BsHeartFill onClick={() => handleWish()}/>
-                          ) : (
-                            <BsHeart onClick={() => handleWish()}/>
-                          )
-                        }
+
+                      <div onMouseEnter={(e) => {
+                        setHeart(false)
+                        e.preventDefault()
+                      }}
+                        onClick={(e) => {
+                          console.log("add-to-favorite")
+                          e.preventDefault()
+                        }}
+                        onMouseLeave={(e) => {
+                          setHeart(true)
+                          e.preventDefault()
+                        }}
+                      >
+                        <Favorite />
+                      </div>
 
                     </Col>
                   </Row>
