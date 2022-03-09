@@ -160,7 +160,6 @@ const thirdpartySignin = async (req, res) => {
         .json({
         success: true,
         message: "Successfully signed in",
-        isAdmin: false,
         user: formatedUser,
         token,
         });
