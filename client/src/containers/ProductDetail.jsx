@@ -113,11 +113,35 @@ function StarRenderFuntion (e)
 <AiFillStar/>
   </a>
 }
-// else{
-//   return <a>
-// <AiOutlineStar/>
-//   </a>
-// }
+})  
+}
+
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+function StarRenderPromedio (e)
+{
+  //cargar la star
+  return ArryStar.map((E,I)=>{
+    
+    
+  if(e.startNumValue >= I){
+  return <a > 
+<AiFillStar  />
+  </a>
+}
+else{
+  return <a >
+<AiOutlineStar />
+  </a>
+}
 
 })
   
@@ -133,7 +157,7 @@ function MensajeValueStart(e)
       return "Regular"
       break;
     case 2:
-      return "bueno"
+      return "Bueno"
       break;
     case 3:
       return "Muy bueno"
@@ -145,6 +169,35 @@ function MensajeValueStart(e)
       console.log('Fuera de rango verifica el valor ');
   }
 
+}
+
+function BarArrange(e)
+{
+
+  return  (  <div> <Row>
+  <Col xs={3} md={4}>
+<h6 style={{               
+    fontSize:"70%"
+  }}> {e.numStar} estrellas</h6>
+
+ </Col>
+ <Col xs={6} md={20} style={
+   {
+     position:"relative",
+      right:"25px"
+    }}>
+ <ProgressBar now={e.procentaje} />
+ </Col>
+ <Col xs={2} md={2}  style={
+   {
+     position:"relative",
+      right:"35px",
+      top:"-5px"
+                        }}>{e.cantidad}</Col>
+
+ </Row> </div>)
+
+e.preventDefault()
 }
 
 
@@ -165,9 +218,112 @@ function MensajeValueStart(e)
   }, []);
 
 
+  const [InfoReviwer, setInfoReviwer] = useState({
+  promedio:5,
+  starNum:5,
+  totalVotantes:0,
+  procentaje_1:0,
+  procentaje_2:0,
+  procentaje_3:0,
+  procentaje_4:0,
+  procentaje_5:0,
+  countLvl_1:0,
+  countLvl_2:0,
+  countLvl_3:0,
+  countLvl_4:0,
+  countLvl_5:0,
+  });
+
+
   useEffect(() => {    
-    console.log(productDetail.reviews)
+
+    if(productDetail.reviews !== undefined){
+    console.log(productDetail.reviews)  
+ // obtener sumtoria de estrellas 
+ let sumatoria =0;
+//cantidad por nivel de estrellas
+ let nivel1= 0;
+ let nivel2= 0;
+ let nivel3= 0;
+ let nivel4= 0;
+ let nivel5= 0; 
+
+
+ for (let i = 0; i < productDetail.reviews.length; i++) {
+  sumatoria += parseInt(productDetail.reviews[i].starsPoints)+1
+ 
+  switch (parseInt(productDetail.reviews[i].starsPoints)) {
+    case 0:
+      nivel1++
+      break;
+    case 1:
+      nivel2++
+      break;
+    case 2:
+      nivel3++
+      break;
+    case 3:
+      nivel4++
+      break;
+    case 4:
+      nivel5++
+      break;
+    default:
+      console.log('Fuera de rango verifica el valor ');
+  }
+
+}
+//pormedio por nivel
+let procentaje_1= (nivel1/productDetail.reviews.length)*100;
+let procentaje_2= (nivel2/productDetail.reviews.length)*100;
+let procentaje_3= (nivel3/productDetail.reviews.length)*100;
+let procentaje_4= (nivel4/productDetail.reviews.length)*100;
+let procentaje_5= (nivel5/productDetail.reviews.length)*100; 
+
+
+
+let numPromedio =0;
+
+if(sumatoria > 0){
+  numPromedio =  ((sumatoria/(productDetail.reviews.length*5))/2)*10;
+  numPromedio = Math.round(numPromedio * 10) / 10;
+}
+
+let numStar= Math.round(numPromedio)
+let votantes = productDetail.reviews.length;
+
+
+
+
+
+setInfoReviwer(
+  (prevState) => ({
+    ...prevState,
+    ["promedio"]: numPromedio,
+    ["starNum"]: numStar-1,
+    ["totalVotantes"]: votantes,
+
+    ["countLvl_1"]:nivel1,
+    ["countLvl_2"]:nivel2,
+    ["countLvl_3"]:nivel3,
+    ["countLvl_4"]:nivel4,
+    ["countLvl_5"]:nivel5,
+
+    ["procentaje_1"]:procentaje_1,
+    ["procentaje_2"]:procentaje_2,
+    ["procentaje_3"]:procentaje_3,
+    ["procentaje_4"]:procentaje_4,
+    ["procentaje_5"]:procentaje_5,
+ })
+)
+
+
+// console.log(numPromedio)  
+    }
+
   }, [productDetail]);
+
+ 
   // productDetail.reviews = ['TODAS LAS REVIEWS']
 
   const  handleSubmit = async (e) => {
@@ -300,7 +456,7 @@ function MensajeValueStart(e)
                fontSize:"450%",
                
                textAlign: "right"
-}             }>5
+}             }>{InfoReviwer?.promedio}
              </h1>
              <Row style={
                { position:"relative",
@@ -312,11 +468,7 @@ function MensajeValueStart(e)
               listStyleType:"none"
 
               }}>
-              <AiOutlineStar/> 
-              <AiOutlineStar />
-              <AiOutlineStar/>
-              <AiOutlineStar/>
-              <AiOutlineStar/>
+              <StarRenderPromedio   startNumValue={parseInt(InfoReviwer.starNum)}/> 
 
              </li>     
              </Row>
@@ -324,58 +476,18 @@ function MensajeValueStart(e)
              <h6 style={{
                 textAlign: "right",
                 fontSize:"80%"
-             }} >promedio entre xxx personas</h6>
+             }} >promedio entre {InfoReviwer.totalVotantes} personas</h6>
             </Col>
            {/* segunda parte */}
             <Col>
             <br />
             <br />
-            <Row>
-              <Col xs={3} md={4}>
-            <h6 style={{               
-                fontSize:"70%"
-             }}> X estrellas</h6>
-            
-             </Col>
-             <Col xs={6} md={20} style={
-               {
-                 position:"relative",
-                  right:"25px"
-                                    }}>
-             <ProgressBar now={10} />
-             </Col>
-             <Col xs={2} md={2}  style={
-               {
-                 position:"relative",
-                  right:"35px",
-                  top:"-5px"
-                                    }}>xx</Col>
-
-             </Row>
-             <Row>
-              <Col xs={3} md={4}>
-            <h6 style={{               
-                fontSize:"70%"
-             }}> X estrellas</h6>
-            
-             </Col>
-             <Col xs={6} md={20} style={
-               {
-                 position:"relative",
-                  right:"25px"
-                                    }}>
-             <ProgressBar now={10} />
-             </Col>
-             <Col xs={2} md={2}  style={
-               {
-                 position:"relative",
-                  right:"35px",
-                  top:"-5px"
-                                    }}>xx</Col>
-
-             </Row>
-             
-             
+          
+            <BarArrange numStar={5} procentaje={InfoReviwer.procentaje_5} cantidad={InfoReviwer.countLvl_5} />
+            <BarArrange numStar={4} procentaje={InfoReviwer.procentaje_4} cantidad={InfoReviwer.countLvl_4} />
+            <BarArrange numStar={3} procentaje={InfoReviwer.procentaje_3} cantidad={InfoReviwer.countLvl_3} />
+            <BarArrange numStar={2} procentaje={InfoReviwer.procentaje_2} cantidad={InfoReviwer.countLvl_2} />
+            <BarArrange numStar={1} procentaje={InfoReviwer.procentaje_1} cantidad={InfoReviwer.countLvl_1} />
             </Col>
           </Row>
           </Card>
