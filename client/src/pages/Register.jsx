@@ -45,7 +45,6 @@ export default function Registro() {
   const dispatch = useDispatch();
 
   const validate = async (e) => {
-    console.log("test");
     setErrors({
       ...errors,
       [e.target.name]: await validator(e.target.name, e.target.value),
@@ -53,7 +52,6 @@ export default function Registro() {
   };
   
   const handleChange = (e) => {
-  
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -156,6 +154,7 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
+          {errors.password && <FormHandler error={errors.password} />}
           {/* Verificate pass // sin validacion */}
           {/* {errors.verificatePassword && <FormHandler error={errors.verificatePassword} />}
           <input
@@ -169,29 +168,26 @@ export default function Registro() {
           /> */}
 
           {/* Metodo de pago */}
-          {errors.paymentMethod && <FormHandler error={errors.paymentMethod} />}
-          <select 
-           className="register--main--form-input"
-           name="paymentMethod"
-           style={colorGRis}
-           onChange={async e=>{            
-            setErrors({
-              ...errors,
-              [e.target.name]: await validator(e.target.name, e.target.value),
-            });
-            setForm({ ...form, [e.target.name]: e.target.value });
-
-            }
-            }        
-          >         
-          <option>Metodo de pago</option>
-          <option value="debito" >Targeta debito</option>
-          <option value="credito">Targeta de credito</option>
-          <option value="PayPal">PayPal </option>          
+          <select
+            className="register--main--form-input"
+            name="paymentMethod"
+            style={colorGRis}
+            onChange={async (e) => {
+              setErrors({
+                ...errors,
+                [e.target.name]: await validator(e.target.name, e.target.value),
+              });
+              setForm({ ...form, [e.target.name]: e.target.value });
+            }}
+          >
+            <option>Metodo de pago</option>
+            <option value="debito">Targeta debito</option>
+            <option value="credito">Targeta de credito</option>
+            <option value="PayPal">PayPal </option>
           </select>
-
+          {errors.paymentMethod && <FormHandler error={errors.paymentMethod} />}
           {/* Direccion */}
-          {errors.address && <FormHandler error={errors.address} />}
+
           <input
             type="text"
             name="address"
@@ -201,9 +197,8 @@ export default function Registro() {
             onBlur={validate}
             className="register--main--form-input"
           />
-
-            {/* Telefono de contacto */}
-            {errors.phoneNumber && <FormHandler error={errors.phoneNumber} />}
+          {errors.address && <FormHandler error={errors.address} />}
+          {/* Telefono de contacto */}
           <input
             type="number"
             name="phoneNumber"
@@ -212,26 +207,24 @@ export default function Registro() {
             onChange={handleChange}
             onBlur={validate}
             className="register--main--form-input"
-          />  
+          />
+          {errors.phoneNumber && <FormHandler error={errors.phoneNumber} />}
 
-          
-          
-
-              {/* Codigo postal */}
-              {errors.postalNumber && <FormHandler error={errors.postalNumber} />}
-            <input
-              type="number"
-              name="postalNumber"
-              value={form.postalNumber}
-              placeholder="codigo postal"
-              onChange={handleChange}
-              onBlur={validate}             
-              className="register--main--form-input"
-              max="9999"
-            />
+          {/* Codigo postal */}
+          <input
+            type="number"
+            name="postalNumber"
+            value={form.postalNumber}
+            placeholder="codigo postal"
+            onChange={handleChange}
+            onBlur={validate}
+            className="register--main--form-input"
+            max="9999"
+          />
+          {errors.postalNumber && <FormHandler error={errors.postalNumber} />}
 
           {/* terminos y condiciones */}
-          {errors.password && <FormHandler error={errors.password} />}
+
           <span className="register--main--form-span tyc">
             Al crear una cuenta aceptas nuestros{" "}
             <Link
@@ -246,9 +239,7 @@ export default function Registro() {
             action={handleSubmit}
             disable={disable}
           />
-          <span className="register--main--form-span">
-            O continúa con
-          </span>
+          <span className="register--main--form-span">O continúa con</span>
           <GoogleButton />
           <GithubButton />
           <span className="register--main--form-span">

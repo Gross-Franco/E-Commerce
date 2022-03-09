@@ -133,8 +133,7 @@ const thirdpartySignin = async (req, res) => {
     email = email.toLowerCase();
     const [user, created] = await User.findOrCreate({
         where: {
-            email,
-            username
+            email
         },
         defaults: {
             first_name,
