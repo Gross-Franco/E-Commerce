@@ -50,8 +50,104 @@ export default function ProductDetail() {
   };
 
   
-  const [ContStar, setContStar] = useState();
-  const [Arry, ArrayStar] = useState([<AiOutlineStar/>, <AiOutlineStar/>, <AiOutlineStar/>,<AiOutlineStar/>,<AiOutlineStar/>]);
+  const [ContStar, setContStar] = useState(2);
+  const [SelectStar, setSelectStar] = useState(false);
+  const [ArryStar, setArrayStar] = useState([1,2,3,4,5]);
+
+  function TempFuntion(e){
+  
+    e.preventDefault()
+  }
+function StarFuntion (e)
+{
+  
+//cargar la star
+return ArryStar.map((E,I)=>{
+
+  if(ContStar < I){
+  return <a onMouseEnter={(F) =>{
+   
+   if(SelectStar === false)
+    setContStar(I)
+  F.preventDefault()
+}}
+
+onClick={(e) => {
+  setSelectStar(true)
+  e.preventDefault()
+}}
+
+> 
+<AiOutlineStar/>
+  </a>
+}
+else{
+  return <a onMouseEnter={(F) =>{
+  
+    if(SelectStar === false)
+    setContStar(I)
+  F.preventDefault()
+}}
+
+onClick={(e) => {
+  setSelectStar(true)
+  e.preventDefault()
+}}
+>
+  <AiFillStar/>
+  </a>
+}
+
+})
+  
+}
+
+function StarRenderFuntion (e)
+{
+  //cargar la star
+  return ArryStar.map((E,I)=>{
+    
+    
+  if(e.startNumValue >= I){
+  return <a> 
+<AiFillStar/>
+  </a>
+}
+// else{
+//   return <a>
+// <AiOutlineStar/>
+//   </a>
+// }
+
+})
+  
+}
+
+function MensajeValueStart(e)
+{
+  switch (e.value) {
+    case 0:
+      return "Malo"
+      break;
+    case 1:
+      return "Regular"
+      break;
+    case 2:
+      return "bueno"
+      break;
+    case 3:
+      return "Muy bueno"
+      break;
+    case 4:
+      return "Excelente"
+      break;
+    default:
+      console.log('Fuera de rango verifica el valor ');
+  }
+
+}
+
+
 
 
   const { productDetail } = useSelector((state) => state.products);
@@ -79,12 +175,13 @@ export default function ProductDetail() {
     // postear-reviwer
    await dispatch(PostReviwer({
       "description": NewReviwer,
-      "starsPoints":5,
+      "starsPoints":ContStar,
       "userid": 1,
       "idProduct": parseInt(id)
     }))
 
     SetNewReviwer("")
+    setSelectStar(false);
     dispatch(searchProductId(id));   
 
     e.preventDefault()
@@ -171,22 +268,20 @@ export default function ProductDetail() {
 
                 }}>
                   <br />
-                  Descripcion {productDetail?.description}
+                  Descripcion: {productDetail?.description}
                   <br />
                   <br />
-                  Categorias
-                  <br />
-                  <br />
-                  <Row style={{ textAlign: "center" }}>
-                    {productDetail?.category?.length > 0 ? (
+                  Categorias:{" "}  {productDetail?.category?.length > 0 ? (
                       productDetail?.category?.map((c, i) => {
                         return <span key={i}>{c}</span>;
                       })
                     ) : (
                       <p>no se encontraron categorias</p>
                     )}
+                  
+                 
 
-                  </Row>
+                 
                 </div>
               </Card>
               <br />
@@ -322,12 +417,8 @@ export default function ProductDetail() {
         {
 
         }
-        
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
+        {/* Array  de estrellas */}        
+        <StarFuntion/>
 
         </li>          
                     </Row>                         
@@ -337,12 +428,36 @@ export default function ProductDetail() {
               {
               productDetail?.reviews?.map(e=>{               
               
-               return (<p style={{
-               width: "400px",
-               }}>
-                { e.description}
-                </p>)           
-              })
+               return (<div>
+                 
+               
+                 <li style={{
+                  listStyleType:"none"
+    
+                  }}>
+
+                    
+                   <StarRenderFuntion startNumValue={parseInt( e.starsPoints)}/>                  
+                      </li> 
+                      <h5 
+                      style={{
+                        fontWeight:"CSS1"
+                      }}
+                      >
+                           {<MensajeValueStart value={parseInt( e.starsPoints)}/>}
+                      </h5>
+               
+                          <p style={{
+                                width: "400px",
+                                   }}>
+                          { e.description}
+                          </p>
+                      <br />
+                      </div>
+                      
+                      )           
+              }
+              )
               }
             </Col>
 
