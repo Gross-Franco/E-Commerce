@@ -519,6 +519,9 @@ code {
 .catalog-sort--list .item-one {
   border-bottom: 1px solid #d8d8d8;
 }
+.catalog-sort--list .item-two {
+  border-bottom: 1px solid #d8d8d8;
+}
 .catalog-content--container {
   display: flex;
   flex-direction: row;
