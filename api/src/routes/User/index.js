@@ -1,4 +1,3 @@
-const { use } = require("chai");
 const { Router } = require("express");
 const {authent} = require('../../middlewares/auth/auth')
 const { authenticate } = require("../../middlewares/auth/authentication");
@@ -16,7 +15,7 @@ const userRouter = Router();
 // Configurar los routers
 // Son llamadas ejemplo: baseUrl + '/user' + these routes
 
-userRouter.post('/post/postReview',postReviewProduct)
+userRouter.post('/postReview', postReviewProduct)
 
 userRouter.get('/getUsers', getUsers)
 userRouter.get('/history/:userid', orderHistory)

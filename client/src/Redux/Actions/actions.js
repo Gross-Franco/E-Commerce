@@ -13,6 +13,7 @@ import {
   UPDATE_PRODUCT,
   SEARCH_PRODUCT_NAME_PUBLIC,
   PRODUCT_REVIEWS,
+  LOAD_DETAILS,
 
   // Categories
   GET_CATEGORIES,
@@ -34,6 +35,8 @@ import {
   GET_WISHLIST,
   ADD_WISHLIST,
   REMOVE_WISHLIST,
+  POST_REVIEW,
+
 
   // Orders
   GET_ORDERS,
@@ -59,11 +62,11 @@ import {
   EDIT_LOCAL_STORAGE_QTY,
   UPDATE_SUBTOTAL,
   
-  POST_REVIWER,
-
+  // Session
   SUCCESS_SESSION,
   FAIL_SESSION,
   GH_SESSION
+
 } from "./actionTypes";
 
 export const getProducts = () => {
@@ -219,15 +222,16 @@ export const getOrderId = (orderId) => {
 }
 
  
-export const PostReviwer = (Reviwer) => {
+export const postReview = (newReview) => {
   return async (dispatch) => {
-    const response = await axios.post(`/user/post/postReview`, Reviwer);
-    // console.log(response)
-    // dispatch({ type: POST_REVIWER, payload: response.data});
+    await axios.post(`/user/postReview`, newReview);
+    dispatch({ type: POST_REVIEW });
   }
 }
 
-
+export const loadDetails = () => {
+  return { type: LOAD_DETAILS }
+}
 
 export const createUser = ({
   first_name,
@@ -452,12 +456,8 @@ export const userOrders = (userid) => {
 
 export const userReviews =  (userid) => {
   // console.log(userid.id)
-  return async (dispatch) => {
-    
+  return async (dispatch) => { 
     const response = await axios.get(`/user/reviews/${userid}`); 
-    
-    console.log("hola mundo K")
-
     dispatch({ type: USER_REVIEWS, payload: response.data });
   }
 }
