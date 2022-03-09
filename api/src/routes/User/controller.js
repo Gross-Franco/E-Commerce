@@ -524,7 +524,7 @@ const orderHistory = async (req, res) => {
         },
         orderItems: await Promise.all(order.orderItems.map(async item => {
           let product = await Product.findByPk(item.product_id)
-          return {product: product.name, quantity: item.quantity}
+          return {product: product.name, quantity: item.quantity, image: product.image, SKU: product.SKU}
         })),
       }
     })) 

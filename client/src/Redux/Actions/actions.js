@@ -147,14 +147,18 @@ export const deleteProduct = function () {
 
 export const filterProducts = function (categories) {
   return async (dispatch) => {
-    const response = await axios.post(`/product/filtercategory`, categories); // chequear con la ruta del server
+    console.log(categories)
+    const response = await axios.post(`/product/filtercategory`, {categories}); // chequear con la ruta del server
     dispatch({ type: FILTER_PRODUCTS, payload: response.data });
   }
 }
 
-export const orderProducts = function () {
-  return { type: ORDER_PRODCTS };
-};
+export const orderProducts = function (column, order) {
+  return async (dispatch) => {
+    const response = await axios.post(`/product/order`, {column, order}); // chequear con la ruta del server
+    dispatch({ type: ORDER_PRODCTS, payload: response.data });
+  }
+}
 
 export const setAddOrUpdate = (addOrUpdate) => {
   return { type: ADD_OR_UPDATE, payload: addOrUpdate };
@@ -549,3 +553,4 @@ export const userPayments = (userid) => {
     dispatch({ type: USER_PAYMENTS, payload: response.data });
   }
 }
+
