@@ -129,10 +129,10 @@ User.hasOne(ShoppingSession, { as: "Session", foreignKey: "user_id", onDelete: "
 ShoppingSession.belongsTo(User, { foreignKey: "user_id" });
 
 //Purchase order management
-Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" });
+Product.hasMany(OrderItems, { as: "ToOrder", foreignKey: "product_id" }); 
 OrderItems.belongsTo(Product, { foreignKey: "product_id" })
 User.hasOne(OrderDetails, { as: "PurchaseOrder", foreignKey: "user_id" });
-OrderDetails.belongsTo(User, { foreignKey: "user_id" })
+OrderDetails.belongsTo(User, { foreignKey: "user_id", allowNull: true })
 
 //Reviews
 Product.hasMany(UserReviews, { foreignKey: "product_id" });
