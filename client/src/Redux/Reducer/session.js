@@ -12,7 +12,6 @@ const initialState = {
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SIGN_IN:
-      console.log(payload);
       return {
         ...state,
         user: payload.user,
@@ -20,7 +19,7 @@ const reducer = (state = initialState, { type, payload }) => {
           success: payload.success,
           message: payload.message,
         },
-        isAdmin: payload.isAdmin,
+        isAdmin: payload.user.isAdmin,
         login: payload.success ? true : false,
         loading: true,
       };
@@ -33,12 +32,11 @@ const reducer = (state = initialState, { type, payload }) => {
         loading: true,
       };
     case SUCCESS_SESSION:
-      console.log(payload)
       return {
         ...state,
         user: payload.user,
         response: null,
-        isAdmin: payload.isAdmin,
+        isAdmin: payload.user.isAdmin,
         login: payload.success ? true : false,
         loading: false,
       }
