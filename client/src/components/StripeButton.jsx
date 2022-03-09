@@ -1,11 +1,14 @@
 import React, {useState} from 'react'
 import StripeCheckout from 'react-stripe-checkout';
 import { Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 //the test card to use on stripe is # 4242424242424242 expiration date needs to be in the future las number any 3
 
 const StripeButton = (subtotal) =>{
     //set up products, below is just example, at the moment we can only take 1 product at a time for the back end to function properly, so the price in the state needs to be final
+
+    const { user } = useSelector((state) => state.session);
 
     const[product, setProduct] = useState({
         id: subtotal.products.map((product) =>{
@@ -18,7 +21,8 @@ const StripeButton = (subtotal) =>{
             return product.name
         }).toString(),
         price: Math.floor(subtotal.subTotal),
-        description: 'All cart items'
+        description: 'All cart items',
+        userid: user? user.id: null
     });
     //the token is automatically created by stripe we just need to call it
     const makePayment = token =>{
