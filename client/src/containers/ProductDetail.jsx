@@ -205,7 +205,7 @@ export default function ProductDetail() {
               </div>
 
 
-              <Form>
+
 
    
             {/*Start info */}
