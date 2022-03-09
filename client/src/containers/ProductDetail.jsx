@@ -109,7 +109,6 @@ export default function ProductDetail() {
   return (
     <div>
       <NavBar isScroll={true} />
-
       <br />
       <br />
       <br />

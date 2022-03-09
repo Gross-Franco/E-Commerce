@@ -51,6 +51,7 @@ const createCategory = async (req, res) => {
       description,
       image,
     });
+  
     res.json(createdCategory);
 };
 

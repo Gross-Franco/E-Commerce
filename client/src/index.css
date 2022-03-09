@@ -573,6 +573,7 @@ code {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 0.5rem;
 }
 .product--price {
   font-size: 1rem;

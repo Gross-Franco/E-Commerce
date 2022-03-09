@@ -47,43 +47,43 @@ const { PORT, TESTING } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: TESTING || false }).then(() => {
+conn.sync({ force: false }).then(() => {
 
   server.listen(PORT || 3001, () => {
-    ProductInventory.bulkCreate(mockinventory)
-      .then(() => {
-        return Product.bulkCreate(mockproducts)
-      })
-      .then(() => {
-        return ProductCategory.bulkCreate(mockcategories)
-      })
-      .then(() => {
-        return Product.findAll()
-      })
-      .then(products => {
-        products.forEach(product => {
-          product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1)
-        })
-      })
-      .then(() => {
-        return User.bulkCreate(mockusers).then(() => {
-          UserAddress.bulkCreate(mockaddress);
-          UserPayment.bulkCreate(mockuserpayment);
-        });
-      })
-      .then(() => {
-        return PaymentDetails.bulkCreate(mockpaymentdetails)
-      })
-      .then(() => {
-        return OrderDetails.bulkCreate(mockorders)
-      })
-      .then(() => {
-        return OrderItems.bulkCreate(mockorderitems)
-      })
-      .then(() => {
-        return UserReviews.bulkCreate(mockreviews)
-      })
-      .catch(error => console.log(error));
+//     ProductInventory.bulkCreate(mockinventory)
+//       .then(() => {
+//         return Product.bulkCreate(mockproducts)
+//       })
+//       .then(() => {
+//         return ProductCategory.bulkCreate(mockcategories)
+//       })
+//       .then(() => {
+//         return Product.findAll()
+//       })
+//       .then(products => {
+//         products.forEach(product => {
+//           product.addProductCategory(Math.random() * (mockcategories.length - 1) + 1)
+//         })
+//       })
+//       .then(() => {
+//         return User.bulkCreate(mockusers).then(() => {
+//           UserAddress.bulkCreate(mockaddress);
+//           UserPayment.bulkCreate(mockuserpayment);
+//         });
+//       })
+//       .then(() => {
+//         return PaymentDetails.bulkCreate(mockpaymentdetails)
+//       })
+//       .then(() => {
+//         return OrderDetails.bulkCreate(mockorders)
+//       })
+//       .then(() => {
+//         return OrderItems.bulkCreate(mockorderitems)
+//       })
+//       .then(() => {
+//         return UserReviews.bulkCreate(mockreviews)
+//       })
+//       .catch(error => console.log(error));
     console.log(`%s listening at ${PORT || 3001} `); // eslint-disable-line no-console
 
   });

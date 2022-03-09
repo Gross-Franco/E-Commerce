@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MdAddShoppingCart } from "react-icons/md";
-import { useSelector, useDispatch } from "react-redux";
-import { addCartItem, saveLocal } from "../Redux/Actions/actions";
+import { useDispatch } from "react-redux";
+import { saveLocal } from "../Redux/Actions/actions";
 import { saveLocalStorage } from "../services";
+import { BsBagPlus } from "react-icons/bs";
 
 const Product = ({ product }) => {
   
@@ -26,7 +26,7 @@ const Product = ({ product }) => {
       </Link>
       <div className="product--price-container">
         <p className="product--price"> $ {product.price} </p>
-        <MdAddShoppingCart
+        <BsBagPlus
           className="product--cart-icon"
           onClick={handleClick}
         />
