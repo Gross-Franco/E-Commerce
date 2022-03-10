@@ -16,12 +16,14 @@ const Cart = ({ openModal, setOpenModal }) => {
   let qty =
     cartStorage?.length > 0
       ? cartStorage.reduce((acc, item) => {
-          return acc + item.quantity;
-        }, 0)
+        return acc + item.quantity;
+      }, 0)
       : 0;
 
   useEffect(() => {
-    dispatch(getLocalStorage());
+    if (window.location.pathname !== "/admin") {
+      dispatch(getLocalStorage());
+    }
   }, []);
 
 

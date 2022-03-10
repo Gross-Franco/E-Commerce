@@ -6,8 +6,8 @@ const ProductTable = ({ setIsOpen }) => {
   const { products, loadProducts } = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
-  if(loadProducts) dispatch(getProducts());
-  
+  if (loadProducts) dispatch(getProducts());
+
   const handleClick = (product) => {
     console.log(product)
     dispatch(setAddOrUpdate(product))
@@ -28,7 +28,7 @@ const ProductTable = ({ setIsOpen }) => {
           <tr key={product.id + product.name}>
             <td className="panel-table--td">{product.name}</td>
             <td className="panel-table--td">${product.price}</td>
-            <td className="panel-table--td">{product.quantity}</td>
+            <td className="panel-table--td">{product.inventory ? product.inventory : product.quantity}</td>
             <td className="panel-table--td">
               <button className="panel-table--td_buttons" onClick={() => handleClick(product)}>Editar</button>
             </td>
