@@ -9,7 +9,7 @@ const baseUrl = "https://pghenry.herokuapp.com/";
 // pd: it should starts with REACT_APP_
 
 export const axiosWithCredentials = axios.create({
-    baseURL: baseUrl || process.env.REACT_APP_API,// change this to "https://pghenry.herokuapp.com/" to work with deplyed DB
+    baseURL: process.env.REACT_APP_API || baseUrl,// change this to "https://pghenry.herokuapp.com/" to work with deplyed DB
     /* withCredentials: true, */
 })
 

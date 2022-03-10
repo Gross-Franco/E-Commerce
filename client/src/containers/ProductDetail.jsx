@@ -4,7 +4,7 @@ import { NavBar, Footer } from "./";
 
 
 import { saveLocalStorage } from "../services";
-import { MdAddShoppingCart } from "react-icons/md";
+import { MdAddShoppingCart, MdKeyboardArrowRight } from "react-icons/md";
 
 import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar} from "react-bootstrap";
 
@@ -15,13 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveLocal, searchProductId, postReview, loadDetails, addToWishlist, removeFromWishlist, getWishlist } from "../Redux/Actions/actions";
 
 import { useParams } from "react-router-dom";
-import { BsHeart, BsHeartFill ,BsArrowLeftShort} from "react-icons/bs";
-import {AiOutlineStar, AiFillStar} from "react-icons/ai";
+import { BsHeart, BsHeartFill, BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import Dropdowns from "./Dropdowns";
-import { CartButton } from "../components";
+import { CartButton, Stars } from "../components";
 import { Cart } from "../pages";
 import { setOverflowY } from "../services";
 
@@ -49,9 +48,8 @@ export default function ProductDetail() {
       setIsScroll(false);
     }
   };
+
   
-  const [ContStar, setContStar] = useState();
-  const [Arry, ArrayStar] = useState([<AiOutlineStar/>, <AiOutlineStar/>, <AiOutlineStar/>,<AiOutlineStar/>,<AiOutlineStar/>]);
   const [heart, setHeart] = useState(wishlist.some(item => item.id === Number(id)));
   const dispatch = useDispatch();
 
@@ -66,7 +64,7 @@ export default function ProductDetail() {
     e.preventDefault()
     dispatch(postReview({
       ...newReview,
-      user_id: user.id,
+      user_id: user?.id,
       product_id: id,
     }))
     setNewReview({
@@ -84,7 +82,7 @@ export default function ProductDetail() {
 
   if(loadReviews) dispatch(searchProductId(id))
   useEffect(() => {
-    dispatch(getWishlist(user.id))
+    dispatch(getWishlist(user?.id))
   }, [])
 
   useEffect(() => {
@@ -93,10 +91,10 @@ export default function ProductDetail() {
 
   const handleWish = () => {
     if (!heart) {
-      dispatch(addToWishlist(user.id, id))
+      dispatch(addToWishlist(user?.id, id))
     }
     else {
-      dispatch(removeFromWishlist(user.id, id))
+      dispatch(removeFromWishlist(user?.id, id))
     }
     setHeart(!heart)  
   }
@@ -109,337 +107,136 @@ export default function ProductDetail() {
   return (
     <div>
       <NavBar isScroll={true} />
-      <br />
-      <br />
-      <br />
-      <br />
-      <Container>
-        <Card>
-          <br />
-          <br />
-          <Row
-            style={{
-              position: "relative",
-              right: "-90px",
-            }}
-          >
-            <Col>
-              <Card.Img variant="top" src={productDetail?.image} style={{
-               transform: "scale(1.2, 1)"
-              }} />
-
-              <Card
-                style={{
-                  width: "auto",
-                  textAlign: "left",
-                  position: "relative",
-                  top: "20px"
-                }}
-              >
-                <div style={{
-                  position: "relative",
-                  right: "-20px"
-
-                }}>
-                  <br />
-                  Descripcion {productDetail?.description}
-                  <br />
-                  <br />
-                  Categorias
-                  <br />
-                  <br />
-                  <Row style={{ textAlign: "center" }}>
-                    {productDetail?.category?.length > 0 ? (
-                      productDetail?.category?.map((c, i) => {
-                        return <span key={i}>{c}</span>;
-                      })
-                    ) : (
-                      <p>no se encontraron categorias</p>
-                    )}
-
-                  </Row>
+      <div className="main-product--content">
+        <div className="main-product--content--left">
+          <div className="main-product--breadcrumb">
+            <Link to="/catalogo" className="main-product--breadcrumb--link">
+              Productos
+            </Link>
+            <span className="main-product--breadcrumb--separator">
+              {" "}
+              <MdKeyboardArrowRight className="icon" />{" "}
+            </span>
+            <span className="main-product--breadcrumb--span">
+              {productDetail?.name}
+            </span>
+          </div>
+          <div className="main-product--side-bar">
+            <p className="main-product--side-bar--title">Categorias</p>
+            {productDetail?.category?.map((item, index) => (
+              <p className="main-product--side-bar--item" key={index}>
+                {item}
+              </p>
+            ))}
+          </div>
+        </div>
+        <div
+          className="main-product--content--center"
+          style={{
+            backgroundImage: `url(${productDetail?.image})`,
+          }}
+        />
+        <div className="main-product--content--right">
+          <div className="main-product--points">
+            <Stars product={productDetail} option="multi" />
+            <p className="main-product--points--avg">
+              {(productDetail?.reviews?.length > 0 &&
+                (
+                  productDetail?.reviews?.reduce(
+                    (a, b) => a + b.starsPoints,
+                    0
+                  ) / productDetail?.reviews?.length
+                ).toFixed(1)) ||
+                1}
+              /5
+            </p>
+          </div>
+          <div className="main-product--header">
+            <h1 className="main-product--product-title">
+              {productDetail?.name}
+            </h1>
+            {heart ? (
+              <BsHeartFill className="heart red" onClick={() => handleWish()} />
+            ) : (
+              <BsHeart className="heart" onClick={() => handleWish()} />
+            )}
+          </div>
+          <p className="main-product--description">
+            {productDetail?.description}
+          </p>
+          <p className="main-product--stock">
+            {productDetail?.quantity > 0 ? "En stock " : "Agotado"}
+            {productDetail?.quantity > 0 && (
+              <span className="main-product--stock--quantity">
+                {productDetail?.quantity}
+              </span>
+            )}
+          </p>
+          <StripeSingleItem product={productDetail} />
+          <button className="main-product--button" onClick={handleClick}>
+            <span className="main-product--btn-span">Agregar al carrito</span>
+            <span className="main-product--btn-price">
+              ${productDetail?.price}
+            </span>
+          </button>
+        </div>
+      </div>
+      {productDetail?.reviews?.length > 0 && (
+        <div className="main-product--reviews">
+          <p className="main-product--reviews--title">
+            {productDetail?.reviews?.length} Comentarios de los usuarios
+          </p>
+          <div className="main-product--reviews--content">
+            {productDetail?.reviews?.map((item, index) => ( index < 3 &&
+              <div className="main-product--reviews--content--item" key={index}>
+                <div className="main-product--points">
+                  <Stars option="single" starsPoints={item.starsPoints} />
+                  <p className="main-product--points--avg">
+                    {item.starsPoints}/5
+                  </p>
                 </div>
-              </Card>
-              <br />
-
-            {/*Start info */}
-              <Card style={{ 
-              width: '30rem', 
-              height: '13rem'  
-                }}>
-  
-           <Row>
-            <Col >
-            <br/>           
-             <h1 style={{              
-               fontSize:"450%",
-               
-               textAlign: "right"
-}             }>5
-             </h1>
-             <Row style={
-               { position:"relative",
-               right:" -180px",
-               transform: "scale(2, 2)"
-                 }
-             }>
-             <li style={{
-              listStyleType:"none"
-
-              }}>
-              <AiOutlineStar/> 
-              <AiOutlineStar />
-              <AiOutlineStar/>
-              <AiOutlineStar/>
-              <AiOutlineStar/>
-
-             </li>     
-             </Row>
-             <br />
-             <h6 style={{
-                textAlign: "right",
-                fontSize:"80%"
-             }} >promedio entre xxx personas</h6>
-            </Col>
-           {/* segunda parte */}
-            <Col>
-            <br />
-            <br />
-            <Row>
-              <Col xs={3} md={4}>
-            <h6 style={{               
-                fontSize:"70%"
-             }}> X estrellas</h6>
-            
-             </Col>
-             <Col xs={6} md={20} style={
-               {
-                 position:"relative",
-                  right:"25px"
-                                    }}>
-             <ProgressBar now={10} />
-             </Col>
-             <Col xs={2} md={2}  style={
-               {
-                 position:"relative",
-                  right:"35px",
-                  top:"-5px"
-                                    }}>xx</Col>
-
-             </Row>
-             <Row>
-              <Col xs={3} md={4}>
-            <h6 style={{               
-                fontSize:"70%"
-             }}> X estrellas</h6>
-            
-             </Col>
-             <Col xs={6} md={20} style={
-               {
-                 position:"relative",
-                  right:"25px"
-                                    }}>
-             <ProgressBar now={10} />
-             </Col>
-             <Col xs={2} md={2}  style={
-               {
-                 position:"relative",
-                  right:"35px",
-                  top:"-5px"
-                                    }}>xx</Col>
-
-             </Row>
-             
-             
-            </Col>
-          </Row>
-          </Card>
- 
-
-                    {/* Mensaje star  */}
-              { user?.id &&
-
-              <form onSubmit={handleSubmit}>
-
-                <label>Review:</label>
-                <textarea value={newReview.description} name="description" onChange={handleChange}/>
-
-                <label>Score:</label>
-                <input className="aaaa" type='number' min='1' max='5' value={newReview.starsPoints} name="starsPoints" onChange={handleChange}/>
-
-                <button type="submit"> POST </button>
-              </form>
-
-              }
-              {/* <Form  >
-                
-                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-
-
-                  <Form.Label>Write a review!</Form.Label>
-
-                    <br/>
-                  <Form.Control as="textarea" 
-                                 name="NewReviwer"
-                                value={NewReviwer}
-                                placeholder="Añade tu reviwer del producto"
-                                onChange={e=>{  SetNewReviwer(e.target.value)} }                
-                                rows={3} 
-                   />
-                   <Form.Control 
-                                name="NewReviwer"
-                                value={NewReviwer}
-                                placeholder="Añade tu reviwer del producto"
-                                onChange={e=>{  SetNewReviwer(e.target.value)}}                
-                   />
-
-                </Form.Group>
-                <h6 type="input" onClick={handleSubmit} style={{ cursor: "pointer" }}> Response</h6>               
-
-              </Form> */}
-               {/* estrellas  */}
-               <Row style={
-                 {
-                      width: '8rem'
-                    }
-                  }>
-        
-        <li style={{
-         listStyleType:"none",
-         transform: "scale(2, 2)",
-         position:"relative",
-         right:"-450px",
-         top:"-30px"
-        }}>
-        {
-
-        }
-        
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-        <AiOutlineStar/>
-
-        </li>          
-                    </Row>                         
-        {/* Reviwer gets */}
-
-                <div>
-                {
-                productDetail?.reviews?.map((e, i) => {
-                  return <div key={i}>
-                    <p> {e.description} </p>
-                    <p> {e.starsPoints} </p>
-                    <p> {e.user} </p>
-                  </div>})
-                  }
-               
-              </div>
-            </Col>
-
-            <Col
-              style={{
-                position: "relative",
-                right: "-70px",
-              }}
-            >
-              <Card
-                style={{
-                  width: "20rem",
-                  textAlign: "left",
-                }}
-              >
-
-                <p
-                  style={{
-                    position: "relative",
-                    right: "-10px",
-                    color: "Grey",
-                  }}
-                >
-                  {" "}
-
+                <p className="main-product--reviews--content--item--title">
+                  Sin titulo
                 </p>
+                <p className="main-product--reviews--content--item--description">
+                  {item.description}
+                </p>
+                <span className="main-product--reviews--content--item--user">
+                  {item.user} | {item?.created_at || "09/03/2022"}
+                </span>
+              </div>
+            ))}
+          </div>
+          {productDetail?.reviews?.length > 5 && (
+            <button className="main-product--reviews--more">
+                Ver mas comentarios
+            </button>
+          )}
+        </div>
+      )}
+      {user?.id && (
+        <form onSubmit={handleSubmit}>
+          <label>Review:</label>
+          <textarea
+            value={newReview.description}
+            name="description"
+            onChange={handleChange}
+          />
 
-                <Card.Body>
-                  <Row>
-                    <Col>
-                      <Card.Title
-                        style={{
-                          width: "200px",
-                        }}
-                      >
-                        {productDetail?.name}
-                      </Card.Title>
-                    </Col>
-                    <Col>
-                        {
-                          heart ? (
-                            <BsHeartFill onClick={() => handleWish()}/>
-                          ) : (
-                            <BsHeart onClick={() => handleWish()}/>
-                          )
-                        }
+          <label>Score:</label>
+          <input
+            className="aaaa"
+            type="number"
+            min="1"
+            max="5"
+            value={newReview.starsPoints}
+            name="starsPoints"
+            onChange={handleChange}
+          />
 
-                    </Col>
-                  </Row>
-                  <br />
-                  <Badge bg="success">Mas vendido</Badge>
-
-
-                  <br />
-                  <Row>
-                    <Col>
-                      {" "}
-                      <Card.Title>{productDetail?.price}</Card.Title>
-                    </Col>
-                    <Col>
-                      {" "}
-                      <h6
-                        style={{
-                          position: "relative",
-                          right: "80px",
-                          color: "green",
-                        }}
-                      >
-
-                      </h6>{" "}
-                    </Col>
-                  </Row>
-
-
-                  <Card.Title>
-                    {
-                      productDetail?.quantity > 0 ? `Stock disponible: ${productDetail?.quantity}` :
-                        'Producto no disponible'
-                    }
-
-                  </Card.Title>
-
-                  <br />
-                  <StripeSingleItem subtotal={productDetail}/>
-                  <br />
-                  <br />
-                  <Button variant="secondary" onClick={handleClick}>Agregar al carrito
-                    <MdAddShoppingCart
-                      className="product--cart-icon"
-                    />
-                  </Button>
-                </Card.Body>
-              </Card>
-              <br />
-
-            </Col>
-          </Row>
-          <br />
-          <br />
-        </Card>
-      </Container>
-      <br />
-      <br />
-      <br />
-      <br />
+          <button type="submit"> POST </button>
+        </form>
+      )}
       <Footer />
     </div>
   );

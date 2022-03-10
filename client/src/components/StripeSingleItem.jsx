@@ -66,7 +66,7 @@ const StripeSingleItem = () =>{
         shippingAddress
         
         >
-            <Button  variant="primary" width='500px'>Compra ahora</Button>
+           <button className="main-product--pay-btn">Comprar Ahora</button>
 
         </StripeCheckout>
     )
