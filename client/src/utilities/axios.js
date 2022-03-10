@@ -12,3 +12,9 @@ export const axiosWithCredentials = axios.create({
     baseURL: process.env.REACT_APP_API || baseUrl,// change this to "https://pghenry.herokuapp.com/" to work with deplyed DB
     /* withCredentials: true, */
 })
+
+axiosWithCredentials.interceptors.response.use((response) => {
+    return response;
+}, (error) => {
+    return error;
+})
