@@ -127,11 +127,7 @@ const payment = async(req, res) =>{
               console.log(err)
               return;
             }
-            console.log('email sent ' + info.response)
-            res.json({ message: `sent user purhcase confirmation at: ${result.receipt_email}` })
-
-
-            
+            console.log('email sent ' + info.response)            
           })
           //WE SET NEW INVENTORY VALUES
           //we search for the products that were bought, and decrease their inventory by the quantity
@@ -251,10 +247,6 @@ const payments1item = async(req, res) =>{
             return;
           }
           console.log('email sent ' + info.response)
-          res.json({ message: `sent user purhcase confirmation at: ${result.receipt_email}` })
-
-
-          
         })
         //we search for the products that were bought, and decrease their inventory by the quantity
         //need to define the quantities as its own variable
