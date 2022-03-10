@@ -518,7 +518,6 @@ const orderHistory = async (req, res) => {
         status: order.status,
         createdAt: order.createdAt,
         payment: {
-          type: payment.paymentType,
           amount: payment.amount,
           provider: payment.provider,
           status: payment.status

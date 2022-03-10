@@ -18,11 +18,5 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
     },
-
-    paymentType: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    }
-
 });
 };
