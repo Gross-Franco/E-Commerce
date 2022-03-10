@@ -9,6 +9,7 @@ const ProductTable = ({ setIsOpen }) => {
   if(loadProducts) dispatch(getProducts());
   
   const handleClick = (product) => {
+    console.log(product)
     dispatch(setAddOrUpdate(product))
     setIsOpen(prev => !prev);
   };

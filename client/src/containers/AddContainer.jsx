@@ -15,7 +15,9 @@ import {
 const AddContainer = ({ option, setIsOpen }) => {
   const { categories } = useSelector((state) => state.categories);
   const { addOrUpdate } = useSelector((state) => state.general);
-
+  
+  console.log('addorupdate: ',addOrUpdate)
+  
   const initialState = {
     name: addOrUpdate?.name || "",
     description: addOrUpdate?.description || "",
@@ -26,8 +28,13 @@ const AddContainer = ({ option, setIsOpen }) => {
     image: addOrUpdate?.image || "",
     inactive: addOrUpdate?.inactive || false
   };
+  
+   console.log('initialState: ',initialState)
 
   const [form, setForm] = useState(initialState);
+  
+  console.log('form: ', form)
+
   const [errors, setErrors] = useState({
     price: false,
     SKU: false,

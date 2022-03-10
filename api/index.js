@@ -42,10 +42,11 @@ const {
   UserAddress,
   UserPayment,
 } = require("./src/db.js");
-// const { mockorderItems } = require("./src/mockData/mockorderItems.js");
+
 const { PORT, TESTING } = process.env;
 
 // Syncing all the models at once.
+
 
 conn.sync({ force: false }).then(() => {
 

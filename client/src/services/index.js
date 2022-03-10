@@ -10,23 +10,23 @@ export const isFullfilled = (form, errors) => {
   }
 };
 
-export const saveLocalStorage = ({product}) => {
+export const saveLocalStorage = (product) => {
   const cart = JSON.parse(window.localStorage.getItem("cartItems"));
   let newCart = [];
   if (!cart) {
-    newCart = [{...product, quantity:1}];
+    newCart = [{ ...product, quantity: 1 }];
   } else {
     newCart = cart.every((item) => item.id !== product.id)
-      ? [...cart, {...product, quantity:1}]
+      ? [...cart, { ...product, quantity: 1 }]
       : cart.map((item) => {
-          if (item.id === product.id) {
-            if(item.quantity < product.inventory) return { ...item, quantity: item.quantity + 1 };
-            else alert('Not enough stock')
-          } else {
-            return item;
-          }
+        if (item.id === product.id) {
+          if (item.quantity <= product.inventory) return { ...item, quantity: item.quantity + 1 };
+          else alert('Not enough stock')
+        } else {
           return item;
-        });
+        }
+        return item;
+      });
   }
   let subTotal = Number(
     Math.round(
@@ -41,7 +41,7 @@ export const editQuantity = (product, qty) => {
   console.log(qty)
   const cart = JSON.parse(window.localStorage.getItem("cartItems"));
   const toEdit = cart.find(item => item.id === product.id);
-  if(qty <= product.inventory) toEdit.quantity = qty;
+  if (qty <= product.inventory) toEdit.quantity = qty;
   else alert('Not enough stock')
   window.localStorage.setItem("cartItems", JSON.stringify(cart));
 }

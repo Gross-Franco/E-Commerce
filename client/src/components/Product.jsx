@@ -6,11 +6,12 @@ import { saveLocalStorage } from "../services";
 import { BsBagPlus } from "react-icons/bs";
 
 const Product = ({ product }) => {
-  
+
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    saveLocalStorage({product});
+    console.log(product)
+    saveLocalStorage(product);
     dispatch(saveLocal());
   };
 
@@ -22,7 +23,7 @@ const Product = ({ product }) => {
           style={{ backgroundImage: `url(${product.image})` }}
         />
         <p className="product--title"> {product.name} </p>
-        <p className="product--info"> {product.description}</p>
+        {/*   <p className="product--info"> {product.description}</p>  */}
       </Link>
       <div className="product--price-container">
         <p className="product--price"> $ {product.price} </p>

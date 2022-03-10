@@ -132,6 +132,7 @@ const thirdpartySignin = async (req, res) => {
     let { first_name, last_name, email, username, id} = req.body;
     if(!first_name || !last_name || !email || !username || !id) return res.status(400).json({ success: false, message: 'Error no auth' });
     email = email.toLowerCase();
+
     const [user, created] = await User.findOrCreate({
         where: {
             email

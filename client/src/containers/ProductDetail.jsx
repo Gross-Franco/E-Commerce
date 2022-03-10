@@ -5,11 +5,14 @@ import { NavBar, Footer } from "./";
 import { saveLocalStorage } from "../services";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
+
 import { useDispatch, useSelector } from "react-redux";
 import { saveLocal, searchProductId, postReview, loadDetails, addToWishlist, removeFromWishlist, getWishlist } from "../Redux/Actions/actions";
 
 import { useParams } from "react-router-dom";
+
 import { BsHeart, BsHeartFill } from "react-icons/bs";
+
 
 import { Link } from "react-router-dom";
 import { Stars } from "../components";
@@ -19,19 +22,22 @@ import StripeSingleItem from "../components/StripeSingleItem";
 import { Rating } from "@mui/material";
 
 export default function ProductDetail() {
- 
+
   const { id } = useParams();
   const [value, setValue] = useState(0);
+
   const { productDetail, loadReviews } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.session);
   const { wishlist } = useSelector((state) => state.users);
-  const [newReview, setNewReview ] = useState({
+  const [newReview, setNewReview] = useState({
     description: "",
     starsPoints: 5
   });
 
+
   
   const [heart, setHeart] = useState(wishlist?.some(item => item.id === Number(id)));
+
   const dispatch = useDispatch();
 
 
@@ -64,7 +70,7 @@ export default function ProductDetail() {
   }
 
   if(loadReviews) dispatch(searchProductId(id))
-  
+
   useEffect(() => {
     return dispatch(loadDetails())
   }, [])
@@ -76,11 +82,11 @@ export default function ProductDetail() {
     else {
       dispatch(removeFromWishlist(user?.id, id))
     }
-    setHeart(!heart)  
+    setHeart(!heart)
   }
   
   const handleClick = () => {
-    saveLocalStorage({ productDetail });
+    saveLocalStorage({ ...productDetail, inventory: productDetail.quantity });
     dispatch(saveLocal());
   };
   useEffect(() => {
@@ -88,6 +94,7 @@ export default function ProductDetail() {
       dispatch(getWishlist(user.id))
     }
   }, [])
+  
   return (
     <div>
       <NavBar isScroll={true} />
