@@ -127,8 +127,6 @@ const createUser = async (req, res) => {
 
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
 
-      //enviar mail
-      let testAccount = await nodemailer.createTestAccount();
 
       // set up nodemailer configs
       var transporter = nodemailer.createTransport({
@@ -139,8 +137,8 @@ const createUser = async (req, res) => {
           rejectUnauthorized: false,
         },
         auth: {
-          user: testAccount.user, //email created to send the emails from
-          pass: testAccount.pass,
+          user: MAIL_USER, //email created to send the emails from
+          pass: MAIL_PASS,
         },
       });
 
