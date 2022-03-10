@@ -3,6 +3,7 @@ import Routes from "./routes/Routes";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkSession } from "./Redux/Actions/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { Loading } from "./pages";
 
 function App() {
   const location = useLocation();
@@ -20,7 +21,7 @@ function App() {
     }
   }, [loading]);
 
-  return loading ? <h1>Loading...</h1> : <Routes />;
+  return loading ? <Loading /> : <Routes />;
 }
 
 export default App;
