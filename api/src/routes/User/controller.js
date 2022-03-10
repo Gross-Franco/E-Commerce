@@ -392,7 +392,9 @@ const getUserDetails = async (req, res ) => {
   // const { user_id } = req.permits;   // Real 
   const { userid } = req.params;       // Testing
   try {
+
     const user = await User.findByPk(Number(userid));
+
     res.json(user)
   } catch (err) {
     console.log(err)
@@ -502,6 +504,7 @@ const validate = async (req, res) => {
 
 const orderHistory = async (req, res) => {
   const { userid } = req.params;
+
 
   try {
     let userOrders = await OrderDetails.findAll({

@@ -60,7 +60,6 @@ const UserOrder = ({ order, setOpenModal }) => {
             <p className="order-detail--row--item">{order.payment?.provider}</p>
           </div>
           <div className="order-detail--row">
-            <p className="order-detail--row--item">{order.payment?.type}</p>
             <p className="order-detail--row--item">{order.payment?.status}</p>
           </div>
         </div>

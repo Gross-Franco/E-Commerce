@@ -7,6 +7,7 @@ const { Sequelize } = require("sequelize");
 
 const getWishlist = async (req, res) => {
   const {userid} = req.params;
+  if(!userid) return res.status(400).send('User id is required');
   const user = await User.findByPk(userid);
   if(!!user.wishlist) {
     const products = await Promise.all( user.wishlist.map( async productid => {
@@ -26,6 +27,7 @@ const getWishlist = async (req, res) => {
 async function addToWishlist(req, res) {
   const { userId, productId } = req.body;
   //find user we want to change their wishlist
+  if(!userId || !productId) return res.status(400).send('User id and product id are required');
   const user = await User.findByPk(userId);
   try {
     //if they alredy have items on the wishlist
@@ -71,6 +73,7 @@ async function addToWishlist(req, res) {
 const removeFromWishlist = async(req, res)=>{
   const { userId, productId } = req.body;
   //find user we want to change their wishlist
+  if(!userId || !productId) return res.status(400).send('User id and product id are required');
   const user = await User.findByPk(userId);
   try {
       const newArray = user.wishlist

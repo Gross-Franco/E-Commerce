@@ -14,9 +14,9 @@ const StripeSingleItem = () => {
 
     // console.log("PRODUCT IN PAGE", productDetail)
 
-    const productId = productDetail.id
-    const productPrice = productDetail.price
-    const productName = productDetail.name
+    const productId = productDetail?.id
+    const productPrice = productDetail?.price
+    const productName = productDetail?.name
     // console.log("PRODUCTID", productId)
 
     const product = {
@@ -53,7 +53,8 @@ const StripeSingleItem = () => {
             shippingAddress
 
         >
-            <Button variant="primary" width='500px'>Compra ahora</Button>
+           <button className="main-product--pay-btn">Comprar Ahora</button>
+
 
         </StripeCheckout>
     )
