@@ -12,9 +12,9 @@ const StripeSingleItem = () =>{
     const { user } = useSelector((state) => state.session);
     // console.log("PRODUCT IN PAGE", productDetail)
 
-    const productId = productDetail.id
-    const productPrice = productDetail.price
-    const productName = productDetail.name
+    const productId = productDetail?.id
+    const productPrice = productDetail?.price
+    const productName = productDetail?.name
     // console.log("PRODUCTID", productId)
 
     const[product, setProduct] = useState({
