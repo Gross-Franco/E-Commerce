@@ -660,9 +660,9 @@ code {
   flex-direction: column;
   background-color: rgba(248, 250, 253, 1);
   width: 75%;
-  height: 100vh;
+  height: 100%;
   gap: 1rem;
-  padding: 6rem 3rem 0rem;
+  padding: 6rem 3rem 6rem;
 }
 .panel--header {
   display: flex;
