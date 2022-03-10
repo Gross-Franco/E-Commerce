@@ -266,9 +266,9 @@ export const createUser = ({
 
     if (response?.data?.success) {
       console.log(response);
-      dispatch({ type: CREATE_USER, payload: response.data });
+      dispatch({ type: CREATE_USER, payload: response?.data });
     } else {
-      dispatch({ type: CREATE_USER, payload: response.response.data });
+      dispatch({ type: CREATE_USER, payload: response?.response?.data });
     }
   };
 };
@@ -279,7 +279,7 @@ export const createShoppingSession = (userId = 1) => {
     const response = await axios.post(
       `/shopping/session?user_id=${userId}`
     );
-    dispatch({ type: CREATE_SHOPPING_SESSION, payload: response.data });
+    dispatch({ type: CREATE_SHOPPING_SESSION, payload: response?.data });
   };
 };
 export const deleteShoppingSession = (sessionId) => {
@@ -393,10 +393,10 @@ export const signIn = (data) => {
   return async (dispatch) => {
     const response = await axios.post(`/api/signin`, data);
     if (response?.data?.success) {
-      localStorage.setItem("token", response.data.token);
-      dispatch({ type: SIGN_IN, payload: response.data });
+      localStorage.setItem("token", response?.data?.token);
+      dispatch({ type: SIGN_IN, payload: response?.data });
     } else {
-      dispatch({ type: SIGN_IN, payload: response.response.data });
+      dispatch({ type: SIGN_IN, payload: response?.response?.data });
     }
 
   };
@@ -405,9 +405,9 @@ export const checkSession = (token) => {
   return async (dispatch) => {
     const response = await axios.post('/api/session', {}, { headers: { Authorization: `Bearer ${token}` } });
     if (response?.data?.success) {
-      dispatch({ type: SUCCESS_SESSION, payload: response.data });
+      dispatch({ type: SUCCESS_SESSION, payload: response?.data });
     } else {
-      dispatch({ type: FAIL_SESSION, payload: response.response.data });
+      dispatch({ type: FAIL_SESSION, payload: response?.response?.data });
     }
   };
 };
@@ -523,7 +523,7 @@ export const googleSession = (data) => {
 export const getWishlist = (userid) => {
   return async (dispatch) => {
     const response = await axios.get(`/user/wishlist/${userid}`); 
-    dispatch({ type: GET_WISHLIST, payload: response.data });
+    dispatch({ type: GET_WISHLIST, payload: response?.data });
   }
 }
 
