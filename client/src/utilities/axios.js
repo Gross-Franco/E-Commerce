@@ -16,9 +16,5 @@ export const axiosWithCredentials = axios.create({
 axiosWithCredentials.interceptors.response.use((response) => {
     return response;
 }, (error) => {
-    let url = error.response.config.url.split("/")[1];
-    if (url === "api") {
-        // window.location.href = "/";
-    }
     return error;
 })
