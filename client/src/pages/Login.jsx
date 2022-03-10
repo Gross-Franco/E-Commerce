@@ -39,7 +39,7 @@ const Login = () => {
 
   useEffect(() => {
     if (login) {
-      navigate("/perfilUser");
+      navigate("/");
     }
     if (response) {
       setShow(true);

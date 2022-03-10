@@ -127,8 +127,6 @@ const createUser = async (req, res) => {
 
       let token = jwt.sign(userForToken, FIRM, { expiresIn: "1d" });
 
-      //enviar mail
-      let testAccount = await nodemailer.createTestAccount();
 
       // set up nodemailer configs
       var transporter = nodemailer.createTransport({
@@ -139,8 +137,8 @@ const createUser = async (req, res) => {
           rejectUnauthorized: false,
         },
         auth: {
-          user: testAccount.user, //email created to send the emails from
-          pass: testAccount.pass,
+          user: MAIL_USER, //email created to send the emails from
+          pass: MAIL_PASS,
         },
       });
 
@@ -157,7 +155,7 @@ const createUser = async (req, res) => {
 
             <p> To get started, please confirm your email address by clicking the link below. If you didn't do this, ignore this message</p>
             
-            <a href="http://localhost:3001/user/confirm/${token}">Verify your account!</a>
+            <a href="https://pghenry.herokuapp.com/user/confirm/${token}">Verify your account!</a>
             <p> Thanks! &#8211;  The HCommerce team</p>`,
       };
 
@@ -230,7 +228,7 @@ const confirm = async (req, res) => {
     await user.save();
 
     // Redireccionar a la confirmación
-    return res.status(202).redirect("http://localhost:3000/verification/" + username + "?token=" + token);
+    return res.status(202).redirect("https://pg-henry-grupo6.vercel.app/verification/" + username + "?token=" + token);
   } catch (error) {
     console.log(error);
     // window.location.href = `/verificate/No_Verficate`;
@@ -363,10 +361,10 @@ const forgotPassword = async (req, res) => {
       subject: "Password Reset for the ecommerce platform",
       //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
       // <a href="${process.env.CLIENT_URL}/user/resetpassword/${token}">${token}</a>
-      html: `<p>CORTESIA DE JOSE:<p>
+      html: `<p>Password reset request:<p>
             <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.<p>
             <p>Please click on the following link, or paste this into your browser to complete the process:<p>
-            <a href="http://localhost:3000/user/resetpassword/${token}">${token}</a>
+            <a href="https://pghenry.herokuapp.com/user/resetpassword/${token}">${token}</a>
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
           `,
     };
@@ -378,7 +376,7 @@ const forgotPassword = async (req, res) => {
       }
       console.log("email sent " + info.response);
       res.json({
-        message: `password reset request sent to ${email} reset link: http://localhost:3001/user/resetpassword/${token}`,
+        message: `password reset request sent to ${email} reset link: https://pg-henry-grupo6.vercel.app/user/resetpassword/${token}`,
       });
     });
   } catch (err) {
@@ -392,7 +390,9 @@ const getUserDetails = async (req, res ) => {
   // const { user_id } = req.permits;   // Real 
   const { userid } = req.params;       // Testing
   try {
+
     const user = await User.findByPk(Number(userid));
+
     res.json(user)
   } catch (err) {
     console.log(err)
@@ -502,6 +502,7 @@ const validate = async (req, res) => {
 
 const orderHistory = async (req, res) => {
   const { userid } = req.params;
+
 
   try {
     let userOrders = await OrderDetails.findAll({

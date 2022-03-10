@@ -11,31 +11,23 @@ const StripeSingleItem = () => {
 
     const { productDetail } = useSelector((state) => state.products);
     const { user } = useSelector((state) => state.session);
+
     // console.log("PRODUCT IN PAGE", productDetail)
 
-    const productId = productDetail.id
-    const productPrice = productDetail.price
-    const productName = productDetail.name
+    const productId = productDetail?.id
+    const productPrice = productDetail?.price
+    const productName = productDetail?.name
     // console.log("PRODUCTID", productId)
 
-    const [product, setProduct] = useState({
+    const product = {
         id: productId,
         quantity: 1,
         name: productName,
         price: Math.floor(productPrice),
         description: 'All cart items',
         userid: user ? user.id : null
-    });
+    };
 
-    useEffect(() => {
-        setProduct({
-            id: productId,
-            quantity: 1,
-            name: productName,
-            price: Math.floor(productPrice),
-            description: 'All cart items'
-        })
-    }, [productDetail, user])
     // console.log("PRODUCT IN STRIPE", product)
     //the token is automatically created by stripe we just need to call it
     const makePayment = token => {
@@ -61,7 +53,8 @@ const StripeSingleItem = () => {
             shippingAddress
 
         >
-            <Button variant="primary" width='500px'>Compra ahora</Button>
+           <button className="main-product--pay-btn">Comprar Ahora</button>
+
 
         </StripeCheckout>
     )

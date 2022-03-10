@@ -22,3 +22,4 @@ export { default as Button } from './Button';
 export { default as Hero } from './Hero';
 export { default as GoogleButton } from './GoogleButton';
 export { default as GithubButton } from './GithubButton';
+export { default as Stars } from './Stars';

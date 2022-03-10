@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FiShoppingCart } from "react-icons/fi";
+import { BsHandbag } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems, getLocalStorage } from "../Redux/Actions/actions";
 
@@ -38,7 +38,7 @@ const CartButton = ({ setOpenModal, openModal }) => {
 
   return (
     <div className="cart-container" onClick={handelClick}>
-      <FiShoppingCart className="cart-icon" />
+      <BsHandbag className="cart-icon" />
       <div className="cart-count">{qty}</div>
     </div>
   );

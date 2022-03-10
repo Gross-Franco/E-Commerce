@@ -229,6 +229,7 @@ const searchProductName = async (req, res) => {
         });
         finalres.push({
           id: product.id,
+          image: product.image,
           name: product.name,
           description: product.description,
           SKU: product.SKU,
