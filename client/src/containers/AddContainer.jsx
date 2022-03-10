@@ -15,24 +15,24 @@ import {
 const AddContainer = ({ option, setIsOpen }) => {
   const { categories } = useSelector((state) => state.categories);
   const { addOrUpdate } = useSelector((state) => state.general);
-  
-  console.log('addorupdate: ',addOrUpdate)
-  
+
+  console.log('addorupdate: ', addOrUpdate)
+
   const initialState = {
     name: addOrUpdate?.name || "",
     description: addOrUpdate?.description || "",
     price: addOrUpdate?.price || "",
     category: addOrUpdate?.category || [],
     SKU: addOrUpdate?.SKU || "",
-    quantity: addOrUpdate?.quantity || "",
+    quantity: (addOrUpdate?.quantity ? addOrUpdate.quantity : addOrUpdate?.inventory) || "",
     image: addOrUpdate?.image || "",
     inactive: addOrUpdate?.inactive || false
   };
-  
-   console.log('initialState: ',initialState)
+
+  console.log('initialState: ', initialState)
 
   const [form, setForm] = useState(initialState);
-  
+
   console.log('form: ', form)
 
   const [errors, setErrors] = useState({
@@ -203,7 +203,7 @@ const AddContainer = ({ option, setIsOpen }) => {
               <div>
                 <label>
                   Inactivo
-                  <input type="checkbox" onChange={handleChange} name="inactive" checked={form.inactive}/>
+                  <input type="checkbox" onChange={handleChange} name="inactive" checked={form.inactive} />
                 </label>
               </div>
             </div>
