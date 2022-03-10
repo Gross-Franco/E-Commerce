@@ -181,9 +181,9 @@ export default function Registro() {
             }}
           >
             <option>Metodo de pago</option>
-            <option value="debito">Targeta debito</option>
-            <option value="credito">Targeta de credito</option>
-            <option value="PayPal">PayPal </option>
+            <option value="debito">Tarjeta debito</option>
+            <option value="credito">Tarjeta de credito</option>
+            <option value="PayPal">PayPal</option>
           </select>
           {errors.paymentMethod && <FormHandler error={errors.paymentMethod} />}
           {/* Direccion */}
@@ -215,7 +215,7 @@ export default function Registro() {
             type="number"
             name="postalNumber"
             value={form.postalNumber}
-            placeholder="codigo postal"
+            placeholder="Código Postal"
             onChange={handleChange}
             onBlur={validate}
             className="register--main--form-input"
