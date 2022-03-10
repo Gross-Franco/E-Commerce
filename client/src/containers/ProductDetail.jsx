@@ -1,36 +1,27 @@
-import React, { useEffect, useState } from "react"; /* 
-import Carousel from "react-bootstrap/"; */
+import React, { useEffect, useState } from "react";
 import { NavBar, Footer } from "./";
 
 
 import { saveLocalStorage } from "../services";
-import { MdAddShoppingCart, MdKeyboardArrowRight } from "react-icons/md";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
-import { Card, Button, Col, Row, Container, Badge, Form, ProgressBar} from "react-bootstrap";
-
-
-/* import Holder from "react-holder";
-import { color, textAlign } from "@mui/system"; */
 import { useDispatch, useSelector } from "react-redux";
 import { saveLocal, searchProductId, postReview, loadDetails, addToWishlist, removeFromWishlist, getWishlist } from "../Redux/Actions/actions";
 
 import { useParams } from "react-router-dom";
-import { BsHeart, BsHeartFill, BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 import { Link } from "react-router-dom";
-import Login from "./Login";
-import Dropdowns from "./Dropdowns";
-import { CartButton, Stars } from "../components";
-import { Cart } from "../pages";
-import { setOverflowY } from "../services";
+import { Stars } from "../components";
 
 
 import StripeSingleItem from "../components/StripeSingleItem";
+import { Rating } from "@mui/material";
 
 export default function ProductDetail() {
  
   const { id } = useParams();
-  console.log(id)
+  const [value, setValue] = useState(0);
   const { productDetail, loadReviews } = useSelector((state) => state.products);
   const { user } = useSelector((state) => state.session);
   const { wishlist } = useSelector((state) => state.users);
@@ -39,29 +30,13 @@ export default function ProductDetail() {
     starsPoints: 5
   });
 
-  const [isScroll, setIsScroll] = useState(false);
-
-  const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setIsScroll(true);
-    } else {
-      setIsScroll(false);
-    }
-  };
-
   
-  const [heart, setHeart] = useState(wishlist.some(item => item.id === Number(id)));
+  const [heart, setHeart] = useState(wishlist?.some(item => item.id === Number(id)));
   const dispatch = useDispatch();
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen(productDetail)
-  }, []);
 
 
   const  handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatch(postReview({
       ...newReview,
       user_id: user?.id,
@@ -73,22 +48,27 @@ export default function ProductDetail() {
     })
   }
 
-  const handleChange = (e) => {
+  const handleChange = (e, newValue) => {
+    if(e.target.name === "simple-controlled") {
+      setValue(newValue);
+      setNewReview({
+        ...newReview,
+        starsPoints: newValue
+    })
+    } else {
     setNewReview({
       ...newReview,
       [e.target.name]: e.target.value
     })
+    }
   }
 
   if(loadReviews) dispatch(searchProductId(id))
-  useEffect(() => {
-    dispatch(getWishlist(user?.id))
-  }, [])
-
+  
   useEffect(() => {
     return dispatch(loadDetails())
   }, [])
-
+  
   const handleWish = () => {
     if (!heart) {
       dispatch(addToWishlist(user?.id, id))
@@ -98,12 +78,16 @@ export default function ProductDetail() {
     }
     setHeart(!heart)  
   }
-
+  
   const handleClick = () => {
     saveLocalStorage({ productDetail });
     dispatch(saveLocal());
   };
-
+  useEffect(() => {
+    if(user?.id) {
+      dispatch(getWishlist(user.id))
+    }
+  }, [])
   return (
     <div>
       <NavBar isScroll={true} />
@@ -187,54 +171,62 @@ export default function ProductDetail() {
             {productDetail?.reviews?.length} Comentarios de los usuarios
           </p>
           <div className="main-product--reviews--content">
-            {productDetail?.reviews?.map((item, index) => ( index < 3 &&
-              <div className="main-product--reviews--content--item" key={index}>
-                <div className="main-product--points">
-                  <Stars option="single" starsPoints={item.starsPoints} />
-                  <p className="main-product--points--avg">
-                    {item.starsPoints}/5
-                  </p>
-                </div>
-                <p className="main-product--reviews--content--item--title">
-                  Sin titulo
-                </p>
-                <p className="main-product--reviews--content--item--description">
-                  {item.description}
-                </p>
-                <span className="main-product--reviews--content--item--user">
-                  {item.user} | {item?.created_at || "09/03/2022"}
-                </span>
-              </div>
-            ))}
+            {productDetail?.reviews?.map(
+              (item, index) =>
+                index < 4 && (
+                  <div
+                    className="main-product--reviews--content--item"
+                    key={index}
+                  >
+                    <div className="main-product--points">
+                      <Stars option="single" starsPoints={item.starsPoints} />
+                      <p className="main-product--points--avg">
+                        {item.starsPoints}/5
+                      </p>
+                    </div>
+                    <p className="main-product--reviews--content--item--title">
+                      Sin titulo
+                    </p>
+                    <p className="main-product--reviews--content--item--description">
+                      {item.description}
+                    </p>
+                    <span className="main-product--reviews--content--item--user">
+                      {item.user} | {item?.created_at || "09/03/2022"}
+                    </span>
+                  </div>
+                )
+            )}
           </div>
           {productDetail?.reviews?.length > 5 && (
             <button className="main-product--reviews--more">
-                Ver mas comentarios
+              Ver mas comentarios
             </button>
           )}
         </div>
       )}
       {user?.id && (
-        <form onSubmit={handleSubmit}>
-          <label>Review:</label>
-          <textarea
-            value={newReview.description}
-            name="description"
-            onChange={handleChange}
-          />
-
-          <label>Score:</label>
-          <input
-            className="aaaa"
-            type="number"
-            min="1"
-            max="5"
-            value={newReview.starsPoints}
-            name="starsPoints"
-            onChange={handleChange}
-          />
-
-          <button type="submit"> POST </button>
+        <form className="main-product--form" onSubmit={handleSubmit}>
+          <p className="main-product--form--title">Dejanos tu comentario!</p>
+          <div className="main-product--form--inputs">
+            <textarea
+              className="main-product--form--textarea"
+              value={newReview?.description}
+              name="description"
+              onChange={handleChange}
+            />
+            <div className="main-product--form--stars">
+              <Rating
+                className="main-product--form--stars--rating"
+                name="simple-controlled"
+                value={value}
+                size="large"
+                onChange={(event, newValue) => {
+                  handleChange(event, newValue);
+                }}
+              />
+              <button className="main-product--form--btn" type="submit" onClick={handleSubmit}> Postear </button>
+            </div>
+          </div>
         </form>
       )}
       <Footer />
