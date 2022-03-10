@@ -23,7 +23,7 @@ const Product = ({ product }) => {
           style={{ backgroundImage: `url(${product.image})` }}
         />
         <p className="product--title"> {product.name} </p>
-        // <p className="product--info"> {product.description}</p>
+        {/*   <p className="product--info"> {product.description}</p>  */}
       </Link>
       <div className="product--price-container">
         <p className="product--price"> $ {product.price} </p>
