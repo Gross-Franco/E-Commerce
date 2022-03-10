@@ -155,7 +155,7 @@ const createUser = async (req, res) => {
 
             <p> To get started, please confirm your email address by clicking the link below. If you didn't do this, ignore this message</p>
             
-            <a href="http://localhost:3001/user/confirm/${token}">Verify your account!</a>
+            <a href="https://pghenry.herokuapp.com/user/confirm/${token}">Verify your account!</a>
             <p> Thanks! &#8211;  The HCommerce team</p>`,
       };
 
@@ -228,7 +228,7 @@ const confirm = async (req, res) => {
     await user.save();
 
     // Redireccionar a la confirmación
-    return res.status(202).redirect("http://localhost:3000/verification/" + username + "?token=" + token);
+    return res.status(202).redirect("https://pg-henry-grupo6.vercel.app/verification/" + username + "?token=" + token);
   } catch (error) {
     console.log(error);
     // window.location.href = `/verificate/No_Verficate`;
@@ -364,7 +364,7 @@ const forgotPassword = async (req, res) => {
       html: `<p>Password reset request:<p>
             <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.<p>
             <p>Please click on the following link, or paste this into your browser to complete the process:<p>
-            <a href="https://pg-henry-grupo6.vercel.app/user/resetpassword/${token}">${token}</a>
+            <a href="https://pghenry.herokuapp.com/user/resetpassword/${token}">${token}</a>
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
           `,
     };
