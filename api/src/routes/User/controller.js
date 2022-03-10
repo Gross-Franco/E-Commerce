@@ -363,10 +363,10 @@ const forgotPassword = async (req, res) => {
       subject: "Password Reset for the ecommerce platform",
       //created a link to the client in the message, the route for it is below in forgotpassword token, at the moment the link work on localhost 3000, but to connect to the front the port would need to change
       // <a href="${process.env.CLIENT_URL}/user/resetpassword/${token}">${token}</a>
-      html: `<p>CORTESIA DE JOSE:<p>
+      html: `<p>Password reset request:<p>
             <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.<p>
             <p>Please click on the following link, or paste this into your browser to complete the process:<p>
-            <a href="http://localhost:3000/user/resetpassword/${token}">${token}</a>
+            <a href="https://pg-henry-grupo6.vercel.app/user/resetpassword/${token}">${token}</a>
             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
           `,
     };
@@ -378,7 +378,7 @@ const forgotPassword = async (req, res) => {
       }
       console.log("email sent " + info.response);
       res.json({
-        message: `password reset request sent to ${email} reset link: http://localhost:3001/user/resetpassword/${token}`,
+        message: `password reset request sent to ${email} reset link: https://pg-henry-grupo6.vercel.app/user/resetpassword/${token}`,
       });
     });
   } catch (err) {
